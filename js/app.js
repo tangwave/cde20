@@ -2653,7 +2653,7 @@ const App = {
       html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(o.blocks.timeNote) + '</div>';
     }
     return html;
-  }
+  },
 
   // 渲染 RAG 返回的法规依据卡片（字段：标题/引用原文/本地路径/来源/文号/发布日期/状态）
   ragCardHtml(c, n) {
@@ -2681,7 +2681,7 @@ const App = {
       '<span class="qa9-card-title">' + Penetrator.esc(title) + '</span></div>' +
       '<div class="qa9-card-meta">' + meta + '</div>' +
       quote + local + src + '</div>';
-  }
+  },
 
   qaCardHtml(d, n) {
     const tier = d.tier == null ? 3 : d.tier;
