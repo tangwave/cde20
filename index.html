@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="药品研发与生产质量体系知识库 - 覆盖化药/生物药/中药三大类、11个品种、9个研发阶段的全生命周期质量要求">
+  <!-- 实时后端地址：
+       留空 ""            = 静态快照模式（随站分发 3096 篇元数据，客户端检索）
+       填 "/" 或 same-origin = 同域实时：前端与 api/server.py 由同一后端托管，
+                               fetch 相对 /api/qa，免 CORS（推荐 Render/VPS 同域部署）
+       填完整 URL（如 https://kb.example.com）= 跨域实时（后端已开 CORS *） -->
+  <meta name="qa-api-base" content="/">
+  <title>药品研发与生产质量体系知识库</title>
+  <link rel="stylesheet" href="css/style.css?v=20260803">
+  <link rel="stylesheet" href="css/portal.css?v=20260803">
+  <link rel="stylesheet" href="css/qa9.css?v=20260803">
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部栏 -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <span class="topbar-brand-icon">💊</span>
+        <div>
+          <div class="topbar-brand-title">药品质量体系知识库</div>
+          <div class="topbar-brand-subtitle">Pharmaceutical Quality System KB</div>
+        </div>
+      </div>
+
+      <div class="topbar-search">
+        <input type="text" id="searchInput" class="topbar-search-input"
+               placeholder="搜索品种、阶段、法规、要求... (Ctrl+K)"
+               autocomplete="off" />
+        <span class="topbar-search-icon">🔍</span>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="topbar-btn" data-portal="panorama" title="全景总览（整体认识入口）">
+          <span>🗺️</span>
+          <span>全景</span>
+        </button>
+        <button class="topbar-btn" data-portal="framework" title="知识框架（主题词）">
+          <span>📚</span>
+          <span>知识框架</span>
+        </button>
+        <button class="topbar-btn" data-portal="caselibrary" title="案例库（如何开展）">
+          <span>🧭</span>
+          <span>案例库</span>
+        </button>
+        <button id="regLibBtn" class="topbar-btn" title="法规原文库（识林式穿透阅读）">
+          <span>📖</span>
+          <span>法规原文</span>
+        </button>
+        <button id="qa9527Btn" class="topbar-btn" title="法规问答 · 9527 专家">
+          <span>💬</span>
+          <span>9527问答</span>
+        </button>
+        <button id="matrixToggleBtn" class="topbar-btn" title="切换矩阵视图 (Ctrl+M)">
+          <span>📊</span>
+          <span>矩阵视图</span>
+        </button>
+        <button id="classifyBtn" class="topbar-btn" title="药品分类布局（化药/生物制品/中药）">
+          <span>🗂️</span>
+          <span>药品分类</span>
+        </button>
+      </div>
+
+      <div id="topbarStats" class="topbar-stats"></div>
+    </header>
+
+    <!-- 主体 -->
+    <div class="app-body">
+      <!-- 侧边栏 -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">
+            <span>药品分类体系</span>
+          </span>
+        </div>
+        <nav id="sidebarNav" class="sidebar-nav"></nav>
+      </aside>
+
+      <!-- 主内容区 -->
+      <main class="main">
+        <!-- 面包屑 -->
+        <nav id="breadcrumb" class="breadcrumb"></nav>
+
+        <!-- 阶段标签页 -->
+        <div id="stageTabs" class="stage-tabs"></div>
+
+        <!-- 详情布局 -->
+        <div id="detailLayout">
+          <div class="content-scroll">
+            <div id="content" class="content"></div>
+          </div>
+        </div>
+
+        <!-- 矩阵视图 -->
+        <div id="matrixView" class="matrix-view" style="display: none;"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 法规快速链接面板 -->
+  <aside id="regulationPanel" class="regulation-panel">
+    <div class="regulation-panel-header">
+      <span class="regulation-panel-title">📎 法规快速链接</span>
+      <button id="regulationPanelClose" class="regulation-panel-close" title="关闭">×</button>
+    </div>
+    <div id="regulationPanelBody" class="regulation-panel-body"></div>
+  </aside>
+
+  <!-- 法规原文库（识林式穿透阅读） -->
+  <div id="regulationLibrary" class="regulation-library" style="display:none;">
+    <div class="reg-lib-sidebar">
+      <div class="reg-lib-sidebar-head">
+        <span class="reg-lib-title">📖 法规原文库</span>
+        <button id="regLibClose" class="reg-lib-close" title="关闭">×</button>
+      </div>
+      <div id="regCatFilters" class="reg-cat-filters"></div>
+      <input type="text" id="regSearchInput" class="reg-search-input"
+             placeholder="搜索法规名称 / 摘要 / 发布机关..." autocomplete="off" />
+      <div id="regDocList" class="reg-doc-list"></div>
+    </div>
+    <div class="reg-lib-reader">
+      <div id="regReader" class="reg-reader"></div>
+    </div>
+  </div>
+
+  <!-- 法规问答 · 9527 专家（对话模式） -->
+  <div id="qa9527" class="qa9-panel" style="display:none;">
+    <div class="qa9-sidebar">
+      <div class="qa9-sidebar-head">
+        <span class="qa9-title">💬 法规问答 · 9527</span>
+        <button id="qa9Close" class="qa9-close" title="关闭">×</button>
+      </div>
+      <div class="qa9-disclaimer">
+        我是药品法规专家 9527 🔍，可基于本地知识库（3096 篇现行/历史法规）回答注册、GLP/GCP/GMP/GVP、MAH、上市后变更等问题，并给出结论与依据。
+        若已部署实时后端则自动切换为 <b>● 实时</b> 模式，结论须以官网原文为准。
+        国外参考指导原则（FDA/WHO/EMA）仅作对照，非中国法定依据。
+      </div>
+      <div class="qa9-faq-head">📌 常见问题（点击直接提问）</div>
+      <div id="qa9FaqList" class="qa9-faq-list"></div>
+    </div>
+    <div class="qa9-main">
+      <div class="qa9-chat-head">
+        <div id="qa9Mode" class="qa9-mode"></div>
+        <button id="qa9Clear" class="qa9-clear">清空对话</button>
+      </div>
+      <div id="qa9Msgs" class="qa9-msgs"></div>
+      <div class="qa9-composer">
+        <div class="qa9-composer-row">
+          <input id="qa9Input" class="qa9-input" type="text"
+                 placeholder="输入法规问题或关键词，如：IND 非临床研究 / GLP 适用范围 / MAH 制度 / 加快上市程序"
+                 autocomplete="off" />
+          <button id="qa9SendBtn" class="qa9-send-btn">发送</button>
+        </div>
+        <label class="qa9-onlyvalid"><input type="checkbox" id="qa9OnlyValid" checked /> 仅现行有效</label>
+        <div id="qa9Suggestions" class="qa9-suggestions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 脚本 -->
+  <script src="js/data.js?v=20260803"></script>
+  <script src="js/search.js?v=20260803"></script>
+  <script src="js/reg-index.js?v=20260803"></script>
+  <script src="js/reg-extra.js?v=20260803"></script>
+  <script src="js/penetration-kb.js?v=20260803"></script>
+  <script src="js/preclinical-subsections.js?v=20260803"></script>
+  <script src="js/drug-classification.js?v=20260803"></script>
+  <script src="js/class-requirements.js?v=20260803"></script>
+  <script src="js/special-cases.js?v=20260803"></script>
+  <script src="js/knowledge-framework.js?v=20260803"></script>
+  <script src="js/cases-library.js?v=20260803"></script>
+  <script src="js/class-req-detail.js?v=20260803"></script>
+  <script src="js/integrated-cases.js?v=20260803"></script>
+  <script src="js/diagrams.js?v=20260803"></script>
+  <script src="js/subclass-detail.js?v=20260803"></script>
+  <script src="js/discovery-steps.js?v=20260803"></script>
+  <script src="js/preclinical-steps.js?v=20260803"></script>
+  <script src="js/class-req-process-addon.js?v=20260803"></script>
+  <script src="js/stage-qm-addon.js?v=20260803"></script>
+  <script src="js/reg-kb-full.js?v=20260803"></script>
+  <script src="js/reg-qa-9527.js?v=20260803"></script>
+  <script src="js/app.js?v=20260803"></script>
+  <script src="js/knowledge-portal.js?v=20260803"></script>
+</body>
+</html>

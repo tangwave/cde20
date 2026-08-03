@@ -1,0 +1,2894 @@
+/**
+ * 药品研发与生产质量体系知识库 - 主应用逻辑 (v3.0)
+ * 数据结构：categories → varieties → stages
+ */
+
+/**
+ * 合并导航配置：以 化学药 / 生物制品 / 中药 为根。
+ *  reg     —— 注册分类子节点（code 对应 DRUG_CLASSIFICATION 子项）
+ *  special —— 产品类型 / 特殊品种子节点（code 对应 CLASS_REQUIREMENTS.specials）
+ */
+const CLASS_NAV = {
+  chemo: { name: '化学药', icon: '💊', reg: ['1', '2.1', '2.2', '2.3', '2.4', '3.1', '3.2', '3.3', '3.4', '4', '5.1', '5.2'], special: ['radio', 'sterile', 'api', 'oral'] },
+  bio:   { name: '生物制品', icon: '🧬', reg: ['T1', 'T2', 'T3', 'T4', 'P1', 'P2', 'P3'], special: ['mab', 'adc', 'recomb', 'cell', 'gene', 'blood', 'vaccine'] },
+  tcm:   { name: '中药', icon: '🌿', reg: ['1.1', '1.2', '1.3', '2', '3.1', '3.2', '4'], special: ['tcm_form', 'tcm_yinp'] }
+};
+const CAT_MAP = { chemo: 'chemical', bio: 'biological', tcm: 'tcm' };
+
+/**
+ * 特殊子类 → 品种三重点 映射（用于「按产品类型(三重点)」节点点击直达三重点）。
+ * 同一品种可对应多个特殊子类（如 生物制品 ← mab/adc/recomb；细胞与基因治疗产品 ← cell/gene）。
+ * 反向映射 VARIETY_TO_SPECIALS 由 buildVarietyToSpecials() 运行时生成。
+ */
+const SPECIAL_TO_VARIETY = {
+  chemo: { radio: 'radiopharm', sterile: 'sterile', api: 'api', oral: 'oral_solid' },
+  bio:   { mab: 'biological', adc: 'biological', recomb: 'biological', cell: 'cell_gene', gene: 'cell_gene', blood: 'blood', vaccine: 'vaccine' },
+  tcm:   { tcm_form: 'tcm_prep', tcm_yinp: 'tcm_pieces' }
+};
+
+function buildVarietyToSpecials() {
+  const map = {};
+  Object.keys(SPECIAL_TO_VARIETY).forEach(mc => {
+    const grp = SPECIAL_TO_VARIETY[mc] || {};
+    Object.keys(grp).forEach(code => {
+      const vid = grp[code];
+      map[vid] = map[vid] || [];
+      map[vid].push({ mainClass: mc, code });
+    });
+  });
+  return map;
+}
+
+const App = {
+  state: {
+    currentCategoryId: null,
+    currentVarietyId: null,
+    currentStageId: null,
+    viewMode: 'detail', // 'detail' | 'matrix'
+    bookmarks: [],
+    notes: [],
+    regulationPanelOpen: false,
+    regLibOpen: false,     // 法规原文库是否打开
+    regCat: 'all',         // 法规库分类筛选
+    regQuery: '',          // 法规库搜索词
+    currentRegId: null,    // 当前阅读的法规 id
+    regLang: 'orig',        // 法规阅读语言：orig=原文, zh=中文翻译版
+    preSub: 'overview',    // 临床前研究子板块：overview | cmc | pk | safety | tox | formulation | ind
+    view: 'panorama',       // 当前主视图：panorama=全景总览, framework=知识框架, caselibrary=案例库, glossary=术语表, kb=常规知识库, classification=研发要求体系
+    currentReqCat: null,   // 当前研发要求体系主类 chemo/bio/tcm
+    currentReqCode: '',    // 当前研发要求体系子节点 code（''=总览）
+    currentTopicId: null,  // 当前知识框架主题词 id
+    currentCaseId: null,   // 当前案例库案例 id
+    caseDomain: null       // 案例库领域筛选
+  },
+
+  /**
+   * 初始化应用
+   */
+  init() {
+    this.loadBookmarks();
+    this.loadNotes();
+    Penetrator.init();            // 穿透引擎
+    this.renderSidebar();
+    this.renderStageTabs();
+    this.renderTopbarStats();
+    this.bindEvents();
+    this.initPenCard();           // 术语悬浮卡
+    this.initRegLibrary();        // 法规原文库
+    this.initQa9527();            // 法规问答 · 9527
+    SearchEngine.init();
+
+    // 默认进入「全景总览」（识林式整体认识入口）
+    this.renderPanorama();
+  },
+
+  /* ============ 数据辅助方法 ============ */
+
+  /**
+   * 获取所有品种（扁平化）
+   */
+  getAllVarieties() {
+    const list = [];
+    KB_DATA.categories.forEach(cat => {
+      cat.varieties.forEach(v => list.push(v));
+    });
+    return list;
+  },
+
+  /**
+   * 根据 id 查找品种
+   */
+  findVarietyById(id) {
+    for (const cat of KB_DATA.categories) {
+      const v = cat.varieties.find(x => x.id === id);
+      if (v) return v;
+    }
+    return null;
+  },
+
+  /**
+   * 根据 id 查找分类
+   */
+  findCategoryById(id) {
+    return KB_DATA.categories.find(c => c.id === id) || null;
+  },
+
+  /* ============ 书签 / 笔记 ============ */
+
+  loadBookmarks() {
+    try {
+      const stored = localStorage.getItem('kb_bookmarks');
+      this.state.bookmarks = stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      this.state.bookmarks = [];
+    }
+  },
+
+  saveBookmarks() {
+    try {
+      localStorage.setItem('kb_bookmarks', JSON.stringify(this.state.bookmarks));
+    } catch (e) {
+      console.error('保存书签失败:', e);
+    }
+  },
+
+  loadNotes() {
+    try {
+      const stored = localStorage.getItem('kb_notes');
+      this.state.notes = stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      this.state.notes = [];
+    }
+  },
+
+  saveNotes() {
+    try {
+      localStorage.setItem('kb_notes', JSON.stringify(this.state.notes));
+    } catch (e) {
+      console.error('保存笔记失败:', e);
+    }
+  },
+
+  getNotesForCurrentPage() {
+    if (!this.state.currentVarietyId || !this.state.currentStageId) return [];
+    return this.state.notes.filter(n =>
+      n.varietyId === this.state.currentVarietyId &&
+      n.stageId === this.state.currentStageId
+    );
+  },
+
+  addNote() {
+    if (!this.state.currentVarietyId || !this.state.currentStageId) return;
+
+    const textarea = document.getElementById('noteInput');
+    if (!textarea) return;
+
+    const content = textarea.value.trim();
+    if (!content) {
+      this.showToast('请输入笔记内容', 'warning');
+      return;
+    }
+
+    const note = {
+      id: 'note_' + Date.now(),
+      varietyId: this.state.currentVarietyId,
+      stageId: this.state.currentStageId,
+      content: content,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    this.state.notes.push(note);
+    this.saveNotes();
+    this.renderNotesSection();
+    this.renderSidebar();
+    this.showToast('笔记已保存', 'success');
+    textarea.value = '';
+  },
+
+  deleteNote(noteId) {
+    const idx = this.state.notes.findIndex(n => n.id === noteId);
+    if (idx >= 0) {
+      this.state.notes.splice(idx, 1);
+      this.saveNotes();
+      this.renderNotesSection();
+      this.renderSidebar();
+      this.showToast('笔记已删除', 'warning');
+    }
+  },
+
+  editNote(noteId) {
+    const note = this.state.notes.find(n => n.id === noteId);
+    if (!note) return;
+    const display = document.getElementById('noteDisplay_' + noteId);
+    const editor = document.getElementById('noteEditor_' + noteId);
+    if (display && editor) {
+      display.style.display = 'none';
+      editor.style.display = '';
+      const textarea = editor.querySelector('textarea');
+      if (textarea) textarea.focus();
+    }
+  },
+
+  saveEditedNote(noteId) {
+    const note = this.state.notes.find(n => n.id === noteId);
+    if (!note) return;
+    const editor = document.getElementById('noteEditor_' + noteId);
+    if (!editor) return;
+    const textarea = editor.querySelector('textarea');
+    if (!textarea) return;
+
+    const content = textarea.value.trim();
+    if (!content) {
+      this.showToast('笔记内容不能为空', 'warning');
+      return;
+    }
+    note.content = content;
+    note.updatedAt = new Date().toISOString();
+    this.saveNotes();
+    this.renderNotesSection();
+    this.renderSidebar();
+    this.showToast('笔记已更新', 'success');
+  },
+
+  cancelEditNote(noteId) {
+    const display = document.getElementById('noteDisplay_' + noteId);
+    const editor = document.getElementById('noteEditor_' + noteId);
+    if (display && editor) {
+      display.style.display = '';
+      editor.style.display = 'none';
+    }
+  },
+
+  renderNotesSection() {
+    if (!this.state.currentVarietyId || !this.state.currentStageId) return;
+
+    const notesContainer = document.getElementById('notesSection');
+    if (!notesContainer) return;
+
+    const notes = this.getNotesForCurrentPage();
+    const variety = this.findVarietyById(this.state.currentVarietyId);
+    const stage = KB_DATA.stages.find(s => s.id === this.state.currentStageId);
+    if (!variety || !stage) return;
+
+    let html = `
+      <div class="detail-section notes-section" data-section="notes">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">📝</span>
+          <span class="detail-section-title">我的笔记</span>
+          <span class="notes-count-badge">${notes.length}</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+          <div class="note-input-area">
+            <textarea id="noteInput" class="note-textarea" placeholder="在此记录您对 ${variety.name} · ${stage.name} 的学习笔记、审计要点或个人理解..." rows="3"></textarea>
+            <button class="note-add-btn" id="noteAddBtn">💾 保存笔记</button>
+          </div>
+          <div class="notes-list">
+    `;
+
+    if (notes.length === 0) {
+      html += '<div class="notes-empty">暂无笔记，在上方添加您的第一条笔记</div>';
+    } else {
+      notes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      notes.forEach(note => {
+        const date = new Date(note.updatedAt);
+        const dateStr = date.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        const escapedContent = note.content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+        html += `
+          <div class="note-item">
+            <div id="noteDisplay_${note.id}" class="note-display">
+              <div class="note-content">${escapedContent}</div>
+              <div class="note-meta">
+                <span class="note-date">📅 ${dateStr}</span>
+                <div class="note-actions">
+                  <button class="note-action-btn" onclick="App.editNote('${note.id}')" title="编辑">✏️</button>
+                  <button class="note-action-btn" onclick="App.deleteNote('${note.id}')" title="删除">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <div id="noteEditor_${note.id}" class="note-editor" style="display:none;">
+              <textarea class="note-textarea note-edit-textarea" rows="3">${note.content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+              <div class="note-editor-actions">
+                <button class="note-save-btn" onclick="App.saveEditedNote('${note.id}')">✓ 保存</button>
+                <button class="note-cancel-btn" onclick="App.cancelEditNote('${note.id}')">✗ 取消</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    html += '</div></div></div>';
+    notesContainer.innerHTML = html;
+
+    const addBtn = document.getElementById('noteAddBtn');
+    if (addBtn) addBtn.addEventListener('click', () => this.addNote());
+
+    const noteInput = document.getElementById('noteInput');
+    if (noteInput) {
+      noteInput.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          this.addNote();
+        }
+      });
+    }
+  },
+
+  /* ============ 顶部统计 ============ */
+
+  renderTopbarStats() {
+    const statsEl = document.getElementById('topbarStats');
+    if (!statsEl) return;
+    const varietyCount = this.getAllVarieties().length;
+    statsEl.innerHTML = `
+      <span class="topbar-stats-item">📄 文档: ${KB_DATA.meta.totalDocs}</span>
+      <span class="topbar-stats-item">💊 品种: ${varietyCount}</span>
+      <span class="topbar-stats-item">📅 更新: ${KB_DATA.meta.lastUpdated}</span>
+    `;
+  },
+
+  /* ============ 侧边栏（2级：分类 → 品种） ============ */
+
+  renderSidebar() {
+    const navEl = document.getElementById('sidebarNav');
+    if (!navEl) return;
+
+    let html = '';
+
+    // ===== 知识门户（识林式：全景 / 框架 / 案例 / 术语） =====
+    html += '<div class="sidebar-portal">';
+    html += '<div class="sidebar-section-title">🧭 知识门户</div>';
+    const portalItems = [
+      { name: '全景总览', icon: '🗺️', key: 'panorama' },
+      { name: '知识框架', icon: '📚', key: 'framework' },
+      { name: '案例库', icon: '🧭', key: 'caselibrary' },
+      { name: '术语表', icon: '🔤', key: 'glossary' }
+    ];
+    portalItems.forEach(p => {
+      const act = (this.state.view === p.key) ? ' active' : '';
+      html += '<div class="sidebar-portal-item' + act + '" data-portal="' + p.key + '">' + p.icon + ' ' + p.name + '</div>';
+    });
+    html += '</div>';
+
+    // ===== 合并导航：以 化学药 / 生物制品 / 中药 为根 =====
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    const DC = globalThis.DRUG_CLASSIFICATION;
+    const MAIN_ORDER = ['chemo', 'bio', 'tcm'];
+    const MAIN_ICON = { chemo: '💊', bio: '🧬', tcm: '🌿' };
+
+    MAIN_ORDER.forEach(mainClass => {
+      const navCfg = CLASS_NAV[mainClass];
+      const mainName = (navCfg && navCfg.name) || (CR && CR.mains[mainClass] ? CR.mains[mainClass].name : mainClass);
+      html += '<div class="sidebar-category merged-cat">';
+      html += '<div class="sidebar-category-title req-cat-title" data-req-cat="' + mainClass + '">' + MAIN_ICON[mainClass] + ' ' + mainName + '</div>';
+
+      // —— 研发要求体系 ——
+      html += '<div class="merged-group">';
+      html += '<div class="merged-group-title">研发要求体系</div>';
+      html += '<div class="req-node req-node-overview' + (this.state.view === 'classification' && !this.state.currentReqCode ? ' active' : '') + '" data-req-cat="' + mainClass + '" data-req-code="">'
+        + '<span class="req-node-name">' + mainName + ' · 全部研发要求</span></div>';
+
+      const regCodes = (navCfg && navCfg.reg) || [];
+      if (regCodes.length) {
+        html += '<div class="merged-subtitle">按注册分类</div>';
+        regCodes.forEach(code => {
+          const sub = this.findClassSub(mainClass, code);
+          const nm = sub ? sub.name : code;
+          const act = (this.state.view === 'classification' && this.state.currentReqCat === mainClass && (this.state.currentReqCode || '') === code) ? ' active' : '';
+          html += '<div class="req-node' + act + '" data-req-cat="' + mainClass + '" data-req-code="' + this._esc(code) + '">'
+            + '<span class="req-node-code">' + this._esc(code) + '</span>'
+            + '<span class="req-node-name">' + this.pen(nm) + '</span></div>';
+        });
+      }
+      const spCodes = (navCfg && navCfg.special) || [];
+      if (spCodes.length) {
+        html += '<div class="merged-subtitle">按产品类型(三重点)</div>';
+        spCodes.forEach(code => {
+          const vid = (SPECIAL_TO_VARIETY[mainClass] && SPECIAL_TO_VARIETY[mainClass][code]) || '';
+          const sp = (CR && CR.specials[mainClass] && CR.specials[mainClass][code]) || null;
+          const nm = sp ? sp.subName : (this.findClassSub(mainClass, code) ? this.findClassSub(mainClass, code).name : code);
+          const active = (this.state.view !== 'classification' && this.state.currentVarietyId === vid) ? ' active' : '';
+          html += '<div class="req-node-special' + active + '" data-variety-id="' + this._esc(vid) + '" data-special-code="' + this._esc(code) + '">'
+            + '<span class="req-node-name">' + this.pen(nm) + '</span>'
+            + '<span class="req-node-badge req-node-badge-3pt">三重点</span></div>';
+        });
+      }
+      html += '</div>';
+    });
+
+    // 书签区
+    html += '<div class="sidebar-section">';
+    html += '<div class="sidebar-section-title">📑 书签</div>';
+    if (this.state.bookmarks.length === 0) {
+      html += '<div class="bookmark-empty">暂无书签，点击详情页⭐收藏</div>';
+    } else {
+      this.state.bookmarks.forEach(bm => {
+        const v = this.findVarietyById(bm.varietyId);
+        const stage = KB_DATA.stages.find(s => s.id === bm.stageId);
+        if (v && stage) {
+          html += `
+            <div class="bookmark-item" data-variety-id="${bm.varietyId}" data-stage-id="${bm.stageId}">
+              <span class="bookmark-icon">⭐</span>
+              <span class="bookmark-item-text">${v.icon} ${v.name} · ${stage.name}</span>
+              <button class="bookmark-item-remove" data-variety-id="${bm.varietyId}" data-stage-id="${bm.stageId}">×</button>
+            </div>
+          `;
+        }
+      });
+    }
+    html += '</div>';
+
+    // 笔记区
+    html += '<div class="sidebar-section">';
+    html += '<div class="sidebar-section-title">📝 笔记</div>';
+    if (this.state.notes.length === 0) {
+      html += '<div class="bookmark-empty">暂无笔记，在详情页添加</div>';
+    } else {
+      const recentNotes = [...this.state.notes].sort((a, b) =>
+        new Date(b.updatedAt) - new Date(a.updatedAt)
+      ).slice(0, 8);
+      recentNotes.forEach(note => {
+        const v = this.findVarietyById(note.varietyId);
+        const stage = KB_DATA.stages.find(s => s.id === note.stageId);
+        if (v && stage) {
+          const preview = note.content.substring(0, 40) + (note.content.length > 40 ? '...' : '');
+          html += `
+            <div class="note-sidebar-item" data-variety-id="${note.varietyId}" data-stage-id="${note.stageId}">
+              <span class="note-sidebar-icon">📝</span>
+              <span class="note-sidebar-text">${v.icon} ${v.name} · ${stage.name}</span>
+              <div class="note-sidebar-preview">${preview}</div>
+            </div>
+          `;
+        }
+      });
+      if (this.state.notes.length > 8) {
+        html += `<div class="notes-more-hint">还有 ${this.state.notes.length - 8} 条笔记...</div>`;
+      }
+    }
+    html += '</div>';
+
+    navEl.innerHTML = html;
+
+    // 合并导航交互
+    navEl.querySelectorAll('.req-cat-title').forEach(t => {
+      t.addEventListener('click', () => this.openClassReq(t.dataset.reqCat, ''));
+    });
+    navEl.querySelectorAll('.req-node').forEach(n => {
+      n.addEventListener('click', () => this.openClassReq(n.dataset.reqCat, n.dataset.reqCode || ''));
+    });
+
+    navEl.querySelectorAll('.req-node-special').forEach(n => {
+      n.addEventListener('click', () => this.selectVariety(n.dataset.varietyId));
+    });
+
+    navEl.querySelectorAll('.bookmark-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        if (e.target.classList.contains('bookmark-item-remove')) return;
+        this.selectVariety(item.dataset.varietyId);
+        setTimeout(() => this.selectStage(item.dataset.stageId), 50);
+      });
+    });
+
+    navEl.querySelectorAll('.bookmark-item-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.removeBookmark(btn.dataset.varietyId, btn.dataset.stageId);
+      });
+    });
+
+    navEl.querySelectorAll('.note-sidebar-item').forEach(item => {
+      item.addEventListener('click', () => {
+        this.selectVariety(item.dataset.varietyId);
+        setTimeout(() => this.selectStage(item.dataset.stageId), 50);
+      });
+    });
+  },
+
+  /* ============ 研发要求体系：辅助查询 ============ */
+
+  findClassSub(mainClass, code) {
+    const DC = globalThis.DRUG_CLASSIFICATION;
+    if (!DC) return null;
+    const cat = DC.categories.find(c => c.id === mainClass);
+    if (!cat) return null;
+    const items = (cat.items || []).concat(
+      (cat.groups || []).reduce((a, g) => a.concat(g.items || []), [])
+    );
+    return items.find(s => String(s.code) === String(code)) || null;
+  },
+
+  findRegById(rid) {
+    return (globalThis.REG_INDEX || []).find(r => r.id === rid) || null;
+  },
+
+  _esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  },
+
+  /* ============ 阶段标签页 ============ */
+
+  renderStageTabs() {
+    const tabsEl = document.getElementById('stageTabs');
+    if (!tabsEl) return;
+
+    let html = '';
+    KB_DATA.stages.forEach(stage => {
+      html += `
+        <button class="stage-tab ${this.state.currentStageId === stage.id ? 'active' : ''}" data-stage-id="${stage.id}">
+          <span class="stage-tab-icon">${stage.icon}</span>
+          <span class="stage-tab-text">
+            <span class="stage-tab-name">${stage.name}</span>
+            <span class="stage-tab-en">${stage.enName}</span>
+          </span>
+        </button>
+      `;
+    });
+    tabsEl.innerHTML = html;
+
+    tabsEl.querySelectorAll('.stage-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        this.selectStage(tab.dataset.stageId);
+      });
+    });
+  },
+
+  /* ============ 选择逻辑 ============ */
+
+  selectVariety(varietyId) {
+    const variety = this.findVarietyById(varietyId);
+    if (!variety) return;
+    if (this.state.regLibOpen) this._exitRegLib();
+    this._exitClassViewIfOpen();
+    this._exitPortalIfOpen();
+
+    this.state.currentCategoryId = variety.categoryId || null;
+    this.state.currentVarietyId = varietyId;
+    this.state.currentStageId = null;
+    this.state.viewMode = 'detail';
+
+    this.renderSidebar();
+    this.renderStageTabs();
+    this.renderBreadcrumb();
+    this.renderVarietyOverview();
+    this.hideMatrixView();
+    this.showDetailLayout();
+  },
+
+  selectStage(stageId) {
+    if (!this.state.currentVarietyId) return;
+    if (this.state.regLibOpen) this._exitRegLib();
+    this._exitClassViewIfOpen();
+    this.state.currentStageId = stageId;
+    this.state.viewMode = 'detail';
+
+    this.renderStageTabs();
+    this.renderBreadcrumb();
+    this.renderDetailView();
+    this.hideMatrixView();
+    this.showDetailLayout();
+  },
+
+  toggleMatrixView() {
+    if (this.state.regLibOpen) this._exitRegLib();
+    if (this.state.viewMode === 'matrix') {
+      this.state.viewMode = 'detail';
+      this.hideMatrixView();
+      this.showDetailLayout();
+      if (this.state.currentVarietyId) {
+        if (this.state.currentStageId) {
+          this.renderDetailView();
+        } else {
+          this.renderVarietyOverview();
+        }
+      } else {
+        this.renderEmptyState();
+      }
+    } else {
+      this.state.viewMode = 'matrix';
+      this.showMatrixView();
+      this.hideDetailLayout();
+      this.renderMatrixView();
+    }
+    const btn = document.getElementById('matrixToggleBtn');
+    if (btn) btn.classList.toggle('active', this.state.viewMode === 'matrix');
+  },
+
+  showDetailLayout() {
+    const el = document.getElementById('detailLayout');
+    if (el) el.style.display = '';
+  },
+
+  hideDetailLayout() {
+    const el = document.getElementById('detailLayout');
+    if (el) el.style.display = 'none';
+  },
+
+  showMatrixView() {
+    const el = document.getElementById('matrixView');
+    if (el) el.style.display = '';
+  },
+
+  hideMatrixView() {
+    const el = document.getElementById('matrixView');
+    if (el) el.style.display = 'none';
+  },
+
+  /* ============ 面包屑 ============ */
+
+  renderBreadcrumb() {
+    const bcEl = document.getElementById('breadcrumb');
+    if (!bcEl) return;
+
+    let html = '<span class="breadcrumb-item">首页</span>';
+
+    if (this.state.currentVarietyId) {
+      const v = this.findVarietyById(this.state.currentVarietyId);
+      const cat = this.findCategoryById(this.state.currentCategoryId);
+      html += '<span class="breadcrumb-sep">/</span>';
+      if (cat) html += `<span class="breadcrumb-item">${cat.name}</span><span class="breadcrumb-sep">/</span>`;
+
+      if (this.state.currentStageId) {
+        html += `<span class="breadcrumb-item variety-breadcrumb" data-variety-id="${v.id}">${v.name}</span>`;
+        const stage = KB_DATA.stages.find(s => s.id === this.state.currentStageId);
+        html += '<span class="breadcrumb-sep">/</span>';
+        html += `<span class="breadcrumb-item current">${stage.name}</span>`;
+      } else {
+        html += `<span class="breadcrumb-item current">${v.name}</span>`;
+      }
+    }
+
+    bcEl.innerHTML = html;
+
+    const vBc = bcEl.querySelector('.variety-breadcrumb');
+    if (vBc) {
+      vBc.style.cursor = 'pointer';
+      vBc.addEventListener('click', () => {
+        this.selectVariety(vBc.dataset.varietyId);
+      });
+    }
+  },
+
+  /* ============ 品种概览 ============ */
+
+  renderVarietyOverview() {
+    const contentEl = document.getElementById('content');
+    if (!contentEl || !this.state.currentVarietyId) return;
+
+    const v = this.findVarietyById(this.state.currentVarietyId);
+    if (!v) return;
+    const cat = this.findCategoryById(v.categoryId);
+
+    let html = `
+      <div class="overview-header" style="border-left-color: ${v.color}">
+        <div class="overview-title-row">
+          <div class="overview-icon" style="background: ${v.color}15">${v.icon}</div>
+          <div>
+            <div class="overview-title">${v.name}</div>
+            <div class="overview-subtitle">${v.enName || ''}</div>
+          </div>
+          <span class="overview-gmp-badge">📋 ${v.gmpAppendix || ''}</span>
+        </div>
+        <div class="overview-description">${v.description || ''}</div>
+        ${cat ? `<div class="overview-category-chip">所属分类：${cat.name}</div>` : ''}
+        <div class="detail-risks">
+          ${(v.keyRisks || []).map(r => `<span class="risk-badge">${r}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="overview-card">
+          <div class="overview-card-title"><span class="overview-card-title-icon">📂</span> 子类别</div>
+          <div class="overview-subcategories">
+            ${(v.subCategories || []).map(s => `<span class="subcategory-tag">${s}</span>`).join('')}
+          </div>
+        </div>
+        <div class="overview-card">
+          <div class="overview-card-title"><span class="overview-card-title-icon">⚠️</span> 关键风险领域</div>
+          <div>
+            ${(v.keyRisks || []).map(r => `<span class="key-risk-badge">${r}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-md); display: flex; align-items: center; gap: 8px;">
+        <span>🚀</span> 快速导航 - 选择研发阶段查看详细质量要求
+      </h3>
+      <div class="overview-stages">
+    `;
+
+    KB_DATA.stages.forEach(stage => {
+      html += `
+        <div class="overview-stage-card" data-stage-id="${stage.id}">
+          <div class="overview-stage-icon">${stage.icon}</div>
+          <div class="overview-stage-name">${stage.name}</div>
+          <div class="overview-stage-timeline">${stage.timeline || ''}</div>
+        </div>
+      `;
+    });
+
+    html += '</div>';
+    html += this.renderSpecialClassSections(v);
+    contentEl.innerHTML = html;
+
+    contentEl.querySelectorAll('.overview-stage-card').forEach(card => {
+      card.addEventListener('click', () => this.selectStage(card.dataset.stageId));
+    });
+  },
+
+  /* ============ 特殊子类：研发要求差异 + 阶段级实施案例 ============ */
+
+  renderSpecialClassSections(v) {
+    const V2S = buildVarietyToSpecials();
+    const specs = V2S[v.id] || [];
+    if (!specs.length) return '';
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    const CASES = globalThis.SPECIAL_CASES || {};
+    const stageList = (CR && CR.stages) ? CR.stages.map(s => s.id) : ['discovery', 'preclinical', 'clinical', 'nda', 'commercial', 'postmarket'];
+    const stageNames = (CR && CR.stages) ? CR.stages.reduce((a, s) => (a[s.id] = s.name, a), {}) : {};
+    const dimList = (CR && CR.dims) ? CR.dims.map(d => d.id) : ['rnd', 'process', 'quality', 'qm'];
+    const dimNames = (CR && CR.dims) ? CR.dims.reduce((a, d) => (a[d.id] = d.name, a), {}) : {};
+    const STAGE_ALIAS = {
+      radio_supply: '放射性物料与短半衰期供应链',
+      adc_payload: 'ADC 载荷（Payload）供应与安全管理',
+      cell_chain: '供者细胞采集与冷链时效管理',
+      gene_vector: '基因治疗载体生产与放行',
+      vacc_lot: '疫苗批签发'
+    };
+
+    let html = '<h3 class="special-section-title"><span>🧪</span> 特殊子类研发要求差异与阶段级实施案例</h3>';
+
+    specs.forEach(({ mainClass, code }) => {
+      const sp = (CR && CR.specials[mainClass] && CR.specials[mainClass][code]) || null;
+      const caseGrp = (CASES[mainClass] && CASES[mainClass][code] && CASES[mainClass][code].cases) || [];
+      const subName = sp ? sp.subName : (this.findClassSub(mainClass, code) ? this.findClassSub(mainClass, code).name : code);
+      if (!sp && !caseGrp.length) return;
+
+      const extra = (sp && sp.extraStages) ? sp.extraStages : [];
+      const stagesToShow = stageList.slice();
+      extra.forEach(es => { if (!stagesToShow.includes(es.id)) stagesToShow.push(es.id); });
+      caseGrp.map(c => c.stage).forEach(sid => { if (!stagesToShow.includes(sid)) stagesToShow.push(sid); });
+
+      const hasAny = stagesToShow.some(sid => {
+        const ov = (sp && sp.override && sp.override[sid]) || null;
+        const es = extra.find(e => e.id === sid) || null;
+        const hasOv = ov && dimList.some(d => ov[d] && ((ov[d].requirement && ov[d].requirement.length) || (ov[d].technique && ov[d].technique.length)));
+        const hasEs = es && es.dims && dimList.some(d => es.dims[d] && ((es.dims[d].requirement && es.dims[d].requirement.length) || (es.dims[d].technique && es.dims[d].technique.length)));
+        return hasOv || hasEs || caseGrp.some(c => c.stage === sid);
+      });
+      if (!hasAny) return;
+
+      html += '<details class="special-class-block" open>';
+      html += '<summary class="special-class-head"><span class="special-class-icon">🧪</span>'
+        + '<span class="special-class-title">' + this.pen(subName) + '</span>'
+        + '<span class="special-class-tag">研发要求差异 + 阶段级实施案例</span></summary>';
+      html += '<div class="special-class-note">本品种属「' + (CR && CR.mains[mainClass] ? CR.mains[mainClass].name : mainClass) + '」下的特殊子类；未标注单元格继承主类要求。</div>';
+
+      stagesToShow.forEach(sid => {
+        const ov = (sp && sp.override && sp.override[sid]) || null;
+        const es = extra.find(e => e.id === sid) || null;
+        const stageCases = caseGrp.filter(c => c.stage === sid);
+        const hasOv = ov && dimList.some(d => ov[d] && ((ov[d].requirement && ov[d].requirement.length) || (ov[d].technique && ov[d].technique.length)));
+        const hasEs = es && es.dims && dimList.some(d => es.dims[d] && ((es.dims[d].requirement && es.dims[d].requirement.length) || (es.dims[d].technique && es.dims[d].technique.length)));
+        if (!hasOv && !hasEs && !stageCases.length) return;
+
+        const sname = stageNames[sid] || (es ? es.name : (STAGE_ALIAS[sid] || sid));
+        html += '<details class="special-stage">';
+        html += '<summary class="special-stage-head"><span class="special-stage-name">' + this.pen(sname) + '</span>'
+          + (stageCases.length ? '<span class="special-stage-badge">📌' + stageCases.length + '</span>' : '') + '</summary>';
+
+        if (ov) {
+          dimList.forEach(did => {
+            const cell = ov[did];
+            if (!cell || !((cell.requirement && cell.requirement.length) || (cell.technique && cell.technique.length))) return;
+            html += '<div class="special-dim">';
+            html += '<div class="special-dim-head">' + (dimNames[did] || did) + ' <span class="special-dim-diff">↳ 与主类差异</span></div>';
+            if (cell.requirement && cell.requirement.length)
+              html += '<div class="special-block-title special-req">要求</div><ul class="special-list special-list-req">' + cell.requirement.map(r => '<li>' + this.pen(r) + '</li>').join('') + '</ul>';
+            if (cell.technique && cell.technique.length)
+              html += '<div class="special-block-title special-tech">实施技巧</div><ul class="special-list special-list-tech">' + cell.technique.map(t => '<li>' + this.pen(t) + '</li>').join('') + '</ul>';
+            if (cell.note) html += '<div class="special-diff-note">' + this.pen(cell.note) + '</div>';
+            html += '</div>';
+          });
+        }
+        if (es && es.dims) {
+          dimList.forEach(did => {
+            const cell = es.dims[did];
+            if (!cell || !((cell.requirement && cell.requirement.length) || (cell.technique && cell.technique.length))) return;
+            html += '<div class="special-dim special-dim-extra">';
+            html += '<div class="special-dim-head">' + (dimNames[did] || did) + ' <span class="special-dim-extra-tag">特有阶段</span></div>';
+            if (cell.requirement && cell.requirement.length)
+              html += '<div class="special-block-title special-req">要求</div><ul class="special-list special-list-req">' + cell.requirement.map(r => '<li>' + this.pen(r) + '</li>').join('') + '</ul>';
+            if (cell.technique && cell.technique.length)
+              html += '<div class="special-block-title special-tech">实施技巧</div><ul class="special-list special-list-tech">' + cell.technique.map(t => '<li>' + this.pen(t) + '</li>').join('') + '</ul>';
+            if (cell.note) html += '<div class="special-diff-note">' + this.pen(cell.note) + '</div>';
+            html += '</div>';
+          });
+        }
+        if (stageCases.length) {
+          html += '<div class="special-cases"><div class="special-cases-title">📌 阶段级实施案例 / 模板</div>';
+          stageCases.forEach(c => {
+            html += '<div class="case-card">';
+            html += '<div class="case-card-title">' + this.pen(c.title || '实施案例') + '</div>';
+            if (c.dim) html += '<span class="case-dim-tag">' + (dimNames[c.dim] || c.dim) + '</span>';
+            if (c.scenario) html += '<div class="case-field"><span class="case-field-label">案例背景</span><span class="case-field-body">' + this.pen(c.scenario) + '</span></div>';
+            if (c.template) html += '<div class="case-field"><span class="case-field-label">实施模板 / 要点</span><span class="case-field-body">' + this.pen(c.template) + '</span></div>';
+            if (c.points && c.points.length)
+              html += '<div class="case-field"><span class="case-field-label">关键要点</span><ul class="case-points">' + c.points.map(p => '<li>' + this.pen(p) + '</li>').join('') + '</ul></div>';
+            html += '</div>';
+          });
+          html += '</div>';
+        }
+        html += '</details>';
+      });
+      html += '</details>';
+    });
+    return html;
+  },
+
+  /* ============ 详细视图 ============ */
+
+  renderDetailView() {
+    const contentEl = document.getElementById('content');
+    if (!contentEl || !this.state.currentVarietyId || !this.state.currentStageId) return;
+
+    const v = this.findVarietyById(this.state.currentVarietyId);
+    const stage = KB_DATA.stages.find(s => s.id === this.state.currentStageId);
+    if (!v || !stage) return;
+
+    const stageData = v.stages[stage.id];
+    if (!stageData) {
+      contentEl.innerHTML = `<div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-title">暂无数据</div>
+        <div class="empty-state-desc">该品种在此阶段的质量体系数据尚在建设中。</div>
+      </div>`;
+      return;
+    }
+
+    const preBoard = (stage.id === 'preclinical') ? this.getCurrentPreSub(v) : null;
+    const isBookmarked = this.isBookmarked(v.id, stage.id);
+
+    let html = `
+      <div class="detail-header">
+        <div class="detail-header-top">
+          <div class="detail-header-icon" style="background: ${v.color}15">${v.icon}</div>
+          <div class="detail-header-info">
+            <div class="detail-header-title">${v.name} · ${stage.name}</div>
+            <div class="detail-header-meta">${v.enName || ''} / ${stage.enName} · ${v.gmpAppendix || ''} · ${stage.timeline || ''}</div>
+          </div>
+          <div class="detail-header-actions">
+            <button class="detail-bookmark-btn ${isBookmarked ? 'active' : ''}" id="bookmarkBtn" title="添加书签">
+              ${isBookmarked ? '⭐' : '☆'}
+            </button>
+            <button class="detail-bookmark-btn" id="regulationPanelBtn" title="法规快速链接">📎</button>
+            <button class="detail-bookmark-btn" id="printBtn" title="打印">🖨️</button>
+          </div>
+        </div>
+    <div class="detail-summary">${stageData.summary || '暂无摘要'}</div>
+    ${v.keyRisks ? `<div class="detail-risks">${v.keyRisks.map(r => `<span class="risk-badge">${r}</span>`).join('')}</div>` : ''}
+  </div>
+`;
+    // 临床前研究子板块导航（CMC/药代/安全药理/毒理/制剂/IND）
+    if (stage.id === 'preclinical') { html += this.renderPreclinicalSubNav(v); }
+
+    if (!preBoard) {
+    // 工艺研究重点（可展开卡片：详细描述 + 实施方案）
+    if (stageData.process_focus && stageData.process_focus.length > 0) {
+      html += this.renderQualityMgmtSection('process_focus', '🔬', '工艺研究重点', stageData.process_focus, 'focus-process');
+    }
+    // 质量研究重点（可展开卡片：详细描述 + 实施方案）
+    if (stageData.quality_focus && stageData.quality_focus.length > 0) {
+      html += this.renderQualityMgmtSection('quality_focus', '🔍', '质量研究重点', stageData.quality_focus, 'focus-quality');
+    }
+    // 质量管理要求（可展开卡片：详细描述 + 实施方案）
+    if (stageData.quality_mgmt && stageData.quality_mgmt.length > 0) {
+      html += this.renderQualityMgmtSection('quality_mgmt', '📋', '质量管理要求', stageData.quality_mgmt, 'focus-mgmt');
+    }
+
+    // 阶段主体：国内/国际要求、实施指导、案例、陷阱（提取为复用方法）
+    html += this.renderSectionDomestic(stageData.domestic);
+    html += this.renderSectionInternational(stageData.international);
+    html += this.renderSectionGuidance(stageData.guidance);
+    html += this.renderSectionCases(stageData.cases);
+    html += this.renderSectionPitfalls(stageData.pitfalls);
+    } else {
+      html += this.renderPreclinicalBoard(preBoard);
+    }
+
+    // 法规更新
+    const relatedChangelog = (KB_DATA.changelog || []).filter(c =>
+      c.relatedDrugTypes && c.relatedDrugTypes.includes(v.id)
+    );
+    if (relatedChangelog.length > 0) {
+      html += `
+        <div class="changelog-section">
+          <div class="changelog-title">📜 法规更新动态</div>
+          <div class="changelog-list">
+            ${relatedChangelog.map(c => `
+              <div class="changelog-item ${c.impact}">
+                <span class="changelog-date">${c.date}</span>
+                <div class="changelog-content">
+                  <div class="changelog-item-title">
+                    ${c.title}
+                    <span class="changelog-tag ${c.type}">${c.type === 'new' ? '新增' : '更新'}</span>
+                  </div>
+                  <div class="changelog-item-desc">${c.description}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    html += '<div id="notesSection"></div>';
+    contentEl.innerHTML = html;
+
+    // 折叠事件
+    contentEl.querySelectorAll('.detail-section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        header.parentElement.classList.toggle('collapsed');
+      });
+    });
+
+    // 质量管理要求卡片展开/收起
+    contentEl.querySelectorAll('.qm-card-header').forEach(h => {
+      const toggle = () => {
+        const card = h.parentElement;
+        const expanded = card.classList.toggle('expanded');
+        h.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      };
+      h.addEventListener('click', toggle);
+      h.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    if (bookmarkBtn) bookmarkBtn.addEventListener('click', () => this.toggleBookmark(v.id, stage.id));
+
+    const regBtn = document.getElementById('regulationPanelBtn');
+    if (regBtn) regBtn.addEventListener('click', () => this.toggleRegulationPanel());
+
+    const printBtn = document.getElementById('printBtn');
+    if (printBtn) printBtn.addEventListener('click', () => window.print());
+
+    // 临床前研究子板块切换
+    contentEl.querySelectorAll('.pre-subtab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.state.preSub = btn.dataset.sub || 'overview';
+        this.renderDetailView();
+      });
+    });
+
+    this.renderRegulationPanel(v, stage, stageData);
+    this.renderNotesSection();
+  },
+
+  /**
+   * 渲染工艺/质量/管理三分区（带独立滚动）
+   */
+  esc(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  },
+
+  renderFocusSection(key, icon, title, items, extraClass) {
+    const list = items.map(item => {
+      const text = (item && typeof item === 'object') ? item.text : item;
+      const guidance = (item && typeof item === 'object' && item.guidance) ? item.guidance : '';
+      return `
+        <li class="focus-item">
+          <span class="focus-bullet">▶</span>
+          <div class="focus-item-body">
+            <span class="focus-text">${this.pen(text)}</span>
+            ${guidance ? `<div class="focus-guidance"><span class="focus-guidance-icon">💡</span><span class="focus-guidance-text">${this.pen(guidance)}</span></div>` : ''}
+          </div>
+        </li>`;
+    }).join('');
+    return `
+      <div class="detail-section focus-section ${extraClass}" data-section="${key}">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">${icon}</span>
+          <span class="detail-section-title">${title}</span>
+          <span class="focus-count-badge">${items.length}</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+          <ul class="focus-list">${list}</ul>
+        </div>
+      </div>
+    `;
+  },
+
+  /**
+   * 渲染质量管理要求：可展开卡片（详细描述 + 实施方案）
+   */
+  renderQualityMgmtSection(key, icon, title, items, extraClass) {
+    const list = items.map(item => {
+      const text = (item && typeof item === 'object') ? item.text : item;
+      const guidance = (item && typeof item === 'object' && item.guidance) ? item.guidance : '';
+      const detail = (item && typeof item === 'object' && item.detail) ? item.detail : '';
+      const plan = (item && typeof item === 'object' && Array.isArray(item.plan)) ? item.plan : [];
+      const planHtml = plan.length
+        ? `<ol class="qm-plan">${plan.map(p => `<li>${this.pen(p)}</li>`).join('')}</ol>`
+        : '';
+      return `
+        <li class="qm-card">
+          <div class="qm-card-header" role="button" tabindex="0" aria-expanded="false">
+            <span class="qm-bullet">▶</span>
+            <div class="qm-card-head-body">
+              <span class="qm-text">${this.pen(text)}</span>
+              ${guidance ? `<div class="qm-guidance"><span class="qm-guidance-icon">💡</span><span class="qm-guidance-text">${this.pen(guidance)}</span></div>` : ''}
+            </div>
+            <span class="qm-expand-icon">▸</span>
+          </div>
+          <div class="qm-card-body">
+            ${detail ? `<div class="qm-block">
+              <div class="qm-block-title"><span class="qm-block-icon">📖</span>详细描述</div>
+              <div class="qm-detail">${this.pen(detail)}</div>
+            </div>` : ''}
+            ${planHtml ? `<div class="qm-block">
+              <div class="qm-block-title"><span class="qm-block-icon">🛠</span>实施方案</div>
+              ${planHtml}
+            </div>` : ''}
+          </div>
+        </li>`;
+    }).join('');
+    return `
+      <div class="detail-section focus-section ${extraClass}" data-section="${key}">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">${icon}</span>
+          <span class="detail-section-title">${title}</span>
+          <span class="focus-count-badge">${items.length}</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+          <ul class="qm-list">${list}</ul>
+          <div class="qm-hint">点击任意卡片可展开「详细描述 / 实施方案」</div>
+        </div>
+      </div>
+    `;
+  },
+
+  /* ============ 矩阵视图 ============ */
+
+  renderMatrixView() {
+    const matrixEl = document.getElementById('matrixView');
+    if (!matrixEl) return;
+
+    const PRECLIN_STEPS = [
+      { id: 'cmc', name: 'CMC' },
+      { id: 'pk', name: '药代' },
+      { id: 'safety', name: '安全药理' },
+      { id: 'tox', name: '毒理' },
+      { id: 'formulation', name: '制剂' },
+      { id: 'ind', name: 'IND' }
+    ];
+    const DISCOVER_STEPS = [
+      { id: 'target', name: '靶点发现', kbId: 'target_discovery' },
+      { id: 'lead', name: '先导发现', kbId: 'lead_discovery' },
+      { id: 'sar', name: '构效优化', kbId: 'compound_optimization' },
+      { id: 'candidate', name: '候选确定', kbId: 'candidate_selection' }
+    ];
+    const CAT_TO_MAIN = { chemical: 'chemo', biological: 'bio', tcm: 'tcm', other: null };
+    const DISCOVER_IDS = DISCOVER_STEPS.map(d => d.kbId);
+    const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // 统一列模型：药物发现 / 临床前 均展开为子步骤列（数据源 DISCOVERY_STEPS / PRECLINICAL_STEPS），其余为单阶段列
+    const COLUMNS = [];
+    let discoverGrouped = false;
+    KB_DATA.stages.forEach(s => {
+      if (DISCOVER_IDS.includes(s.id)) {
+        if (!discoverGrouped) { COLUMNS.push({ group: 'discovery', name: '药物发现', steps: DISCOVER_STEPS }); discoverGrouped = true; }
+      } else if (s.id === 'preclinical') {
+        COLUMNS.push({ group: 'preclinical', name: '临床前研究', steps: PRECLIN_STEPS });
+      } else {
+        COLUMNS.push({ single: s });
+      }
+    });
+    let MATRIX_HEAD1 = '<th rowspan="2">品种 \\ 研发阶段</th>';
+    let MATRIX_HEAD2 = '';
+    COLUMNS.forEach(c => {
+      if (c.group) {
+        const icon = c.group === 'discovery' ? '🎯' : '⚗️';
+        MATRIX_HEAD1 += `<th colspan="${c.steps.length}">${icon} ${esc(c.name)}（已细分为 ${c.steps.length} 个研究步骤）</th>`;
+        MATRIX_HEAD2 += c.steps.map(d => `<th>${esc(d.name)}</th>`).join('');
+      } else {
+        MATRIX_HEAD1 += `<th rowspan="2">${c.single.icon}<br>${esc(c.single.name)}</th>`;
+      }
+    });
+
+    let html = `
+      <div class="matrix-container">
+        <div class="matrix-legend">
+          <span style="font-weight:600; color:var(--text-primary);">矩阵视图：${this.getAllVarieties().length} 个品种 × ${KB_DATA.stages.length} 个研发阶段（药物发现细分为 ${DISCOVER_STEPS.length} 个步骤、临床前细分为 ${PRECLIN_STEPS.length} 个子模块，均采用统一子步骤数据模型）</span>
+          <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#4CAF50"></span> 要求明确</span>
+          <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#FFC107"></span> 部分要求</span>
+          <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#F44336"></span> 关键/复杂</span>
+        </div>
+        <table class="matrix-table">
+          <thead>
+            <tr>${MATRIX_HEAD1}</tr>
+            ${MATRIX_HEAD2 ? `<tr>${MATRIX_HEAD2}</tr>` : ''}
+          </thead>
+          <tbody>
+    `;
+
+    KB_DATA.categories.forEach(cat => {
+      cat.varieties.forEach(v => {
+        html += `<tr><th><span class="matrix-drug-icon">${v.icon}</span>${v.name}<br><span class="matrix-cat-tag">${cat.name}</span></th>`;
+        const mainKey = CAT_TO_MAIN[cat.id] || null;
+        COLUMNS.forEach(c => {
+          if (c.group === 'preclinical') {
+            const steps = (mainKey && globalThis.PRECLINICAL_STEPS && globalThis.PRECLINICAL_STEPS[mainKey] && globalThis.PRECLINICAL_STEPS[mainKey].steps) || [];
+            c.steps.forEach(d => {
+              const st = steps.find(x => x.id === d.id);
+              const txt = st ? ((st.requirement && st.requirement[0]) || st.desc || '') : '';
+              const shown = txt ? esc(txt).substring(0, 42) + (txt.length > 42 ? '…' : '') : '—';
+              html += `<td data-variety-id="${v.id}" data-stage-id="preclinical" data-substep="${d.id}">
+                <span class="matrix-cell-indicator red"></span>
+                <div class="matrix-cell-text">${shown}</div></td>`;
+            });
+          } else if (c.group === 'discovery') {
+            const steps = (mainKey && globalThis.DISCOVERY_STEPS && globalThis.DISCOVERY_STEPS[mainKey] && globalThis.DISCOVERY_STEPS[mainKey].steps) || [];
+            c.steps.forEach(d => {
+              const st = steps.find(x => x.id === d.id);
+              const txt = st ? ((st.requirement && st.requirement[0]) || st.desc || '') : '';
+              const shown = txt ? esc(txt).substring(0, 42) + (txt.length > 42 ? '…' : '') : '—';
+              html += `<td data-variety-id="${v.id}" data-stage-id="${d.kbId}" data-substep="${d.id}">
+                <span class="matrix-cell-indicator red"></span>
+                <div class="matrix-cell-text">${shown}</div></td>`;
+            });
+          } else {
+            const stage = c.single;
+            const stageData = v.stages[stage.id];
+            if (stageData) {
+              let level = 'green';
+              if (['preclinical', 'nda_filing', 'clinical_trial', 'target_discovery', 'lead_discovery', 'compound_optimization', 'candidate_selection'].includes(stage.id)) {
+                level = 'red';
+              } else if (['approval_launch', 'post_market'].includes(stage.id)) {
+                level = 'yellow';
+              }
+              const summary = stageData.summary || '';
+              html += `<td data-variety-id="${v.id}" data-stage-id="${stage.id}">
+                <span class="matrix-cell-indicator ${level}"></span>
+                <div class="matrix-cell-text">${esc(summary).substring(0, 60)}${summary.length > 60 ? '...' : ''}</div>
+              </td>`;
+            } else {
+              html += `<td><span class="matrix-cell-text">—</span></td>`;
+            }
+          }
+        });
+        html += '</tr>';
+      });
+    });
+
+    html += '</tbody></table></div>';
+    matrixEl.innerHTML = html;
+
+    matrixEl.querySelectorAll('td[data-variety-id]').forEach(td => {
+      td.style.cursor = 'pointer';
+      td.addEventListener('click', () => {
+        this.selectVariety(td.dataset.varietyId);
+        setTimeout(() => this.selectStage(td.dataset.stageId), 50);
+      });
+    });
+  },
+
+  /* ============ 空状态 ============ */
+
+  renderEmptyState() {
+    const contentEl = document.getElementById('content');
+    const breadcrumbEl = document.getElementById('breadcrumb');
+    if (contentEl) {
+      const varietyCount = this.getAllVarieties().length;
+      contentEl.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">💊</div>
+          <div class="empty-state-title">药品研发与生产质量体系知识库</div>
+          <div class="empty-state-desc">
+            请从左侧选择药品品种（化药 / 生物药 / 中药 / 其他），或点击顶部"矩阵视图"按钮查看全览。<br>
+            知识库覆盖 ${varietyCount} 个品种 × ${KB_DATA.stages.length} 个研发阶段的全生命周期质量体系要求。
+          </div>
+        </div>
+      `;
+    }
+    if (breadcrumbEl) {
+      breadcrumbEl.innerHTML = '<span class="breadcrumb-item">首页</span><span class="breadcrumb-sep">/</span><span class="breadcrumb-item">请选择药品品种</span>';
+    }
+  },
+
+  /* ============ 法规面板 ============ */
+
+  renderRegulationPanel(variety, stage, stageData) {
+    const panelBody = document.getElementById('regulationPanelBody');
+    if (!panelBody) return;
+
+    let html = '';
+
+    if (stageData.domestic && stageData.domestic.regulations && stageData.domestic.regulations.length > 0) {
+      html += '<div class="regulation-panel-group">';
+      html += '<div class="regulation-panel-group-title">🇨🇳 国内法规</div>';
+      html += '<div class="regulation-list">';
+      stageData.domestic.regulations.forEach(reg => {
+        html += `
+          <a class="regulation-item" href="${reg.url}" target="_blank" rel="noopener noreferrer">
+            <span class="regulation-item-icon">📄</span>
+            <div class="regulation-item-info">
+              <div class="regulation-item-title">${reg.title}</div>
+              ${reg.path ? `<div class="regulation-item-path">${reg.path}</div>` : ''}
+            </div>
+            <span class="regulation-item-source">NMPA</span>
+          </a>
+        `;
+      });
+      html += '</div></div>';
+    }
+
+    if (stageData.international && stageData.international.regulations && stageData.international.regulations.length > 0) {
+      html += '<div class="regulation-panel-group">';
+      html += '<div class="regulation-panel-group-title">🌍 国际法规</div>';
+      html += '<div class="regulation-list">';
+      stageData.international.regulations.forEach(reg => {
+        html += `
+          <a class="regulation-item" href="${reg.url}" target="_blank" rel="noopener noreferrer">
+            <span class="regulation-item-icon">📄</span>
+            <div class="regulation-item-info">
+              <div class="regulation-item-title">${reg.title}</div>
+            </div>
+            <span class="regulation-item-source">${reg.source || '国际'}</span>
+          </a>
+        `;
+      });
+      html += '</div></div>';
+    }
+
+    if (!html) html = '<div class="bookmark-empty">暂无相关法规链接</div>';
+    panelBody.innerHTML = html;
+  },
+
+  toggleRegulationPanel() {
+    const panel = document.getElementById('regulationPanel');
+    if (!panel) return;
+    panel.classList.toggle('visible');
+  },
+
+  /* ============ 临床前研究子板块（识林式穿透 + 6 板块） ============ */
+
+  // 返回当前品种、当前子板块对象（无则返回 null → 显示总览）
+  getCurrentPreSub(v) {
+    const PS = globalThis.PRECLINICAL_SUBSECTIONS;
+    if (!PS || !PS[v.id]) return null;
+    const id = this.state.preSub;
+    if (!id || id === 'overview') return null;
+    return PS[v.id][id] || null;
+  },
+
+  // 子板块导航（总览 + CMC/药代/安全药理/毒理/制剂/IND）
+  renderPreclinicalSubNav(v) {
+    const PS = globalThis.PRECLINICAL_SUBSECTIONS;
+    if (!PS || !PS[v.id]) return '';
+    const cur = this.state.preSub || 'overview';
+    const tabs = [{ id: 'overview', name: '总览', icon: '📊' }]
+      .concat(['cmc', 'pk', 'safety', 'tox', 'formulation', 'ind'].map(sid => ({
+        id: sid, name: PS[v.id][sid].name, icon: PS[v.id][sid].icon
+      })));
+    return `<div class="pre-subnav">` +
+      tabs.map(t => `<button class="pre-subtab ${t.id === cur ? 'active' : ''}" data-sub="${t.id}" title="${t.name}">${t.icon} ${t.name}</button>`).join('') +
+      `</div>`;
+  },
+
+  // 渲染单个子板块（三重点 + 国内/国际/指导/案例/陷阱）
+  renderPreclinicalBoard(board) {
+    let html = '';
+    if (board.summary) {
+      html += `<div class="detail-summary pre-board-summary">${this.pen(board.summary)}</div>`;
+    }
+    html += this.renderQualityMgmtSection('process_focus', '🔬', board.colTitles[0] || '工艺研究重点', board.process_focus, 'focus-process');
+    html += this.renderQualityMgmtSection('quality_focus', '🔍', board.colTitles[1] || '质量研究重点', board.quality_focus, 'focus-quality');
+    html += this.renderQualityMgmtSection('quality_mgmt', '📋', board.colTitles[2] || '质量管理要求', board.quality_mgmt, 'focus-mgmt');
+    html += this.renderSectionDomestic(board.domestic);
+    html += this.renderSectionInternational(board.international);
+    html += this.renderSectionGuidance(board.guidance);
+    html += this.renderSectionCases(board.cases);
+    html += this.renderSectionPitfalls(board.pitfalls);
+    return html;
+  },
+
+  /* ============ 药品分类布局（化药/生物制品/中药 三大类） ============ */
+
+  // 若当前处于分类视图，退出以回到常规知识库视图
+  _exitClassViewIfOpen() {
+    if (this.state.view === 'classification') {
+      this.state.view = 'kb';
+      this.state.currentReqCat = null;
+      this.state.currentReqCode = '';
+      const btn = document.getElementById('classifyBtn');
+      if (btn) btn.classList.remove('active');
+      ['breadcrumb', 'stageTabs', 'detailLayout'].forEach(id => {
+        const e = document.getElementById(id); if (e) e.style.display = '';
+      });
+    }
+  },
+
+  openClassification(focusCat, focusCode) {
+    if (this.state.regLibOpen) this._exitRegLib();
+    this._exitPortalIfOpen();
+    this.state.view = 'classification';
+    ['breadcrumb', 'stageTabs', 'matrixView'].forEach(id => {
+      const e = document.getElementById(id); if (e) e.style.display = 'none';
+    });
+    const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+    const c = document.getElementById('content');
+    if (c) {
+      c.innerHTML = this.renderDrugClassification(focusCat, focusCode);
+      const sc = c.parentElement; if (sc) sc.scrollTop = 0;
+      c.querySelectorAll('.class-sub-head').forEach(h => {
+        h.addEventListener('click', (e) => {
+          // 点击子分类标题 → 打开该子分类的完整研发要求体系（各阶段工艺/质量研究/质量管理）
+          const sub = h.closest('.class-sub');
+          if (sub) this.openClassReq(sub.dataset.cat, sub.dataset.code || '');
+        });
+      });
+      c.querySelectorAll('.class-sub .reg-link').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (a.dataset.rid) this.openRegulation(a.dataset.rid);
+        });
+      });
+      if (focusCat) {
+        const el = c.querySelector('.class-sub[data-cat="' + focusCat + '"][data-code="' + (focusCode || '') + '"]');
+        const catEl = focusCode ? el : c.querySelector('.class-cat.cat-' + focusCat);
+        const target = el || catEl;
+        if (target) {
+          if (target.classList.contains('class-sub')) target.classList.add('open', 'focus');
+          const sc2 = c.parentElement;
+          if (sc2) sc2.scrollTop = target.offsetTop - 12;
+        }
+      }
+    }
+    const btn = document.getElementById('classifyBtn');
+    if (btn) btn.classList.add('active');
+  },
+
+  closeClassification() {
+    this.state.view = 'kb';
+    const btn = document.getElementById('classifyBtn');
+    if (btn) btn.classList.remove('active');
+    ['breadcrumb', 'stageTabs'].forEach(id => {
+      const e = document.getElementById(id); if (e) e.style.display = '';
+    });
+    const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+    this.renderEmptyState();
+  },
+
+  /* ============ 研发要求体系（合并导航的深度视图） ============ */
+
+  openClassReq(mainClass, subCode) {
+    if (this.state.regLibOpen) this._exitRegLib();
+    if (this.state.view !== 'classification') this._exitClassViewIfOpen();
+    this._exitPortalIfOpen();
+    this.state.view = 'classification';
+    this.state.currentReqCat = mainClass;
+    this.state.currentReqCode = subCode || '';
+    this.state.currentVarietyId = null;
+    ['breadcrumb', 'stageTabs', 'matrixView'].forEach(id => {
+      const e = document.getElementById(id); if (e) e.style.display = 'none';
+    });
+    const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+    const c = document.getElementById('content');
+    if (c) {
+      c.innerHTML = this.renderClassReqView(mainClass, subCode || '');
+      const sc = c.parentElement; if (sc) sc.scrollTop = 0;
+      c.querySelectorAll('.reg-link').forEach(a => a.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (a.dataset.rid) this.openRegulation(a.dataset.rid);
+      }));
+    }
+    const btn = document.getElementById('classifyBtn');
+    if (btn) btn.classList.add('active');
+    this.renderSidebar();
+  },
+
+  renderClassReqView(mainClass, subCode) {
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    if (!CR || !CR.mains[mainClass]) return '<div class="bookmark-empty">研发要求数据未加载</div>';
+    const main = CR.mains[mainClass];
+    const isSpecial = !!(subCode && CR.specials[mainClass] && CR.specials[mainClass][subCode]);
+    const sp = isSpecial ? CR.specials[mainClass][subCode] : null;
+    const regSub = (!isSpecial && subCode) ? this.findClassSub(mainClass, subCode) : null;
+
+    const MAIN_ICON = { chemo: '💊', bio: '🧬', tcm: '🌿' };
+    const scope = subCode ? (sp ? sp.subName : (regSub ? regSub.name : subCode)) : (main.name + ' · 全部研发要求');
+
+    let html = '<div class="req-view">';
+    html += '<div class="req-header">';
+    html += '<h1 class="req-title">' + MAIN_ICON[mainClass] + ' ' + this.pen(scope) + '</h1>';
+    if (isSpecial) html += '<span class="req-scope-badge diff">特殊品种 · 与主类差异已高亮标注</span>';
+    else if (regSub) html += '<span class="req-scope-badge reg">注册分类</span>';
+    html += '<div class="req-sub">覆盖全部研发阶段，按「药品研发 / 生产相关工艺研究 / 质量研究 / 质量管理」四维度给出要求（⚠）与实施技巧（🛠）；每个维度另附「质量研究 / 工艺基准」与「实施要点」。</div>';
+    if (!subCode) html += '<button class="req-ic-btn" data-ic="' + mainClass + '">📖 查看「' + this._esc(main.name) + '」整体研发案例 →</button>';
+    html += '</div>';
+
+    if (regSub) html += this.renderClassSubSummary(regSub);
+    if (subCode) html += this.renderSubClassDetail(mainClass, subCode);
+    if (isSpecial) {
+      const ovStages = Object.keys(sp.override || {});
+      const extra = (sp.extraStages || []).map(e => e.name);
+      html += '<div class="req-special-note">本特殊品种在以下阶段 / 维度相对主类存在差异化要求（正文中以高亮标注）：'
+        + (ovStages.length ? this._esc(ovStages.join('、')) : '通用要求')
+        + (extra.length ? '；特有阶段：' + this._esc(extra.join('、')) : '') + '。</div>';
+    }
+
+    CR.stages.forEach(st => {
+      html += this.renderReqStage(mainClass, subCode, st.id, st.name);
+    });
+    if (isSpecial && sp.extraStages) {
+      sp.extraStages.forEach(es => {
+        html += '<section class="req-stage">';
+        html += '<div class="req-stage-head"><span class="req-stage-name">' + this.pen(es.name) + '</span><span class="req-stage-tag extra">特有阶段</span></div>';
+        html += '<div class="req-dims">';
+        CR.dims.forEach(d => {
+          const ed = (es.dims && es.dims[d.id]) || {};
+          html += this.renderReqDim(d, { requirement: ed.requirement || [], technique: ed.technique || [], special: false, extra: true });
+        });
+        html += '</div></section>';
+      });
+    }
+    html += '</div>';
+    return html;
+  },
+
+  renderReqStage(mainClass, subCode, stageId, stageName) {
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    const layout = (CR && CR.stageDims && CR.stageDims[stageId]) || (CR.dims.map(d => d.id));
+    if (layout === 'steps') {
+      if (stageId === 'preclinical') return this.renderPreclinicalSteps(mainClass, subCode, stageId, stageName);
+      return this.renderDiscoverySteps(mainClass, subCode, stageId, stageName);
+    }
+    let html = '<section class="req-stage">';
+    html += '<div class="req-stage-head"><span class="req-stage-name">' + this.pen(stageName) + '</span></div>';
+    html += '<div class="req-dims">';
+    const DET = (globalThis.CLASS_REQ_DETAIL && globalThis.CLASS_REQ_DETAIL[mainClass] && globalThis.CLASS_REQ_DETAIL[mainClass][stageId]) || null;
+    layout.forEach(dimId => {
+      const d = CR.dims.find(x => x.id === dimId);
+      if (!d) return;
+      const detailCell = DET ? DET[dimId] : null;
+      html += this.renderReqDim(d, this.getReqCell(mainClass, subCode, stageId, dimId), detailCell);
+    });
+    html += '</div></section>';
+    return html;
+  },
+
+  renderReqStepCard(st, idx) {
+    let h = '<div class="req-substep">';
+    h += '<div class="req-substep-head"><span class="req-substep-idx">' + idx + '</span>'
+      + '<span class="req-substep-name">' + this.pen(st.name) + '</span></div>';
+    if (st.desc) h += '<div class="req-substep-desc">' + this.pen(st.desc) + '</div>';
+    h += '<div class="req-block"><div class="req-block-title req">⚠ 要求</div><ul class="req-list req-list-req">';
+    (st.requirement || []).forEach(s => h += '<li>' + this.pen(s) + '</li>');
+    h += '</ul></div>';
+    h += '<div class="req-block"><div class="req-block-title tech">🛠 实施技巧</div><ul class="req-list req-list-tech">';
+    (st.technique || []).forEach(s => h += '<li>' + this.pen(s) + '</li>');
+    h += '</ul></div>';
+    if (st.sub && st.sub.length) {
+      h += '<div class="req-subsub">';
+      st.sub.forEach((ss, j) => {
+        h += '<div class="req-subsub-card">';
+        h += '<div class="req-subsub-head"><span class="req-subsub-idx">' + (j + 1) + '</span>'
+          + '<span class="req-subsub-name">' + this.pen(ss.name) + '</span></div>';
+        if (ss.desc) h += '<div class="req-subsub-desc">' + this.pen(ss.desc) + '</div>';
+        h += '<div class="req-block"><div class="req-block-title req">⚠ 要求</div><ul class="req-list req-list-req">';
+        (ss.requirement || []).forEach(s => h += '<li>' + this.pen(s) + '</li>');
+        h += '</ul></div>';
+        h += '<div class="req-block"><div class="req-block-title tech">🛠 实施技巧</div><ul class="req-list req-list-tech">';
+        (ss.technique || []).forEach(s => h += '<li>' + this.pen(s) + '</li>');
+        h += '</ul></div>';
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+    h += '</div>';
+    return h;
+  },
+
+  renderStageQmBlock(mainClass, stageId) {
+    const QM = (globalThis.STAGE_QM && globalThis.STAGE_QM[mainClass] && globalThis.STAGE_QM[mainClass][stageId]) || null;
+    if (!QM || ((!QM.requirement || QM.requirement.length === 0) && (!QM.technique || QM.technique.length === 0))) return '';
+    let h = '<div class="req-qm-block">';
+    h += '<div class="req-qm-head">📋 质量管理要点</div>';
+    h += '<div class="req-block"><div class="req-block-title req">⚠ 要求</div><ul class="req-list req-list-req">';
+    (QM.requirement || []).forEach(s => h += '<li>' + this.pen(s) + '</li>');
+    h += '</ul></div>';
+    h += '<div class="req-block"><div class="req-block-title tech">🛠 实施技巧</div><ul class="req-list req-list-tech">';
+    (QM.technique || []).forEach(s => h += '<li>' + this.pen(s) + '</li>');
+    h += '</ul></div>';
+    h += '</div>';
+    return h;
+  },
+
+  renderDiscoverySteps(mainClass, subCode, stageId, stageName) {
+    const DS = globalThis.DISCOVERY_STEPS;
+    const steps = (DS && DS[mainClass]) || [];
+    let html = '<section class="req-stage req-stage-steps">';
+    html += '<div class="req-stage-head"><span class="req-stage-name">' + this.pen(stageName) + '</span>'
+      + '<span class="req-stage-tag steps">按研究步骤细分</span></div>';
+    html += '<div class="req-substeps">';
+    steps.forEach((st, i) => { html += this.renderReqStepCard(st, i + 1); });
+    html += '</div>';
+    const qm = this.renderStageQmBlock(mainClass, 'discovery');
+    if (qm) html += qm;
+    html += '</section>';
+    return html;
+  },
+
+  renderPreclinicalSteps(mainClass, subCode, stageId, stageName) {
+    const PS = globalThis.PRECLINICAL_STEPS;
+    const steps = (PS && PS[mainClass]) || [];
+    let html = '<section class="req-stage req-stage-steps">';
+    html += '<div class="req-stage-head"><span class="req-stage-name">' + this.pen(stageName) + '</span>'
+      + '<span class="req-stage-tag steps">按研究模块细分（CMC / 药代 / 安全药理 / 毒理 / 制剂 / IND，IND 进一步拆为 CMC包 / 非临床包 / 沟通会议）</span></div>';
+    html += '<div class="req-substeps">';
+    steps.forEach((st, i) => { html += this.renderReqStepCard(st, i + 1); });
+    html += '</div>';
+    const qm = this.renderStageQmBlock(mainClass, 'preclinical');
+    if (qm) html += qm;
+    html += '</section>';
+    return html;
+  },
+
+  getReqCell(mainClass, subCode, stage, dim) {
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    const main = CR.mains[mainClass];
+    const base = (main.matrix[stage] && main.matrix[stage][dim]) || { requirement: [], technique: [] };
+    // 工艺研究补充：部分阶段原先未含"生产相关工艺研究"，依据 NMPA/ICH 全生命周期要求补充
+    const ADD = (globalThis.CLASS_REQ_PROCESS && globalThis.CLASS_REQ_PROCESS[mainClass] && globalThis.CLASS_REQ_PROCESS[mainClass][stage] && globalThis.CLASS_REQ_PROCESS[mainClass][stage][dim]) || null;
+    let src = base;
+    if ((!base.requirement || base.requirement.length === 0) && (!base.technique || base.technique.length === 0) && ADD) {
+      src = ADD;
+    }
+    if (subCode && CR.specials[mainClass] && CR.specials[mainClass][subCode]) {
+      const ov = CR.specials[mainClass][subCode].override || {};
+      if (ov[stage] && ov[stage][dim]) {
+        const o = ov[stage][dim];
+        return {
+          requirement: (o.requirement && o.requirement.length) ? o.requirement : base.requirement,
+          technique: (o.technique && o.technique.length) ? o.technique : base.technique,
+          note: o.note || '',
+          special: true
+        };
+      }
+    }
+    return { requirement: src.requirement, technique: src.technique, special: false };
+  },
+
+  renderReqDim(d, cell, detailCell) {
+    let html = '<div class="req-dim' + (cell.special ? ' req-dim-diff' : '') + (cell.extra ? ' req-dim-extra' : '') + '">';
+    html += '<div class="req-dim-head"><span class="req-dim-name">' + this.pen(d.name) + '</span></div>';
+    html += '<div class="req-block"><div class="req-block-title req">⚠ 要求</div><ul class="req-list req-list-req">';
+    (cell.requirement || []).forEach(s => html += '<li>' + this.pen(s) + '</li>');
+    html += '</ul></div>';
+    html += '<div class="req-block"><div class="req-block-title tech">🛠 实施技巧</div><ul class="req-list req-list-tech">';
+    (cell.technique || []).forEach(s => html += '<li>' + this.pen(s) + '</li>');
+    html += '</ul></div>';
+    if (detailCell) {
+      if (detailCell.benchmarks && detailCell.benchmarks.length) {
+        html += '<div class="req-block req-bench"><div class="req-block-title bench">📐 质量研究 / 工艺基准</div><ul class="req-list req-list-bench">';
+        detailCell.benchmarks.forEach(b => html += '<li>' + this.pen(b) + '</li>');
+        html += '</ul></div>';
+      }
+      if (detailCell.keyPoints && detailCell.keyPoints.length) {
+        html += '<div class="req-block req-kp"><div class="req-block-title kp">🎯 实施要点</div><ul class="req-list req-list-kp">';
+        detailCell.keyPoints.forEach(k => html += '<li>' + this.pen(k) + '</li>');
+        html += '</ul></div>';
+      }
+      if (detailCell.diagram) html += this.renderDiagram(detailCell.diagram);
+    }
+    if (cell.special && cell.note) html += '<div class="req-diff-note">↳ 与主类差异：' + this.pen(cell.note) + '</div>';
+    html += '</div>';
+    return html;
+  },
+
+  renderClassSubSummary(sub) {
+    let html = '<div class="req-regsum">';
+    html += '<div class="req-regsum-title">📋 注册分类特殊要求（NMPA 2020）</div>';
+    if (sub.desc) html += '<div class="req-regsum-desc">' + this.pen(sub.desc) + '</div>';
+    if (sub.special && sub.special.length) {
+      html += '<div class="class-block"><div class="class-block-title req">⚠ 特殊要求</div><ul class="class-list req-list">';
+      sub.special.forEach(s => html += '<li>' + this.pen(s) + '</li>');
+      html += '</ul></div>';
+    }
+    if (sub.considerations && sub.considerations.length) {
+      html += '<div class="class-block"><div class="class-block-title cons">💡 考量</div><ul class="class-list cons-list">';
+      sub.considerations.forEach(s => html += '<li>' + this.pen(s) + '</li>');
+      html += '</ul></div>';
+    }
+    if (sub.dossier && sub.dossier.length) {
+      html += '<div class="class-block"><div class="class-block-title dos">📑 申报资料要求</div><ul class="class-list dos-list">';
+      sub.dossier.forEach(s => html += '<li>' + this.pen(s) + '</li>');
+      html += '</ul></div>';
+    }
+    if (sub.regs && sub.regs.length) {
+      html += '<div class="class-block"><div class="class-block-title reg">🔗 关联法规原文</div><div class="regulation-list">';
+      sub.regs.forEach(rid => {
+        const reg = this.findRegById(rid);
+        if (!reg) return;
+        html += '<div class="regulation-item reg-link" data-rid="' + reg.id + '" title="点击进入法规原文库">'
+          + '<span class="regulation-item-icon">📄</span>'
+          + '<div class="regulation-item-info"><div class="regulation-item-title">' + this.pen(reg.title) + '</div></div>'
+          + '<span class="regulation-item-source">' + (reg.issuer || '法规') + '</span>'
+          + '<span class="regulation-item-external">↗</span></div>';
+      });
+      html += '</div></div>';
+    }
+    html += '</div>';
+    return html;
+  },
+
+  renderSubClassDetail(mainClass, subCode) {
+    const SCD = globalThis.SUBCLASS_DETAIL;
+    if (!SCD || !SCD[mainClass]) return '';
+    // 注册分类树使用带点的编码(如 2.1)，而子分类详情键使用下划线(2_1)，做兼容归一
+    const key = (subCode || '').replace(/\./g, '_');
+    const sc = SCD[mainClass][subCode] || SCD[mainClass][key];
+    if (!sc) return '';
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    const stageName = id => {
+      const s = (CR && CR.stages) ? CR.stages.find(x => x.id === id) : null;
+      return s ? s.name : id;
+    };
+    let html = '<div class="scd">';
+
+    if (sc.terms && sc.terms.length) {
+      html += '<section class="scd-block scd-terms">';
+      html += '<div class="scd-block-title">📖 关键术语</div>';
+      html += '<div class="scd-terms-grid">';
+      sc.terms.forEach(t => {
+        html += '<div class="scd-term"><span class="scd-term-t">' + this.pen(t.t) + '</span>'
+          + '<span class="scd-term-d">' + this.pen(t.d) + '</span></div>';
+      });
+      html += '</div></section>';
+    }
+
+    if (sc.diff) {
+      html += '<section class="scd-block scd-diff">';
+      html += '<div class="scd-block-title">🔀 与主类研发要求差异</div>';
+      html += '<div class="scd-diff-desc">' + this.pen(sc.diff) + '</div>';
+      html += '</section>';
+    }
+
+    if (sc.stageCases) {
+      const order = (CR && CR.stages) ? CR.stages.map(s => s.id)
+        : ['discovery', 'preclinical', 'clinical', 'nda', 'commercial', 'postmarket'];
+      const stageKeys = order.filter(id => sc.stageCases[id] && sc.stageCases[id].length);
+      if (stageKeys.length) {
+        html += '<section class="scd-block scd-stages">';
+        html += '<div class="scd-block-title">🧪 各阶段研发实施案例</div>';
+        stageKeys.forEach(sid => {
+          html += '<div class="scd-stage">';
+          html += '<div class="scd-stage-name">' + this.pen(stageName(sid)) + '</div>';
+          html += '<ul class="scd-case-list">';
+          sc.stageCases[sid].forEach(c => {
+            html += '<li class="scd-case"><span class="scd-case-title">' + this.pen(c.title) + '</span>';
+            if (c.desc) html += '<span class="scd-case-desc">' + this.pen(c.desc) + '</span>';
+            html += '</li>';
+          });
+          html += '</ul></div>';
+        });
+        html += '</section>';
+      }
+    }
+
+    html += '</div>';
+    return html;
+  },
+
+  renderDrugClassification(focusCat, focusCode) {
+    const DC = globalThis.DRUG_CLASSIFICATION;
+    if (!DC) return '<div class="bookmark-empty">药品分类数据未加载</div>';
+
+    let html = '<div class="class-view">';
+    html += '<div class="class-header">';
+    html += '<h1 class="class-title">🗂️ ' + this.pen(DC.meta.title) + '</h1>';
+    html += '<div class="class-meta">依据：' + this.pen(DC.meta.basis) + '</div>';
+    html += '<div class="class-note">' + this.pen(DC.meta.note) + '</div>';
+    html += '</div>';
+
+    DC.categories.forEach(cat => {
+      html += '<section class="class-cat cat-' + cat.accent + '">';
+      html += '<div class="class-cat-head">';
+      html += '<span class="class-cat-icon">' + cat.icon + '</span>';
+      html += '<div class="class-cat-titles"><h2>' + this.pen(cat.name) + '</h2>';
+      html += '<span class="class-cat-en">' + this.pen(cat.enName) + '</span></div>';
+      html += '</div>';
+      html += '<p class="class-cat-desc">' + this.pen(cat.desc) + '</p>';
+
+      const groups = cat.groups || [{ name: '', items: cat.items || [] }];
+      groups.forEach(g => {
+        if (g.name) html += '<div class="class-group-title">' + this.pen(g.name) + '</div>';
+        html += '<div class="class-subs">';
+        (g.items || []).forEach(sub => {
+          const isOpen = (focusCode && sub.code === focusCode) ? ' open focus' : '';
+          html += '<div class="class-sub' + isOpen + '" data-cat="' + cat.id + '" data-code="' + sub.code + '">';
+          html += '<div class="class-sub-head">';
+          html += '<span class="class-sub-code">' + this.pen(sub.code) + '</span>';
+          html += '<span class="class-sub-name">' + this.pen(sub.name) + '</span>';
+          html += '<span class="class-sub-toggle">▼</span>';
+          html += '</div>';
+          if (sub.desc) html += '<div class="class-sub-desc">' + this.pen(sub.desc) + '</div>';
+          html += '<div class="class-sub-body">';
+          if (sub.special && sub.special.length) {
+            html += '<div class="class-block">';
+            html += '<div class="class-block-title req">⚠ 特殊要求</div>';
+            html += '<ul class="class-list req-list">';
+            sub.special.forEach(s => { html += '<li>' + this.pen(s) + '</li>'; });
+            html += '</ul></div>';
+          }
+          if (sub.considerations && sub.considerations.length) {
+            html += '<div class="class-block">';
+            html += '<div class="class-block-title cons">💡 考量</div>';
+            html += '<ul class="class-list cons-list">';
+            sub.considerations.forEach(s => { html += '<li>' + this.pen(s) + '</li>'; });
+            html += '</ul></div>';
+          }
+          if (sub.dossier && sub.dossier.length) {
+            html += '<div class="class-block">';
+            html += '<div class="class-block-title dos">📑 申报资料要求清单</div>';
+            html += '<ul class="class-list dos-list">';
+            sub.dossier.forEach(s => { html += '<li>' + this.pen(s) + '</li>'; });
+            html += '</ul></div>';
+          }
+          if (sub.regs && sub.regs.length) {
+            html += '<div class="class-block">';
+            html += '<div class="class-block-title reg">🔗 关联法规原文</div>';
+            html += '<div class="regulation-list">';
+            sub.regs.forEach(rid => {
+              const reg = (globalThis.REG_INDEX || []).find(r => r.id === rid);
+              if (!reg) return;
+              html += '<div class="regulation-item reg-link" data-rid="' + reg.id + '" title="点击进入法规原文库">'
+                + '<span class="regulation-item-icon">📄</span>'
+                + '<div class="regulation-item-info"><div class="regulation-item-title">' + this.pen(reg.title) + '</div></div>'
+                + '<span class="regulation-item-source">' + (reg.issuer || '法规') + '</span>'
+                + '<span class="regulation-item-external">↗</span></div>';
+            });
+            html += '</div></div>';
+          }
+          html += '</div></div>';
+        });
+        html += '</div>';
+      });
+      html += '</section>';
+    });
+
+    html += '</div>';
+    return html;
+  },
+
+  /* ---- 阶段主体各区块复用渲染器（总览与子板块共用） ---- */
+
+  renderSectionDomestic(d) {
+    if (!d) return '';
+    let html = `
+      <div class="detail-section" data-section="domestic">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">🇨🇳</span>
+          <span class="detail-section-title">国内要求 (NMPA)</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+    `;
+    if (d.requirements && d.requirements.length > 0) {
+      html += '<h4 style="font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:12px;">质量体系要求清单</h4>';
+      html += '<ul class="requirement-list">';
+      d.requirements.forEach((req, idx) => {
+        const reqText = typeof req === 'string' ? req : req.text;
+        const reqGuidance = (typeof req === 'object' && req.guidance) ? req.guidance : '';
+        html += `<li class="requirement-item" data-idx="${idx}">
+          <span class="requirement-check">✓</span>
+          <div class="requirement-content">
+            <span class="requirement-text">${this.pen(reqText)}</span>
+            ${reqGuidance ? `<div class="requirement-guidance"><span class="guidance-tag">指导</span><span class="guidance-detail">${this.pen(reqGuidance)}</span></div>` : ''}
+          </div>
+        </li>`;
+      });
+      html += '</ul>';
+    }
+    if (d.regulations && d.regulations.length > 0) {
+      html += '<h4 style="font-size:13px; font-weight:600; color:var(--text-primary); margin:16px 0 12px;">相关法规文件</h4>';
+      html += '<div class="regulation-list">';
+      d.regulations.forEach(reg => {
+        html += `
+          <a class="regulation-item" href="${reg.url}" target="_blank" rel="noopener noreferrer">
+            <span class="regulation-item-icon">📄</span>
+            <div class="regulation-item-info">
+              <div class="regulation-item-title">${reg.title}</div>
+              ${reg.path ? `<div class="regulation-item-path">${reg.path}</div>` : ''}
+            </div>
+            <span class="regulation-item-source">NMPA</span>
+            <span class="regulation-item-external">↗</span>
+          </a>
+        `;
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
+    return html;
+  },
+
+  renderSectionInternational(i) {
+    if (!i) return '';
+    let html = `
+      <div class="detail-section" data-section="international">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">🌍</span>
+          <span class="detail-section-title">国际要求 (FDA/EMA/WHO/ICH)</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+    `;
+    if (i.requirements && i.requirements.length > 0) {
+      html += '<div class="international-group">';
+      html += '<div class="international-group-title">各监管机构要求</div>';
+      html += '<ul class="requirement-list">';
+      i.requirements.forEach((req, idx) => {
+        const reqText = typeof req === 'string' ? req : req.text;
+        const reqGuidance = (typeof req === 'object' && req.guidance) ? req.guidance : '';
+        html += `<li class="requirement-item" data-idx="${idx}">
+          <span class="requirement-check" style="border-color:var(--primary); color:var(--primary)">✓</span>
+          <div class="requirement-content">
+            <span class="requirement-text">${this.pen(reqText)}</span>
+            ${reqGuidance ? `<div class="requirement-guidance"><span class="guidance-tag">指导</span><span class="guidance-detail">${this.pen(reqGuidance)}</span></div>` : ''}
+          </div>
+        </li>`;
+      });
+      html += '</ul></div>';
+    }
+    if (i.regulations && i.regulations.length > 0) {
+      html += '<h4 style="font-size:13px; font-weight:600; color:var(--text-primary); margin:16px 0 12px;">国际法规与指南</h4>';
+      html += '<div class="regulation-list">';
+      i.regulations.forEach(reg => {
+        html += `
+          <a class="regulation-item" href="${reg.url}" target="_blank" rel="noopener noreferrer">
+            <span class="regulation-item-icon">📄</span>
+            <div class="regulation-item-info">
+              <div class="regulation-item-title">${reg.title}</div>
+            </div>
+            <span class="regulation-item-source">${reg.source || '国际'}</span>
+            <span class="regulation-item-external">↗</span>
+          </a>
+        `;
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
+    return html;
+  },
+
+  renderSectionGuidance(g) {
+    if (!g || !g.length) return '';
+    return `
+      <div class="detail-section" data-section="guidance">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">💡</span>
+          <span class="detail-section-title">实施指导建议</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+          <ul class="guidance-list">
+            ${g.map(x => `<li class="guidance-item">${this.pen(x)}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+  },
+
+  renderSectionCases(c) {
+    if (!c || !c.length) return '';
+    return `
+      <div class="detail-section" data-section="cases">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">📋</span>
+          <span class="detail-section-title">案例研究</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+          ${c.map(x => `
+            <div class="case-card">
+              <div class="case-card-title">${x.title}</div>
+              <div class="case-card-description">${x.description}</div>
+              <div class="case-card-lesson"><strong>经验教训：</strong>${x.lesson}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  renderSectionPitfalls(p) {
+    if (!p || !p.length) return '';
+    return `
+      <div class="detail-section" data-section="pitfalls">
+        <div class="detail-section-header">
+          <span class="detail-section-header-icon">⚠️</span>
+          <span class="detail-section-title">常见问题与陷阱</span>
+          <span class="detail-section-toggle">▼</span>
+        </div>
+        <div class="detail-section-body">
+          <div class="pitfalls-box">
+            <div class="pitfalls-title">⚠ 需要特别注意的问题</div>
+            <ul class="pitfalls-list">
+              ${p.map(x => `<li class="pitfall-item">${this.pen(x)}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  /* ============ 书签 ============ */
+
+  isBookmarked(varietyId, stageId) {
+    return this.state.bookmarks.some(bm => bm.varietyId === varietyId && bm.stageId === stageId);
+  },
+
+  toggleBookmark(varietyId, stageId) {
+    const v = this.findVarietyById(varietyId);
+    const stage = KB_DATA.stages.find(s => s.id === stageId);
+    if (!v || !stage) return;
+
+    const idx = this.state.bookmarks.findIndex(bm => bm.varietyId === varietyId && bm.stageId === stageId);
+    if (idx >= 0) {
+      this.state.bookmarks.splice(idx, 1);
+      this.showToast(`已移除书签：${v.name} · ${stage.name}`, 'warning');
+    } else {
+      this.state.bookmarks.push({ varietyId: varietyId, stageId: stageId });
+      this.showToast(`已添加书签：${v.name} · ${stage.name}`, 'success');
+    }
+    this.saveBookmarks();
+    this.renderSidebar();
+    this.renderDetailView();
+  },
+
+  removeBookmark(varietyId, stageId) {
+    const idx = this.state.bookmarks.findIndex(bm => bm.varietyId === varietyId && bm.stageId === stageId);
+    if (idx >= 0) {
+      this.state.bookmarks.splice(idx, 1);
+      this.saveBookmarks();
+      this.renderSidebar();
+      if (this.state.currentVarietyId === varietyId && this.state.currentStageId === stageId) {
+        this.renderDetailView();
+      }
+      this.showToast('已移除书签', 'warning');
+    }
+  },
+
+  /* ============ Toast ============ */
+
+  showToast(message, type = 'success') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('visible'));
+
+    setTimeout(() => {
+      toast.classList.remove('visible');
+      setTimeout(() => toast.remove(), 300);
+    }, 2500);
+  },
+
+  /* ============ 事件绑定 ============ */
+
+  bindEvents() {
+    const matrixBtn = document.getElementById('matrixToggleBtn');
+    if (matrixBtn) matrixBtn.addEventListener('click', () => this.toggleMatrixView());
+
+    const closeBtn = document.getElementById('regulationPanelClose');
+    if (closeBtn) closeBtn.addEventListener('click', () => this.toggleRegulationPanel());
+
+    const classifyBtn = document.getElementById('classifyBtn');
+    if (classifyBtn) classifyBtn.addEventListener('click', () => {
+      if (this.state.view === 'classification') this.closeClassification();
+      else this.openClassification();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) searchInput.focus();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+        e.preventDefault();
+        this.toggleMatrixView();
+      }
+    });
+  },
+
+  /* ============ 法规问答 · 9527 专家 ============
+   * 静态快照模式：REG_KB_FULL（3096 篇元数据）随站分发，运行时客户端检索；
+   * REG_QA_9527 为专家离线撰写的结论/提示/时效，法规依据由 searchRegKB 动态呈现。
+   */
+  initQa9527() {
+    const btn = document.getElementById('qa9527Btn');
+    if (btn) btn.addEventListener('click', () => {
+      this.state.qaOpen ? this.closeQa9527() : this.openQa9527();
+    });
+    const closeBtn = document.getElementById('qa9Close');
+    if (closeBtn) closeBtn.addEventListener('click', () => this.closeQa9527());
+    const input = document.getElementById('qa9Input');
+    if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.sendQaMessage(); });
+    const sbtn = document.getElementById('qa9SendBtn');
+    if (sbtn) sbtn.addEventListener('click', () => this.sendQaMessage());
+    const clearBtn = document.getElementById('qa9Clear');
+    if (clearBtn) clearBtn.addEventListener('click', () => this._resetQaChat());
+    this.renderQaFaqList();
+    this.renderQaSuggestions();
+    this.qaApiBase = this._readQaApiBase();
+    this._renderQaMode();
+    this._initQaChat();
+  },
+
+  // 读取实时后端地址（优先级：meta[name=qa-api-base] > globalThis.QA_API_BASE）
+  _readQaApiBase() {
+    const meta = document.querySelector('meta[name="qa-api-base"]');
+    let base = (meta && meta.getAttribute('content') ? meta.getAttribute('content') : '').trim();
+    if (!base && globalThis.QA_API_BASE) base = String(globalThis.QA_API_BASE).trim();
+    if (!base) return '';                 // 空 = 静态快照模式
+    // 同域实时：前端与后端由同一后端托管（如 Render/VPS 同域部署），
+    // 设 content="/" 或 "same-origin" 即前端用相对 /api/qa，免 CORS。
+    if (base === '/' || base === './' || base === '.' || base.toLowerCase() === 'same-origin')
+      return window.location.origin;
+    return base.replace(/\/api\/?$/, '').replace(/\/+$/, '');  // 归一，避免 /api/api/qa
+  },
+
+  _renderQaMode() {
+    const el = document.getElementById('qa9Mode'); if (!el) return;
+    if (this.qaApiBase) {
+      el.textContent = '● 实时模式：' + this.qaApiBase + '/api/qa';
+      el.className = 'qa9-mode live';
+    } else {
+      el.textContent = '○ 快照模式：静态知识库（未配置实时后端）';
+      el.className = 'qa9-mode snap';
+    }
+  },
+
+  openQa9527() {
+    this.state.qaOpen = true;
+    if (this.state.regLibOpen) this.closeRegulationLibrary();
+    ['breadcrumb', 'stageTabs', 'detailLayout', 'matrixView', 'regulationLibrary'].forEach(id => {
+      const e = document.getElementById(id); if (e) e.style.display = 'none';
+    });
+    const p = document.getElementById('qa9527'); if (p) p.style.display = 'flex';
+    const btn = document.getElementById('qa9527Btn'); if (btn) btn.classList.add('active');
+  },
+
+  closeQa9527() {
+    this.state.qaOpen = false;
+    const p = document.getElementById('qa9527'); if (p) p.style.display = 'none';
+    const btn = document.getElementById('qa9527Btn'); if (btn) btn.classList.remove('active');
+    if (this.state.view === 'classification') {
+      const bc = document.getElementById('breadcrumb'); if (bc) bc.style.display = 'none';
+      const st = document.getElementById('stageTabs'); if (st) st.style.display = 'none';
+      const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+    } else {
+      const bc = document.getElementById('breadcrumb'); if (bc) bc.style.display = '';
+      const st = document.getElementById('stageTabs'); if (st) st.style.display = '';
+      if (this.state.viewMode === 'matrix') {
+        const mv = document.getElementById('matrixView'); if (mv) mv.style.display = '';
+      } else {
+        const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+      }
+    }
+  },
+
+  renderQaFaqList() {
+    const el = document.getElementById('qa9FaqList'); if (!el) return;
+    const QA = globalThis.REG_QA_9527 || [];
+    let html = '';
+    QA.forEach((item, idx) => {
+      html += '<button class="qa9-faq-item" data-idx="' + idx + '">' +
+        '<span class="qa9-faq-tag">' + Penetrator.esc(item.tag || '') + '</span>' +
+        '<span class="qa9-faq-q">' + Penetrator.esc(item.q) + '</span></button>';
+    });
+    el.innerHTML = html;
+    el.querySelectorAll('.qa9-faq-item').forEach(b => b.addEventListener('click', () => {
+      const item = (globalThis.REG_QA_9527 || [])[parseInt(b.dataset.idx, 10)];
+      if (item) this.sendQaMessage(item.q);
+    }));
+  },
+
+  renderQaSuggestions() {
+    const el = document.getElementById('qa9Suggestions'); if (!el) return;
+    const samples = ['IND 非临床研究资料', 'GLP 适用范围', '化学药1类 定义', 'MAH 持有人制度', 'GMP 基本要求', '加快上市程序'];
+    el.innerHTML = samples.map(s => '<span class="qa9-sug" data-q="' + Penetrator.esc(s) + '">' + Penetrator.esc(s) + '</span>').join('');
+    el.querySelectorAll('.qa9-sug').forEach(s => s.addEventListener('click', () => {
+      this.sendQaMessage(s.dataset.q);
+    }));
+  },
+
+  async runQaSearch() {
+    return this.sendQaMessage();
+  },
+
+  async showQaAnswer(idx) {
+    const QA = globalThis.REG_QA_9527 || [];
+    const item = QA[idx]; if (!item) return;
+    return this.sendQaMessage(item.q);
+  },
+
+  searchRegKB(query, opts) {
+    opts = opts || {};
+    const KB = globalThis.REG_KB_FULL || [];
+    const q = (query || '').trim();
+    if (!q) return [];
+    const rawToks = (q.match(/[A-Za-z0-9]+|[\u4e00-\u9fff]+/g) || []);
+    const terms = [];
+    rawToks.forEach(t => {
+      if (/^[A-Za-z0-9]+$/.test(t)) { terms.push(t.toLowerCase()); }
+      else {
+        terms.push(t);
+        if (t.length > 2) {
+          for (let i = 0; i < t.length - 1; i++) terms.push(t.slice(i, i + 2));
+        }
+      }
+    });
+    const termSet = Array.from(new Set(terms)).filter(Boolean);
+    const CAT_W = { '01_法律': -3.0, '02_行政法规': -2.4, '03_部门规章': -1.8, '04_技术指导原则': -1.2, '07_规范性文件': -0.4, '05_行业共识': 0.0 };
+    const scored = [];
+    for (const d of KB) {
+      if (opts.cats && opts.cats.length && opts.cats.indexOf(d.c) < 0) continue;
+      const tier = d.tier == null ? 3 : d.tier;
+      if (opts.onlyValid && tier >= 4) continue;
+      const title = d.t || '';
+      const summ = d.m || '';
+      const issuer = d.i || '';
+      const no = d.d || '';
+      let score = 0;
+      for (const t of termSet) {
+        const tl = t.toLowerCase();
+        if (title.toLowerCase().indexOf(tl) >= 0) score += 6;
+        if (summ.toLowerCase().indexOf(tl) >= 0) score += 2;
+        if (issuer.toLowerCase().indexOf(tl) >= 0) score += 1.5;
+        if (no.toLowerCase().indexOf(tl) >= 0) score += 1;
+      }
+      if (score <= 0) continue;
+      score += (CAT_W[d.c] || 0);
+      if (title.indexOf(q.replace(/\s+/g, '')) >= 0) score -= 20;
+      scored.push({ d, score, tier });
+    }
+    scored.sort((a, b) => {
+      const ta = a.tier <= 2 ? 0 : a.tier;
+      const tb = b.tier <= 2 ? 0 : b.tier;
+      if (ta !== tb) return ta - tb;
+      return a.score - b.score;
+    });
+    return scored.slice(0, opts.max || 20).map(x => x.d);
+  },
+
+  /* ---- 实时后端（FastAPI /api/qa）适配器 ---- */
+  async qaApiSearch(q, opts) {
+    opts = opts || {};
+    const base = this.qaApiBase;
+    if (!base) return null;                 // 无后端 → 调用方回退静态快照
+    const params = new URLSearchParams();
+    params.set('q', q);
+    params.set('only_valid', opts.onlyValid === false ? 'false' : 'true');
+    params.set('n', String(Math.min(Math.max(parseInt(opts.max || 20, 10) || 20, 1), 30)));
+    if (opts.cats && opts.cats.length === 1) params.set('cat', opts.cats[0]);  // kb_query --cat 仅单类
+    if (opts.issuer) params.set('issuer', opts.issuer);
+    if (opts.status) params.set('status', opts.status);
+    const url = base + '/api/qa?' + params.toString();
+    try {
+      const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!resp.ok) throw new Error('http ' + resp.status);
+      const data = await resp.json();
+      const rows = Array.isArray(data.results) ? data.results : [];
+      const list = rows.map(r => this._normLiveRow(r));
+      return { list, source: 'live', count: data.count || list.length };
+    } catch (e) {
+      console.warn('[qa9527] 实时接口不可用，回退静态快照：', e);
+      return null;                          // 回退信号
+    }
+  },
+
+  // 将 kb_query.py 的中文键对象归一为 qaCardHtml 兼容形状
+  _normLiveRow(r) {
+    return {
+      t: r['标题'] || '',
+      c: r['分类'] || '',
+      i: r['发布机构'] || '',
+      p: r['发布日期'] || '',
+      e: r['生效日期'] || '',
+      st: r['状态'] || '',
+      d: r['文号'] || '',
+      u: r['来源'] || '',
+      m: r['摘要'] || '',
+      local: r['本地路径'] || '',
+      tier: (r.tier == null ? this.stTier(r['状态']) : r.tier),
+      _hit: (Array.isArray(r['命中片段']) ? r['命中片段'].join(' … ') : (r['命中片段'] || ''))
+    };
+  },
+
+  // 效力层级排序：法律 > 行政法规 > 部门规章 > 技术指导原则 > 行业共识 > 规范性文件
+  // （与 9527 技能「区分层级」一致；tier 仅区分时效，分类决定效力高低）
+  catRank(c) {
+    const m = { '01_法律': 0, '02_行政法规': 1, '03_部门规章': 2, '04_技术指导原则': 3, '05_行业共识': 4, '06_国际': 5, '07_规范性文件': 6, '08_其他': 7 };
+    for (const k in m) if ((c || '').indexOf(k) === 0) return m[k];
+    return 9;
+  },
+
+  // 统一排序：先按效力层级，再按时效档位（现行有效优先于已废止）
+  _sortCites(list) {
+    if (!list || !list.length) return list || [];
+    return list.slice().sort((a, b) => {
+      const ca = this.catRank(a.c), cb = this.catRank(b.c);
+      if (ca !== cb) return ca - cb;
+      return (a.tier == null ? 3 : a.tier) - (b.tier == null ? 3 : b.tier);
+    });
+  },
+
+  // 取首句（用于【结论】的原文摘录）
+  _firstSent(s, max) {
+    s = (s || '').replace(/\s+/g, ' ').trim();
+    if (!s) return '';
+    const m = s.match(/^.{0,160}?[。；;！!？?\n]/);
+    let r = m ? m[0] : s.slice(0, 160);
+    if (max && r.length > max) r = r.slice(0, max) + '…';
+    return r.replace(/^[>\s]+/, '');
+  },
+
+  _clip(s, n) {
+    s = (s || '').replace(/\s+/g, ' ').trim();
+    if (s.length > n) return s.slice(0, n) + '…';
+    return s;
+  },
+
+  // 时效核验：依据结果中的状态字段，自动生成【时效说明】（镜像 9527 技能时效核验）
+  _synthTimeNote(cites) {
+    const sts = (cites || []).map(c => c.st || '');
+    const parts = [];
+    if (sts.some(s => /废止|失效|作废/.test(s)))
+      parts.push('检索结果含「已废止/失效」文件，请以其替代或修订后的文件为准。');
+    if (sts.some(s => /征求意见/.test(s)))
+      parts.push('含征求意见稿（尚未生效，仅供前瞻参考）。');
+    if (sts.some(s => /尚未生效/.test(s)))
+      parts.push('含尚未生效文件，注意其施行日期。');
+    if (sts.some(s => /试行|暂行/.test(s)))
+      parts.push('含试行/暂行文件，留意转正后的正式版本。');
+    if (parts.length === 0 && sts.length)
+      parts.push('以上均为现行有效文件，请以其最新版本为准。');
+    return parts.join(' ');
+  },
+
+  // 自由检索也给出【结论/适用提示/时效说明】，与 9527 技能四段式保持一致
+  _synthBlocks(cites) {
+    if (!cites || !cites.length) return null;
+    const lead = cites[0];
+    let concl = lead._hit ? this._firstSent(lead._hit) : this._firstSent(lead.m);
+    if (!concl) concl = '请参见下方法规依据。';
+    concl = '依据《' + lead.t + '》（' + (lead.i || '') + (lead.p ? ('，' + lead.p) : '') + '）：' + concl;
+    const cats = Array.from(new Set(cites.map(c => (c.c || '').replace(/^\d+_/, '')).filter(Boolean)));
+    const tips = '重点核对：' + (cats.join('、') || '相关法规') + '；注意文件的状态与施行日期，以最新有效版本为准。';
+    return { abstract: concl, tips: tips, timeNote: this._synthTimeNote(cites) };
+  },
+
+  // 镜像 kb_query.st_tier（后端未返回 tier 时前端兜底）
+  stTier(st) {
+    st = (st || '').trim();
+    if (!st) return 3;
+    if (/废止|失效|作废/.test(st)) return 9;
+    if (st.indexOf('征求意见') >= 0) return st.indexOf('截止') >= 0 ? 5 : 4;
+    if (st.indexOf('尚未生效') >= 0) return 2;
+    if (st.indexOf('试行') >= 0 || st.indexOf('暂行') >= 0) return 1;
+    if (st.startsWith('现行有效') || st === '有效' || st === '现行') return 0;
+    if (st.indexOf('参考') >= 0) return 3;
+    return 3;
+  },
+
+  /* ============ 对话模式：聊天式回复 ============ */
+
+  // 初始化对话（仅在尚无消息时添加欢迎语，避免重复初始化清空进行中的会话）
+  _initQaChat() {
+    const box = document.getElementById('qa9Msgs');
+    if (!box || box.children.length) return;
+    this._resetQaChat();
+  },
+
+  // 真正清空并重置对话（"清空对话"按钮调用）
+  _resetQaChat() {
+    this._qaMid = 0;
+    const box = document.getElementById('qa9Msgs'); if (!box) return;
+    box.innerHTML = '';
+    const welcome = '您好，我是药品法规专家 9527 🔍。\n我可以基于本地知识库（3096 篇现行/历史法规）回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题，并给出结论与依据。\n\n请直接描述您的问题，例如：\n· IND 申报需要哪些非临床研究资料？\n· GLP 适用于哪些研究？\n· 化学药 1 类如何定义？\n· MAH 制度的核心是什么？';
+    this._appendMsg('bot', '<div class="qa9-welcome">' + Penetrator.esc(welcome).replace(/\n/g, '<br>') + '</div>');
+  },
+
+  // 发送一条消息（对话模式主入口）
+  async sendQaMessage(text) {
+    text = (text || '').trim();
+    if (!text) {
+      const inp = document.getElementById('qa9Input');
+      text = (inp ? inp.value : '').trim();
+    }
+    if (!text) return;
+    const input = document.getElementById('qa9Input'); if (input) input.value = '';
+    this._appendMsg('user', Penetrator.esc(text));
+    const ovEl = document.getElementById('qa9OnlyValid');
+    const ov = ovEl ? ovEl.checked : true;
+    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>9527 正在检索法规库…</span>', true);
+    try {
+      const faq = this.matchFaq(text);
+      let cites, source, intro, blocks = null;
+      if (faq) {
+        let live = null;
+        if (this.qaApiBase) live = await this.qaApiSearch(faq.search || faq.q, { onlyValid: true, max: faq.max || 6, cats: faq.cats });
+        cites = live ? live.list : this.searchRegKB(faq.search || faq.q, { cats: faq.cats, onlyValid: true, max: faq.max || 6 });
+        source = live ? 'live' : 'snapshot';
+        blocks = faq;
+        cites = this._sortCites(cites);
+        intro = '以下是关于该问题的专家结论与法规依据：';
+      } else {
+        let live = null;
+        if (this.qaApiBase) live = await this.qaApiSearch(text, { onlyValid: ov, max: 8 });
+        cites = live ? live.list : this.searchRegKB(text, { onlyValid: ov, max: 8 });
+        source = live ? 'live' : 'snapshot';
+        cites = this._sortCites(cites);
+        blocks = this._synthBlocks(cites);          // 自由检索也输出四段式，与 WorkBuddy 9527 一致
+        intro = cites.length
+          ? '根据法规库检索，与「' + text + '」相关的法规如下：'
+          : '未在法规库中检索到与「' + text + '」直接匹配的条文。建议换用更规范的表述（如 GMP / 生产质量管理规范），或取消勾选「仅现行有效」。';
+      }
+      const html = this._buildBotReply({ intro: intro, blocks: blocks, cites: cites, source: source, query: text });
+      this._updateMsg(typingId, html);
+    } catch (e) {
+      this._updateMsg(typingId, '<span class="qa9-typing">检索出错，请稍后重试。</span>');
+    }
+    this._scrollMsgs();
+  },
+
+  // 在精选问答中匹配最相关的一条（无 LLM 时用于给出「专家结论」）
+  // 匹配策略：原题命中权重最高，search 次之，glp/gcp/gmp/gvp 等关键词仅作微调，
+  // 以避免「GLP 适用范围」误命中 IND 等含 glp 的其他问答。
+  matchFaq(text) {
+    const QA = globalThis.REG_QA_9527 || [];
+    const q = (text || '').toLowerCase().replace(/\s+/g, '');
+    const qtoks = q.match(/[a-z0-9]{2,}|[\u4e00-\u9fff]{2,}/g) || [];
+    const KW = ['glp', 'gcp', 'gmp', 'gvp', 'mah', 'ind', 'ctd', 'fih'];
+    let best = null, bestScore = 0;
+    QA.forEach((item) => {
+      const qtxt = (item.q || '').toLowerCase().replace(/\s+/g, '');
+      const stxt = (item.search || '').toLowerCase();
+      const hay = qtxt + ' ' + stxt + ' ' + (item.tag || '').toLowerCase();
+      let score = 0;
+      // 原题与题干高度重合（互含）→ 强匹配
+      if (q && (q.indexOf(qtxt) >= 0 || qtxt.indexOf(q) >= 0)) score += 10;
+      // 逐 token：命中原题权重高于 search
+      qtoks.forEach(t => {
+        if (qtxt.indexOf(t) >= 0) score += t.length >= 3 ? 3 : 2;
+        else if (stxt.indexOf(t) >= 0) score += 1;
+      });
+      KW.forEach(k => { if (q.indexOf(k) >= 0 && hay.indexOf(k) >= 0) score += 2; });
+      if (score > bestScore) { bestScore = score; best = item; }
+    });
+    return bestScore >= 3 ? best : null;
+  },
+
+  _appendMsg(role, html, isTyping) {
+    const box = document.getElementById('qa9Msgs'); if (!box) return '';
+    const mid = 'm' + (++this._qaMid);
+    const wrap = document.createElement('div');
+    wrap.className = 'qa9-msg ' + role + (isTyping ? ' typing' : '');
+    wrap.dataset.mid = mid;
+    if (role === 'bot') {
+      wrap.innerHTML = '<div class="qa9-avatar">🔍</div><div class="qa9-bubble">' + html + '</div>';
+    } else {
+      wrap.innerHTML = '<div class="qa9-bubble">' + html + '</div>';
+    }
+    box.appendChild(wrap);
+    this._scrollMsgs();
+    return mid;
+  },
+
+  _updateMsg(mid, html) {
+    const box = document.getElementById('qa9Msgs'); if (!box) return;
+    const wrap = box.querySelector('[data-mid="' + mid + '"]');
+    if (!wrap) return;
+    wrap.classList.remove('typing');
+    const bubble = wrap.querySelector('.qa9-bubble');
+    if (bubble) bubble.innerHTML = html;
+    this._scrollMsgs();
+  },
+
+  _scrollMsgs() {
+    const box = document.getElementById('qa9Msgs'); if (!box) return;
+    box.scrollTop = box.scrollHeight;
+  },
+
+  // 构造助手气泡 HTML —— 严格对齐 WorkBuddy 9527 技能的四段式顺序：
+  // 【结论】→【法规依据】→【适用提示】→【时效说明】
+  _buildBotReply(o) {
+    let html = '';
+    if (o.intro) html += '<div class="qa9-reply-intro">' + Penetrator.esc(o.intro).replace(/\n/g, '<br>') + '</div>';
+    const lines = (s) => (s || '').split('\n').map(l => '<p>' + Penetrator.esc(l) + '</p>').join('');
+    // 1) 结论
+    if (o.blocks && o.blocks.abstract) {
+      html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(o.blocks.abstract) + '</div>';
+    }
+    // 2) 法规依据（卡片）
+    const badge = o.source === 'live' ? '<span class="qa9-src-badge live">● 实时</span>' : '<span class="qa9-src-badge snap">○ 快照</span>';
+    const note = o.source === 'live' ? '依据来自 9527 实时数据库（在线检索）' : '依据来自 9527 本地知识库（静态快照）';
+    html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge + '<div class="qa9-src-note">' + note + '</div></div><div class="qa9-cite-list">';
+    if (o.cites && o.cites.length) o.cites.forEach((d, i) => { html += this.qaCardHtml(d, i + 1); });
+    else html += '<div class="qa9-empty">未检索到明确依据。</div>';
+    html += '</div></div>';
+    // 3) 适用提示
+    if (o.blocks && o.blocks.tips) {
+      html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(o.blocks.tips) + '</div>';
+    }
+    // 4) 时效说明
+    if (o.blocks && o.blocks.timeNote) {
+      html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(o.blocks.timeNote) + '</div>';
+    }
+    return html;
+  },
+
+  qaCardHtml(d, n) {
+    const tier = d.tier == null ? 3 : d.tier;
+    let badge, bcls;
+    if (tier === 0) { badge = '现行有效'; bcls = 'valid'; }
+    else if (tier === 1) { badge = '试行'; bcls = 'trial'; }
+    else if (tier === 2) { badge = '尚未生效'; bcls = 'pending'; }
+    else if (tier === 3) { badge = '参考'; bcls = 'ref'; }
+    else if (tier <= 5) { badge = '征求意见'; bcls = 'draft'; }
+    else { badge = '已废止'; bcls = 'repealed'; }
+    // 与 9527 技能一致：《标题》（发布机构，文号，发布日期，状态）
+    const title = (n ? n + '. ' : '') + '《' + (d.t || '') + '》';
+    const metaParts = [d.i, d.d, d.p, d.st].filter(Boolean).map(x => Penetrator.esc(x));
+    const meta = metaParts.length ? '（' + metaParts.join('，') + '）' : '';
+    const hit = d._hit
+      ? '<div class="qa9-card-hit">原文摘录：' + Penetrator.esc(this._clip(d._hit, 160)) + '</div>'
+      : (d.m ? '<div class="qa9-card-hit">摘要：' + Penetrator.esc(this._clip(d.m, 160)) + '</div>' : '');
+    const local = d.local
+      ? '<div class="qa9-card-local">本地：' + Penetrator.esc(d.local) + '</div>'
+      : '';
+    const src = d.u ? '<a class="qa9-src" href="' + Penetrator.esc(d.u) + '" target="_blank" rel="noopener">🔗 官方来源 ↗</a>' : '';
+    return '<div class="qa9-card ' + bcls + '">' +
+      '<div class="qa9-card-top"><span class="qa9-badge ' + bcls + '">' + badge + '</span>' +
+      '<span class="qa9-card-title">' + Penetrator.esc(title) + '</span></div>' +
+      '<div class="qa9-card-meta">' + meta + '</div>' +
+      hit + local + src +
+      '</div>';
+  }
+};
+
+// 暴露为全局属性，供全局委托点击（knowledge-portal.js）与内联 onclick 处理器访问
+globalThis.App = App;
+if (typeof window !== 'undefined') window.App = App;
+
+// 兼容旧搜索调用名
+App.selectDrugType = function (id) { this.selectVariety(id); };
+
+/* ============================================================
+ * Penetrator —— 识林式「穿透」引擎
+ *   1) 术语穿透：正文/卡片中的关键术语（首次出现）→ 悬浮卡（释义+来源法规）
+ *   2) 法规互引穿透：《XX法》《XX办法》引用 → 跳转应用内该法规原文
+ * ============================================================ */
+const Penetrator = {
+  terms: [],
+  byWord: null,
+  re: null,
+  ready: false,
+
+  init() {
+    const T = globalThis.PEN_TERMS || [];
+    this.terms = T.map((t, i) => Object.assign({ id: i }, t));
+    const words = [];
+    this.terms.forEach(t => {
+      words.push([t.t, t.id]);
+      (t.a || []).forEach(a => words.push([a, t.id]));
+    });
+    const seen = new Set();
+    const uniq = [];
+    words.forEach(([w, id]) => { if (w && !seen.has(w)) { seen.add(w); uniq.push([w, id]); } });
+    uniq.sort((a, b) => b[0].length - a[0].length); // 长词优先，避免部分覆盖
+    this.byWord = new Map(uniq);
+    const alt = uniq.map(([w]) => this.escRe(w)).join('|');
+    this.re = alt ? new RegExp('《[^《》\\n]{2,40}》|' + alt, 'g') : /《[^《》\n]{2,40}》/g;
+    this.ready = true;
+  },
+
+  escRe(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); },
+  esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); },
+  termById(id) { return this.terms[+id]; },
+
+  regIdForTerm(t) {
+    if (!t || !t.r) return null;
+    const R = globalThis.REG_INDEX || [];
+    const hit = R.find(x => x.title.includes(t.r)) || R.find(x => x.file.includes(t.r)) || R.find(x => x.sub && x.sub.includes(t.r));
+    return hit ? hit.id : null;
+  },
+
+  regIdByCitation(name) {
+    const R = globalThis.REG_INDEX || [];
+    const n = name.replace(/^《|》$/g, '').trim();
+    if (n.length < 3) return null;
+    let hit = R.find(x => x.title === n)
+      || R.find(x => x.title.includes(n))
+      || R.find(x => { const base = x.title.replace(/[（(].*?[)）]/g, '').trim(); return base.length > 4 && (n.includes(base) || base.includes(n)); });
+    return hit ? hit.id : null;
+  },
+
+  /** 原始文本 → 转义后的 HTML（带穿透链接）。opts.used 为跨文本块去重的 Set。 */
+  penetrate(raw, opts) {
+    opts = opts || {};
+    const used = opts.used || new Set();
+    const text = String(raw == null ? '' : raw);
+    if (!this.ready || !text) return this.esc(text);
+    let out = '', last = 0, m;
+    this.re.lastIndex = 0;
+    while ((m = this.re.exec(text))) {
+      const idx = m.index, matched = m[0];
+      if (matched.length === 0) { this.re.lastIndex++; continue; }
+      out += this.esc(text.slice(last, idx));
+      if (matched[0] === '《') {
+        const rid = this.regIdByCitation(matched);
+        out += rid
+          ? '<a class="pen-reg" data-rid="' + rid + '" title="查看应用内原文">' + this.esc(matched) + '</a>'
+          : this.esc(matched);
+      } else {
+        const id = this.byWord.get(matched);
+        if (id != null && !used.has(id)) {
+          used.add(id);
+          out += '<a class="pen-term" data-tid="' + id + '" tabindex="0">' + this.esc(matched) + '</a>';
+        } else {
+          out += this.esc(matched);
+        }
+      }
+      last = idx + matched.length;
+    }
+    out += this.esc(text.slice(last));
+    return out;
+  }
+};
+globalThis.Penetrator = Penetrator;
+
+/* ============================================================
+ * App 扩展：穿透辅助 + 术语悬浮卡 + 法规原文库 + Markdown 渲染
+ * ============================================================ */
+Object.assign(App, {
+
+  /** 卡片/清单文本穿透（首次出现去重按单条文本） */
+  pen(text) {
+    return (globalThis.Penetrator && Penetrator.ready) ? Penetrator.penetrate(text) : Penetrator.esc(text);
+  },
+
+  /* ---------- 术语悬浮卡 ---------- */
+  initPenCard() {
+    if (this._penCard) return;
+    const card = document.createElement('div');
+    card.id = 'penCard';
+    card.className = 'pen-card';
+    card.style.display = 'none';
+    document.body.appendChild(card);
+    this._penCard = card;
+
+    let hideT = null;
+    const scheduleHide = () => { hideT = setTimeout(() => { card.style.display = 'none'; }, 200); };
+    const cancelHide = () => { if (hideT) { clearTimeout(hideT); hideT = null; } };
+    card.addEventListener('mouseenter', cancelHide);
+    card.addEventListener('mouseleave', scheduleHide);
+
+    document.addEventListener('mouseover', (e) => {
+      const t = e.target.closest && e.target.closest('.pen-term');
+      if (t) { cancelHide(); this.showPenCard(t); }
+    });
+    document.addEventListener('mouseout', (e) => {
+      const t = e.target.closest && e.target.closest('.pen-term');
+      if (t) scheduleHide();
+    });
+    document.addEventListener('focusin', (e) => {
+      const t = e.target.closest && e.target.closest('.pen-term');
+      if (t) { cancelHide(); this.showPenCard(t); }
+    });
+
+    document.addEventListener('click', (e) => {
+      const term = e.target.closest && e.target.closest('.pen-term');
+      if (term) { e.preventDefault(); cancelHide(); this.showPenCard(term); return; }
+      const srcBtn = e.target.closest && e.target.closest('.pen-card-source');
+      if (srcBtn) { e.preventDefault(); card.style.display = 'none'; if (srcBtn.dataset.rid) this.openRegulation(srcBtn.dataset.rid); return; }
+      const reg = e.target.closest && e.target.closest('.pen-reg');
+      if (reg) { e.preventDefault(); if (reg.dataset.rid) this.openRegulation(reg.dataset.rid); return; }
+    });
+  },
+
+  showPenCard(el) {
+    const t = Penetrator.termById(el.dataset.tid);
+    if (!t) return;
+    const rid = Penetrator.regIdForTerm(t);
+    const reg = rid != null ? (globalThis.REG_INDEX || []).find(r => r.id === rid) : null;
+    const aliases = (t.a && t.a.length) ? '<div class="pen-card-alias">' + t.a.map(a => Penetrator.esc(a)).join(' · ') + '</div>' : '';
+    const src = reg ? '<button class="pen-card-source" data-rid="' + reg.id + '">📖 来源法规《' + Penetrator.esc(reg.title) + '》 →</button>' : '';
+    this._penCard.innerHTML =
+      '<div class="pen-card-head"><span class="pen-card-term">' + Penetrator.esc(t.t) + '</span><span class="pen-card-cat">' + Penetrator.esc(t.c) + '</span></div>' +
+      aliases +
+      '<div class="pen-card-def">' + Penetrator.esc(t.d) + '</div>' +
+      src;
+    const card = this._penCard;
+    card.style.display = 'block';
+    const r = el.getBoundingClientRect();
+    const cw = card.offsetWidth, ch = card.offsetHeight;
+    let left = r.left, top = r.bottom + 8;
+    if (left + cw > window.innerWidth - 12) left = window.innerWidth - cw - 12;
+    if (left < 12) left = 12;
+    if (top + ch > window.innerHeight - 12) top = r.top - ch - 8;
+    if (top < 12) top = 12;
+    card.style.left = left + 'px';
+    card.style.top = top + 'px';
+  },
+
+  /** 对已渲染的 DOM 子树做文本节点穿透（用于法规原文阅读器） */
+  penetrateDom(root) {
+    if (!Penetrator.ready || !root) return;
+    const used = new Set();
+    const skip = { A: 1, CODE: 1, PRE: 1, SCRIPT: 1, STYLE: 1, BUTTON: 1, H1: 0 };
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => {
+        if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        let p = n.parentNode;
+        while (p && p !== root) {
+          if (skip[p.nodeName]) return NodeFilter.FILTER_REJECT;
+          if (p.classList && (p.classList.contains('pen-term') || p.classList.contains('pen-reg'))) return NodeFilter.FILTER_REJECT;
+          p = p.parentNode;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const targets = [];
+    let node;
+    while ((node = walker.nextNode())) targets.push(node);
+    targets.forEach(n => {
+      const html = Penetrator.penetrate(n.nodeValue, { used });
+      if (html.indexOf('<a') === -1) return;
+      const tmp = document.createElement('span');
+      tmp.innerHTML = html;
+      const frag = document.createDocumentFragment();
+      while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+      n.parentNode.replaceChild(frag, n);
+    });
+  },
+
+  /* ---------- 法规原文库 ---------- */
+  initRegLibrary() {
+    const btn = document.getElementById('regLibBtn');
+    if (btn) btn.addEventListener('click', () => {
+      this.state.regLibOpen ? this.closeRegulationLibrary() : this.openRegulationLibrary();
+    });
+    const closeBtn = document.getElementById('regLibClose');
+    if (closeBtn) closeBtn.addEventListener('click', () => this.closeRegulationLibrary());
+    const search = document.getElementById('regSearchInput');
+    if (search) search.addEventListener('input', () => {
+      this.state.regQuery = search.value || '';
+      this.renderRegDocList();
+    });
+  },
+
+  _exitRegLib() {
+    this.state.regLibOpen = false;
+    const lib = document.getElementById('regulationLibrary');
+    if (lib) lib.style.display = 'none';
+    const btn = document.getElementById('regLibBtn');
+    if (btn) btn.classList.remove('active');
+    const bc = document.getElementById('breadcrumb'); if (bc) bc.style.display = '';
+    const st = document.getElementById('stageTabs'); if (st) st.style.display = '';
+  },
+
+  openRegulationLibrary() {
+    this.state.regLibOpen = true;
+    ['breadcrumb', 'stageTabs', 'detailLayout', 'matrixView'].forEach(id => {
+      const e = document.getElementById(id); if (e) e.style.display = 'none';
+    });
+    const lib = document.getElementById('regulationLibrary'); if (lib) lib.style.display = 'flex';
+    const btn = document.getElementById('regLibBtn'); if (btn) btn.classList.add('active');
+    this.renderRegCatFilters();
+    this.renderRegDocList();
+    if (this.state.currentRegId) this.openRegulation(this.state.currentRegId);
+  },
+
+  closeRegulationLibrary() {
+    this.state.regLibOpen = false;
+    const lib = document.getElementById('regulationLibrary'); if (lib) lib.style.display = 'none';
+    const btn = document.getElementById('regLibBtn'); if (btn) btn.classList.remove('active');
+    if (this.state.view === 'classification') {
+      const bc = document.getElementById('breadcrumb'); if (bc) bc.style.display = 'none';
+      const st = document.getElementById('stageTabs'); if (st) st.style.display = 'none';
+      const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+    } else {
+      const bc = document.getElementById('breadcrumb'); if (bc) bc.style.display = '';
+      const st = document.getElementById('stageTabs'); if (st) st.style.display = '';
+      if (this.state.viewMode === 'matrix') {
+        const mv = document.getElementById('matrixView'); if (mv) mv.style.display = '';
+      } else {
+        const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
+      }
+    }
+  },
+
+  renderRegCatFilters() {
+    const el = document.getElementById('regCatFilters'); if (!el) return;
+    const R = globalThis.REG_INDEX || [];
+    const cats = ['法律', '行政法规', '部门规章', '技术指导原则', '行业共识'];
+    const counts = {}; R.forEach(r => counts[r.cat] = (counts[r.cat] || 0) + 1);
+    let html = '<button class="reg-cat-btn ' + (this.state.regCat === 'all' ? 'active' : '') + '" data-cat="all">全部 ' + R.length + '</button>';
+    cats.forEach(c => { if (counts[c]) html += '<button class="reg-cat-btn ' + (this.state.regCat === c ? 'active' : '') + '" data-cat="' + c + '">' + c + ' ' + counts[c] + '</button>'; });
+    el.innerHTML = html;
+    el.querySelectorAll('.reg-cat-btn').forEach(b => b.addEventListener('click', () => {
+      this.state.regCat = b.dataset.cat;
+      this.renderRegCatFilters();
+      this.renderRegDocList();
+    }));
+  },
+
+  renderRegDocList() {
+    const el = document.getElementById('regDocList'); if (!el) return;
+    const q = (this.state.regQuery || '').trim().toLowerCase();
+    const R = globalThis.REG_INDEX || [];
+    let list = R.filter(r => this.state.regCat === 'all' || r.cat === this.state.regCat);
+    if (q) list = list.filter(r =>
+      r.title.toLowerCase().includes(q) ||
+      (r.summary && r.summary.toLowerCase().includes(q)) ||
+      (r.issuer && r.issuer.toLowerCase().includes(q))
+    );
+    let html = '';
+    if (!list.length) {
+      html = '<div class="reg-doc-empty">无匹配法规</div>';
+    } else {
+      const order = ['法律', '行政法规', '部门规章', '技术指导原则', '行业共识'];
+      order.forEach(cat => {
+        const items = list.filter(r => r.cat === cat);
+        if (!items.length) return;
+        html += '<div class="reg-doc-group-title">' + cat + ' <span>' + items.length + '</span></div>';
+        items.forEach(r => {
+          const badge = r.seed ? '<span class="reg-doc-badge seed">目录</span>' : '<span class="reg-doc-badge full">全文</span>';
+          const zhBadge = r.zh ? '<span class="reg-doc-badge zh">中文</span>' : '';
+          html += '<div class="reg-doc-item ' + (this.state.currentRegId === r.id ? 'active' : '') + '" data-id="' + r.id + '">' +
+            '<div class="reg-doc-item-title">' + Penetrator.esc(r.title) + '</div>' +
+            '<div class="reg-doc-item-meta">' + badge + zhBadge +
+            (r.sub ? '<span class="reg-doc-sub">' + Penetrator.esc(r.sub) + '</span>' : '') +
+            (r.effective ? '<span class="reg-doc-date">' + Penetrator.esc(r.effective) + '</span>' : '') +
+            '</div></div>';
+        });
+      });
+    }
+    el.innerHTML = html;
+    el.querySelectorAll('.reg-doc-item').forEach(it => it.addEventListener('click', () => this.openRegulation(it.dataset.id)));
+  },
+
+  openRegulation(id, lang) {
+    if (typeof lang === 'string') this.state.regLang = lang;
+    if (!this.state.regLibOpen) this.openRegulationLibrary();
+    const reg = (globalThis.REG_INDEX || []).find(r => r.id === id);
+    if (!reg) return;
+    this.state.currentRegId = id;
+    const hasZh = !!reg.zh;
+    const useLang = (this.state.regLang === 'zh' && hasZh) ? 'zh' : 'orig';
+    const file = useLang === 'zh' ? reg.zh : reg.file;
+    const list = document.getElementById('regDocList');
+    if (list) {
+      list.querySelectorAll('.reg-doc-item').forEach(it => it.classList.toggle('active', it.dataset.id === id));
+      const act = list.querySelector('.reg-doc-item.active');
+      if (act) act.scrollIntoView({ block: 'nearest' });
+    }
+    const reader = document.getElementById('regReader'); if (!reader) return;
+    reader.innerHTML = '<div class="reg-reader-loading">正在载入《' + Penetrator.esc(reg.title) + '》…</div>';
+    fetch('regulations/' + file, { cache: 'no-cache' })
+      .then(r => r.ok ? r.text() : Promise.reject(r.status))
+      .then(md => {
+        const bodyHtml = this.mdToHtml(md);
+        const meta = [reg.issuer, reg.effective ? ('施行 ' + reg.effective) : '', reg.status].filter(Boolean).map(x => Penetrator.esc(x)).join(' · ');
+        const seedNote = reg.seed ? '<div class="reg-seed-note">📌 此为分类目录条目，正文尚未全文入库。请点击下方官方来源查看权威全文。</div>' : '';
+        const src = reg.url ? '<a class="reg-official-link" href="' + Penetrator.esc(reg.url) + '" target="_blank" rel="noopener">🔗 官方来源全文 ↗</a>' : '';
+        const zhBadge = useLang === 'zh' ? '<span class="reg-zh-badge">机器翻译</span>' : '';
+        const summaryBox = (reg.summary && reg.summary.trim())
+          ? '<div class="reg-summary-box"><div class="reg-summary-label">💡 讲解 / 要点</div><div class="reg-summary-body">' + Penetrator.esc(reg.summary) + '</div></div>'
+          : '';
+        const langToggle = hasZh
+          ? '<div class="reg-lang-toggle">' +
+              '<span class="reg-lang-label">版本</span>' +
+              '<button class="reg-lang-btn ' + (useLang === 'orig' ? 'active' : '') + '" data-lang="orig">原文</button>' +
+              '<button class="reg-lang-btn ' + (useLang === 'zh' ? 'active' : '') + '" data-lang="zh">中文翻译</button>' +
+            '</div>'
+          : '';
+        reader.innerHTML =
+          '<div class="reg-reader-inner">' +
+          '<div class="reg-reader-head">' +
+          '<div class="reg-reader-cat">' + Penetrator.esc(reg.cat) + (reg.sub ? ' / ' + Penetrator.esc(reg.sub) : '') + zhBadge + '</div>' +
+          '<h1 class="reg-reader-title">' + Penetrator.esc(reg.title) + '</h1>' +
+          '<div class="reg-reader-meta">' + meta + '</div>' + src + langToggle +
+          '</div>' + seedNote + summaryBox +
+          '<div class="reg-reader-body">' + bodyHtml + '</div>' +
+          '</div>';
+        if (hasZh) {
+          reader.querySelectorAll('.reg-lang-btn').forEach(b => b.addEventListener('click', () => {
+            if (b.dataset.lang === useLang) return;
+            this.openRegulation(id, b.dataset.lang);
+          }));
+        }
+        const bodyEl = reader.querySelector('.reg-reader-body');
+        if (bodyEl) this.penetrateDom(bodyEl);
+        reader.scrollTop = 0;
+      })
+      .catch(err => {
+        reader.innerHTML = '<div class="reg-reader-loading">载入失败（' + Penetrator.esc(String(err)) + '）。' +
+          (reg.url ? '可点击 <a href="' + Penetrator.esc(reg.url) + '" target="_blank" rel="noopener">官方来源</a> 查看。' : '') + '</div>';
+      });
+  },
+
+  /* ---------- 轻量 Markdown 渲染 ---------- */
+  mdToHtml(md) {
+    const escH = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const inline = s => {
+      let t = escH(s);
+      t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, a, b) => '<a href="' + b.replace(/"/g, '%22') + '" target="_blank" rel="noopener">' + a + '</a>');
+      t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+      return t;
+    };
+    const lines = String(md).replace(/\r\n?/g, '\n').split('\n');
+    const n = lines.length;
+    const isTableSep = s => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(s);
+    const isBlockStart = s => /^(#{1,6}\s|\s*>|\s*[-*+]\s|\s*\d+[.)]\s)/.test(s) || /^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(s);
+    let out = '', i = 0;
+    while (i < n) {
+      const line = lines[i];
+      if (!line.trim()) { i++; continue; }
+      const hm = line.match(/^(#{1,6})\s+(.*)$/);
+      if (hm) { const lv = hm[1].length; out += '<h' + lv + '>' + inline(hm[2].trim()) + '</h' + lv + '>'; i++; continue; }
+      if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) { out += '<hr>'; i++; continue; }
+      if (line.indexOf('|') >= 0 && i + 1 < n && isTableSep(lines[i + 1])) {
+        const splitRow = s => { const c = s.split('|').map(x => x.trim()); if (c.length && c[0] === '') c.shift(); if (c.length && c[c.length - 1] === '') c.pop(); return c; };
+        const header = splitRow(line); i += 2; const rows = [];
+        while (i < n && lines[i].indexOf('|') >= 0 && lines[i].trim()) { rows.push(splitRow(lines[i])); i++; }
+        out += '<table class="reg-table"><thead><tr>' + header.map(h => '<th>' + inline(h) + '</th>').join('') + '</tr></thead><tbody>';
+        rows.forEach(r => { out += '<tr>' + r.map(c => '<td>' + inline(c) + '</td>').join('') + '</tr>'; });
+        out += '</tbody></table>';
+        continue;
+      }
+      if (/^\s*>/.test(line)) {
+        const buf = [];
+        while (i < n && /^\s*>/.test(lines[i])) { buf.push(lines[i].replace(/^\s*>\s?/, '')); i++; }
+        out += '<blockquote>' + buf.map(b => b.trim() ? '<p>' + inline(b) + '</p>' : '').join('') + '</blockquote>';
+        continue;
+      }
+      if (/^\s*[-*+]\s+/.test(line)) {
+        const buf = [];
+        while (i < n && /^\s*[-*+]\s+/.test(lines[i])) { buf.push(lines[i].replace(/^\s*[-*+]\s+/, '')); i++; }
+        out += '<ul>' + buf.map(b => '<li>' + inline(b) + '</li>').join('') + '</ul>';
+        continue;
+      }
+      if (/^\s*\d+[.)]\s+/.test(line)) {
+        const buf = [];
+        while (i < n && /^\s*\d+[.)]\s+/.test(lines[i])) { buf.push(lines[i].replace(/^\s*\d+[.)]\s+/, '')); i++; }
+        out += '<ol>' + buf.map(b => '<li>' + inline(b) + '</li>').join('') + '</ol>';
+        continue;
+      }
+      const buf = [line]; i++;
+      while (i < n && lines[i].trim() && !isBlockStart(lines[i]) && !(lines[i].indexOf('|') >= 0 && i + 1 < n && isTableSep(lines[i + 1]))) { buf.push(lines[i]); i++; }
+      out += '<p>' + inline(buf.join(' ')) + '</p>';
+    }
+    return out;
+  }
+});
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', () => {
+  App.init();
+});

@@ -1,0 +1,338 @@
+/* ============================================================
+   知识门户（全景总览 / 知识框架 / 案例库 / 术语表）
+   识林式主题词框架样式
+   ============================================================ */
+
+/* ---------- 侧边栏知识门户 ---------- */
+.sidebar-portal {
+  padding: 8px 12px 10px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 4px;
+}
+.sidebar-portal-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.sidebar-portal-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.sidebar-portal-item.active {
+  background: var(--bg-active);
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+/* 顶部栏门户按钮 active 态 */
+.topbar-btn.active {
+  background: var(--primary);
+  color: var(--text-inverse);
+  border-color: var(--primary);
+}
+
+/* ---------- 全景总览 ---------- */
+.panorama { max-width: 1200px; margin: 0 auto; padding: 24px 28px 48px; }
+.panorama-hero {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  color: var(--text-inverse);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-md);
+}
+.panorama-title { font-size: 24px; margin: 0 0 8px; font-weight: 700; }
+.panorama-sub { margin: 0 0 18px; font-size: 14px; line-height: 1.7; opacity: .92; }
+.panorama-quick { display: flex; flex-wrap: wrap; gap: 12px; }
+.portal-quick-btn {
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.portal-quick-btn:hover { background: rgba(255,255,255,.26); }
+
+.panorama-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+.panorama-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+.panorama-card-head { font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; }
+.panorama-row { display: flex; gap: 10px; padding: 7px 0; border-top: 1px dashed var(--border-light); font-size: 13px; line-height: 1.6; }
+.panorama-row:first-of-type { border-top: none; }
+.panorama-row-k { flex: 0 0 64px; color: var(--text-secondary); font-weight: 600; }
+.panorama-row-v { flex: 1; color: var(--text-primary); }
+.panorama-row-diff .panorama-row-v { color: var(--accent-red); }
+.panorama-enter {
+  margin-top: 14px;
+  align-self: flex-start;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.panorama-enter:hover { background: var(--primary-dark); }
+
+.panorama-themes { margin-top: 26px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 18px 20px; }
+.panorama-themes-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+.panorama-themes-list { display: flex; flex-wrap: wrap; gap: 10px; }
+.panorama-theme-chip {
+  background: var(--primary-50);
+  color: var(--primary-dark);
+  border: 1px solid var(--primary-100);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s;
+}
+.panorama-theme-chip:hover { background: var(--primary-100); }
+.panorama-themes-more { margin-top: 12px; font-size: 13px; }
+
+/* ---------- 知识框架 ---------- */
+.kf { max-width: 1100px; margin: 0 auto; padding: 22px 26px 44px; }
+.kf-head h1 { font-size: 22px; margin: 0 0 6px; color: var(--primary-dark); }
+.kf-sub { color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin: 0 0 18px; }
+.kf-group { margin-bottom: 18px; }
+.kf-group-head { font-size: 16px; font-weight: 700; color: var(--text-primary); padding: 8px 0; border-bottom: 2px solid var(--primary-100); margin-bottom: 12px; }
+.kf-group-desc { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-left: 8px; }
+.kf-topics { display: flex; flex-wrap: wrap; gap: 10px; }
+.kf-topic-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .15s, color .15s, box-shadow .15s;
+}
+.kf-topic-chip:hover { border-color: var(--primary); color: var(--primary-dark); box-shadow: var(--shadow-sm); }
+
+.kf-detail { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); }
+.kf-detail-head { margin-bottom: 14px; }
+.kf-detail-cat { display: inline-block; background: var(--primary-50); color: var(--primary-dark); font-size: 12px; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; }
+.kf-detail-term { font-size: 22px; margin: 0; color: var(--primary-dark); }
+.kf-detail-def { font-size: 15px; line-height: 1.8; color: var(--text-primary); background: var(--bg-section); border-left: 4px solid var(--primary); padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 14px; }
+.kf-detail-summary { font-size: 14px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 16px; }
+.kf-section { margin: 16px 0; }
+.kf-section-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.kf-section-title.kf-section-diff { color: var(--accent-orange); }
+.kf-points { margin: 0; padding-left: 20px; }
+.kf-points li { font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 4px 0; }
+.kf-points-diff li { color: var(--accent-red); }
+
+/* ---------- 关联导航（跨链接） ---------- */
+.portal-xref { margin: 18px 0 8px; background: var(--bg-section); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 14px 16px; }
+.portal-xref-title { font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 10px; }
+.portal-xref-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.portal-link {
+  display: inline-block;
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background .15s, border-color .15s;
+}
+.portal-link-topic { background: var(--primary-50); color: var(--primary-dark); border-color: var(--primary-100); }
+.portal-link-topic:hover { background: var(--primary-100); }
+.portal-link-case { background: #E8F5E9; color: var(--accent-green); border-color: #C8E6C9; }
+.portal-link-case:hover { background: #C8E6C9; }
+.portal-link-variety { background: #FFF3E0; color: var(--accent-orange); border-color: #FFE0B2; }
+.portal-link-variety:hover { background: #FFE0B2; }
+.portal-link-reg { background: #F3E5F5; color: var(--accent-purple); border-color: #E1BEE7; }
+.portal-link-reg:hover { background: #E1BEE7; }
+.portal-link-class { background: #E0F7FA; color: var(--accent-teal); border-color: #B2EBF2; }
+.portal-link-class:hover { background: #B2EBF2; }
+.kf-back { margin-top: 18px; font-size: 13px; }
+
+/* ---------- 案例库 ---------- */
+.cl { max-width: 1100px; margin: 0 auto; padding: 22px 26px 44px; }
+.cl-domains { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.cl-domain-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.cl-domain-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
+.cl-domain-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.cl-head h1 { font-size: 22px; margin: 0 0 6px; color: var(--primary-dark); }
+.cl-sub { color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin: 0 0 16px; }
+.cl-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.cl-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.cl-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.cl-card-domain { font-size: 12px; color: var(--accent-green); font-weight: 600; }
+.cl-card-title { font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.5; }
+.cl-card-scenario { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+.cl-detail { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); }
+.cl-detail-head { margin-bottom: 16px; }
+.cl-detail-domain { display: inline-block; background: #E8F5E9; color: var(--accent-green); font-size: 12px; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; }
+.cl-detail-title { font-size: 21px; margin: 0; color: var(--primary-dark); }
+.cl-field { margin-bottom: 16px; }
+.cl-field-k { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.cl-field-k.cl-field-diff { color: var(--accent-red); }
+.cl-field-v { font-size: 14px; line-height: 1.8; color: var(--text-primary); }
+.cl-steps { display: flex; flex-direction: column; gap: 12px; }
+.cl-step { display: flex; gap: 12px; }
+.cl-step-no {
+  flex: 0 0 28px; height: 28px;
+  background: var(--primary); color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.cl-step-body { flex: 1; }
+.cl-step-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.cl-step-detail { font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+.cl-step-regs { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+.cl-points { margin: 0; padding-left: 20px; }
+.cl-points li { font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 4px 0; }
+.cl-points-diff li { color: var(--accent-red); }
+
+/* ---------- 术语表 ---------- */
+.glossary { max-width: 1100px; margin: 0 auto; padding: 22px 26px 44px; }
+.glossary-head h1 { font-size: 22px; margin: 0 0 6px; color: var(--primary-dark); }
+.glossary-sub { color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin: 0 0 18px; }
+.glossary-group { margin-bottom: 18px; }
+.glossary-group-title { font-size: 16px; font-weight: 700; color: var(--text-primary); padding: 8px 0; border-bottom: 2px solid var(--primary-100); margin-bottom: 12px; }
+.glossary-item { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px dashed var(--border-light); }
+.glossary-term { flex: 0 0 220px; font-size: 14px; font-weight: 700; color: var(--primary-dark); text-decoration: none; cursor: pointer; }
+.glossary-term:hover { text-decoration: underline; }
+.glossary-def { flex: 1; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+
+/* ===== 分阶段深度要求：质量研究/工艺基准 + 实施要点 ===== */
+.req-block.req-bench { border-left: 3px solid #2e9e57; background: #f1faf3; }
+.req-block.req-kp { border-left: 3px solid #d99a00; background: #fdf6e6; }
+.req-block-title.bench { color: #1f7a44; }
+.req-block-title.kp { color: #a9760a; }
+.req-list-bench li::marker { color: #2e9e57; }
+.req-list-kp li::marker { color: #d99a00; }
+
+/* ===== 流程示意图 ===== */
+.diagram-wrap { margin: 14px 0; border: 1px solid var(--border-light); border-radius: 10px; background: #fff; padding: 10px 12px; overflow-x: auto; }
+.diagram-cap { font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+.diagram-wrap svg { width: 100%; height: auto; display: block; }
+
+/* ===== 按钮：整体研发案例入口 ===== */
+.panorama-ic, .req-ic-btn {
+  display: inline-block; margin-top: 10px; padding: 8px 14px; border: 1px solid var(--primary-100);
+  border-radius: 8px; background: #fff; color: var(--primary-dark); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.panorama-ic:hover, .req-ic-btn:hover { background: var(--primary-100); color: #fff; }
+.req-ic-btn { margin: 12px 0 0; }
+
+/* ===== 整体研发案例视图 ===== */
+.ic { max-width: 1000px; margin: 0 auto; }
+.ic-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.ic-icon { font-size: 30px; }
+.ic-title { font-size: 22px; font-weight: 800; color: var(--text-primary); margin: 0; }
+.ic-overview { font-size: 14px; line-height: 1.85; color: var(--text-secondary); background: #f6f9ff; border: 1px solid var(--border-light); border-radius: 10px; padding: 14px 16px; margin: 8px 0 16px; }
+.ic-timeline-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin: 18px 0 10px; padding-left: 10px; border-left: 4px solid var(--primary-100); }
+.ic-timeline { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.ic-stage { border: 1px solid var(--border-light); border-radius: 10px; padding: 12px 14px; background: #fff; }
+.ic-stage-name { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+.ic-stage-focus { font-size: 13px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 6px; }
+.ic-stage-pts { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+.ic-section { margin-top: 18px; }
+.ic-section-title { font-size: 15px; font-weight: 700; padding: 8px 10px; border-radius: 8px; }
+.ic-section-title.ic-kp { color: #1f7a44; background: #f1faf3; }
+.ic-section-title.ic-lesson { color: #a9760a; background: #fdf6e6; }
+.ic-points { margin: 8px 0 0; padding-left: 20px; font-size: 13px; line-height: 1.85; color: var(--text-secondary); }
+.ic-points-lesson li::marker { color: #d99a00; }
+
+/* ===== 法规讲解框 ===== */
+.reg-summary-box { margin: 14px 0; border: 1px solid #bfe3c8; border-left: 4px solid #2e9e57; border-radius: 10px; background: #f3fbf5; padding: 12px 14px; }
+.reg-summary-label { font-size: 12px; font-weight: 700; color: #1f7a44; margin-bottom: 6px; }
+.reg-summary-body { font-size: 13px; line-height: 1.85; color: var(--text-secondary); }
+
+/* ===== 子分类详情（术语 / 差异 / 阶段案例） ===== */
+.scd { margin-top: 18px; display: flex; flex-direction: column; gap: 16px; }
+.scd-block { border: 1px solid var(--border-light); border-radius: 12px; padding: 14px 16px; background: #fff; }
+.scd-block-title { font-size: 15px; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; padding-left: 11px; border-left: 4px solid var(--primary-100); }
+
+.scd-terms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.scd-term { display: flex; flex-direction: column; gap: 3px; border: 1px solid var(--border-light); border-radius: 8px; padding: 9px 11px; background: #f8fbff; }
+.scd-term-t { font-size: 13px; font-weight: 700; color: var(--primary-dark); }
+.scd-term-d { font-size: 12.5px; line-height: 1.7; color: var(--text-secondary); }
+
+.scd-diff-desc { font-size: 13.5px; line-height: 1.9; color: var(--text-secondary); background: #fff8ef; border: 1px solid #f3e2c4; border-radius: 8px; padding: 12px 14px; }
+
+.scd-stage { border-top: 1px dashed var(--border-light); padding-top: 10px; margin-top: 10px; }
+.scd-stage:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+.scd-stage-name { font-size: 13.5px; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
+.scd-case-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.scd-case { display: flex; flex-direction: column; gap: 2px; border-left: 3px solid var(--primary-100); background: #f8fbff; border-radius: 0 8px 8px 0; padding: 8px 12px; }
+.scd-case-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.scd-case-desc { font-size: 12.5px; line-height: 1.7; color: var(--text-secondary); }
+
+/* ===== 发现阶段子步骤卡片（靶点→先导→构效→候选） ===== */
+.req-stage-steps { background: linear-gradient(180deg, #f5f9ff 0%, #ffffff 60%); border: 1px solid #dbe7fb; }
+.req-stage-tag.steps { display: inline-block; margin-left: 10px; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #fff; background: var(--primary-100); vertical-align: middle; }
+.req-substeps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.req-substep { border: 1px solid var(--border-light); border-radius: 12px; padding: 12px 14px; background: #fff; box-shadow: 0 1px 3px rgba(20,60,120,.05); }
+.req-substep-head { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.req-substep-idx { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; background: var(--primary-100); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.req-substep-name { font-size: 14px; font-weight: 800; color: var(--text-primary); }
+.req-substep-desc { font-size: 12.5px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 9px; padding-left: 33px; }
+.req-substep .req-block { margin-top: 8px; }
+.req-substep .req-list-req li::marker { color: #e0533d; }
+.req-substep .req-list-tech li::marker { color: #2f7de0; }
+
+/* ===== 第三级子项卡（临床前 IND → CMC包/非临床包/沟通会议） ===== */
+.req-subsub { margin-top: 11px; padding: 11px 12px 4px; border-left: 3px solid var(--primary-100); background: #f7faff; border-radius: 0 10px 10px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 11px; }
+.req-subsub-card { border: 1px solid #cfe0fb; border-radius: 10px; padding: 10px 12px; background: #fff; box-shadow: 0 1px 2px rgba(20,60,120,.05); }
+.req-subsub-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.req-subsub-idx { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: #6f93c9; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.req-subsub-name { font-size: 13px; font-weight: 800; color: var(--text-primary); }
+.req-subsub-desc { font-size: 12px; line-height: 1.65; color: var(--text-secondary); margin-bottom: 7px; }
+.req-subsub-card .req-block { margin-top: 7px; }
+.req-subsub-card .req-list-req li::marker { color: #e0533d; }
+.req-subsub-card .req-list-tech li::marker { color: #2f7de0; }
+
+/* ===== 阶段级质量管理要点块（发现/临床前阶段补充） ===== */
+.req-qm-block { margin-top: 16px; border: 1px solid #bfe3c8; border-left: 4px solid #2e9e57; border-radius: 12px; background: #f3fbf5; padding: 12px 15px; }
+.req-qm-head { font-size: 13px; font-weight: 800; color: #1f7a44; margin-bottom: 8px; }
+.req-qm-block .req-block { margin-top: 8px; }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 手动导入（管理员 CMD/PowerShell）：
+     schtasks /Create /TN "PharmaKB-Backend" /XML "pharma-kb-task.xml"
+     导入前请把下面 <Arguments> 里的脚本路径改成你本机绝对路径。 -->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/01/mit/task">
+  <RegistrationInfo>
+    <Date>2026-08-02T00:00:00</Date>
+    <Author>PharmaKB</Author>
+    <Description>药品质量知识库 9527 法规问答后端（登录时自启，常驻）</Description>
+  </RegistrationInfo>
+  <Triggers>
+    <LogonTrigger>
+      <Enabled>true</Enabled>
+    </LogonTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+    <RestartCount>3</RestartCount>
+    <RestartInterval>PT1M</RestartInterval>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>powershell.exe</Command>
+      <Arguments>-ExecutionPolicy Bypass -File "C:\path\to\pharma-kb-render\scripts\start_backend.ps1" -Tunnel localhost.run</Arguments>
+    </Exec>
+  </Actions>
+</Task>

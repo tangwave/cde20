@@ -1,0 +1,9 @@
+# 不纳入镜像构建上下文
+.git
+.gitignore
+**/__pycache__
+*.pyc
+00_索引/kb.sqlite
+.env
+README.md
+*.md

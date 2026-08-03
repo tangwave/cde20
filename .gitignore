@@ -1,0 +1,19 @@
+# 依赖 / 虚拟环境
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 本地密钥 / 环境
+.env
+*.local
+
+# 大文件：kb.sqlite 约 212MB，超过 GitHub 100MB 单文件限制。
+# 默认用「构建时下载」（scripts/download_kb.sh + Render 环境变量 KB_SQLITE_URL）。
+# 若改用 Git LFS，请删掉下面这行并在 .gitattributes 中启用 LFS 规则（见 README）。
+00_索引/kb.sqlite
+
+# 系统文件
+.DS_Store
+Thumbs.db
