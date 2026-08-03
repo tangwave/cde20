@@ -60,6 +60,89 @@ _load_dotenv()
 os.environ.setdefault("LLM_BASE_URL", "https://open.bigmodel.cn/api/paas/v4/")
 os.environ.setdefault("LLM_MODEL", "glm-4.7-flash")
 
+# ---------------------------------------------------------------- 多模型预设（免重启切换）
+# 内置多家 OpenAI 兼容服务商；用户只需选 provider + 粘贴 API Key 即可使用，
+# 模型列表由预设提供（自定义 provider 允许手填 base_url / model）。
+LLM_PRESETS = [
+    {"id": "zhipu", "name": "智谱 BigModel（GLM）",
+     "base_url": "https://open.bigmodel.cn/api/paas/v4/",
+     "models": ["glm-4.7-flash", "glm-4-plus", "glm-4", "glm-4-air", "glm-4-flash", "glm-4-long"],
+     "default_model": "glm-4.7-flash"},
+    {"id": "deepseek", "name": "DeepSeek",
+     "base_url": "https://api.deepseek.com/v1",
+     "models": ["deepseek-chat", "deepseek-reasoner"],
+     "default_model": "deepseek-chat"},
+    {"id": "qwen", "name": "通义千问（阿里云 DashScope）",
+     "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+     "models": ["qwen-plus", "qwen-max", "qwen-turbo", "qwen-long", "qwen2.5-72b-instruct"],
+     "default_model": "qwen-plus"},
+    {"id": "openai", "name": "OpenAI",
+     "base_url": "https://api.openai.com/v1",
+     "models": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-3.5-turbo"],
+     "default_model": "gpt-4o-mini"},
+    {"id": "moonshot", "name": "月之暗面 Kimi（Moonshot）",
+     "base_url": "https://api.moonshot.cn/v1",
+     "models": ["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"],
+     "default_model": "moonshot-v1-8k"},
+    {"id": "hunyuan", "name": "腾讯混元（Hunyuan）",
+     "base_url": "https://api.hunyuan.cloud.tencent.com/v1",
+     "models": ["hunyuan-turbo", "hunyuan-pro", "hunyuan-standard", "hunyuan-lite"],
+     "default_model": "hunyuan-turbo"},
+    {"id": "doubao", "name": "火山方舟 Doubao（字节）",
+     "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+     "models": ["doubao-seed-1.6-250615", "doubao-pro-32k-241028",
+                "doubao-pro-256k-241115", "doubao-lite-32k-240828"],
+     "default_model": "doubao-seed-1.6-250615"},
+    {"id": "custom", "name": "自定义（兼容 OpenAI）",
+     "base_url": "", "models": [], "default_model": "", "custom": True},
+]
+
+LLM_CFG_FILE = os.path.join(APP_DIR, "llm_config.json")
+LLM_CFG = {}            # 运行时生效配置：{provider, base_url, api_key, model}
+
+
+def _provider_of(base_url):
+    bu = (base_url or "").rstrip("/")
+    for p in LLM_PRESETS:
+        if p.get("base_url") and bu and bu == p["base_url"].rstrip("/"):
+            return p["id"]
+    return "custom"
+
+
+def _load_llm_cfg():
+    """配置优先级：.env / 环境变量  >  llm_config.json（运行时保存，免重启覆盖）。"""
+    cfg = {
+        "provider": os.environ.get("LLM_PROVIDER", "").strip(),
+        "base_url": os.environ.get("LLM_BASE_URL", "").strip(),
+        "api_key": os.environ.get("LLM_API_KEY", "").strip(),
+        "model": os.environ.get("LLM_MODEL", "").strip(),
+    }
+    if os.path.isfile(LLM_CFG_FILE):
+        try:
+            with open(LLM_CFG_FILE, encoding="utf-8") as f:
+                d = json.load(f)
+            if isinstance(d, dict):
+                for k in ("provider", "base_url", "api_key", "model"):
+                    if d.get(k):
+                        cfg[k] = d[k]
+        except Exception:
+            pass
+    if not cfg.get("provider") and cfg.get("base_url"):
+        cfg["provider"] = _provider_of(cfg["base_url"])
+    return cfg
+
+
+def _save_llm_cfg(cfg):
+    """把运行时配置写入 llm_config.json（已 gitignore），使下次启动仍生效。"""
+    try:
+        with open(LLM_CFG_FILE, "w", encoding="utf-8") as f:
+            json.dump(cfg, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
+LLM_CFG = _load_llm_cfg()
+
 
 def _find_root(start, *markers):
     """从 start 向上查找第一个同时满足所有 markers（相对路径）的目录。"""
@@ -146,8 +229,8 @@ def _snippet_from_db(rel, terms, width=120, maxn=2):
 
 
 def _llm_configured():
-    return bool(os.environ.get("LLM_BASE_URL") and os.environ.get("LLM_API_KEY")
-                and os.environ.get("LLM_MODEL"))
+    return bool(LLM_CFG.get("base_url") and LLM_CFG.get("api_key")
+                and LLM_CFG.get("model"))
 
 
 def st_tier(st):
@@ -231,6 +314,8 @@ def health():
         "kb_query": KB_QUERY,
         "kb_sqlite_present": os.path.isfile(kb_sqlite),
         "llm_configured": _llm_configured(),
+        "llm_provider": LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", "")),
+        "llm_model": LLM_CFG.get("model", ""),
         "python": PY,
     }
 
@@ -295,28 +380,31 @@ _RAG_CACHE_TTL = 3600     # 1 小时
 
 def _call_llm(system, user, attempts=2):
     """调用 OpenAI 兼容 chat/completions。未配置返回 None；限流抛 _RateLimited。"""
-    base = os.environ.get("LLM_BASE_URL", "").strip()
-    key = os.environ.get("LLM_API_KEY", "").strip()
-    model = os.environ.get("LLM_MODEL", "").strip()
+    base = LLM_CFG.get("base_url", "").strip()
+    key = LLM_CFG.get("api_key", "").strip()
+    model = LLM_CFG.get("model", "").strip()
     if not (base and key and model):
         return None
     url = base.rstrip("/") + "/chat/completions"
+    # 部分推理模型（deepseek-reasoner / o1 / r1 等）不支持 response_format 与自定义 temperature
+    no_json = bool(re.search(r"reasoner|o1|o3|o4|r1|deepseek-reasoner", model, re.I))
     payload = {
         "model": model,
         "messages": [
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
-        "temperature": 0.2,
-        "response_format": {"type": "json_object"},
     }
+    if not no_json:
+        payload["temperature"] = 0.2
+        payload["response_format"] = {"type": "json_object"}
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
         url, data=data,
         headers={"Content-Type": "application/json",
                  "Authorization": "Bearer " + key},
     )
-    timeout = int(os.environ.get("LLM_TIMEOUT", "60"))
+    timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
     for attempt in range(attempts):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -506,6 +594,74 @@ async def api_qa_rag(request: Request):
         return _rag_query(q.strip(), only_valid)
     except Exception as e:
         return JSONResponse({"error": str(e), "fallback": True}, status_code=500)
+
+
+# ---------------------------------------------------------------- /api/llm-*（模型切换，免重启）
+
+@app.get("/api/llm-presets")
+def llm_presets():
+    """返回内置服务商预设（含 base_url 与可选模型）。"""
+    return {"presets": LLM_PRESETS, "configurable": True}
+
+
+@app.get("/api/llm-config")
+def llm_config_get():
+    """返回当前生效配置（不回传明文 key，仅给掩码与是否已设置标记）。"""
+    key = LLM_CFG.get("api_key", "")
+    masked = (key[:6] + "…" + key[-4:]) if len(key) > 10 else (key or "")
+    return {
+        "provider": LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", "")),
+        "base_url": LLM_CFG.get("base_url", ""),
+        "model": LLM_CFG.get("model", ""),
+        "configured": _llm_configured(),
+        "key_set": bool(key),
+        "api_key_masked": masked,
+    }
+
+
+@app.post("/api/llm-config")
+async def llm_config_post(request: Request):
+    """运行时设置模型：选 provider + 粘贴 API Key 即可；自定义还需填 base_url/model。
+    保存后写入 llm_config.json，立即生效且下次启动保留（免重启）。"""
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+    provider = (body.get("provider") or "").strip()
+    api_key = (body.get("api_key") or "").strip()
+    model = (body.get("model") or "").strip()
+    base_url = (body.get("base_url") or "").strip()
+    # 空 API Key 表示沿用当前已配置的 key（便于仅切换模型/服务商，无需重复粘贴）
+    if not api_key and LLM_CFG.get("api_key"):
+        api_key = LLM_CFG["api_key"]
+    preset = next((p for p in LLM_PRESETS if p["id"] == provider), None)
+    if not preset:
+        return JSONResponse({"ok": False, "error": "未知的服务商 provider"}, status_code=400)
+    if not preset.get("custom"):
+        # 内置服务商：base_url 固定取自预设；model 为空则用默认模型
+        base_url = preset["base_url"]
+        if not model:
+            model = preset.get("default_model", "")
+    if not (base_url and api_key and model):
+        missing = []
+        if not api_key:
+            missing.append("API Key")
+        if not model:
+            missing.append("模型" if preset.get("custom") else "模型")
+        if preset.get("custom") and not base_url:
+            missing.append("Base URL")
+        return JSONResponse({"ok": False,
+                             "error": "请填写：" + "、".join(missing)},
+                            status_code=400)
+    cfg = {"provider": provider, "base_url": base_url,
+           "api_key": api_key, "model": model}
+    LLM_CFG.clear()
+    LLM_CFG.update(cfg)
+    _save_llm_cfg(cfg)
+    return {"ok": True, "provider": provider, "provider_name": preset["name"],
+            "model": model, "base_url": base_url}
 
 
 # ---------------------------------------------------------------- SPA 回退

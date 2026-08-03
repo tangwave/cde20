@@ -15,7 +15,7 @@ pharma-kb-render/
 ├── index.html              # 前端入口（meta[qa-api-base]="/" → 同域实时）
 ├── css/  js/               # 前端资源
 ├── api/
-│   ├── server.py           # FastAPI：静态托管 + /api/qa + /api/health + SPA 回退
+│   ├── server.py           # FastAPI：静态托管 + /api/qa + /api/qa-rag + /api/llm-* + /api/health + SPA 回退
 │   └── requirements.txt    # fastapi, uvicorn, beautifulsoup4, markdownify
 ├── scripts/
 │   ├── kb_query.py         # 本地 SQLite 检索（被 server.py 以子进程调用）
@@ -149,7 +149,18 @@ OpenAI 兼容大模型，按 9527 技能四段式（结论 / 法规依据 / 适�
 > 免费额度存在速率限制（HTTP 429 / 错误码 1302）：站点会**透明提示「AI 限流」**并自动回退到检索摘要；
 > 同一问题 1 小时内命中缓存、不再调用模型，可节省额度。
 
-### 启用 / 更换大模型（在你自托管的机器上，编辑 `.env`）
+### 启用 / 更换大模型
+
+**方式 A（推荐，免重启，在网页里操作）：** 打开 9527 对话 → 点右上角 **⚙️ AI 模型**
+→ 选择服务商（智谱 / DeepSeek / 通义千问 / OpenAI / Kimi / 混元 / 火山方舟 / 自定义）
+→ 粘贴 API Key → **保存并应用**。配置立即生效，并写入服务端 `llm_config.json`
+（已 `.gitignore`，仅存本机），下次启动自动沿用，**无需重启**。
+
+- 内置服务商：选好后模型下拉会自动列出可选模型，通常**只需粘贴 API Key** 即可使用。
+- 切换模型但不想重填 Key：Key 留空即沿用当前已配置的 Key。
+- 自定义：选「自定义」后手填 Base URL 与模型名，可接任意 OpenAI 兼容端点。
+
+**方式 B（编辑 `.env`，需重启）：**
 
 ```bash
 cp .env.example .env        # 然后填入下面三项（默认已指向智谱，通常只填 LLM_API_KEY）
@@ -163,7 +174,12 @@ cp .env.example .env        # 然后填入下面三项（默认已指向智谱�
 | `LLM_TIMEOUT` | 可选，默认 60 秒 | `60` |
 
 支持 DeepSeek / 通义千问 / 智谱 GLM / OpenAI 等任意 OpenAI 兼容端点。
-填好后**重启服务**即生效（`/api/health` 的 `llm_configured` 会变为 `true`）。
+方式 B 填好后**重启服务**即生效（`/api/health` 的 `llm_configured` 会变为 `true`）。
+
+**相关接口（供前端/运维使用）：**
+- `GET /api/llm-presets`：返回内置服务商预设（含 base_url 与模型列表）。
+- `GET /api/llm-config`：返回当前生效配置（不回传明文 Key，仅给掩码与 `configured` 标记）。
+- `POST /api/llm-config`：`{provider, api_key, model, base_url?}` 运行时切换模型（免重启）。
 
 > 注意：知识库全文取自 `kb.sqlite`（`fts.body`），**不依赖外部 `.md` 文件**；
 > 因此即使部署仓库不含法规原文目录，RAG 也能读到全文。

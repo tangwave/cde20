@@ -2034,6 +2034,7 @@ const App = {
     this.renderQaSuggestions();
     this.qaApiBase = this._readQaApiBase();
     this._renderQaMode();
+    this._initModelPanel();
     this._initQaChat();
   },
 
@@ -2473,7 +2474,162 @@ const App = {
     } catch (e) {
       return { fallback: true };
     }
-  }
+  },
+
+  // ---------------- AI 模型切换（多服务商，免重启） ----------------
+
+  _initModelPanel() {
+    const btn = document.getElementById('qa9ModelBtn');
+    if (btn) btn.addEventListener('click', () => this.openModelModal());
+    const close = document.getElementById('qa9ModelClose');
+    if (close) close.addEventListener('click', () => this.closeModelModal());
+    const save = document.getElementById('qa9ModelSave');
+    if (save) save.addEventListener('click', () => this.saveModelConfig());
+    const prov = document.getElementById('qa9Provider');
+    if (prov) prov.addEventListener('change', () => this.onProviderChange());
+    const modal = document.getElementById('qa9ModelModal');
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModelModal(); });
+  },
+
+  _apiBase() {
+    if (!this.qaApiBase || this.qaApiBase === '/' || this.qaApiBase === 'same-origin') return '';
+    return this.qaApiBase;
+  },
+
+  openModelModal() {
+    const m = document.getElementById('qa9ModelModal');
+    if (m) m.style.display = 'flex';
+    const msg = document.getElementById('qa9ModelMsg');
+    if (msg) { msg.textContent = ''; msg.className = 'qa9-model-msg'; }
+    this.loadModelPresets();
+    this.loadModelConfig();
+  },
+
+  closeModelModal() {
+    const m = document.getElementById('qa9ModelModal');
+    if (m) m.style.display = 'none';
+  },
+
+  async loadModelPresets() {
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-presets');
+      if (!r.ok) return;
+      const j = await r.json();
+      const presets = (j && j.presets) || [];
+      this._presets = presets;
+      const sel = document.getElementById('qa9Provider');
+      if (sel) {
+        sel.innerHTML = presets.map(p =>
+          '<option value="' + Penetrator.esc(p.id) + '">' + Penetrator.esc(p.name) + '</option>').join('');
+      }
+    } catch (e) { /* 忽略 */ }
+  },
+
+  async loadModelConfig() {
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-config');
+      if (!r.ok) return;
+      const j = await r.json();
+      const prov = document.getElementById('qa9Provider');
+      if (prov && j.provider) {
+        for (const o of prov.options) { if (o.value === j.provider) { o.selected = true; break; } }
+      }
+      this.onProviderChange();
+      const modelSel = document.getElementById('qa9Model');
+      if (modelSel && j.model) {
+        let found = false;
+        for (const o of modelSel.options) { if (o.value === j.model) { o.selected = true; found = true; break; } }
+        if (!found) {
+          const opt = document.createElement('option');
+          opt.value = j.model; opt.textContent = j.model + '（当前）'; opt.selected = true;
+          modelSel.appendChild(opt);
+        }
+      }
+      const key = document.getElementById('qa9ApiKey');
+      if (key) {
+        key.value = '';
+        key.placeholder = j.key_set
+          ? ('当前已设置：' + (j.api_key_masked || '****') + '（留空则保持不变）')
+          : '粘贴你的 API Key';
+      }
+      const custom = document.getElementById('qa9CustomWrap');
+      if (custom && j.provider === 'custom') {
+        const bu = document.getElementById('qa9BaseUrl');
+        if (bu && j.base_url) bu.value = j.base_url;
+        const mt = document.getElementById('qa9ModelText');
+        if (mt && j.model) mt.value = j.model;
+      }
+      const status = document.getElementById('qa9ModelStatus');
+      if (status) {
+        if (j.configured) {
+          status.className = 'qa9-model-status ok';
+          status.textContent = '✅ 当前已配置：' + (j.provider || '') + ' / ' + (j.model || '');
+        } else {
+          status.className = 'qa9-model-status warn';
+          status.textContent = '⚠️ 尚未配置 AI 模型：粘贴 API Key 并保存即可启用。';
+        }
+      }
+    } catch (e) { /* 忽略 */ }
+  },
+
+  onProviderChange() {
+    const prov = document.getElementById('qa9Provider');
+    const modelSel = document.getElementById('qa9Model');
+    const customWrap = document.getElementById('qa9CustomWrap');
+    if (!prov || !modelSel) return;
+    const pid = prov.value;
+    const preset = (this._presets || []).find(p => p.id === pid) || { models: [] };
+    if (preset.custom) {
+      if (customWrap) customWrap.style.display = '';
+      modelSel.style.display = 'none';
+    } else {
+      if (customWrap) customWrap.style.display = 'none';
+      modelSel.style.display = '';
+      modelSel.innerHTML = (preset.models || []).map(m =>
+        '<option value="' + Penetrator.esc(m) + '">' + Penetrator.esc(m) + '</option>').join('');
+    }
+  },
+
+  async saveModelConfig() {
+    const msg = document.getElementById('qa9ModelMsg');
+    const prov = document.getElementById('qa9Provider');
+    const key = document.getElementById('qa9ApiKey');
+    const pid = prov ? prov.value : '';
+    const preset = (this._presets || []).find(p => p.id === pid) || {};
+    let model = '', base_url = '';
+    if (preset.custom) {
+      const mt = document.getElementById('qa9ModelText');
+      const bu = document.getElementById('qa9BaseUrl');
+      model = mt ? mt.value.trim() : '';
+      base_url = bu ? bu.value.trim() : '';
+    } else {
+      const ms = document.getElementById('qa9Model');
+      model = ms ? ms.value : '';
+    }
+    const apiKey = key ? key.value.trim() : '';
+    const payload = { provider: pid, model: model, base_url: base_url, api_key: apiKey };
+    if (msg) { msg.textContent = '保存中…'; msg.className = 'qa9-model-msg'; }
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const j = await r.json();
+      if (msg) {
+        if (j.ok) {
+          msg.className = 'qa9-model-msg ok';
+          msg.textContent = '✅ 已切换至 ' + (j.provider_name || j.provider) + ' / ' + j.model;
+        } else {
+          msg.className = 'qa9-model-msg err';
+          msg.textContent = '❌ ' + (j.error || '保存失败');
+        }
+      }
+      if (j.ok) setTimeout(() => this.closeModelModal(), 1000);
+    } catch (e) {
+      if (msg) { msg.className = 'qa9-model-msg err'; msg.textContent = '❌ 网络错误，请重试'; }
+    }
+  },
 
   // 渲染大模型 RAG 的四段式回复（同序：结论→依据→提示→时效）
   _buildRagReply(o) {
