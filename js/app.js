@@ -2013,9 +2013,9 @@ const App = {
     });
   },
 
-  /* ============ 法规问答 · 9527 专家 ============
-   * 静态快照模式：REG_KB_FULL（3096 篇元数据）随站分发，运行时客户端检索；
-   * REG_QA_9527 为专家离线撰写的结论/提示/时效，法规依据由 searchRegKB 动态呈现。
+  /* ============ Agnes AI 智能问答 ============
+   * 纯 AI 推理：所有回答均由大模型 RAG 生成，不再做离线条文检索回退。
+   * REG_QA_9527 仅用于渲染「常见问题」建议列表（点击后统一走 AI 推理）。
    */
   initQa9527() {
     const btn = document.getElementById('qa9527Btn');
@@ -2054,10 +2054,10 @@ const App = {
   _renderQaMode() {
     const el = document.getElementById('qa9Mode'); if (!el) return;
     if (this.qaApiBase) {
-      el.textContent = '🤖 AI 问答模式 · 实时';
+      el.textContent = '🤖 AI 问答模式 · 在线';
       el.className = 'qa9-mode live';
     } else {
-      el.textContent = '🤖 AI 问答模式 · 离线快照';
+      el.textContent = '🤖 AI 问答模式 · 未连接';
       el.className = 'qa9-mode snap';
     }
   },
@@ -2126,99 +2126,7 @@ const App = {
     return this.sendQaMessage(item.q);
   },
 
-  searchRegKB(query, opts) {
-    opts = opts || {};
-    const KB = globalThis.REG_KB_FULL || [];
-    const q = (query || '').trim();
-    if (!q) return [];
-    const rawToks = (q.match(/[A-Za-z0-9]+|[\u4e00-\u9fff]+/g) || []);
-    const terms = [];
-    rawToks.forEach(t => {
-      if (/^[A-Za-z0-9]+$/.test(t)) { terms.push(t.toLowerCase()); }
-      else {
-        terms.push(t);
-        if (t.length > 2) {
-          for (let i = 0; i < t.length - 1; i++) terms.push(t.slice(i, i + 2));
-        }
-      }
-    });
-    const termSet = Array.from(new Set(terms)).filter(Boolean);
-    const CAT_W = { '01_法律': -3.0, '02_行政法规': -2.4, '03_部门规章': -1.8, '04_技术指导原则': -1.2, '07_规范性文件': -0.4, '05_行业共识': 0.0 };
-    const scored = [];
-    for (const d of KB) {
-      if (opts.cats && opts.cats.length && opts.cats.indexOf(d.c) < 0) continue;
-      const tier = d.tier == null ? 3 : d.tier;
-      if (opts.onlyValid && tier >= 4) continue;
-      const title = d.t || '';
-      const summ = d.m || '';
-      const issuer = d.i || '';
-      const no = d.d || '';
-      let score = 0;
-      for (const t of termSet) {
-        const tl = t.toLowerCase();
-        if (title.toLowerCase().indexOf(tl) >= 0) score += 6;
-        if (summ.toLowerCase().indexOf(tl) >= 0) score += 2;
-        if (issuer.toLowerCase().indexOf(tl) >= 0) score += 1.5;
-        if (no.toLowerCase().indexOf(tl) >= 0) score += 1;
-      }
-      if (score <= 0) continue;
-      score += (CAT_W[d.c] || 0);
-      if (title.indexOf(q.replace(/\s+/g, '')) >= 0) score -= 20;
-      scored.push({ d, score, tier });
-    }
-    scored.sort((a, b) => {
-      const ta = a.tier <= 2 ? 0 : a.tier;
-      const tb = b.tier <= 2 ? 0 : b.tier;
-      if (ta !== tb) return ta - tb;
-      return a.score - b.score;
-    });
-    return scored.slice(0, opts.max || 20).map(x => x.d);
-  },
-
   /* ---- 实时后端（FastAPI /api/qa）适配器 ---- */
-  async qaApiSearch(q, opts) {
-    opts = opts || {};
-    const base = this.qaApiBase;
-    if (!base) return null;                 // 无后端 → 调用方回退静态快照
-    const params = new URLSearchParams();
-    params.set('q', q);
-    params.set('only_valid', opts.onlyValid === false ? 'false' : 'true');
-    params.set('n', String(Math.min(Math.max(parseInt(opts.max || 20, 10) || 20, 1), 30)));
-    if (opts.cats && opts.cats.length === 1) params.set('cat', opts.cats[0]);  // kb_query --cat 仅单类
-    if (opts.issuer) params.set('issuer', opts.issuer);
-    if (opts.status) params.set('status', opts.status);
-    const url = base + '/api/qa?' + params.toString();
-    try {
-      const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!resp.ok) throw new Error('http ' + resp.status);
-      const data = await resp.json();
-      const rows = Array.isArray(data.results) ? data.results : [];
-      const list = rows.map(r => this._normLiveRow(r));
-      return { list, source: 'live', count: data.count || list.length };
-    } catch (e) {
-      console.warn('[qa9527] 实时接口不可用，回退静态快照：', e);
-      return null;                          // 回退信号
-    }
-  },
-
-  // 将 kb_query.py 的中文键对象归一为 qaCardHtml 兼容形状
-  _normLiveRow(r) {
-    return {
-      t: r['标题'] || '',
-      c: r['分类'] || '',
-      i: r['发布机构'] || '',
-      p: r['发布日期'] || '',
-      e: r['生效日期'] || '',
-      st: r['状态'] || '',
-      d: r['文号'] || '',
-      u: r['来源'] || '',
-      m: r['摘要'] || '',
-      local: r['本地路径'] || '',
-      tier: (r.tier == null ? this.stTier(r['状态']) : r.tier),
-      _hit: (Array.isArray(r['命中片段']) ? r['命中片段'].join(' … ') : (r['命中片段'] || ''))
-    };
-  },
-
   // 效力层级排序：法律 > 行政法规 > 部门规章 > 技术指导原则 > 行业共识 > 规范性文件
   // （与 9527 技能「区分层级」一致；tier 仅区分时效，分类决定效力高低）
   catRank(c) {
@@ -2253,35 +2161,6 @@ const App = {
     return s;
   },
 
-  // 时效核验：依据结果中的状态字段，自动生成【时效说明】（镜像 9527 技能时效核验）
-  _synthTimeNote(cites) {
-    const sts = (cites || []).map(c => c.st || '');
-    const parts = [];
-    if (sts.some(s => /废止|失效|作废/.test(s)))
-      parts.push('检索结果含「已废止/失效」文件，请以其替代或修订后的文件为准。');
-    if (sts.some(s => /征求意见/.test(s)))
-      parts.push('含征求意见稿（尚未生效，仅供前瞻参考）。');
-    if (sts.some(s => /尚未生效/.test(s)))
-      parts.push('含尚未生效文件，注意其施行日期。');
-    if (sts.some(s => /试行|暂行/.test(s)))
-      parts.push('含试行/暂行文件，留意转正后的正式版本。');
-    if (parts.length === 0 && sts.length)
-      parts.push('以上均为现行有效文件，请以其最新版本为准。');
-    return parts.join(' ');
-  },
-
-  // 自由检索也给出【结论/适用提示/时效说明】，与 9527 技能四段式保持一致
-  _synthBlocks(cites) {
-    if (!cites || !cites.length) return null;
-    const lead = cites[0];
-    let concl = lead._hit ? this._firstSent(lead._hit) : this._firstSent(lead.m);
-    if (!concl) concl = '请参见下方法规依据。';
-    concl = '依据《' + lead.t + '》（' + (lead.i || '') + (lead.p ? ('，' + lead.p) : '') + '）：' + concl;
-    const cats = Array.from(new Set(cites.map(c => (c.c || '').replace(/^\d+_/, '')).filter(Boolean)));
-    const tips = '重点核对：' + (cats.join('、') || '相关法规') + '；注意文件的状态与施行日期，以最新有效版本为准。';
-    return { abstract: concl, tips: tips, timeNote: this._synthTimeNote(cites) };
-  },
-
   // 镜像 kb_query.st_tier（后端未返回 tier 时前端兜底）
   stTier(st) {
     st = (st || '').trim();
@@ -2309,11 +2188,11 @@ const App = {
     this._qaMid = 0;
     const box = document.getElementById('qa9Msgs'); if (!box) return;
     box.innerHTML = '';
-    const welcome = '您好，我是 Agnes AI 🤖。\n我可以基于本地知识库（3096 篇现行/历史法规）回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题，并给出结论与依据。\n\n请直接描述您的问题，例如：\n· IND 申报需要哪些非临床研究资料？\n· GLP 适用于哪些研究？\n· 化学药 1 类如何定义？\n· MAH 制度的核心是什么？';
+    const welcome = '您好，我是 Agnes AI 🤖。\n我会基于本地法规知识库进行 AI 推理，回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题，并给出结论与依据。\n\n请直接描述您的问题，例如：\n· IND 申报需要哪些非临床研究资料？\n· GLP 适用于哪些研究？\n· 化学药 1 类如何定义？\n· MAH 制度的核心是什么？';
     this._appendMsg('bot', '<div class="qa9-welcome">' + Penetrator.esc(welcome).replace(/\n/g, '<br>') + '</div>');
   },
 
-  // 发送一条消息（对话模式主入口）
+  // 发送一条消息（对话模式主入口）—— 仅走大模型 RAG（纯 AI 推理），彻底移除离线条文检索回退
   async sendQaMessage(text) {
     text = (text || '').trim();
     if (!text) {
@@ -2325,78 +2204,36 @@ const App = {
     this._appendMsg('user', Penetrator.esc(text));
     const ovEl = document.getElementById('qa9OnlyValid');
     const ov = ovEl ? ovEl.checked : true;
-    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>Agnes AI 正在检索并分析法规库…</span>', true);
+    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>Agnes AI 正在推理分析…</span>', true);
     try {
-      const faq = this.matchFaq(text);
-      let cites, source, intro, blocks = null;
-      if (faq) {
-        let live = null;
-        if (this.qaApiBase) live = await this.qaApiSearch(faq.search || faq.q, { onlyValid: true, max: faq.max || 6, cats: faq.cats });
-        cites = live ? live.list : this.searchRegKB(faq.search || faq.q, { cats: faq.cats, onlyValid: true, max: faq.max || 6 });
-        source = live ? 'live' : 'snapshot';
-        blocks = faq;
-        cites = this._sortCites(cites);
-        intro = '以下是关于该问题的专家结论与法规依据：';
-      } else {
-        // 优先走大模型 RAG（真·问答：检索+读全文+推理）；失败/未配置则回退模板检索
-        let rag = null;
-        if (this.qaApiBase) rag = await this.qaRag(text, { onlyValid: ov });
-        if (rag && !rag.fallback && rag['结论']) {
-          const blocks = { abstract: rag['结论'] || '', tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
-          const intro = 'Agnes AI 基于以下法规材料作答：';
-          const html = this._buildRagReply({ intro: intro, rag: rag, source: 'rag', query: text });
-          this._updateMsg(typingId, html);
-          this._scrollMsgs();
-          return;
-        }
-        // 回退：模板合成（无大模型或 RAG 异常时仍可用）
-        let rateNote = '';
-        if (rag && rag.error === 'llm_rate_limited') {
-          rateNote = '⚠️ 当前 AI 模型限流（免费额度），已切换为法规检索摘要；稍后重试或升级账户即可恢复 AI 推理。\n';
-        }
-        let live = null;
-        if (this.qaApiBase) live = await this.qaApiSearch(text, { onlyValid: ov, max: 8 });
-        cites = live ? live.list : this.searchRegKB(text, { onlyValid: ov, max: 8 });
-        source = live ? 'live' : 'snapshot';
-        cites = this._sortCites(cites);
-        blocks = this._synthBlocks(cites);          // 自由检索也输出四段式，与 WorkBuddy 9527 一致
-        intro = (rateNote ? rateNote : '') + (cites.length
-          ? '根据法规库检索，与「' + text + '」相关的法规如下：'
-          : '未在法规库中检索到与「' + text + '」直接匹配的条文。建议换用更规范的表述（如 GMP / 生产质量管理规范），或取消勾选「仅现行有效」。');
+      if (!this.qaApiBase) {
+        this._updateMsg(typingId,
+          '<div class="qa9-reply-intro">⚠️ AI 模型尚未配置，暂无法作答。请点击右上角「⚙️ AI 模型」选择服务商并填入 API Key 后重试。</div>');
+        this._scrollMsgs();
+        return;
       }
-      const html = this._buildBotReply({ intro: intro, blocks: blocks, cites: cites, source: source, query: text });
-      this._updateMsg(typingId, html);
+      const rag = await this.qaRag(text, { onlyValid: ov });
+      if (rag && !rag.fallback && rag['结论']) {
+        const blocks = { abstract: rag['结论'] || '', tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
+        const intro = 'Agnes AI 基于以下法规材料作答：';
+        const html = this._buildRagReply({ intro: intro, rag: rag, source: 'rag', query: text });
+        this._updateMsg(typingId, html);
+        this._scrollMsgs();
+        return;
+      }
+      // RAG 未返回有效结论：限流 / 出错 / 未配置等，给出透明提示（不再回退离线条文检索）
+      let tip;
+      if (rag && rag.error === 'llm_rate_limited')
+        tip = '⚠️ 当前 AI 模型限流（免费额度）。请稍后重试，或在「⚙️ AI 模型」中切换为其他服务商 / 付费模型。';
+      else if (rag && rag.error)
+        tip = '⚠️ AI 推理暂时不可用（' + String(rag.error) + '）。请稍后重试或检查模型配置。';
+      else
+        tip = '⚠️ AI 未返回有效结论，请换一种问法重试，或检查「⚙️ AI 模型」中的配置。';
+      this._updateMsg(typingId, '<div class="qa9-reply-intro">' + tip + '</div>');
     } catch (e) {
-      this._updateMsg(typingId, '<span class="qa9-typing">检索出错，请稍后重试。</span>');
+      this._updateMsg(typingId, '<div class="qa9-reply-intro">⚠️ 推理出错，请稍后重试。</div>');
     }
     this._scrollMsgs();
-  },
-
-  // 在精选问答中匹配最相关的一条（无 LLM 时用于给出「专家结论」）
-  // 匹配策略：原题命中权重最高，search 次之，glp/gcp/gmp/gvp 等关键词仅作微调，
-  // 以避免「GLP 适用范围」误命中 IND 等含 glp 的其他问答。
-  matchFaq(text) {
-    const QA = globalThis.REG_QA_9527 || [];
-    const q = (text || '').toLowerCase().replace(/\s+/g, '');
-    const qtoks = q.match(/[a-z0-9]{2,}|[\u4e00-\u9fff]{2,}/g) || [];
-    const KW = ['glp', 'gcp', 'gmp', 'gvp', 'mah', 'ind', 'ctd', 'fih'];
-    let best = null, bestScore = 0;
-    QA.forEach((item) => {
-      const qtxt = (item.q || '').toLowerCase().replace(/\s+/g, '');
-      const stxt = (item.search || '').toLowerCase();
-      const hay = qtxt + ' ' + stxt + ' ' + (item.tag || '').toLowerCase();
-      let score = 0;
-      // 原题与题干高度重合（互含）→ 强匹配
-      if (q && (q.indexOf(qtxt) >= 0 || qtxt.indexOf(q) >= 0)) score += 10;
-      // 逐 token：命中原题权重高于 search
-      qtoks.forEach(t => {
-        if (qtxt.indexOf(t) >= 0) score += t.length >= 3 ? 3 : 2;
-        else if (stxt.indexOf(t) >= 0) score += 1;
-      });
-      KW.forEach(k => { if (q.indexOf(k) >= 0 && hay.indexOf(k) >= 0) score += 2; });
-      if (score > bestScore) { bestScore = score; best = item; }
-    });
-    return bestScore >= 3 ? best : null;
   },
 
   _appendMsg(role, html, isTyping) {
@@ -2428,34 +2265,6 @@ const App = {
   _scrollMsgs() {
     const box = document.getElementById('qa9Msgs'); if (!box) return;
     box.scrollTop = box.scrollHeight;
-  },
-
-  // 构造助手气泡 HTML —— 严格对齐 WorkBuddy 9527 技能的四段式顺序：
-  // 【结论】→【法规依据】→【适用提示】→【时效说明】
-  _buildBotReply(o) {
-    let html = '';
-    if (o.intro) html += '<div class="qa9-reply-intro">' + Penetrator.esc(o.intro).replace(/\n/g, '<br>') + '</div>';
-    const lines = (s) => (s || '').split('\n').map(l => '<p>' + Penetrator.esc(l) + '</p>').join('');
-    // 1) 结论
-    if (o.blocks && o.blocks.abstract) {
-      html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(o.blocks.abstract) + '</div>';
-    }
-    // 2) 法规依据（卡片）
-    const badge = o.source === 'live' ? '<span class="qa9-src-badge live">● 实时</span>' : '<span class="qa9-src-badge snap">○ 快照</span>';
-    const note = o.source === 'live' ? '依据来自 Agnes AI 实时数据库（在线检索）' : '依据来自 Agnes AI 本地知识库（静态快照）';
-    html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge + '<div class="qa9-src-note">' + note + '</div></div><div class="qa9-cite-list">';
-    if (o.cites && o.cites.length) o.cites.forEach((d, i) => { html += this.qaCardHtml(d, i + 1); });
-    else html += '<div class="qa9-empty">未检索到明确依据。</div>';
-    html += '</div></div>';
-    // 3) 适用提示
-    if (o.blocks && o.blocks.tips) {
-      html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(o.blocks.tips) + '</div>';
-    }
-    // 4) 时效说明
-    if (o.blocks && o.blocks.timeNote) {
-      html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(o.blocks.timeNote) + '</div>';
-    }
-    return html;
   },
 
   // 调用后端 /api/qa-rag 做真·问答（大模型 RAG）。失败/未配置返回 {fallback:true}
