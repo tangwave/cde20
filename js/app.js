@@ -2054,10 +2054,10 @@ const App = {
   _renderQaMode() {
     const el = document.getElementById('qa9Mode'); if (!el) return;
     if (this.qaApiBase) {
-      el.textContent = '● 实时模式：' + this.qaApiBase + '/api/qa';
+      el.textContent = '🤖 AI 问答模式 · 实时';
       el.className = 'qa9-mode live';
     } else {
-      el.textContent = '○ 快照模式：静态知识库（未配置实时后端）';
+      el.textContent = '🤖 AI 问答模式 · 离线快照';
       el.className = 'qa9-mode snap';
     }
   },
@@ -2309,7 +2309,7 @@ const App = {
     this._qaMid = 0;
     const box = document.getElementById('qa9Msgs'); if (!box) return;
     box.innerHTML = '';
-    const welcome = '您好，我是药品法规专家 9527 🔍。\n我可以基于本地知识库（3096 篇现行/历史法规）回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题，并给出结论与依据。\n\n请直接描述您的问题，例如：\n· IND 申报需要哪些非临床研究资料？\n· GLP 适用于哪些研究？\n· 化学药 1 类如何定义？\n· MAH 制度的核心是什么？';
+    const welcome = '您好，我是 Agnes AI 🤖。\n我可以基于本地知识库（3096 篇现行/历史法规）回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题，并给出结论与依据。\n\n请直接描述您的问题，例如：\n· IND 申报需要哪些非临床研究资料？\n· GLP 适用于哪些研究？\n· 化学药 1 类如何定义？\n· MAH 制度的核心是什么？';
     this._appendMsg('bot', '<div class="qa9-welcome">' + Penetrator.esc(welcome).replace(/\n/g, '<br>') + '</div>');
   },
 
@@ -2325,7 +2325,7 @@ const App = {
     this._appendMsg('user', Penetrator.esc(text));
     const ovEl = document.getElementById('qa9OnlyValid');
     const ov = ovEl ? ovEl.checked : true;
-    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>9527 正在检索并分析法规库…</span>', true);
+    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>Agnes AI 正在检索并分析法规库…</span>', true);
     try {
       const faq = this.matchFaq(text);
       let cites, source, intro, blocks = null;
@@ -2343,7 +2343,7 @@ const App = {
         if (this.qaApiBase) rag = await this.qaRag(text, { onlyValid: ov });
         if (rag && !rag.fallback && rag['结论']) {
           const blocks = { abstract: rag['结论'] || '', tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
-          const intro = '9527（AI 推理）基于以下法规材料作答：';
+          const intro = 'Agnes AI 基于以下法规材料作答：';
           const html = this._buildRagReply({ intro: intro, rag: rag, source: 'rag', query: text });
           this._updateMsg(typingId, html);
           this._scrollMsgs();
@@ -2442,7 +2442,7 @@ const App = {
     }
     // 2) 法规依据（卡片）
     const badge = o.source === 'live' ? '<span class="qa9-src-badge live">● 实时</span>' : '<span class="qa9-src-badge snap">○ 快照</span>';
-    const note = o.source === 'live' ? '依据来自 9527 实时数据库（在线检索）' : '依据来自 9527 本地知识库（静态快照）';
+    const note = o.source === 'live' ? '依据来自 Agnes AI 实时数据库（在线检索）' : '依据来自 Agnes AI 本地知识库（静态快照）';
     html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge + '<div class="qa9-src-note">' + note + '</div></div><div class="qa9-cite-list">';
     if (o.cites && o.cites.length) o.cites.forEach((d, i) => { html += this.qaCardHtml(d, i + 1); });
     else html += '<div class="qa9-empty">未检索到明确依据。</div>';
@@ -2641,7 +2641,7 @@ const App = {
     }
     const badge = '<span class="qa9-src-badge rag">● AI 推理</span>';
     html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
-            '<div class="qa9-src-note">依据来自 9527 实时数据库 + 大模型解读</div></div><div class="qa9-cite-list">';
+            '<div class="qa9-src-note">依据来自 Agnes AI 实时数据库 + 大模型解读</div></div><div class="qa9-cite-list">';
     const basis = (o.rag && o.rag['法规依据']) || [];
     if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
     else html += '<div class="qa9-empty">未检索到明确依据。</div>';

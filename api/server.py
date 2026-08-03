@@ -93,6 +93,9 @@ LLM_PRESETS = [
      "models": ["doubao-seed-1.6-250615", "doubao-pro-32k-241028",
                 "doubao-pro-256k-241115", "doubao-lite-32k-240828"],
      "default_model": "doubao-seed-1.6-250615"},
+    {"id": "agnes", "name": "Agnes AI",
+     "base_url": "https://api.agnes-ai.cn/v1",
+     "models": ["AGNES"], "default_model": "AGNES"},
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
