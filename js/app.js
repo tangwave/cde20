@@ -2324,7 +2324,7 @@ const App = {
     this._appendMsg('user', Penetrator.esc(text));
     const ovEl = document.getElementById('qa9OnlyValid');
     const ov = ovEl ? ovEl.checked : true;
-    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>9527 正在检索法规库…</span>', true);
+    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>9527 正在检索并分析法规库…</span>', true);
     try {
       const faq = this.matchFaq(text);
       let cites, source, intro, blocks = null;
@@ -2337,15 +2337,31 @@ const App = {
         cites = this._sortCites(cites);
         intro = '以下是关于该问题的专家结论与法规依据：';
       } else {
+        // 优先走大模型 RAG（真·问答：检索+读全文+推理）；失败/未配置则回退模板检索
+        let rag = null;
+        if (this.qaApiBase) rag = await this.qaRag(text, { onlyValid: ov });
+        if (rag && !rag.fallback && rag['结论']) {
+          const blocks = { abstract: rag['结论'] || '', tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
+          const intro = '9527（AI 推理）基于以下法规材料作答：';
+          const html = this._buildRagReply({ intro: intro, rag: rag, source: 'rag', query: text });
+          this._updateMsg(typingId, html);
+          this._scrollMsgs();
+          return;
+        }
+        // 回退：模板合成（无大模型或 RAG 异常时仍可用）
+        let rateNote = '';
+        if (rag && rag.error === 'llm_rate_limited') {
+          rateNote = '⚠️ 当前 AI 模型限流（免费额度），已切换为法规检索摘要；稍后重试或升级账户即可恢复 AI 推理。\n';
+        }
         let live = null;
         if (this.qaApiBase) live = await this.qaApiSearch(text, { onlyValid: ov, max: 8 });
         cites = live ? live.list : this.searchRegKB(text, { onlyValid: ov, max: 8 });
         source = live ? 'live' : 'snapshot';
         cites = this._sortCites(cites);
         blocks = this._synthBlocks(cites);          // 自由检索也输出四段式，与 WorkBuddy 9527 一致
-        intro = cites.length
+        intro = (rateNote ? rateNote : '') + (cites.length
           ? '根据法规库检索，与「' + text + '」相关的法规如下：'
-          : '未在法规库中检索到与「' + text + '」直接匹配的条文。建议换用更规范的表述（如 GMP / 生产质量管理规范），或取消勾选「仅现行有效」。';
+          : '未在法规库中检索到与「' + text + '」直接匹配的条文。建议换用更规范的表述（如 GMP / 生产质量管理规范），或取消勾选「仅现行有效」。');
       }
       const html = this._buildBotReply({ intro: intro, blocks: blocks, cites: cites, source: source, query: text });
       this._updateMsg(typingId, html);
@@ -2440,6 +2456,76 @@ const App = {
     }
     return html;
   },
+
+  // 调用后端 /api/qa-rag 做真·问答（大模型 RAG）。失败/未配置返回 {fallback:true}
+  async qaRag(text, opts) {
+    if (!this.qaApiBase) return { fallback: true };
+    const base = (this.qaApiBase === '/' || this.qaApiBase === 'same-origin') ? '' : this.qaApiBase;
+    const url = base + '/api/qa-rag';
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: text, only_valid: opts && opts.onlyValid !== false })
+      });
+      if (!resp.ok) return { fallback: true };
+      return await resp.json();
+    } catch (e) {
+      return { fallback: true };
+    }
+  }
+
+  // 渲染大模型 RAG 的四段式回复（同序：结论→依据→提示→时效）
+  _buildRagReply(o) {
+    let html = '';
+    if (o.intro) html += '<div class="qa9-reply-intro">' + Penetrator.esc(o.intro).replace(/\n/g, '<br>') + '</div>';
+    const lines = (s) => (s || '').split('\n').map(l => '<p>' + Penetrator.esc(l) + '</p>').join('');
+    if (o.blocks && o.blocks.abstract) {
+      html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(o.blocks.abstract) + '</div>';
+    }
+    const badge = '<span class="qa9-src-badge rag">● AI 推理</span>';
+    html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
+            '<div class="qa9-src-note">依据来自 9527 实时数据库 + 大模型解读</div></div><div class="qa9-cite-list">';
+    const basis = (o.rag && o.rag['法规依据']) || [];
+    if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
+    else html += '<div class="qa9-empty">未检索到明确依据。</div>';
+    html += '</div></div>';
+    if (o.blocks && o.blocks.tips) {
+      html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(o.blocks.tips) + '</div>';
+    }
+    if (o.blocks && o.blocks.timeNote) {
+      html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(o.blocks.timeNote) + '</div>';
+    }
+    return html;
+  }
+
+  // 渲染 RAG 返回的法规依据卡片（字段：标题/引用原文/本地路径/来源/文号/发布日期/状态）
+  ragCardHtml(c, n) {
+    const st = c['状态'] || '';
+    const tier = this.stTier(st);
+    let badge, bcls;
+    if (tier === 0) { badge = '现行有效'; bcls = 'valid'; }
+    else if (tier === 1) { badge = '试行'; bcls = 'trial'; }
+    else if (tier === 2) { badge = '尚未生效'; bcls = 'pending'; }
+    else if (tier === 3) { badge = '参考'; bcls = 'ref'; }
+    else if (tier <= 5) { badge = '征求意见'; bcls = 'draft'; }
+    else { badge = '已废止'; bcls = 'repealed'; }
+    const title = (n ? n + '. ' : '') + '《' + (c['标题'] || '') + '》';
+    const metaParts = [c['发布机构'], c['文号'], c['发布日期'], st].filter(Boolean).map(x => Penetrator.esc(x));
+    const meta = metaParts.length ? '（' + metaParts.join('，') + '）' : '';
+    const quote = c['引用原文']
+      ? '<div class="qa9-card-hit">原文摘录：' + Penetrator.esc(this._clip(c['引用原文'], 400)) + '</div>'
+      : '';
+    const local = c['本地路径']
+      ? '<div class="qa9-card-local">本地：' + Penetrator.esc(c['本地路径']) + '</div>'
+      : '';
+    const src = c['来源'] ? '<a class="qa9-src" href="' + Penetrator.esc(c['来源']) + '" target="_blank" rel="noopener">🔗 官方来源 ↗</a>' : '';
+    return '<div class="qa9-card ' + bcls + '">' +
+      '<div class="qa9-card-top"><span class="qa9-badge ' + bcls + '">' + badge + '</span>' +
+      '<span class="qa9-card-title">' + Penetrator.esc(title) + '</span></div>' +
+      '<div class="qa9-card-meta">' + meta + '</div>' +
+      quote + local + src + '</div>';
+  }
 
   qaCardHtml(d, n) {
     const tier = d.tier == null ? 3 : d.tier;

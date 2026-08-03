@@ -137,8 +137,33 @@ PORT=8000 bash start.sh          # start.sh 会在缺库时按 KB_SQLITE_URL 下
 - `n` 钳制 1–30，`q` 长度 1–200，超时 25s。
 - SPA 回退对 `api/*` 返回 404，不泄露内部文件。
 
-## 进阶：从「实时引用」到「真·问答」
+## 进阶：从「实时引用」到「真·问答」（已内置 RAG 后端）
 
-当前只解决检索实时性（法规依据卡片来自最新库），专家【结论】由前端根据命中结果
-自动合成（原文摘录 + 适用提示 + 时效核验），格式与 9527 技能一致。
-要 LLM 实时撰写解读，可在 `api/server.py` 增加 `POST /api/qa-rag`（接 LLM + 检索增强）。
+当前后端已内置 `POST /api/qa-rag`：**多轮检索 → 从 `kb.sqlite` 取命中全文 → 调用
+OpenAI 兼容大模型，按 9527 技能四段式（结论 / 法规依据 / 适用提示 / 时效说明）合成答案**，
+并逐字摘录原文、标注本地路径与来源。前端对自由提问默认走该接口，与 WorkBuddy 内
+9527 的回答质量对齐；**未配置大模型时自动回退**到原有「模板检索」模式，站点不会白屏。
+
+> **默认即智谱 BigModel GLM-4.7-Flash**：`server.py` 已内置 `LLM_BASE_URL` 与 `LLM_MODEL` 默认值，
+> 因此你只需在 `.env` 填入 `LLM_API_KEY`（形如 `id.secret`）即可，无需改其它项。
+> 免费额度存在速率限制（HTTP 429 / 错误码 1302）：站点会**透明提示「AI 限流」**并自动回退到检索摘要；
+> 同一问题 1 小时内命中缓存、不再调用模型，可节省额度。
+
+### 启用 / 更换大模型（在你自托管的机器上，编辑 `.env`）
+
+```bash
+cp .env.example .env        # 然后填入下面三项（默认已指向智谱，通常只填 LLM_API_KEY）
+```
+
+| 变量 | 说明 | 默认 / 示例 |
+|---|---|---|
+| `LLM_BASE_URL` | OpenAI 兼容的 API 基址（不含 `/chat/completions`） | `https://open.bigmodel.cn/api/paas/v4/` |
+| `LLM_API_KEY` | 你的 API Key（智谱形如 `id.secret`） | `5d8c7367....QCO4oPW....` |
+| `LLM_MODEL` | 模型名 | `glm-4.7-flash` / `deepseek-chat` / `qwen-plus` / `glm-4-plus` / `gpt-4o` |
+| `LLM_TIMEOUT` | 可选，默认 60 秒 | `60` |
+
+支持 DeepSeek / 通义千问 / 智谱 GLM / OpenAI 等任意 OpenAI 兼容端点。
+填好后**重启服务**即生效（`/api/health` 的 `llm_configured` 会变为 `true`）。
+
+> 注意：知识库全文取自 `kb.sqlite`（`fts.body`），**不依赖外部 `.md` 文件**；
+> 因此即使部署仓库不含法规原文目录，RAG 也能读到全文。
