@@ -2220,7 +2220,8 @@ const App = {
       }
       const rag = await this.qaRag(text, { onlyValid: ov, mode: this._qaMode || 'local' });
       if (rag && !rag.fallback && rag['结论']) {
-        const blocks = { abstract: rag['结论'] || '', tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
+        const blocks = { abstract: rag['结论'] || '', thinking: rag['思考分析'] || '',
+                        tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
         const intro = (this._qaMode === 'web')
           ? 'Agnes AI 已基于联网 / 通用知识作答：'
           : 'Agnes AI 基于以下法规材料作答：';
@@ -2718,6 +2719,9 @@ const App = {
     let html = '';
     if (o.intro) html += '<div class="qa9-reply-intro">' + Penetrator.esc(o.intro).replace(/\n/g, '<br>') + '</div>';
     const lines = (s) => (s || '').split('\n').map(l => '<p>' + Penetrator.esc(l) + '</p>').join('');
+    if (o.blocks && o.blocks.thinking) {
+      html += '<div class="qa9-block qa9-think"><div class="qa9-block-h">💡 AI 思考分析</div>' + lines(o.blocks.thinking) + '</div>';
+    }
     if (o.blocks && o.blocks.abstract) {
       html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(o.blocks.abstract) + '</div>';
     }

@@ -165,6 +165,8 @@
 }
 .qa9-block-h { font-size: 13px; font-weight: 700; color: var(--primary-dark); margin-bottom: 5px; }
 .qa9-concl { border-left: 4px solid var(--primary); background: var(--bg-active); }
+.qa9-think { border-left: 4px solid #f0a020; background: linear-gradient(180deg,#fff8ec,#fffdf8); }
+.qa9-think .qa9-block-h { color: #c47d00; }
 .qa9-block p { margin: 4px 0; font-size: 13.5px; line-height: 1.7; color: var(--text-primary); white-space: pre-wrap; }
 
 /* 法规卡片（对话气泡内复用） */
