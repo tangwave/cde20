@@ -26,6 +26,7 @@ import concurrent.futures
 import urllib.error
 import urllib.parse
 import urllib.request
+from html.parser import HTMLParser
 
 from fastapi import FastAPI, Query, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -830,7 +831,7 @@ def _search_ddg(query, n):
                           "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
             "Content-Type": "application/x-www-form-urlencoded",
         })
-        with urllib.request.urlopen(req, timeout=10) as r:
+        with urllib.request.urlopen(req, timeout=5) as r:
             html = r.read().decode("utf-8", "ignore")
     except Exception:
         return []
@@ -857,7 +858,7 @@ def _search_wiki(query, n):
         url = ("https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
                + urllib.parse.quote(query) + "&format=json&srlimit=" + str(n))
         req = urllib.request.Request(url, headers={"User-Agent": "AgnesAI/1.0"})
-        with urllib.request.urlopen(req, timeout=10) as r:
+        with urllib.request.urlopen(req, timeout=5) as r:
             j = json.loads(r.read().decode("utf-8", "ignore"))
         out = []
         for it in (j.get("query", {}) or {}).get("search", []) or []:
@@ -871,10 +872,84 @@ def _search_wiki(query, n):
         return []
 
 
-def _search_bing(query, n):
+class _BingParser(HTMLParser):
+    """用标准库解析 Bing 结果页，正确应对 <li class="b_algo" ...> 带额外属性
+    以及块内嵌套 </li> 的情况（正则非贪婪匹配会提前截断，导致取不到标题链接）。"""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.results = []
+        self.block = None
+        self.stack = []          # b_algo 块内已打开的标签栈（用于匹配嵌套 </li>）
+        self.in_h2 = False
+        self.in_a_h2 = False
+        self.in_p = False
+        self.a_buf = []
+        self.p_buf = []
+
+    def handle_starttag(self, tag, attrs):
+        d = dict(attrs)
+        if tag == "li":
+            cls = (d.get("class") or "")
+            if "b_algo" in cls.split():
+                self.block = {"title": "", "url": "", "snippet": ""}
+                self.stack = ["li"]
+                return
+            if self.block is not None:
+                self.stack.append(tag)
+        if self.block is None:
+            return
+        if tag == "h2":
+            self.in_h2 = True
+        elif tag == "a" and self.in_h2 and not self.block["url"]:
+            href = d.get("href", "")
+            if (href.startswith("http") and "bing.com/ck/a" not in href
+                    and "bing.com/aclick" not in href):
+                self.block["url"] = href
+                self.in_a_h2 = True
+                self.a_buf = []
+        elif tag == "p" and not self.block["snippet"]:
+            self.in_p = True
+            self.p_buf = []
+
+    def handle_endtag(self, tag):
+        if self.block is None:
+            return
+        if tag == "a" and self.in_a_h2:
+            self.block["title"] = re.sub(r"\s+", " ", "".join(self.a_buf)).strip()
+            self.in_a_h2 = False
+            self.a_buf = []
+        if tag == "h2":
+            self.in_h2 = False
+        if tag == "p" and self.in_p:
+            self.block["snippet"] = re.sub(r"\s+", " ", "".join(self.p_buf)).strip()
+            self.in_p = False
+            self.p_buf = []
+        if tag == "li":
+            if self.stack and self.stack[-1] == "li":
+                self.stack.pop()
+                if not self.stack:
+                    b = self.block
+                    if b["title"] and b["url"]:
+                        self.results.append(b)
+                    self.block = None
+            elif self.stack:
+                self.stack.pop()
+
+    def handle_data(self, data):
+        if self.block is None:
+            return
+        if self.in_a_h2:
+            self.a_buf.append(data)
+        elif self.in_p:
+            self.p_buf.append(data)
+
+
+def _search_bing(query, n, host="www.bing.com"):
     """必应搜索（keyless，中国大陆可访问，作为主力免费检索源）。"""
     try:
-        url = "https://www.bing.com/search?q=" + urllib.parse.quote(query) + "&setlang=zh-CN&ensearch=0"
+        url = ("https://" + host + "/search?q=" + urllib.parse.quote(query)
+               + "&setlang=zh-CN&ensearch=0")
         req = urllib.request.Request(url, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
@@ -884,25 +959,12 @@ def _search_bing(query, n):
             html = r.read().decode("utf-8", "ignore")
     except Exception:
         return []
-    out = []
-    # 每条结果：<li class="b_algo"> ... <h2><a href="URL">标题</a></h2> ... <p>摘要</p>
-    blocks = re.findall(r'<li class="b_algo">(.*?)</li>', html, re.S)
-    for b in blocks:
-        m = re.search(r'<h2>\s*<a[^>]+href="([^"]+)"', b)
-        if not m:
-            continue
-        u = m.group(1)
-        if not u.startswith("http"):
-            continue
-        t = re.search(r'<h2>\s*<a[^>]*>(.*?)</a>', b, re.S)
-        title = re.sub(r"<[^>]+>", "", t.group(1)).strip() if t else ""
-        s = re.search(r'<p[^>]*>(.*?)</p>', b, re.S)
-        snippet = re.sub(r"<[^>]+>", "", s.group(1)).strip() if s else ""
-        if title and u:
-            out.append({"title": title, "url": u, "snippet": snippet})
-        if len(out) >= n:
-            break
-    return out
+    p = _BingParser()
+    try:
+        p.feed(html)
+    except Exception:
+        return []
+    return p.results[:n]
 
 
 def _web_search(query, max_results=6):
@@ -929,7 +991,8 @@ def _web_search(query, max_results=6):
         return results[:max_results]
     # 2) keyless 源并行抓取（Bing 为主力，DDG/Wiki 补充）
     keyless = [_search_bing, _search_ddg, _search_wiki]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(keyless)) as ex:
+    ex = concurrent.futures.ThreadPoolExecutor(max_workers=len(keyless))
+    try:
         futs = {ex.submit(fn, query, max_results): fn for fn in keyless}
         for fut in concurrent.futures.as_completed(futs):
             try:
@@ -938,6 +1001,12 @@ def _web_search(query, max_results=6):
                 pass
             if len(results) >= max_results:
                 break
+    finally:
+        # 不阻塞等待：DDG/Wiki 在某些环境会超时，Bing 已先行返回即可立即返回
+        ex.shutdown(wait=False)
+    # 3) Bing 主源兜底：若 www 被区域拦截，再试 cn.bing.com
+    if not results:
+        _add(_search_bing(query, max_results, host="cn.bing.com"))
     return results[:max_results]
 
 
