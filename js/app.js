@@ -2732,9 +2732,16 @@ const App = {
     if (src === 'web') {
       // 联网搜索模式：渲染「实时检索来源」卡片（可点击跳转原文）
       const ws = (o.rag && o.rag.web_sources) || [];
+      // AI 提炼出的检索式：展示「AI 决定搜什么」，让思考过程可见
+      const sq = (o.rag && o.rag.search_queries) || [];
+      let sqHtml = '';
+      if (sq.length) {
+        sqHtml = '<div class="qa9-sq">🔍 AI 提炼的检索式：' +
+                 sq.map(s => '<span class="qa9-sq-tag">' + Penetrator.esc(s) + '</span>').join('') + '</div>';
+      }
       html += '<div class="qa9-block"><div class="qa9-block-h">【检索来源】 ' + badge +
               '<div class="qa9-src-note">以下为实时网络检索结果（点击可跳转原文）</div></div>' +
-              '<div class="qa9-web-src-list">';
+              sqHtml + '<div class="qa9-web-src-list">';
       if (ws.length) ws.forEach((s, i) => { html += this.webSrcHtml(s, i + 1); });
       else html += '<div class="qa9-empty">本次未检索到外部来源（可能当前网络受限，可切换网络后重试）。</div>';
       html += '</div></div>';

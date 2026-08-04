@@ -26,6 +26,7 @@ import concurrent.futures
 import urllib.error
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
 from fastapi import FastAPI, Query, Request
@@ -948,8 +949,43 @@ class _BingParser(HTMLParser):
             self.p_buf.append(data)
 
 
+def _search_bing_rss(query, n, host="www.bing.com"):
+    """必应 RSS 检索（keyless 主力源）。
+
+    相比抓 HTML，RSS 输出稳定得多：HTML 页面在无 Cookie 时经常被必应返回
+    随机缓存的无关 SERP（实测会串到完全不相干的内容），而 RSS 始终返回与
+    查询对应的结构化 item（title / link / description / pubDate）。"""
+    try:
+        url = ("https://" + host + "/search?q=" + urllib.parse.quote(query)
+               + "&format=rss&count=" + str(max(n, 8)) + "&setlang=zh-CN")
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+        })
+        with urllib.request.urlopen(req, timeout=8) as r:
+            xml = r.read().decode("utf-8", "ignore")
+    except Exception:
+        return []
+    out = []
+    try:
+        root = ET.fromstring(xml)
+        for item in root.iter("item"):
+            title = (item.findtext("title") or "").strip()
+            link = (item.findtext("link") or "").strip()
+            desc = (item.findtext("description") or "").strip()
+            date = (item.findtext("pubDate") or "").strip()
+            if title and link:
+                out.append({"title": title, "url": link, "snippet": desc, "date": date})
+            if len(out) >= n:
+                break
+    except Exception:
+        return []
+    return out
+
+
 def _search_bing(query, n, host="www.bing.com"):
-    """必应搜索（keyless，中国大陆可访问，作为主力免费检索源）。"""
+    """必应搜索（HTML 解析，作为 RSS 源的备用）。"""
     try:
         url = ("https://" + host + "/search?q=" + urllib.parse.quote(query)
                + "&setlang=zh-CN&ensearch=0")
@@ -968,6 +1004,267 @@ def _search_bing(query, n, host="www.bing.com"):
     except Exception:
         return []
     return p.results[:n]
+
+
+_REFINE_SYSTEM = """你是搜索策略专家，服务于中国药品法规问答。用户会给你一个自然语言问题，
+请提炼出 2-3 个**用于搜索引擎的精炼检索式**。
+
+要求：
+1. 只保留专业名词与关键限定词，**删除**「是什么 / 如何 / 怎么 / 哪些 / 请问 / 需要 / 的条件 / 吗 / 呢」等疑问与口语词。
+2. 每个检索式 4-14 个字，词与词之间用空格分隔；不要整句、不要标点。
+3. 覆盖不同角度：如①核心概念词 ②法规/指导原则名称 ③监管机构限定（NMPA、CDE、药审中心）。
+4. 使用中国药监领域的**规范术语**（例如「BE 试验」写成「生物等效性试验」，「一致性评价」保留原词）。
+5. **每个检索式必须足够具体**：必须保留问题里最独特的专业词（如「上市许可持有人」「生物等效性豁免」），
+   严禁产出「药品监管」「创新药申报」「非临床研究」这类只有两三个泛化字、会被搜索引擎退化成百科或
+   完全跑题结果的宽泛词。
+6. **强烈优先输出法规 / 指导原则的完整规范名称**（这是命中率最高的检索式形式），例如：
+   「药物非临床研究质量管理规范」「人体生物等效性试验豁免指导原则」「药品注册管理办法」
+   「药品上市许可持有人落实药品质量安全主体责任监督管理规定」。
+   至少有 1 条检索式应当是这种「法规全称」形式。
+
+只输出 JSON，不要任何额外文字：{"检索式":["...","...","..."]}"""
+
+# 自然语言问句中应从检索式里剔除的疑问 / 口语 / 虚词
+_STOPWORDS = [
+    "是什么", "有什么", "为什么", "怎么样", "怎么办", "哪些", "如何", "怎么", "怎样",
+    "请问", "麻烦", "帮我", "我想", "想知道", "告诉我", "介绍一下", "详细说明",
+    "的条件", "的要求", "的规定", "的流程", "的区别", "的注意事项",
+    "需要注意", "有没有", "可不可以", "能不能", "是否", "呢", "吗", "啊", "吧",
+    "？", "?", "。", "，", ",", "、", "！", "!", "；", ";", "：", ":",
+]
+
+
+# 行业缩写 / 俗称 → 规范术语（检索引擎对规范术语的召回明显更准）
+_TERM_MAP = [
+    ("BE试验", "生物等效性"), ("BE研究", "生物等效性"), ("BE豁免", "生物等效性豁免"),
+    ("BCS分类", "生物药剂学分类系统"),
+    ("IND申报", "新药临床试验申请"), ("IND", "新药临床试验申请"),
+    ("ANDA", "仿制药申请"), ("NDA", "药品上市许可申请"),
+    ("MAH", "药品上市许可持有人"),
+    ("GMP", "药品生产质量管理规范"), ("GCP", "药物临床试验质量管理规范"),
+    ("GLP", "药物非临床研究质量管理规范"),
+    ("CTD", "通用技术文档"), ("CDE", "药品审评中心"),
+]
+# 检索式尾部的泛化修饰词。实测必应对中文只认「精确实体名词」：
+# 「药品上市许可持有人」能命中官方文件，而「药品上市许可持有人 主体责任」会退化成百科。
+_TAIL_NOISE = ("条件", "要求", "规定", "流程", "标准", "办法", "细则", "说明", "问题",
+               "主体责任", "责任", "义务", "职责", "内容", "范围", "程序", "方式",
+               "区别", "影响", "情形", "时限", "资料")
+
+
+def _normalize_query(s):
+    """把缩写扩成规范术语，并剥掉尾部泛化词，提升搜索引擎召回精度。"""
+    out = (s or "").strip()
+    for a, b in _TERM_MAP:
+        if a in out and b not in out:
+            out = out.replace(a, b)
+    out = re.sub(r"\s+", " ", out).strip()
+    for w in _TAIL_NOISE:                # 仅剥尾部，避免破坏中间语义
+        if out.endswith(w) and len(out) > len(w) + 2:
+            out = out[: -len(w)].strip()
+    return out
+
+
+# 领域术语 → 检索命中率最高的「规范全称」。
+# 实测必应对法规全称的召回近乎精确（如「药物非临床研究质量管理规范」相关度 1.00），
+# 而大模型提炼的检索式质量并不稳定，因此用这张表做确定性兜底。
+_DOMAIN_TERMS = [
+    # (问题中出现的触发词, 用于检索的规范全称)
+    ("生物等效性豁免", "人体生物等效性试验豁免指导原则"),
+    ("BE豁免", "人体生物等效性试验豁免指导原则"),
+    ("BE试验", "生物等效性豁免"),
+    ("生物等效性", "生物等效性豁免"),
+    ("一致性评价", "仿制药质量和疗效一致性评价"),
+    ("上市许可持有人", "药品上市许可持有人"),
+    ("MAH", "药品上市许可持有人"),
+    ("非临床研究", "药物非临床研究质量管理规范"),
+    ("GLP", "药物非临床研究质量管理规范"),
+    ("临床试验质量管理", "药物临床试验质量管理规范"),
+    ("GCP", "药物临床试验质量管理规范"),
+    ("生产质量管理", "药品生产质量管理规范"),
+    ("GMP", "药品生产质量管理规范"),
+    ("经营质量管理", "药品经营质量管理规范"),
+    ("注册管理", "药品注册管理办法"),
+    ("药品注册", "药品注册管理办法"),
+    ("不良反应", "药品不良反应报告和监测管理办法"),
+    ("药品召回", "药品召回管理办法"),
+    ("疫苗", "疫苗管理法"),
+    ("说明书", "药品说明书和标签管理规定"),
+    ("优先审评", "药品优先审评审批"),
+    ("附条件批准", "附条件批准上市申请"),
+    ("突破性治疗", "突破性治疗药物审评审批"),
+    ("关联审评", "原料药辅料和包装材料关联审评审批"),
+    ("变更", "已上市药品变更管理"),
+    ("稳定性", "原料药和制剂稳定性试验指导原则"),
+    ("溶出度", "溶出度试验指导原则"),
+    ("杂质", "药品杂质研究指导原则"),
+    ("IND", "新药临床试验申请"),
+    ("补充申请", "药品补充申请"),
+    ("药品管理法", "中华人民共和国药品管理法"),
+]
+
+
+def _domain_queries(q):
+    """从用户问题里识别领域术语，直接产出高命中率的「法规全称」检索式。
+
+    这是不依赖大模型的确定性兜底：即使模型提炼失败或产出宽泛词，
+    只要问题命中术语表，就仍能检索到权威原文。"""
+    s = (q or "")
+    hits, seen = [], set()
+    for trig, canonical in _DOMAIN_TERMS:
+        if trig in s and canonical not in seen:
+            seen.add(canonical)
+            hits.append((len(trig), canonical))
+    hits.sort(key=lambda x: -x[0])        # 触发词越长越具体，优先使用
+    return [c for _, c in hits][:3]
+
+
+def _refine_queries(q):
+    """把用户的自然语言问题提炼成 1-3 个精炼检索式（AI 主动思考「该搜什么」）。
+
+    背景：必应对长自然语言中文句子的召回极差——实测「化学药品仿制药BE试验豁免的
+    条件是什么」会退化成「化学」的泛化结果，而精炼成「生物等效性豁免」即可直接
+    命中《人体生物等效性试验豁免指导原则》。因此检索前必须先做 query rewriting。
+
+    优先用大模型提炼；模型未配置 / 失败时回退到规则法（剔除停用词）。
+    返回列表，首项始终保证非空。"""
+    q = (q or "").strip()
+    if not q:
+        return []
+    # 0) 确定性兜底：问题里命中的领域术语 → 法规全称（命中率最高，始终参与检索）
+    domain = _domain_queries(q)
+    # 1) 大模型提炼（最准，能补充规范术语与机构限定）
+    try:
+        raw = _call_llm(_REFINE_SYSTEM, q, attempts=1)
+        if raw:
+            data = _parse_llm_json(raw)
+            qs = data.get("检索式") or data.get("queries") or []
+            out = []
+            for s in qs:
+                s = re.sub(r"\s+", " ", str(s or "").strip())
+                if 2 <= len(s) <= 40 and s not in out:
+                    out.append(s)
+            if out:
+                # 领域术语放最前：先用权威全称检索，再用模型提炼的角度补充
+                return _augment_queries(domain + out)
+    except Exception:
+        pass
+    # 2) 规则兜底：剔除疑问词 / 标点，压缩空白
+    s = q
+    for w in _STOPWORDS:
+        s = s.replace(w, " ")
+    s = re.sub(r"\s+", " ", s).strip()
+    if len(s) > 30:                      # 过长仍会被搜索引擎泛化，截断到核心部分
+        s = s[:30].strip()
+    return _augment_queries(domain + [s or q])
+
+
+def _augment_queries(queries):
+    """为每个检索式追加更易命中的变体。
+
+    实测必应对中文的召回高度依赖「精确实体名词」，修饰词越多越容易退化成
+    百科兜底结果。因此除原式外，额外追加两类变体：
+    - 术语规范化 + 剥离尾部泛化修饰（BE试验豁免条件 → 生物等效性豁免）；
+    - 多词检索式的首个词组（药品上市许可持有人 主体责任 → 药品上市许可持有人）。
+    """
+    out = []
+
+    def _push(s):
+        s = re.sub(r"\s+", " ", (s or "").strip())
+        if len(s) >= 3 and s not in out:
+            out.append(s)
+
+    for s in queries:
+        _push(s)
+        _push(_normalize_query(s))
+        head = (s or "").split(" ")[0].strip()      # 首个词组通常就是核心实体
+        if len(head) >= 5:
+            _push(head)
+            _push(_normalize_query(head))
+    return out[:5]
+
+
+def _bigrams(s):
+    """中文按字符 2-gram、英文按单词切分，用于粗粒度相关性度量（无需分词依赖）。"""
+    s = re.sub(r"[\s\u3000]+", "", (s or "").lower())
+    grams = set(re.findall(r"[a-z0-9]{2,}", s))
+    zh = re.sub(r"[^\u4e00-\u9fa5]", "", s)
+    grams.update(zh[i:i + 2] for i in range(len(zh) - 1))
+    return grams
+
+
+def _relevance(query, item):
+    """检索结果与查询的相关度（0~1）。
+
+    必应对「无精确匹配」的词组会退化成首个分词的泛化结果（实测
+    「生物等效性试验豁免」会返回「生物_百度百科」）。这里用字符 2-gram
+    重合率把这类噪音过滤掉。"""
+    qg = _bigrams(query)
+    if not qg:
+        return 1.0
+    dg = _bigrams((item.get("title") or "") + " " + (item.get("snippet") or ""))
+    return len(qg & dg) / float(len(qg))
+
+
+_MIN_RELEVANCE = 0.34       # 低于此重合率视为搜索引擎的泛化噪音
+
+_AUTHORITATIVE = ("nmpa.gov.cn", "cde.org.cn", "gov.cn", "chinamab.org",
+                  "ich.org", "who.int", "fda.gov", "ema.europa.eu")
+
+
+# 百科 / 字典 / 问答类站点：常被搜索引擎当作泛化兜底结果，专业性弱，排到最后
+_GENERIC_HOSTS = ("baike.baidu.com", "zhidao.baidu.com", "wenku.baidu.com",
+                  "baike.so.com", "zdic.net", "hanyu", "zidian", "cidian",
+                  "wikipedia.org", "wiki")
+
+
+def _authority_rank(url):
+    """权威域优先：官方来源排前面，百科 / 字典类排最后，便于模型优先采信。"""
+    u = (url or "").lower()
+    for i, d in enumerate(_AUTHORITATIVE):
+        if d in u:
+            return i
+    if any(g in u for g in _GENERIC_HOSTS):
+        return len(_AUTHORITATIVE) + 1
+    return len(_AUTHORITATIVE)
+
+
+def _web_search_multi(queries, max_results=6, original=""):
+    """对多个精炼检索式分别检索、过滤泛化噪音后合并去重，官方来源优先。
+
+    - 每条结果需与「所属检索式」或「用户原问题」有足够 2-gram 重合，否则丢弃；
+    - 官方来源（NMPA / CDE / gov.cn / ICH 等）排前，便于模型优先采信；
+    - 全部被过滤时退回未过滤结果，保证「联网检索」不至于空手而归。"""
+    merged, seen, raw_all = [], set(), []
+    for qq in queries:
+        for it in _web_search(qq, max_results=max_results):
+            u = (it.get("url") or "").strip()
+            if not u or u in seen:
+                continue
+            seen.add(u)
+            raw_all.append(it)
+            score = max(_relevance(qq, it),
+                        _relevance(original, it) if original else 0.0)
+            if score >= _MIN_RELEVANCE:
+                it["_score"] = score
+                merged.append(it)
+        if len(merged) >= max_results * 2:
+            break
+    if merged:
+        # 正常路径：官方来源优先，同级按相关度降序
+        merged.sort(key=lambda r: (_authority_rank(r.get("url")), -r.get("_score", 0)))
+    else:
+        # 降级路径：全部低于阈值时按相关度择优，但仍丢弃几乎无关的结果。
+        # 必应在泛化时会返回完全跑题的内容（实测出现过游戏维基、软件破解贴），
+        # 与其把这类噪音喂给模型，不如返回空、让模型基于通用知识谨慎作答。
+        for it in raw_all:
+            it["_score"] = max(_relevance(original, it) if original else 0.0,
+                               max((_relevance(qq, it) for qq in queries), default=0.0))
+        merged = [it for it in raw_all if it["_score"] >= 0.12]
+        merged.sort(key=lambda r: -r.get("_score", 0))
+    for r in merged:
+        r.pop("_score", None)
+    return merged[:max_results]
 
 
 def _web_search(query, max_results=6):
@@ -992,7 +1289,11 @@ def _web_search(query, max_results=6):
     _add(_search_brave(query, max_results))
     if len(results) >= max_results:
         return results[:max_results]
-    # 2) keyless 源并行抓取（Bing 为主力，DDG/Wiki 补充）
+    # 2) Bing RSS 主力源先行（结构化、稳定、命中率最高），够了就直接返回
+    _add(_search_bing_rss(query, max_results))
+    if len(results) >= max_results:
+        return results[:max_results]
+    # 3) 其余 keyless 源并行补充
     keyless = [_search_bing, _search_ddg, _search_wiki]
     ex = concurrent.futures.ThreadPoolExecutor(max_workers=len(keyless))
     try:
@@ -1007,8 +1308,9 @@ def _web_search(query, max_results=6):
     finally:
         # 不阻塞等待：DDG/Wiki 在某些环境会超时，Bing 已先行返回即可立即返回
         ex.shutdown(wait=False)
-    # 3) Bing 主源兜底：若 www 被区域拦截，再试 cn.bing.com
+    # 4) 兜底：若 www 被区域拦截，再试 cn.bing.com（RSS 优先）
     if not results:
+        _add(_search_bing_rss(query, max_results, host="cn.bing.com"))
         _add(_search_bing(query, max_results, host="cn.bing.com"))
     return results[:max_results]
 
@@ -1029,13 +1331,19 @@ def _web_query(q):
         ans["source"] = "web"
         ans["cached"] = True
         return ans
-    results = _web_search(q, max_results=6)
+    # 第 1 步：AI 先思考「该搜什么」，把自然语言问题提炼成精炼检索式
+    queries = _refine_queries(q)
+    # 第 2 步：按多个检索式检索并合并，官方来源优先
+    results = _web_search_multi(queries, max_results=6, original=q)
     provider = LLM_CFG.get("provider", "")
-    # 构造提示：有检索结果则作为上下文；否则请模型凭通用知识作答
+    # 第 3 步：构造提示，有检索结果则作为上下文；否则请模型凭通用知识作答
     if results:
-        ctx = ["【检索材料】（实时网络检索结果，编号对应下方来源）", ""]
+        ctx = ["【检索材料】（实时网络检索结果，编号对应下方来源）",
+               "本次实际使用的检索式：" + " ｜ ".join(queries), ""]
         for i, r in enumerate(results, 1):
-            ctx.append("[%d] 《%s》\nURL: %s\n摘要: %s" % (i, r["title"], r["url"], r.get("snippet", "")))
+            ctx.append("[%d] 《%s》\nURL: %s\n发布: %s\n摘要: %s"
+                       % (i, r["title"], r["url"], r.get("date", "") or "未标注",
+                          r.get("snippet", "")))
         ctx.append("")
         ctx.append("用户问题：" + q)
         user_p = "\n".join(ctx)
@@ -1057,9 +1365,11 @@ def _web_query(q):
         # 模型未配置/不可用：仍返回真实检索结果，保证联网检索可用
         return {"结论": "（当前 AI 模型未配置或不可用，已为你检索到以下实时网络结果）",
                 "法规依据": [], "适用提示": "", "时效说明": "",
-                "web_sources": results, "source": "web", "llm_error": True}
+                "web_sources": results, "search_queries": queries,
+                "source": "web", "llm_error": True}
     ans = _parse_llm_json(raw)
     ans["web_sources"] = results
+    ans["search_queries"] = queries
     ans["source"] = "web"
     _RAG_CACHE[cache_key] = (now, ans)
     return ans
