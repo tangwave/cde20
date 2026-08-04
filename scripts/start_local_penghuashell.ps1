@@ -1,4 +1,4 @@
-# 本机常驻启动 9527 法规问答后端（花生壳内网穿透版，无 ssh 隧道）
+# 本机常驻启动 海云AI 法规问答后端（花生壳内网穿透版，无 ssh 隧道）
 # 由 Windows 任务计划程序「登录时」调用；花生壳客户端负责把公网地址映射到 127.0.0.1:8000
 param(
   [int]$Port = 8000
@@ -33,7 +33,7 @@ try {
   $psi.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden
   $psi.UseShellExecute = $false
   $p = [System.Diagnostics.Process]::Start($psi)
-  Write-Host "[start] 已启动 9527 后端 (detached pid=$($p.Id), 端口 $Port)，日志-> $LogFile"
+  Write-Host "[start] 已启动 海云AI 后端 (detached pid=$($p.Id), 端口 $Port)，日志-> $LogFile"
 } catch {
   Write-Error "启动失败：$($_.Exception.Message)"
   exit 1

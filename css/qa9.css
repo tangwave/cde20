@@ -1,4 +1,4 @@
-/* ============ Agnes AI 智能问答 · WorkBuddy 风格 ============ */
+/* ============ 海云AI 智能问答 · WorkBuddy 风格 ============ */
 .qa9-panel {
   position: fixed;
   top: var(--topbar-height);
@@ -309,3 +309,55 @@
 .qa9-web-src-title:hover { text-decoration: underline; }
 .qa9-web-src-host { font-size: 11px; color: var(--text-muted); margin-top: 2px; word-break: break-all; }
 .qa9-web-src-snippet { font-size: 12px; color: var(--text-secondary, #475569); margin-top: 4px; line-height: 1.5; }
+
+/* ============ 深度推理新结构：思考折叠 / 要点解析 / 风险提示 / 延伸问题 ============ */
+
+/* 思考过程（<details> 折叠，避免长推理链压掉结论） */
+details.qa9-think { padding: 0; overflow: hidden; }
+.qa9-think-sum {
+  list-style: none; cursor: pointer; user-select: none;
+  font-size: 13px; font-weight: 700; color: #c47d00; padding: 9px 14px;
+}
+.qa9-think-sum::-webkit-details-marker { display: none; }
+.qa9-think-sum::before { content: '▸ '; display: inline-block; transition: transform .15s; }
+details.qa9-think[open] .qa9-think-sum::before { content: '▾ '; }
+.qa9-think-hint { font-weight: 400; font-size: 11px; color: #b8860b; opacity: .75; margin-left: 4px; }
+.qa9-think-body { padding: 0 14px 10px 22px; border-top: 1px dashed #f0d9a8; padding-top: 8px; }
+.qa9-think-body p { font-size: 13px; color: #6b5628; }
+
+/* 要点解析 */
+.qa9-points { border-left: 4px solid #10b981; background: linear-gradient(180deg, #f0fdf9, #fbfffe); }
+.qa9-points .qa9-block-h { color: #047857; }
+.qa9-point-list { margin: 4px 0 0; padding-left: 20px; }
+.qa9-point { margin: 7px 0; font-size: 13.5px; line-height: 1.7; color: var(--text-primary); }
+.qa9-point-t {
+  display: inline-block; font-weight: 700; color: #047857;
+  background: #d1fae5; border-radius: 5px; padding: 0 7px; margin-right: 6px; font-size: 13px;
+}
+.qa9-point-d { color: var(--text-primary); }
+
+/* 风险提示 */
+.qa9-risk { border-left: 4px solid #ef4444; background: linear-gradient(180deg, #fef2f2, #fffbfb); }
+.qa9-risk .qa9-block-h { color: #b91c1c; }
+.qa9-risk p { color: #7f1d1d; }
+
+/* 正文中的项目符号行 */
+.qa9-block p.qa9-li { position: relative; padding-left: 14px; }
+.qa9-block p.qa9-li::before { content: '·'; position: absolute; left: 3px; color: var(--primary); font-weight: 700; }
+
+/* 延伸问题气泡 */
+.qa9-followups { background: #fff; border-style: dashed; }
+.qa9-followups .qa9-block-h { color: var(--text-muted); }
+.qa9-followup-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.qa9-followup {
+  border: 1px solid var(--border-light); background: #f8fafc; color: var(--primary-dark);
+  font-size: 12.5px; padding: 5px 12px; border-radius: 14px; cursor: pointer;
+  transition: all .15s; text-align: left; line-height: 1.4;
+}
+.qa9-followup:hover { border-color: var(--primary); background: var(--bg-active); color: var(--primary); }
+.qa9-followup::before { content: '💬 '; }
+
+/* 三档模式切换：深度融合高亮 */
+.qa9-seg-btn[data-mode="hybrid"].active {
+  background: linear-gradient(135deg, #7c3aed, #2563eb); color: #fff; border-color: transparent;
+}

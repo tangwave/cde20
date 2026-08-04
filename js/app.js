@@ -75,7 +75,7 @@ const App = {
     this.bindEvents();
     this.initPenCard();           // 术语悬浮卡
     this.initRegLibrary();        // 法规原文库
-    this.initQa9527();            // 法规问答 · 9527
+    this.initQaAi();            // 法规问答 · 海云AI
     SearchEngine.init();
 
     // 默认进入「全景总览」（识林式整体认识入口）
@@ -2013,17 +2013,17 @@ const App = {
     });
   },
 
-  /* ============ Agnes AI 智能问答 ============
+  /* ============ 海云AI 智能问答 ============
    * 纯 AI 推理：所有回答均由大模型 RAG 生成，不再做离线条文检索回退。
-   * REG_QA_9527 仅用于渲染「常见问题」建议列表（点击后统一走 AI 推理）。
+   * REG_QA_FAQ 仅用于渲染「常见问题」建议列表（点击后统一走 AI 推理）。
    */
-  initQa9527() {
-    const btn = document.getElementById('qa9527Btn');
+  initQaAi() {
+    const btn = document.getElementById('qaAiBtn');
     if (btn) btn.addEventListener('click', () => {
-      this.state.qaOpen ? this.closeQa9527() : this.openQa9527();
+      this.state.qaOpen ? this.closeQaAi() : this.openQaAi();
     });
     const closeBtn = document.getElementById('qa9Close');
-    if (closeBtn) closeBtn.addEventListener('click', () => this.closeQa9527());
+    if (closeBtn) closeBtn.addEventListener('click', () => this.closeQaAi());
     const input = document.getElementById('qa9Input');
     if (input) {
       input.addEventListener('input', () => this._autoGrowInput());
@@ -2035,6 +2035,12 @@ const App = {
     if (sbtn) sbtn.addEventListener('click', () => this.sendQaMessage());
     const clearBtn = document.getElementById('qa9Clear');
     if (clearBtn) clearBtn.addEventListener('click', () => this._resetQaChat());
+    // 「延伸问题」气泡：事件委托（消息体是动态 innerHTML，无法逐个绑定）
+    const msgs = document.getElementById('qa9Msgs');
+    if (msgs) msgs.addEventListener('click', (e) => {
+      const chip = e.target && e.target.closest ? e.target.closest('.qa9-followup') : null;
+      if (chip && chip.dataset.q) this.sendQaMessage(chip.dataset.q);
+    });
     this.qaApiBase = this._readQaApiBase();
     this._renderQaMode();
     this._initModelPanel();
@@ -2057,9 +2063,16 @@ const App = {
     return base.replace(/\/api\/?$/, '').replace(/\/+$/, '');  // 归一，避免 /api/api/qa
   },
 
+  // 模式文案（三档：本地法规库 / 联网搜索 / 深度融合）
+  _modeLabel(m) {
+    if (m === 'web') return '联网搜索';
+    if (m === 'hybrid') return '深度融合';
+    return '本地法规库';
+  },
+
   _renderQaMode() {
     const el = document.getElementById('qa9Mode'); if (!el) return;
-    const modeTxt = (this._qaMode === 'web') ? 'AI 联网搜索' : '本地数据库';
+    const modeTxt = this._modeLabel(this._qaMode);
     if (this.qaApiBase) {
       el.textContent = '🤖 ' + modeTxt + ' · 在线';
       el.className = 'qa9-mode live';
@@ -2069,20 +2082,20 @@ const App = {
     }
   },
 
-  openQa9527() {
+  openQaAi() {
     this.state.qaOpen = true;
     if (this.state.regLibOpen) this.closeRegulationLibrary();
     ['breadcrumb', 'stageTabs', 'detailLayout', 'matrixView', 'regulationLibrary'].forEach(id => {
       const e = document.getElementById(id); if (e) e.style.display = 'none';
     });
-    const p = document.getElementById('qa9527'); if (p) p.style.display = 'flex';
-    const btn = document.getElementById('qa9527Btn'); if (btn) btn.classList.add('active');
+    const p = document.getElementById('qaAiPanel'); if (p) p.style.display = 'flex';
+    const btn = document.getElementById('qaAiBtn'); if (btn) btn.classList.add('active');
   },
 
-  closeQa9527() {
+  closeQaAi() {
     this.state.qaOpen = false;
-    const p = document.getElementById('qa9527'); if (p) p.style.display = 'none';
-    const btn = document.getElementById('qa9527Btn'); if (btn) btn.classList.remove('active');
+    const p = document.getElementById('qaAiPanel'); if (p) p.style.display = 'none';
+    const btn = document.getElementById('qaAiBtn'); if (btn) btn.classList.remove('active');
     if (this.state.view === 'classification') {
       const bc = document.getElementById('breadcrumb'); if (bc) bc.style.display = 'none';
       const st = document.getElementById('stageTabs'); if (st) st.style.display = 'none';
@@ -2103,14 +2116,14 @@ const App = {
   },
 
   async showQaAnswer(idx) {
-    const QA = globalThis.REG_QA_9527 || [];
+    const QA = globalThis.REG_QA_FAQ || [];
     const item = QA[idx]; if (!item) return;
     return this.sendQaMessage(item.q);
   },
 
   /* ---- 实时后端（FastAPI /api/qa）适配器 ---- */
   // 效力层级排序：法律 > 行政法规 > 部门规章 > 技术指导原则 > 行业共识 > 规范性文件
-  // （与 9527 技能「区分层级」一致；tier 仅区分时效，分类决定效力高低）
+  // （与药品法规专家「区分层级」原则一致；tier 仅区分时效，分类决定效力高低）
   catRank(c) {
     const m = { '01_法律': 0, '02_行政法规': 1, '03_部门规章': 2, '04_技术指导原则': 3, '05_行业共识': 4, '06_国际': 5, '07_规范性文件': 6, '08_其他': 7 };
     for (const k in m) if ((c || '').indexOf(k) === 0) return m[k];
@@ -2170,7 +2183,7 @@ const App = {
     this._qaMid = 0;
     const box = document.getElementById('qa9Msgs'); if (!box) return;
     box.innerHTML = '';
-    const FAQ = globalThis.REG_QA_9527 || [];
+    const FAQ = globalThis.REG_QA_FAQ || [];
     const samples = ['IND 非临床研究资料', 'GLP 适用范围', '化学药1类 定义', 'MAH 持有人制度', 'GMP 基本要求', '加快上市程序'];
     let cards = '';
     FAQ.slice(0, 4).forEach((item) => {
@@ -2185,8 +2198,9 @@ const App = {
     });
     const welcome =
       '<div class="qa9-welcome-screen">' +
-        '<div class="qa9-welcome-title">👋 你好，我是 Agnes AI</div>' +
-        '<div class="qa9-welcome-sub">切换下方「📚 本地数据库 / 🌐 AI 联网搜索」可分别基于本地法规库推理，或先实时检索网络再综合作答（不依赖本地库）。选择一个问题，或直接输入你的问题。</div>' +
+        '<div class="qa9-welcome-title">👋 你好，我是海云AI</div>' +
+        '<div class="qa9-welcome-sub">中国药品注册与生产质量管理领域的法规专家助手。我会先拆解你的问题、调阅法规原文，再给出可直接执行的结论、要点解析与风险提示。<br>' +
+        '下方可切换三种作答方式：<b>📚 本地法规库</b>（3096 篇全文，引用可溯源）· <b>🌐 联网搜索</b>（实时网络动态）· <b>🧠 深度融合</b>（两者并行、交叉核验，答案最完整）。</div>' +
         '<div class="qa9-welcome-cards">' + cards + '</div>' +
       '</div>';
     const wrap = document.createElement('div');
@@ -2210,7 +2224,11 @@ const App = {
     this._appendMsg('user', Penetrator.esc(text));
     const ovEl = document.getElementById('qa9OnlyValid');
     const ov = ovEl ? ovEl.checked : true;
-    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>Agnes AI 正在推理分析…</span>', true);
+    const mode = this._qaMode || 'local';
+    const thinkTxt = (mode === 'hybrid')
+      ? '海云AI 正在并行调阅本地法规原文与实时网络资料，交叉核验中…'
+      : (mode === 'web' ? '海云AI 正在实时联网检索并推理…' : '海云AI 正在检索法规库并深度推理…');
+    const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>' + thinkTxt + '</span>', true);
     try {
       if (!this.qaApiBase) {
         this._updateMsg(typingId,
@@ -2218,14 +2236,24 @@ const App = {
         this._scrollMsgs();
         return;
       }
-      const rag = await this.qaRag(text, { onlyValid: ov, mode: this._qaMode || 'local' });
+      const rag = await this.qaRag(text, { onlyValid: ov, mode: mode });
       if (rag && !rag.fallback && rag['结论']) {
-        const blocks = { abstract: rag['结论'] || '', thinking: rag['思考分析'] || '',
-                        tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
-        const intro = (this._qaMode === 'web')
-          ? 'Agnes AI 已基于联网 / 通用知识作答：'
-          : 'Agnes AI 基于以下法规材料作答：';
-        const html = this._buildRagReply({ intro: intro, rag: rag, source: 'rag', query: text });
+        const blocks = {
+          abstract: rag['结论'] || '',
+          thinking: rag['思考分析'] || '',
+          points:   rag['要点解析'] || [],
+          tips:     rag['适用提示'] || '',
+          risk:     rag['风险提示'] || '',
+          timeNote: rag['时效说明'] || '',
+          followUps: rag['延伸问题'] || []
+        };
+        const intros = {
+          web:    '海云AI 已实时联网检索并综合作答：',
+          hybrid: '海云AI 已交叉核验「本地法规原文 + 实时网络资料」后作答：',
+          local:  '海云AI 基于以下法规材料深度分析后作答：'
+        };
+        const intro = intros[rag.source] || intros[mode] || intros.local;
+        const html = this._buildRagReply({ intro: intro, blocks: blocks, rag: rag, source: 'rag', query: text });
         this._updateMsg(typingId, html);
         this._scrollMsgs();
         return;
@@ -2566,16 +2594,22 @@ const App = {
   },
 
   _setMode(mode) {
-    if (mode !== 'web' && mode !== 'local') mode = 'local';
+    if (mode !== 'web' && mode !== 'local' && mode !== 'hybrid') mode = 'local';
     this._qaMode = mode;
     const seg = document.getElementById('qa9ModeSeg');
     if (seg) seg.querySelectorAll('.qa9-seg-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.mode === mode);
     });
+    // 「仅现行有效」只对涉及本地库的模式生效
     const ovWrap = document.getElementById('qa9OnlyValidWrap');
     if (ovWrap) ovWrap.style.display = (mode === 'web') ? 'none' : '';
     this._renderQaMode();
-    this._toast(mode === 'web' ? '已切换：AI 联网搜索（不依赖本地库）' : '已切换：本地数据库');
+    const tips = {
+      web: '已切换：🌐 联网搜索（实时检索网络，不依赖本地库）',
+      hybrid: '已切换：🧠 深度融合（本地法规原文 + 实时联网并行交叉核验，用时略长）',
+      local: '已切换：📚 本地法规库（3096 篇全文，引用可溯源）'
+    };
+    this._toast(tips[mode] || tips.local);
   },
 
   // ---------------- 内置模型管理（新增 / 修改 / 删除） ----------------
@@ -2714,53 +2748,118 @@ const App = {
     }
   },
 
-  // 渲染大模型 RAG 的四段式回复（同序：结论→依据→提示→时效）
+  // 渲染海云AI 深度推理回复
+  // 顺序：思考过程 → 结论 → 要点解析 → 依据/来源 → 适用提示 → 风险提示 → 时效说明 → 延伸问题
   _buildRagReply(o) {
+    const B = o.blocks || {};
+    const rag = o.rag || {};
+    const src = rag.source || 'rag';
     let html = '';
     if (o.intro) html += '<div class="qa9-reply-intro">' + Penetrator.esc(o.intro).replace(/\n/g, '<br>') + '</div>';
-    const lines = (s) => (s || '').split('\n').map(l => '<p>' + Penetrator.esc(l) + '</p>').join('');
-    if (o.blocks && o.blocks.thinking) {
-      html += '<div class="qa9-block qa9-think"><div class="qa9-block-h">💡 AI 思考分析</div>' + lines(o.blocks.thinking) + '</div>';
+
+    // 段落化：把 \n 拆成 <p>，并把「· / 1. / - 」开头的行渲染为列表项样式
+    const lines = (s) => (s || '').split('\n').map(l => {
+      const t = l.trim();
+      if (!t) return '';
+      const isLi = /^([·•\-—*]|\d+[.)、])\s*/.test(t);
+      return isLi
+        ? '<p class="qa9-li">' + Penetrator.esc(t.replace(/^([·•\-—*]|\d+[.)、])\s*/, '')) + '</p>'
+        : '<p>' + Penetrator.esc(t) + '</p>';
+    }).join('');
+
+    // ① 思考过程（默认折叠，点开可见推理链路）
+    if (B.thinking) {
+      html += '<details class="qa9-block qa9-think">' +
+              '<summary class="qa9-think-sum">💡 深度思考过程<span class="qa9-think-hint">（点击展开）</span></summary>' +
+              '<div class="qa9-think-body">' + lines(B.thinking) + '</div></details>';
     }
-    if (o.blocks && o.blocks.abstract) {
-      html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(o.blocks.abstract) + '</div>';
+    // ② 结论
+    if (B.abstract) {
+      html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(B.abstract) + '</div>';
     }
-    const src = (o.rag && o.rag.source) || 'rag';
-    const badge = src === 'web'
-      ? '<span class="qa9-src-badge web">🌐 AI 联网搜索</span>'
-      : '<span class="qa9-src-badge rag">● AI 推理</span>';
-    if (src === 'web') {
-      // 联网搜索模式：渲染「实时检索来源」卡片（可点击跳转原文）
-      const ws = (o.rag && o.rag.web_sources) || [];
-      // AI 提炼出的检索式：展示「AI 决定搜什么」，让思考过程可见
-      const sq = (o.rag && o.rag.search_queries) || [];
-      let sqHtml = '';
-      if (sq.length) {
-        sqHtml = '<div class="qa9-sq">🔍 AI 提炼的检索式：' +
-                 sq.map(s => '<span class="qa9-sq-tag">' + Penetrator.esc(s) + '</span>').join('') + '</div>';
-      }
-      html += '<div class="qa9-block"><div class="qa9-block-h">【检索来源】 ' + badge +
-              '<div class="qa9-src-note">以下为实时网络检索结果（点击可跳转原文）</div></div>' +
-              sqHtml + '<div class="qa9-web-src-list">';
-      if (ws.length) ws.forEach((s, i) => { html += this.webSrcHtml(s, i + 1); });
-      else html += '<div class="qa9-empty">本次未检索到外部来源（可能当前网络受限，可切换网络后重试）。</div>';
+    // ③ 要点解析
+    const pts = B.points || [];
+    if (pts.length) {
+      html += '<div class="qa9-block qa9-points"><div class="qa9-block-h">【要点解析】</div><ol class="qa9-point-list">';
+      pts.forEach((p) => {
+        const t = (p && (p['要点'] || p.title)) || '';
+        const d = (p && (p['说明'] || p.detail)) || (typeof p === 'string' ? p : '');
+        if (!d) return;
+        html += '<li class="qa9-point">' +
+                (t ? '<span class="qa9-point-t">' + Penetrator.esc(t) + '</span>' : '') +
+                '<span class="qa9-point-d">' + Penetrator.esc(d) + '</span></li>';
+      });
+      html += '</ol></div>';
+    }
+    // ④ 依据 / 来源（hybrid 两段都渲染）
+    if (src === 'local' || src === 'rag' || src === 'hybrid') html += this._citeBlock(rag);
+    if (src === 'web' || src === 'hybrid') html += this._webBlock(rag);
+    // ⑤ 适用提示
+    if (B.tips) {
+      html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(B.tips) + '</div>';
+    }
+    // ⑥ 风险提示
+    if (B.risk) {
+      html += '<div class="qa9-block qa9-risk"><div class="qa9-block-h">⚠️ 【风险提示】</div>' + lines(B.risk) + '</div>';
+    }
+    // ⑦ 时效说明
+    if (B.timeNote) {
+      html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(B.timeNote) + '</div>';
+    }
+    // ⑧ 延伸问题（可点击继续追问）
+    const fu = B.followUps || [];
+    if (fu.length) {
+      html += '<div class="qa9-block qa9-followups"><div class="qa9-block-h">🔎 你可能还想问</div><div class="qa9-followup-row">';
+      fu.forEach((q) => {
+        html += '<button type="button" class="qa9-followup" data-q="' + Penetrator.esc(q) + '">' +
+                Penetrator.esc(q) + '</button>';
+      });
       html += '</div></div>';
-    } else {
-      const srcNote = '依据来自 Agnes AI 实时数据库 + 大模型解读';
-      html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
-              '<div class="qa9-src-note">' + srcNote + '</div></div><div class="qa9-cite-list">';
-      const basis = (o.rag && o.rag['法规依据']) || [];
-      if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
-      else html += '<div class="qa9-empty">未检索到明确依据。</div>';
-      html += '</div></div>';
-    }
-    if (o.blocks && o.blocks.tips) {
-      html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(o.blocks.tips) + '</div>';
-    }
-    if (o.blocks && o.blocks.timeNote) {
-      html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(o.blocks.timeNote) + '</div>';
     }
     return html;
+  },
+
+  // 【法规依据】块（本地库 / 深度融合）
+  _citeBlock(rag) {
+    const badge = (rag.source === 'hybrid')
+      ? '<span class="qa9-src-badge rag">🧠 深度融合 · 本地原文</span>'
+      : '<span class="qa9-src-badge rag">📚 本地法规库</span>';
+    const hits = rag.kb_hits || [];
+    const note = hits.length
+      ? '本次实际调阅本地法规原文 ' + hits.length + ' 篇（3096 篇全文库），由大模型解读'
+      : '依据来自海云AI 本地法规库 + 大模型解读';
+    let html = '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
+               '<div class="qa9-src-note">' + Penetrator.esc(note) + '</div></div>';
+    html += this._sqHtml(rag.search_queries, '📚 本地库检索式');
+    html += '<div class="qa9-cite-list">';
+    const basis = rag['法规依据'] || [];
+    if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
+    else if (hits.length) hits.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
+    else html += '<div class="qa9-empty">未检索到明确依据。</div>';
+    return html + '</div></div>';
+  },
+
+  // 【实时检索来源】块（联网 / 深度融合）
+  _webBlock(rag) {
+    const badge = (rag.source === 'hybrid')
+      ? '<span class="qa9-src-badge web">🧠 深度融合 · 实时网络</span>'
+      : '<span class="qa9-src-badge web">🌐 实时联网检索</span>';
+    const ws = rag.web_sources || [];
+    let html = '<div class="qa9-block"><div class="qa9-block-h">【检索来源】 ' + badge +
+               '<div class="qa9-src-note">以下为实时网络检索结果（点击可跳转原文）</div></div>';
+    if (rag.source !== 'hybrid') html += this._sqHtml(rag.search_queries, '🔍 AI 提炼的检索式');
+    html += '<div class="qa9-web-src-list">';
+    if (ws.length) ws.forEach((s, i) => { html += this.webSrcHtml(s, i + 1); });
+    else html += '<div class="qa9-empty">本次未检索到外部来源（可能当前网络受限，可切换网络后重试）。</div>';
+    return html + '</div></div>';
+  },
+
+  // 检索式标签行：展示「AI 决定搜什么」，让思考过程可见
+  _sqHtml(sq, label) {
+    if (!sq || !sq.length) return '';
+    return '<div class="qa9-sq">' + label + '：' +
+           sq.slice(0, 8).map(s => '<span class="qa9-sq-tag">' + Penetrator.esc(s) + '</span>').join('') +
+           '</div>';
   },
 
   // 渲染 RAG 返回的法规依据卡片（字段：标题/引用原文/本地路径/来源/文号/发布日期/状态）
@@ -2814,7 +2913,7 @@ const App = {
     else if (tier === 3) { badge = '参考'; bcls = 'ref'; }
     else if (tier <= 5) { badge = '征求意见'; bcls = 'draft'; }
     else { badge = '已废止'; bcls = 'repealed'; }
-    // 与 9527 技能一致：《标题》（发布机构，文号，发布日期，状态）
+    // 统一引用格式：《标题》（发布机构，文号，发布日期，状态）
     const title = (n ? n + '. ' : '') + '《' + (d.t || '') + '》';
     const metaParts = [d.i, d.d, d.p, d.st].filter(Boolean).map(x => Penetrator.esc(x));
     const meta = metaParts.length ? '（' + metaParts.join('，') + '）' : '';

@@ -1,4 +1,4 @@
-# 9527 法规问答 · 一键镜像（Gitee 原生，无需 GitHub）
+# 海云AI 法规问答 · 一键镜像（Gitee 原生，无需 GitHub）
 # 构建时按需下载 kb.sqlite（约 212MB，避免塞进 git）；运行时同域托管前端 + /api/qa
 FROM python:3.11-slim
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-9527 法规问答 · 实时后端（FastAPI）
+海云AI 法规问答 · 实时后端（FastAPI）
 
 设计要点
 --------
@@ -9,9 +9,12 @@
    免 CORS：把后端部署到某域名根路径，前端用同域 /api/qa 即可。
 2. /api/qa 实时查询 kb.sqlite（经 scripts/kb_query.py），返回最新法规引用；
    命中片段改由本服务直接从 fts.body 取真实正文摘录（不依赖外部 .md 文件）。
-3. /api/qa-rag：真·问答（Level-B RAG）——多轮检索 → 从 fts.body 取命中全文
-   → 调用 OpenAI 兼容大模型，按 9527 技能四段式（结论/法规依据/适用提示/时效说明）
-   合成答案。需配置 LLM_BASE_URL / LLM_API_KEY / LLM_MODEL；未配置时优雅回退。
+3. /api/qa-rag：真·问答，三种模式（mode=local | web | hybrid）——
+   · local  本地法规库 RAG：多路检索改写 → SQLite FTS5 直查 + 重排 → 全文喂模型；
+   · web    AI 联网搜索：AI 提炼检索式 → Bing RSS 等多源检索 → 相关性过滤 → 综合作答；
+   · hybrid 深度融合：本地权威原文 + 实时网络材料并行取回，交叉核验后作答。
+   统一输出「海云AI 深度推理」结构（思考分析/结论/要点解析/法规依据/适用提示/风险提示/
+   时效说明/延伸问题）。需配置 LLM_BASE_URL / LLM_API_KEY / LLM_MODEL；未配置时优雅回退。
 4. 安全白名单：/api/qa 仅暴露 query/cat/topic/issuer/status/since/until/only_valid/n；
    严禁 --path/--full（避免任意文件读取）。RAG 的全文读取在服务器内部、仅限 kb.sqlite。
 """
@@ -60,7 +63,7 @@ _load_dotenv()
 
 # 配置优先级（见 _load_llm_cfg）：环境变量 / .env  >  llm_config.json（文件）  >  预设默认模型。
 # 注意：不再用 os.environ.setdefault 注入「默认模型」，否则该隐式默认值会盖过用户在
-# llm_config.json 里明确写下的模型（如自定义的 Agnes-2.5-Flash）。仅在文件与环境都未指定时，
+# llm_config.json 里明确写下的模型。仅在文件与环境都未指定时，
 # 才回退到对应服务商的 default_model。API Key 不写死在本文件，请从 .env 或环境变量注入。
 
 # ---------------------------------------------------------------- 多模型预设（免重启切换）
@@ -316,7 +319,7 @@ PY = os.environ.get("KB_QUERY_PY") or sys.executable or "python3"
 KB_QUERY = os.path.join(KB_ROOT, "scripts", "kb_query.py")
 
 
-app = FastAPI(title="9527 法规问答 API", version="1.1.0")
+app = FastAPI(title="海云AI 法规问答 API", version="2.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -488,52 +491,126 @@ def api_qa(
 
 # ---------------------------------------------------------------- /api/qa-rag（真·问答）
 
-_RAG_SYSTEM = """你是中国药品法规专家「9527」。只依据下面提供的法规正文作答，不得凭记忆编造条款。
+# ================================================================ 海云AI 深度推理提示词体系
+# 设计目标：让回答达到主流大模型（GPT-4o / Claude / DeepSeek-R1 级）的专家问答水准——
+# 先真思考、再分层作答；本地 / 联网 / 融合三模式共用同一套人格、思考框架与输出 schema，
+# 保证前端渲染一致、答案风格统一。
 
-工作流：
-1. 检索已由系统完成（下方「法规材料」是知识库检索结果，已按相关度+效力层级排序）。
-2. 时效核验（强制）：逐条看其「状态」。
-   - 现行有效 / 现行有效（试行）：可直接引用。
-   - 现行有效（尚未生效）/（YYYY-MM-DD 起施行）：引用须标注施行日期。
-   - 征求意见 / 征求意见（已截止）：只能作趋势参考，须明示「尚未生效，仅供参考」。
-   - 已废止：不得作为依据；若问历史沿革，可说明废止情况并指向替代文件。
-   - 同名多版本（如 GCP 2026 修订版 vs 2020 版、GMP 多版）须取最新现行版。
-3. 分层引用：法律 > 行政法规 > 部门规章 > 技术指导原则 > 规范性文件 > 行业共识。
-   上位法与下位文件冲突时，以上位法为准并明确指出冲突。
-4. 输出严格 JSON，结构：
+_PERSONA = """你是「海云AI」，中国药品注册与药品生产质量管理领域的资深法规专家，
+具备 15 年以上药品全生命周期（立项—发现—非临床—临床—申报—上市后）法规实务经验，
+精通《药品管理法》《疫苗管理法》《药品管理法实施条例》《药品注册管理办法》
+《药品生产监督管理办法》、NMPA/CDE 技术指导原则、GMP 及其附录、ICH 指导原则，
+并熟悉中美欧监管路径差异与审评实务口径。
+
+你的回答必须达到「资深专家当面答疑」的水准，而不是搜索摘要或模板填空：
+- 先判断提问者真正的处境与诉求（哪类品种、哪个阶段、什么角色、要做什么决策）；
+- 给出明确的专业判断，而不是罗列条文让对方自己拼；
+- 主动讲出「用户没问、但不知道就会踩坑」的关键点；
+- 有把握处斩钉截铁，无把握处明确划出边界，绝不含糊其辞或编造。"""
+
+
+_THINKING_RULES = """【作答前必须真实完成的五步思考，并把过程写入「思考分析」字段】
+1. 意图还原：用户真正要解决什么？隐含的品种类型 / 研发阶段 / 角色 / 决策场景是什么？
+2. 问题拆解：该问题在法规上可拆成哪几个子问题？哪个是关键、哪个是次要？
+3. 材料研判：下方材料哪些真正相关？效力层级如何？彼此是否存在版本差异、口径冲突或适用范围差异？
+4. 判断形成：综合后你的专业判断是什么？依据链条是什么？哪些是确定结论、哪些是合理推断？
+5. 盲区识别：哪些部分材料不足以支撑？哪些需提示以官方最新发布或与审评机构沟通为准？
+
+【严禁】把五步思考写成空话套话（如「经分析材料相关」「综合判断如下」）；
+必须写出具体的判断内容与理由，让读者看到真实的推理链。"""
+
+
+_QUALITY_RULES = """【回答质量硬要求】
+- 结论必须是「能直接拿去用」的判断，不是「视情况而定」式敷衍；需分情况时把情况穷举清楚。
+- 要点解析要有信息增量：解释为什么这样规定、实操中怎么做、与相邻制度的区别，而非复述条文。
+- 涉及数字（时限、批数、样本量、限度、有效期、比例）必须写明具体数值与出处；不确定则明说。
+- 严格区分效力层级：法律 > 行政法规 > 部门规章 > 规范性文件 > 技术指导原则（推荐性）> 行业共识。
+  技术指导原则除非被规章 / 公告强制引用，不得表述为强制要求；上下位冲突时以上位法为准并点明。
+- 国外参考（FDA / EMA / WHO / ICH 未转化部分）不是中国法定依据，仅作对照参考并明示。
+- 医疗器械 / 化妆品 / 诊疗服务问题：说明超出药品法规范围，并指出正确的对口依据方向。
+- 表述精炼：在依据完整、判断明确、要点足够的前提下，杜绝套话、重复与空泛铺陈；能用一句说清的不用两句，单句以 30-50 字为度；思考分析与要点解析紧扣本问题，不展开无关子题。
+- 严禁编造文号、发布日期、条款号、机构名；不确定就写「未在材料中确认」。"""
+
+
+_SCHEMA = """【输出格式】只输出如下 JSON，不要任何额外文字、解释或 markdown 代码块标记：
 {
- "结论":"一句话直答（基于材料）",
- "法规依据":[{"标题":"","引用原文":"逐字摘录关键条款，不改写","本地路径":"","来源":"","文号":"","发布日期":"","状态":""}],
- "适用提示":"实操要点 / 常见误区 / 例外",
- "时效说明":"生效与废止 / 同名版本情况；无则写『以上均为现行有效文件』"
+ "思考分析":"3-6 句，呈现真实推理链：用户实际关心 X → 材料显示 Y（注意 Z 处差异）→ 故判断为 W。具体、有见地。",
+ "结论":"直接完整地回答问题，3-6 句。先给核心判断，再补必要限定条件。禁止一句话敷衍，禁止写成『需具体分析』。",
+ "要点解析":[{"要点":"简短小标题（6-14 字）","说明":"该要点的具体展开，2-4 句，须有实操信息量"}],
+ "法规依据":[{"标题":"","引用原文":"关键条款摘录（本地材料逐字摘录；联网材料用 [n] 标注编号；凭自身知识须注明『依据通用知识，以官方发布为准』）","本地路径":"","来源":"","文号":"","发布日期":"","状态":""}],
+ "适用提示":"实操落地：怎么做、找谁、备什么、关键时间节点。2-5 句。",
+ "风险提示":"常见误区、易被发补 / 现场检查缺陷项、合规处罚风险。确无则写空字符串。",
+ "时效说明":"现行有效性、同名多版本关系、施行日期、修订趋势；不确定写『以官方最新发布为准』。",
+ "延伸问题":["用户接下来最可能追问的 2-3 个具体问题，每条不超过 24 字"]
 }
-
-硬性规则：
-- 引用原文须逐字摘录，不要概括；每条依据须带 本地路径 + 来源 + 文号 + 发布日期 + 状态（取自材料）。
-- 区分层级：技术指导原则是推荐性，除非被规章/公告强制引用，不得说成强制要求。
-- 国外参考（WTO/FDA/EMA 译文）不是中国法定依据，仅对照参考并明示。
-- 医疗器械 / 化妆品问题：本库聚焦药品，须说明超出范围。
-- 材料未收录该问题：结论写「知识库未收录，建议前往官网核实」，并给出官网栏目地址。
-- 只输出 JSON，不要任何额外文字或 markdown 代码块标记。"""
+「要点解析」至少 2 条、至多 5 条；「延伸问题」须与本次问题强相关，不得泛泛而谈。"""
 
 
-_WEB_SYSTEM = """你是中国药品法规 AI 助手「Agnes AI」。你正在使用「AI 联网搜索」模式：系统已实时检索了公开网络结果（见下方「检索材料」）。请像资深药品注册法规专家一样，**主动、深入地思考**后再作答——禁止机械套模板，禁止照抄检索片段。
+_RAG_SYSTEM = _PERSONA + """
 
-**作答前的思考（务必真实完成，并把过程写入「思考分析」字段）：**
-1. 用户真正想问的是什么？其背后的业务场景与深层诉求是什么？
-2. 哪些检索材料与问题真正相关？它们之间是否一致、有无口径 / 版本冲突？
-3. 现有材料是否足以严谨作答？不足处应如何基于通用知识谨慎补充（并明确标注）？
-4. 应突出哪些关键结论、常见误区与实操要点？
+【当前模式：📚 本地法规库】
+下方「法规材料」来自本地权威法规知识库（NMPA / CDE / ICH / 国务院等 3000+ 篇全文），
+已按相关度与效力层级排序，是你作答的第一依据。
 
-**输出要求（只输出如下 JSON，不要任何额外文字或 markdown 代码块标记）：**
-{
- "思考分析":"用 2-4 句呈现你的分析 / 推理过程（例如：用户实际关心 X；材料显示 Y 与 Z 存在口径差异；据此我的判断是…）。要具体、有见地，避免空话套话。",
- "结论":"直接、完整地回答用户问题（2-4 句，含关键判断，而非一句话敷衍）。",
- "法规依据":[{"标题":"","引用原文":"关键条款摘录（来自检索材料请用 [1] 等编号标注；来自自身知识请注明，严禁编造文号 / 日期）","来源":"","发布日期":"","状态":""}],
- "适用提示":"实操要点 / 常见误区 / 落地建议",
- "时效说明":"现行有效性、更新趋势；不确定请注明『以官方最新发布为准』"
-}
-引用规范：结论与依据中对检索材料用 [1]、[2] 对应来源编号。不要只复述片段，要基于材料做专业综合、判断与归因。医疗器械 / 化妆品问题须说明超出本库范围。"""
+""" + _THINKING_RULES + """
+
+【本模式专属规则】
+- 优先严格依据下方法规正文；正文能回答的部分，「引用原文」须逐字摘录，不得改写或概括。
+- 材料未覆盖但属于法规常识框架的部分，可用你的专业知识补充，但该条依据的「引用原文」
+  必须以「依据通用知识，以官方发布为准：」开头，严禁伪造成材料原文。
+- 时效核验（强制）：逐条查看材料的「状态」字段。
+  · 现行有效 / 现行有效（试行）→ 可直接引用；
+  · 现行有效（尚未生效）→ 引用须标注施行日期；
+  · 征求意见（含已截止）→ 仅作趋势参考，须明示「尚未生效，仅供参考」；
+  · 已废止 → 不得作为依据；涉及沿革时说明废止情况并指向替代文件；
+  · 同名多版本（GCP / GMP 多版等）→ 取最新现行版，并在时效说明中点出版本关系。
+- 每条依据尽量带齐 本地路径 + 来源 + 文号 + 发布日期 + 状态（取自材料，缺失写「—」）。
+- 若材料确实完全未覆盖该问题：结论中说明本地库未收录，给出你基于通用知识的谨慎判断，
+  并在适用提示中指向 NMPA（www.nmpa.gov.cn）/ CDE（www.cde.org.cn）对应栏目核实。
+
+""" + _QUALITY_RULES + "\n\n" + _SCHEMA
+
+
+_WEB_SYSTEM = _PERSONA + """
+
+【当前模式：🌐 AI 联网搜索】
+系统已按 AI 提炼的检索式实时检索公开网络，结果见下方「检索材料」（带 [n] 编号）。
+检索材料可能包含噪音、旧版本或非权威转载，你必须自行甄别，不得照单全收。
+
+""" + _THINKING_RULES + """
+
+【本模式专属规则】
+- 甄别来源权威性：nmpa.gov.cn / cde.org.cn / gov.cn / ich.org 等官方来源 > 行业媒体 > 百科 / 论坛。
+  发现材料与你已知的法规常识矛盾时，以更权威者为准并在思考分析中说明取舍理由。
+- 结论与依据中引用检索材料须用 [1]、[2] 对应编号；凭自身知识补充的内容必须显式注明
+  「依据通用知识，以官方发布为准」，严禁把通用知识包装成检索到的原文。
+- 严禁只复述检索片段——必须做专业综合、交叉验证、归因与判断。
+- 若检索材料整体与问题无关或质量很差，直接说明「本次检索未获取到有效权威材料」，
+  转而基于你的专业知识审慎作答，并提示以官方发布为准。
+
+""" + _QUALITY_RULES + "\n\n" + _SCHEMA
+
+
+_HYBRID_SYSTEM = _PERSONA + """
+
+【当前模式：🧠 深度融合（本地法规库 + 实时联网）】
+下方同时提供两类材料：
+  A.「法规材料」——本地权威法规库检索出的法规正文（准确、可逐字引用、含状态与文号）；
+  B.「检索材料」——实时网络检索结果（时效新，但需甄别权威性，带 [n] 编号）。
+
+""" + _THINKING_RULES + """
+
+【本模式专属规则（融合是本模式的核心价值，务必做到）】
+- 以 A 类本地法规正文作为法定依据主干（逐字引用、标注状态 / 文号 / 发布日期）；
+  以 B 类实时检索作为时效补充（最新修订、新政解读、官方问答、实施动态）。
+- 交叉核验：若 B 类显示某文件已被修订 / 废止 / 有新版，而 A 类为旧版，必须在
+  「时效说明」中明确指出版本关系与以何者为准，并在思考分析中写明这一发现。
+- 若两类材料口径冲突：先看效力层级，再看时间新旧，最后看来源权威性；
+  结论中给出你的取舍判断与理由，不要含糊并列。
+- 引用规范：本地依据填写「本地路径」；网络依据在「引用原文」中用 [n] 标注编号并填「来源」。
+- 本模式下答案的深度要求最高：要点解析不少于 3 条，且须体现法规原文与最新动态的结合。
+
+""" + _QUALITY_RULES + "\n\n" + _SCHEMA
 
 
 class _RateLimited(Exception):
@@ -561,8 +638,11 @@ def _build_llm_request(system, user, strip_json):
             {"role": "user", "content": user},
         ],
     }
+    # 深度作答需要一定发散：温度过低会退化成条文复读；0.35 兼顾严谨与见地。
+    if not no_json:
+        payload["max_tokens"] = int(os.environ.get("LLM_MAX_TOKENS", "3000") or "3000")
     if not no_json and not strip_json:
-        payload["temperature"] = 0.2
+        payload["temperature"] = 0.35
         payload["response_format"] = {"type": "json_object"}
     data = json.dumps(payload).encode("utf-8")
     return urllib.request.Request(
@@ -649,100 +729,426 @@ def _kb_one(q, only_valid):
 
 
 def _derive_queries(q):
-    """Derive candidate search strings from a natural-language question.
+    """把自然语言问题改写成一组本地库检索式（Query Rewriting）。
 
-    背景：kb.sqlite 的 FTS 对中文不做分词，长串（如『化学药1类』）往往搜不到，
-    但短关键词（『化学药』『注册分类』）能命中。故派生多组候选：英文缩写优先，
-    再补中文前缀 n-gram，逐组检索并去重合并。
-    e.g. 'GLP适用于哪些非临床研究？' -> ['原句','GLP','GLP 非临床研究','非临床研究','非临床',...]
-         '化学药1类是怎么定义的？'   -> ['原句','化学药1类','化学药1','化学药','化学']
+    背景：kb.sqlite 用 FTS5 + trigram 分词，长自然语言句召回极差，
+    但「法规全称 / 精确实体名词」命中率接近 100%。故按优先级派生：
+      ① 领域术语确定性映射（_DOMAIN_TERMS，如 “BE豁免” → 人体生物等效性试验豁免指导原则）
+      ② 术语规范化（缩写扩写 + 剥离尾部泛化词，_normalize_query）
+      ③ 英文缩写单独成条（GLP / GMP / ICH…）
+      ④ 去停用词后的中文核心串 + 前缀 n-gram 兜底
+    e.g. 'GLP适用于哪些非临床研究？'
+         -> ['药物非临床研究质量管理规范','GLP','非临床研究',...]
     """
     q = (q or "").strip()
     if not q:
         return []
-    acros = [a.upper() for a in re.findall(r"[A-Za-z]{2,}", q)]
-    # 清洗：去掉英文/标点/空格，保留中文与数字（如「1类」）
-    cn = re.sub(r"[A-Za-z？?。\.，,\s]+", "", q)
-    cn = re.sub(r"(哪些|如何|怎样|怎么|什么|是|的|吗|呢|适用于|适用|需要|请|问|关于|可以|是否|与|和|及|对|进行|要求|问题|指|定义|含义|说明|介绍|概括|指的|制度|规定|内容|方面|相关|具体)", "", cn).strip()
-    cands = [q]
-    # 英文缩写最具体，优先
-    if acros:
-        cands.append(" ".join(acros))
-        if cn:
-            for a in acros:
-                cands.append((a + " " + cn)[:16])
-    # 中文：原串 + 前缀 n-gram（4/3/2），缓解不分词导致的漏检
+    cands = []
+
+    def _add(x):
+        x = (x or "").strip()
+        if x and x not in cands:
+            cands.append(x)
+
+    # ① 领域法规全称（最高命中率，放最前）
+    for d in _domain_queries(q):
+        _add(d)
+    # ② 术语规范化后的整句
+    _add(_normalize_query(q))
+    # ③ 英文缩写
+    for a in [x.upper() for x in re.findall(r"[A-Za-z]{2,}", q)]:
+        _add(a)
+        exp = _normalize_query(a)
+        if exp and exp != a:
+            _add(exp)
+    # ④ 中文核心串（去英文/标点 + 去停用词）
+    cn = re.sub(r"[A-Za-z0-9？?。\.，,、；;：:！!\s（）()《》\"']+", "", q)
+    cn = re.sub(r"(哪些|如何|怎样|怎么|什么|是否|可以|需要|请问|请|关于|以及|还有|"
+                r"呢|吗|的|了|与|和|及|对|进行|问题|指的|含义|定义|说明|介绍|概括|"
+                r"具体|相关|方面|内容|我们|我|你|有|在|要|会|能)", "", cn).strip()
     if cn:
-        cands.append(cn)
-        for k in (4, 3, 2):
-            if len(cn) >= k:
-                cands.append(cn[:k])
-    return cands
+        _add(cn)
+        for k in (6, 4, 3):
+            if len(cn) > k:
+                _add(cn[:k])
+    _add(q)          # 原句垫底
+    return cands[:8]
 
 
-def _kb_retrieve(q, only_valid):
-    """多轮检索：主查询；结果偏少时再做一次「含废止/征求」的放宽查询并去重合并。"""
-    """Multi-pass retrieve: original + derived keywords, dedup merge;
-    if too few hits, broaden (incl. repealed/draft)."""
+def _fts_escape(s):
+    """FTS5 查询串转义：剔除会被当作语法的字符，整体加双引号作短语匹配。
+
+    注意 kb.sqlite 用 trigram 分词，短语长度须 >= 3 字符，否则永远匹配不到。"""
+    s = re.sub(r"[\"'()*:^\-+~]", " ", s or "").strip()
+    s = re.sub(r"\s+", " ", s)
+    return ('"%s"' % s) if s else ""
+
+
+# ------------------------------------------------ 标题 IDF 语义扫描（本地召回主力）
+# 背景：FTS5 trigram 只能做「连续子串」匹配——问「化学药品仿制药BE试验豁免」时，
+# 目标文件《人体生物等效性试验豁免指导原则》因标题不含连续子串而完全召不回。
+# 因此增加一层对全部 3000+ 篇标题的 2-gram + IDF 加权相似度扫描（纯内存，~20ms），
+# 让「问题词 ≈ 法规名」这一法规问答最常见的情形能稳定命中。
+
+_TITLE_INDEX = None
+
+
+def _title_index():
+    """构建（并缓存）标题倒排索引：行数据 + 2-gram 文档频率。"""
+    global _TITLE_INDEX
+    if _TITLE_INDEX is not None:
+        return _TITLE_INDEX
+    rows, df = [], {}
+    db = _db_path()
+    if not os.path.isfile(db):
+        _TITLE_INDEX = {"rows": [], "df": {}, "N": 1}
+        return _TITLE_INDEX
+    try:
+        con = sqlite3.connect(db)
+        cur = con.execute(
+            "SELECT path, title, type, issuer, publish_date, effective_date,"
+            " source_url, status, category, topic, doc_no FROM docs")
+        for r in cur:
+            title = r[1] or ""
+            g = set(_bigrams(re.sub(r"[《》()（）\[\]【】\s]", "", title)))
+            if not g:
+                continue
+            rows.append((r, g))
+            for x in g:
+                df[x] = df.get(x, 0) + 1
+        con.close()
+    except Exception:
+        rows, df = [], {}
+    _TITLE_INDEX = {"rows": rows, "df": df, "N": max(len(rows), 1)}
+    return _TITLE_INDEX
+
+
+def _kb_title_scan(q, only_valid=True, n=6, min_score=0.18):
+    """按 2-gram + IDF 加权的覆盖率扫描全部法规标题，返回最相关的若干篇。
+
+    score = Σ idf(命中 gram) / Σ idf(问题全部 gram)，取值 0~1，
+    再对超长标题做轻微惩罚，避免「大而全」的长标题靠字数取胜。"""
+    import math
+    idx = _title_index()
+    if not idx["rows"]:
+        return []
+    s = _normalize_query(q) or q
+    s = re.sub(r"[A-Za-z0-9]+", "", s)
+    s = re.sub(r"(是什么|有什么|为什么|怎么样|哪些|如何|怎么|怎样|请问|需要|是否|"
+               r"可以|能否|的条件|的要求|的规定|呢|吗|啊|吧|我想|帮我|告诉我)", "", s)
+    s = re.sub(r"[^\w\u4e00-\u9fff]", "", s)
+    qg = set(_bigrams(s))
+    if not qg:
+        return []
+    # 领域术语映射出的「法规全称」同样参与打分，取各查询的最高分：
+    # 这样「BE 试验豁免」也能直接锁定《人体生物等效性试验豁免指导原则》。
+    variants = [qg]
+    for c in _domain_queries(q):
+        g = set(_bigrams(re.sub(r"[^\w\u4e00-\u9fff]", "", c)))
+        if g:
+            variants.append(g)
+    N = idx["N"]
+    df = idx["df"]
+    # 用 idf² 加权：让「豁免 / 批签发 / 关联审评」这类稀有专业词主导相似度，
+    # 避免「化学 / 药品 / 研究」等高频通用词把泛泛相关的长标题顶上来。
+    allg = set()
+    for v in variants:
+        allg |= v
+    idf = {g: math.log(1.0 + N / (1.0 + df.get(g, 0))) ** 2 for g in allg}
+    denoms = [(sum(idf[g] for g in v) or 1.0) for v in variants]
+    scored = []
+    for r, g in idx["rows"]:
+        best = 0.0
+        for v, dn in zip(variants, denoms):
+            inter = v & g
+            if not inter:
+                continue
+            sc = sum(idf[x] for x in inter) / dn
+            if len(g) > 18:                   # 超长标题轻微惩罚
+                sc *= 18.0 / len(g)
+            if sc > best:
+                best = sc
+        if best >= min_score:
+            scored.append((best, r))
+    if not scored:
+        return []
+    scored.sort(key=lambda x: -x[0])
+    out = []
+    for sc, r in scored[:n * 5]:
+        (path, title, typ, issuer, pd, ed, url, status, cat, topic, dno) = r
+        if only_valid and not (str(status).startswith("现行有效")
+                               or status in ("有效", "现行")):
+            continue
+        out.append({
+            "标题": title or "", "类型": typ or "", "发布机构": issuer or "",
+            "发布日期": pd or "", "生效日期": ed or "", "状态": status or "",
+            "分类": (cat or "") + ("/" + topic if topic else ""),
+            "文号": dno or "", "本地路径": path or "", "来源": url or "",
+            "_score": 0.0, "_cat": cat or "", "_title_score": round(sc, 4),
+        })
+        if len(out) >= n:
+            break
+    return out
+
+
+_CAT_WEIGHT = {          # 效力层级加权（越大越优先）
+    "01_法律": 60, "02_行政法规": 50, "03_部门规章": 40,
+    "07_规范性文件": 30, "04_技术指导原则": 25,
+    "05_ICH": 20, "06_国外参考": 8, "08_行业共识": 6,
+}
+
+
+def _kb_fts(query, only_valid=True, n=8):
+    """直连 kb.sqlite 的 FTS5 检索（替代 subprocess 调 kb_query.py）。
+
+    收益：单次 ~0.15s（子进程方式每次 >1s，8 个候选式即 8s+），且排序可控——
+    bm25 列权重 标题×8 > 文号×2 > 正文×1，再叠加效力层级与状态档位重排。
+    返回与 kb_query.py 完全一致的中文键名，调用方与提示词无需改动。"""
+    m = _fts_escape(query)
+    if not m or len(re.sub(r"[^\w\u4e00-\u9fff]", "", m)) < 2:
+        return []
+    db = _db_path()
+    if not os.path.isfile(db):
+        return []
+    try:
+        con = sqlite3.connect(db)
+        sql = ("SELECT d.path, d.title, d.type, d.issuer, d.publish_date, d.effective_date,"
+               " d.source_url, d.status, d.category, d.topic, d.doc_no,"
+               " bm25(fts, 8.0, 1.0, 2.0, 1.0) AS score"
+               " FROM fts JOIN ftsmap mp ON mp.rowid_ = fts.rowid"
+               " JOIN docs d ON d.id = mp.docid WHERE fts MATCH ?")
+        params = [m]
+        if only_valid:
+            sql += " AND (d.status LIKE '现行有效%' OR d.status IN ('有效','现行'))"
+        sql += " ORDER BY score LIMIT ?"
+        params.append(int(n) * 4)
+        rows = con.execute(sql, params).fetchall()
+        con.close()
+    except Exception:
+        return []
+    out = []
+    for r in rows:
+        (path, title, typ, issuer, pd, ed, url, status, cat, topic, dno, score) = r
+        out.append({
+            "标题": title or "", "类型": typ or "", "发布机构": issuer or "",
+            "发布日期": pd or "", "生效日期": ed or "", "状态": status or "",
+            "分类": (cat or "") + ("/" + topic if topic else ""),
+            "文号": dno or "", "本地路径": path or "", "来源": url or "",
+            "_score": float(score or 0), "_cat": cat or "",
+        })
+    return out
+
+
+def _kb_rank(q, rows):
+    """本地检索结果重排：标题命中 + 效力层级 + 状态档位 + bm25。分越大越靠前。"""
+    qn = _normalize_query(q) or q
+    keys = set()
+    for s in (q, qn):
+        s2 = re.sub(r"[^\w\u4e00-\u9fff]", "", s or "")
+        for k in range(3, min(len(s2), 10) + 1):
+            for i in range(0, len(s2) - k + 1):
+                keys.add(s2[i:i + k])
+    keys = sorted(keys, key=len, reverse=True)[:300]
+    for r in rows:
+        title = r.get("标题", "") or ""
+        hit = 0
+        for k in keys:
+            if len(k) <= hit:
+                break
+            if k in title:
+                hit = len(k)
+        score = hit * 12.0                                   # 标题连续子串命中
+        score += float(r.get("_title_score", 0)) * 220.0     # 标题 IDF 语义相似度（主力信号）
+        score += _CAT_WEIGHT.get(r.get("_cat", ""), 10)      # 效力层级
+        score -= st_tier(r.get("状态", "")) * 8              # 现行有效优先
+        score += max(0.0, 12.0 + float(r.get("_score", 0)))  # bm25（负值，越小越好）
+        r["_rank"] = round(score, 2)
+    rows.sort(key=lambda x: -x.get("_rank", 0))
+    return rows
+
+
+def _kb_retrieve(q, only_valid, limit=8):
+    """本地库混合召回：标题 IDF 语义扫描 + 多检索式 FTS5 正文检索 → 去重 → 综合重排。
+
+    两路互补：
+      · 标题扫描解决「问题词 ≈ 法规名」（FTS trigram 连续子串匹配不到的情形）；
+      · FTS 正文检索解决「答案藏在条文里、标题看不出来」的情形。
+    先严格「仅现行有效」；命中不足时放宽（含试行 / 征求意见 / 已废止），
+    交由模型在时效核验环节甄别。两路都空时回退 subprocess（兼容旧路径）。"""
     cands = _derive_queries(q)
     merged, seen = [], set()
 
     def _add(r):
         p = (r.get("本地路径") or "") if isinstance(r, dict) else ""
-        if p and p not in seen:
-            seen.add(p)
-            merged.append(r)
+        if not p:
+            return
+        if p in seen:                     # 已存在则保留更高的标题相似度
+            for e in merged:
+                if e.get("本地路径") == p:
+                    e["_title_score"] = max(float(e.get("_title_score", 0)),
+                                            float(r.get("_title_score", 0)))
+                    if not e.get("_score") and r.get("_score"):
+                        e["_score"] = r["_score"]
+                    break
+            return
+        seen.add(p)
+        merged.append(r)
 
+    # ① 标题 IDF 语义扫描（召回主力）
+    for r in _kb_title_scan(q, True, n=limit):
+        _add(r)
+    # ② 多检索式 FTS5 正文检索
     for cq in cands:
-        for r in _kb_one(cq, True):
+        for r in _kb_fts(cq, True, limit):
             _add(r)
-        if len(merged) >= 6:
+        if len(merged) >= limit * 3:
             break
+    # ③ 命中不足则放宽状态过滤
     if len(merged) < 4:
+        for r in _kb_title_scan(q, False, n=limit):
+            _add(r)
         for cq in cands:
-            for r in _kb_one(cq, False):
+            for r in _kb_fts(cq, False, limit):
                 _add(r)
-            if len(merged) >= 6:
+            if len(merged) >= limit * 2:
                 break
-    return merged[:8]
+    if not merged:                       # 兜底：老路径（子进程）
+        for cq in cands[:3]:
+            for r in _kb_one(cq, bool(only_valid)):
+                _add(r)
+            if merged:
+                break
+    return _kb_rank(q, merged)[:limit]
 
 
-def _build_rag_prompt(q, docs_ctx):
-    lines = ["问题：%s\n" % q, "法规材料（按相关度排序，已附状态）：\n"]
-    for i, d in enumerate(docs_ctx, 1):
+def _fmt_kb_materials(docs_ctx, cap=2600, start=1):
+    """把本地法规正文格式化成提示词材料段。"""
+    lines = []
+    for i, d in enumerate(docs_ctx, start):
         m = d["meta"]
-        head = "%d. 《%s》（%s，%s，%s，状态：%s）" % (
-            i, m.get("标题", ""), m.get("发布机构", ""),
-            m.get("文号") or "—", m.get("发布日期") or "—", m.get("状态", ""))
-        lines.append(head)
-        lines.append("   本地：%s　来源：%s" % (m.get("本地路径", ""), m.get("来源", "")))
+        lines.append("%d. 《%s》（%s，%s，%s，状态：%s，分类：%s）" % (
+            i, m.get("标题", ""), m.get("发布机构", "") or "—",
+            m.get("文号") or "—", m.get("发布日期") or "—",
+            m.get("状态", "") or "—", m.get("分类", "") or "—"))
+        lines.append("   本地路径：%s　原文链接：%s"
+                     % (m.get("本地路径", ""), m.get("来源", "") or "—"))
         body = (d["body"] or "").strip()
-        if len(body) > 3500:
-            body = body[:3500] + "\n…(正文较长，已截断)"
-        lines.append(body)
+        if len(body) > cap:
+            body = body[:cap] + "\n…(正文较长，已截断)"
+        lines.append(body or "（本条未取到正文，请仅依据上方元数据谨慎引用）")
         lines.append("")
+    return lines
+
+
+def _build_rag_prompt(q, docs_ctx, queries=None):
+    lines = ["【用户问题】\n%s\n" % q]
+    if queries:
+        lines.append("【本次本地库实际使用的检索式】" + " ｜ ".join(queries) + "\n")
+    lines.append("【法规材料】（本地权威法规库检索结果，已按相关度 + 效力层级 + 时效排序）\n")
+    lines += _fmt_kb_materials(docs_ctx)
+    lines.append("请严格按系统提示的五步思考与 JSON 结构作答。")
     return _RAG_SYSTEM, "\n".join(lines)
+
+
+_ANSWER_KEYS = ("思考分析", "结论", "要点解析", "法规依据",
+                "适用提示", "风险提示", "时效说明", "延伸问题")
+
+
+def _normalize_answer(ans):
+    """补齐 schema 字段并做类型纠偏，避免模型少写字段导致前端渲染缺块。"""
+    if not isinstance(ans, dict):
+        return {k: ([] if k in ("要点解析", "法规依据", "延伸问题") else "")
+                for k in _ANSWER_KEYS}
+    for k in _ANSWER_KEYS:
+        if k not in ans or ans[k] is None:
+            ans[k] = [] if k in ("要点解析", "法规依据", "延伸问题") else ""
+    # 要点解析：容忍模型写成 ["xxx","yyy"] 或 [{"标题":..,"内容":..}]
+    pts = ans.get("要点解析")
+    if isinstance(pts, dict):
+        pts = [{"要点": k, "说明": v} for k, v in pts.items()]
+    if not isinstance(pts, list):
+        pts = []
+    norm = []
+    for p in pts:
+        if isinstance(p, str):
+            t = p.split("：", 1)
+            norm.append({"要点": t[0][:20], "说明": t[1] if len(t) > 1 else p})
+        elif isinstance(p, dict):
+            norm.append({
+                "要点": str(p.get("要点") or p.get("标题") or p.get("title") or "").strip(),
+                "说明": str(p.get("说明") or p.get("内容") or p.get("detail") or "").strip(),
+            })
+    ans["要点解析"] = [p for p in norm if p.get("说明")][:5]
+    fu = ans.get("延伸问题")
+    if isinstance(fu, str):
+        fu = [x for x in re.split(r"[\n；;｜|]+", fu) if x.strip()]
+    ans["延伸问题"] = [str(x).strip()[:40] for x in (fu or []) if str(x).strip()][:3]
+    if not isinstance(ans.get("法规依据"), list):
+        ans["法规依据"] = []
+    return ans
+
+
+def _enrich_citations(ans, docs_ctx):
+    """为模型漏填标题／文号等的法规依据，从已检索法规正文反查补全元数据。
+
+    模型偶发只写「引用原文」不写「标题」；此时按本地路径精确匹配，或按
+    「引用原文」片段在法规正文中定位来源，回填标题／文号／发布日期／状态／
+    本地路径／来源，避免前端出现「标题: None」的空引用。"""
+    ba = ans.get("法规依据")
+    if not isinstance(ba, list) or not docs_ctx:
+        return
+    for c in ba:
+        if not isinstance(c, dict):
+            continue
+        if (c.get("标题") or "").strip():
+            continue
+        raw = (c.get("引用原文") or "").strip()
+        if not raw:
+            continue
+        lp = (c.get("本地路径") or "").replace("\\", "/").strip()
+        hit = None
+        for d in docs_ctx:
+            m = d.get("meta") or {}
+            if lp and m.get("本地路径", "").replace("\\", "/").strip() == lp:
+                hit = m
+                break
+        if not hit and len(raw) >= 12:
+            frag = raw[:40]
+            for d in docs_ctx:
+                if frag in (d.get("body") or ""):
+                    hit = d.get("meta") or {}
+                    break
+        if hit:
+            c["标题"] = hit.get("标题", "") or c.get("标题", "")
+            c["本地路径"] = hit.get("本地路径", "") or c.get("本地路径", "")
+            c["来源"] = hit.get("来源", "") or c.get("来源", "")
+            c["文号"] = hit.get("文号", "") or c.get("文号", "")
+            c["发布日期"] = hit.get("发布日期", "") or c.get("发布日期", "")
+            c["状态"] = hit.get("状态", "") or c.get("状态", "")
 
 
 def _parse_llm_json(raw):
     raw = (raw or "").strip()
-    try:
-        return json.loads(raw)
-    except Exception:
-        pass
+    raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw)
+    for cand in (raw, ):
+        try:
+            return _normalize_answer(json.loads(cand))
+        except Exception:
+            pass
     m = re.search(r"\{.*\}", raw, re.S)
     if m:
         try:
-            return json.loads(m.group(0))
+            return _normalize_answer(json.loads(m.group(0)))
         except Exception:
             pass
-    return {"结论": raw or "（模型未返回有效内容）",
-            "法规依据": [], "适用提示": "", "时效说明": ""}
+    return _normalize_answer({"结论": raw or "（模型未返回有效内容）"})
 
 
 def _rag_query(q, only_valid, mode="local"):
     if mode == "web":
         return _web_query(q)
+    if mode == "hybrid":
+        return _hybrid_query(q, only_valid)
     cache_key = (q, bool(only_valid))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
@@ -751,19 +1157,22 @@ def _rag_query(q, only_valid, mode="local"):
         ans["source"] = "rag"
         ans["cached"] = True
         return ans
+    queries = _derive_queries(q)
     rows = _kb_retrieve(q, only_valid)
     if not rows:
         return {
-            "结论": "知识库未检索到与「%s」直接匹配的法规条文。建议换用更规范的表述"
-                    "（如 GMP / 生产质量管理规范），或前往官网核实。" % q,
-            "法规依据": [], "适用提示": "", "时效说明": "",
-            "source": "rag", "empty": True,
+            "结论": "本地法规库未检索到与「%s」直接匹配的条文。建议换用更规范的法规表述"
+                    "（如 GMP → 药品生产质量管理规范），或切换「🌐 AI 联网搜索」"
+                    "/「🧠 深度融合」模式。" % q,
+            "思考分析": "", "要点解析": [], "法规依据": [], "适用提示": "",
+            "风险提示": "", "时效说明": "", "延伸问题": [],
+            "search_queries": queries, "source": "rag", "empty": True,
         }
     docs_ctx = []
-    for r in rows[:6]:
+    for r in rows[:5]:
         rel = r.get("本地路径", "")
-        docs_ctx.append({"meta": r, "body": _read_kb_body(rel)})
-    sys_p, usr_p = _build_rag_prompt(q, docs_ctx)
+        docs_ctx.append({"meta": r, "body": _read_kb_body(rel, cap=3000)})
+    sys_p, usr_p = _build_rag_prompt(q, docs_ctx, queries)
     try:
         raw = _call_llm(sys_p, usr_p)
     except _RateLimited:
@@ -772,6 +1181,11 @@ def _rag_query(q, only_valid, mode="local"):
         return {"error": "llm_not_configured", "fallback": True}
     ans = _parse_llm_json(raw)
     ans["source"] = "rag"
+    ans["search_queries"] = queries
+    ans["kb_hits"] = [{"标题": r.get("标题", ""), "状态": r.get("状态", ""),
+                       "分类": r.get("分类", ""), "本地路径": r.get("本地路径", "")}
+                      for r in rows[:6]]
+    _enrich_citations(ans, docs_ctx)
     _RAG_CACHE[cache_key] = (now, ans)
     return ans
 
@@ -861,7 +1275,7 @@ def _search_wiki(query, n):
     try:
         url = ("https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
                + urllib.parse.quote(query) + "&format=json&srlimit=" + str(n))
-        req = urllib.request.Request(url, headers={"User-Agent": "AgnesAI/1.0"})
+        req = urllib.request.Request(url, headers={"User-Agent": "HaiyunAI/1.0"})
         with urllib.request.urlopen(req, timeout=5) as r:
             j = json.loads(r.read().decode("utf-8", "ignore"))
         out = []
@@ -1072,6 +1486,8 @@ _DOMAIN_TERMS = [
     # (问题中出现的触发词, 用于检索的规范全称)
     ("生物等效性豁免", "人体生物等效性试验豁免指导原则"),
     ("BE豁免", "人体生物等效性试验豁免指导原则"),
+    ("试验豁免", "人体生物等效性试验豁免指导原则"),
+    ("BE试验豁免", "人体生物等效性试验豁免指导原则"),
     ("BE试验", "生物等效性豁免"),
     ("生物等效性", "生物等效性豁免"),
     ("一致性评价", "仿制药质量和疗效一致性评价"),
@@ -1101,6 +1517,10 @@ _DOMAIN_TERMS = [
     ("IND", "新药临床试验申请"),
     ("补充申请", "药品补充申请"),
     ("药品管理法", "中华人民共和国药品管理法"),
+    ("委托生产", "药品上市许可持有人委托生产"),
+    ("质量协议", "药品上市许可持有人委托生产质量协议"),
+    ("委托生产检查", "药品上市许可持有人委托生产现场检查指南"),
+    ("主体责任", "药品上市许可持有人主体责任"),
 ]
 
 
@@ -1364,13 +1784,100 @@ def _web_query(q):
     if not raw:
         # 模型未配置/不可用：仍返回真实检索结果，保证联网检索可用
         return {"结论": "（当前 AI 模型未配置或不可用，已为你检索到以下实时网络结果）",
-                "法规依据": [], "适用提示": "", "时效说明": "",
+                "思考分析": "", "要点解析": [], "法规依据": [], "适用提示": "",
+                "风险提示": "", "时效说明": "", "延伸问题": [],
                 "web_sources": results, "search_queries": queries,
                 "source": "web", "llm_error": True}
     ans = _parse_llm_json(raw)
     ans["web_sources"] = results
     ans["search_queries"] = queries
     ans["source"] = "web"
+    _RAG_CACHE[cache_key] = (now, ans)
+    return ans
+
+
+def _hybrid_query(q, only_valid=True):
+    """🧠 深度融合：本地权威法规原文 + 实时联网检索并行取回，交叉核验后综合作答。
+
+    这是三种模式里深度最高的一档：
+      · 本地库给「准确、可逐字引用、带状态/文号」的法定依据；
+      · 联网给「最新修订、新政解读、官方问答」的时效补充；
+      · 提示词强制模型做版本交叉核验，冲突时给出取舍判断。
+    两路检索并行执行（线程池），总耗时≈max(本地, 联网)，不叠加。"""
+    cache_key = ("hybrid", q, bool(only_valid))
+    now = time.time()
+    cached = _RAG_CACHE.get(cache_key)
+    if cached and now - cached[0] < _RAG_CACHE_TTL:
+        ans = dict(cached[1])
+        ans["source"] = "hybrid"
+        ans["cached"] = True
+        return ans
+
+    kb_queries = _derive_queries(q)
+
+    def _local():
+        try:
+            return _kb_retrieve(q, only_valid, limit=6)
+        except Exception:
+            return []
+
+    def _online():
+        try:
+            wq = _refine_queries(q)
+            return wq, _web_search_multi(wq, max_results=5, original=q)
+        except Exception:
+            return [], []
+
+    rows, web_queries, results = [], [], []
+    try:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex:
+            f1, f2 = ex.submit(_local), ex.submit(_online)
+            rows = f1.result(timeout=40) or []
+            web_queries, results = f2.result(timeout=40)
+    except Exception:
+        if not rows:
+            rows = _local()
+
+    docs_ctx = []
+    for r in rows[:5]:
+        docs_ctx.append({"meta": r, "body": _read_kb_body(r.get("本地路径", ""), cap=3000)})
+
+    lines = ["【用户问题】\n%s\n" % q]
+    lines.append("【本地库检索式】" + (" ｜ ".join(kb_queries) or "—"))
+    lines.append("【联网检索式】" + (" ｜ ".join(web_queries) or "—") + "\n")
+    if docs_ctx:
+        lines.append("【A. 法规材料】（本地权威法规库全文，可逐字引用，已按相关度+效力层级排序）\n")
+        lines += _fmt_kb_materials(docs_ctx, cap=2600)
+    else:
+        lines.append("【A. 法规材料】本次本地库未命中相关条文。\n")
+    if results:
+        lines.append("【B. 检索材料】（实时网络检索结果，编号对应来源列表，需自行甄别权威性）")
+        for i, r in enumerate(results, 1):
+            lines.append("[%d] 《%s》\nURL: %s\n发布: %s\n摘要: %s"
+                         % (i, r["title"], r["url"], r.get("date", "") or "未标注",
+                            r.get("snippet", "")))
+        lines.append("")
+    else:
+        lines.append("【B. 检索材料】本次联网未获取到有效结果，请以 A 类法规原文为准。\n")
+    lines.append("请严格按系统提示完成五步思考与 A/B 两类材料的交叉核验，再按 JSON 结构作答。")
+    user_p = "\n".join(lines)
+
+    try:
+        raw = _call_llm(_HYBRID_SYSTEM, user_p)
+    except _RateLimited:
+        return {"error": "llm_rate_limited", "fallback": True,
+                "web_sources": results, "source": "hybrid"}
+    if not raw:
+        return {"error": "llm_not_configured", "fallback": True,
+                "web_sources": results, "source": "hybrid"}
+    ans = _parse_llm_json(raw)
+    _enrich_citations(ans, docs_ctx)
+    ans["web_sources"] = results
+    ans["search_queries"] = (kb_queries[:3] + web_queries)[:6]
+    ans["kb_hits"] = [{"标题": r.get("标题", ""), "状态": r.get("状态", ""),
+                       "分类": r.get("分类", ""), "本地路径": r.get("本地路径", "")}
+                      for r in rows[:5]]
+    ans["source"] = "hybrid"
     _RAG_CACHE[cache_key] = (now, ans)
     return ans
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-kb_query.py — 药品法规知识库检索工具（专家 9527 的检索底座）。
+kb_query.py — 药品法规知识库检索工具（海云AI 的检索底座）。
 
 用法示例：
   python kb_query.py "临床试验 数据管理"           # 多词 AND 检索

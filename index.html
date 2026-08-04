@@ -11,9 +11,9 @@
        填完整 URL（如 https://kb.example.com）= 跨域实时（后端已开 CORS *） -->
   <meta name="qa-api-base" content="/">
   <title>药品研发与生产质量体系知识库</title>
-  <link rel="stylesheet" href="css/style.css?v=20260805b">
-  <link rel="stylesheet" href="css/portal.css?v=20260805b">
-  <link rel="stylesheet" href="css/qa9.css?v=20260805b">
+  <link rel="stylesheet" href="css/style.css?v=20260806a">
+  <link rel="stylesheet" href="css/portal.css?v=20260806a">
+  <link rel="stylesheet" href="css/qa9.css?v=20260806a">
 </head>
 <body>
   <div class="app">
@@ -52,9 +52,9 @@
           <span>📖</span>
           <span>法规原文</span>
         </button>
-        <button id="qa9527Btn" class="topbar-btn" title="Agnes AI 智能问答">
+        <button id="qaAiBtn" class="topbar-btn" title="海云AI 智能问答">
           <span>💬</span>
-          <span>Agnes AI</span>
+          <span>海云AI</span>
         </button>
         <button id="matrixToggleBtn" class="topbar-btn" title="切换矩阵视图 (Ctrl+M)">
           <span>📊</span>
@@ -128,12 +128,12 @@
     </div>
   </div>
 
-  <!-- Agnes AI 智能问答（对话模式 · WorkBuddy 风格） -->
-  <div id="qa9527" class="qa9-panel" style="display:none;">
+  <!-- 海云AI 智能问答（对话模式 · WorkBuddy 风格） -->
+  <div id="qaAiPanel" class="qa9-panel" style="display:none;">
     <div class="qa9-main">
       <div class="qa9-chat-head">
         <div class="qa9-head-left">
-          <span class="qa9-title">💬 Agnes AI 智能问答</span>
+          <span class="qa9-title">💬 海云AI 智能问答</span>
           <span id="qa9Mode" class="qa9-mode"></span>
         </div>
         <div class="qa9-head-right">
@@ -148,14 +148,15 @@
       <div class="qa9-composer">
         <div class="qa9-composer-box">
           <textarea id="qa9Input" class="qa9-input" rows="1"
-            placeholder="向 Agnes AI 提问，例如：IND 申报需要哪些非临床研究资料？"></textarea>
+            placeholder="向 海云AI 提问，例如：IND 申报需要哪些非临床研究资料？"></textarea>
           <button id="qa9SendBtn" class="qa9-send-btn" title="发送 (Enter)">➤</button>
         </div>
         <div class="qa9-composer-toolbar">
           <div class="qa9-tool-left">
             <div class="qa9-mode-seg" id="qa9ModeSeg">
-              <button type="button" class="qa9-seg-btn active" data-mode="local">📚 本地数据库</button>
-              <button type="button" class="qa9-seg-btn" data-mode="web">🌐 AI 联网搜索</button>
+              <button type="button" class="qa9-seg-btn active" data-mode="local" title="仅基于本地 3096 篇法规全文推理，引用可溯源">📚 本地法规库</button>
+              <button type="button" class="qa9-seg-btn" data-mode="web" title="实时联网检索后综合作答，不依赖本地库">🌐 联网搜索</button>
+              <button type="button" class="qa9-seg-btn" data-mode="hybrid" title="本地法规原文 + 实时联网并行检索，交叉核验后深度作答（最慢但最完整）">🧠 深度融合</button>
             </div>
             <span class="qa9-model-pick">
               <span class="qa9-model-ico">🧠</span>
@@ -238,28 +239,28 @@
   </div>
 
   <!-- 脚本 -->
-  <script src="js/data.js?v=20260805b"></script>
-  <script src="js/search.js?v=20260805b"></script>
-  <script src="js/reg-index.js?v=20260805b"></script>
-  <script src="js/reg-extra.js?v=20260805b"></script>
-  <script src="js/penetration-kb.js?v=20260805b"></script>
-  <script src="js/preclinical-subsections.js?v=20260805b"></script>
-  <script src="js/drug-classification.js?v=20260805b"></script>
-  <script src="js/class-requirements.js?v=20260805b"></script>
-  <script src="js/special-cases.js?v=20260805b"></script>
-  <script src="js/knowledge-framework.js?v=20260805b"></script>
-  <script src="js/cases-library.js?v=20260805b"></script>
-  <script src="js/class-req-detail.js?v=20260805b"></script>
-  <script src="js/integrated-cases.js?v=20260805b"></script>
-  <script src="js/diagrams.js?v=20260805b"></script>
-  <script src="js/subclass-detail.js?v=20260805b"></script>
-  <script src="js/discovery-steps.js?v=20260805b"></script>
-  <script src="js/preclinical-steps.js?v=20260805b"></script>
-  <script src="js/class-req-process-addon.js?v=20260805b"></script>
-  <script src="js/stage-qm-addon.js?v=20260805b"></script>
-  <script src="js/reg-kb-full.js?v=20260805b"></script>
-  <script src="js/reg-qa-9527.js?v=20260805b"></script>
-  <script src="js/app.js?v=20260805b"></script>
-  <script src="js/knowledge-portal.js?v=20260805b"></script>
+  <script src="js/data.js?v=20260806a"></script>
+  <script src="js/search.js?v=20260806a"></script>
+  <script src="js/reg-index.js?v=20260806a"></script>
+  <script src="js/reg-extra.js?v=20260806a"></script>
+  <script src="js/penetration-kb.js?v=20260806a"></script>
+  <script src="js/preclinical-subsections.js?v=20260806a"></script>
+  <script src="js/drug-classification.js?v=20260806a"></script>
+  <script src="js/class-requirements.js?v=20260806a"></script>
+  <script src="js/special-cases.js?v=20260806a"></script>
+  <script src="js/knowledge-framework.js?v=20260806a"></script>
+  <script src="js/cases-library.js?v=20260806a"></script>
+  <script src="js/class-req-detail.js?v=20260806a"></script>
+  <script src="js/integrated-cases.js?v=20260806a"></script>
+  <script src="js/diagrams.js?v=20260806a"></script>
+  <script src="js/subclass-detail.js?v=20260806a"></script>
+  <script src="js/discovery-steps.js?v=20260806a"></script>
+  <script src="js/preclinical-steps.js?v=20260806a"></script>
+  <script src="js/class-req-process-addon.js?v=20260806a"></script>
+  <script src="js/stage-qm-addon.js?v=20260806a"></script>
+  <script src="js/reg-kb-full.js?v=20260806a"></script>
+  <script src="js/reg-qa-faq.js?v=20260806a"></script>
+  <script src="js/app.js?v=20260806a"></script>
+  <script src="js/knowledge-portal.js?v=20260806a"></script>
 </body>
 </html>

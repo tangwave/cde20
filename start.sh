@@ -28,5 +28,5 @@ if [ ! -f "$DB" ]; then
   fi
 fi
 
-echo "[start] 启动 9527 法规问答后端（同源托管前端 + /api/qa），端口 $PORT"
+echo "[start] 启动 海云AI 法规问答后端（同源托管前端 + /api/qa），端口 $PORT"
 exec uvicorn api.server:app --host 0.0.0.0 --port "$PORT"

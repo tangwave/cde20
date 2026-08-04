@@ -1,4 +1,4 @@
-# 常驻启动 9527 法规问答后端 + 公网反向隧道
+# 常驻启动 海云AI 法规问答后端 + 公网反向隧道
 # 用法：
 #   powershell -ExecutionPolicy Bypass -File start_backend.ps1
 #   powershell -ExecutionPolicy Bypass -File start_backend.ps1 -Tunnel vps -VpsHost user@1.2.3.4

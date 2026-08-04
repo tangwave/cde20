@@ -1,11 +1,11 @@
-/* 9527 法规问答精选 —— 由「药品法规专家 9527」基于本地知识库（kb.sqlite，3096 篇）离线生成。
+/* 海云AI 法规问答精选 —— 由药品法规专家基于本地知识库（kb.sqlite，3096 篇）离线生成。
  * 说明：
  *  - q / abstract / tips / timeNote 为专家离线撰写的结论、适用提示、时效说明（解读性内容）。
  *  - 法规依据不在此硬编码，而是运行时用 search(+cats/onlyValid) 对 REG_KB_FULL 重新检索后动态渲染，
  *    保证引用与导出的知识库快照一致，且随索引更新而更新。
  *  - 国外参考指导原则（FDA/WHO/EMA 译文）仅作对照参考，非中国法定依据。
  */
-globalThis.REG_QA_9527 = [
+globalThis.REG_QA_FAQ = [
   {
     tag: "IND/非临床",
     q: "IND（新药临床试验申请）申报需要提交哪些非临床研究资料？",
@@ -148,4 +148,7 @@ globalThis.REG_QA_9527 = [
   }
 ];
 
-if (typeof module !== "undefined") module.exports = globalThis.REG_QA_9527;
+// 兼容旧全局名（历史缓存的 app.js 仍可能引用）
+globalThis.REG_QA_9527 = globalThis.REG_QA_FAQ;
+
+if (typeof module !== "undefined") module.exports = globalThis.REG_QA_FAQ;

@@ -6,7 +6,7 @@
   <RegistrationInfo>
     <Date>2026-08-02T00:00:00</Date>
     <Author>PharmaKB</Author>
-    <Description>药品质量知识库 9527 法规问答后端（登录时自启，常驻）</Description>
+    <Description>药品质量知识库 海云AI 法规问答后端（登录时自启，常驻）</Description>
   </RegistrationInfo>
   <Triggers>
     <LogonTrigger>

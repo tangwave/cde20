@@ -1,4 +1,4 @@
-# 注册 Windows「登录时自启」任务，令 9527 后端常驻（花生壳穿透版，端口 8000）
+# 注册 Windows「登录时自启」任务，令 海云AI 后端常驻（花生壳穿透版，端口 8000）
 # 以管理员 PowerShell 运行：
 #   powershell -ExecutionPolicy Bypass -File install_autostart_penghuashell.ps1
 # 卸载：
