@@ -2186,7 +2186,7 @@ const App = {
     const welcome =
       '<div class="qa9-welcome-screen">' +
         '<div class="qa9-welcome-title">👋 你好，我是 Agnes AI</div>' +
-        '<div class="qa9-welcome-sub">切换下方「本地数据库 / AI 联网搜索」可分别基于本地法规库推理，或由大模型联网作答（不依赖本地库）。选择一个问题，或直接输入你的问题。</div>' +
+        '<div class="qa9-welcome-sub">切换下方「📚 本地数据库 / 🌐 AI 联网搜索」可分别基于本地法规库推理，或先实时检索网络再综合作答（不依赖本地库）。选择一个问题，或直接输入你的问题。</div>' +
         '<div class="qa9-welcome-cards">' + cards + '</div>' +
       '</div>';
     const wrap = document.createElement('div');
@@ -2725,15 +2725,24 @@ const App = {
     const badge = src === 'web'
       ? '<span class="qa9-src-badge web">🌐 AI 联网搜索</span>'
       : '<span class="qa9-src-badge rag">● AI 推理</span>';
-    const srcNote = src === 'web'
-      ? '基于大模型联网 / 通用知识作答，未引用本地数据库'
-      : '依据来自 Agnes AI 实时数据库 + 大模型解读';
-    html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
-            '<div class="qa9-src-note">' + srcNote + '</div></div><div class="qa9-cite-list">';
-    const basis = (o.rag && o.rag['法规依据']) || [];
-    if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
-    else html += '<div class="qa9-empty">' + (src === 'web' ? '（AI 联网作答，未附本地依据）' : '未检索到明确依据。') + '</div>';
-    html += '</div></div>';
+    if (src === 'web') {
+      // 联网搜索模式：渲染「实时检索来源」卡片（可点击跳转原文）
+      const ws = (o.rag && o.rag.web_sources) || [];
+      html += '<div class="qa9-block"><div class="qa9-block-h">【检索来源】 ' + badge +
+              '<div class="qa9-src-note">以下为实时网络检索结果（点击可跳转原文）</div></div>' +
+              '<div class="qa9-web-src-list">';
+      if (ws.length) ws.forEach((s, i) => { html += this.webSrcHtml(s, i + 1); });
+      else html += '<div class="qa9-empty">本次未检索到外部来源（可能当前网络受限，可切换网络后重试）。</div>';
+      html += '</div></div>';
+    } else {
+      const srcNote = '依据来自 Agnes AI 实时数据库 + 大模型解读';
+      html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
+              '<div class="qa9-src-note">' + srcNote + '</div></div><div class="qa9-cite-list">';
+      const basis = (o.rag && o.rag['法规依据']) || [];
+      if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
+      else html += '<div class="qa9-empty">未检索到明确依据。</div>';
+      html += '</div></div>';
+    }
     if (o.blocks && o.blocks.tips) {
       html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(o.blocks.tips) + '</div>';
     }
@@ -2769,6 +2778,20 @@ const App = {
       '<span class="qa9-card-title">' + Penetrator.esc(title) + '</span></div>' +
       '<div class="qa9-card-meta">' + meta + '</div>' +
       quote + local + src + '</div>';
+  },
+
+  // 渲染联网搜索返回的实时检索来源卡片（标题可点击跳转原文 + 摘要）
+  webSrcHtml(s, n) {
+    const title = (n ? n + '. ' : '') + (s['标题'] || s.title || '来源');
+    const url = s['url'] || s.URL || '';
+    const snippet = s['摘要'] || s.snippet || s.content || '';
+    const host = (() => { try { return new URL(url).hostname; } catch (e) { return ''; } })();
+    const titleHtml = url
+      ? '<a class="qa9-web-src-title" href="' + Penetrator.esc(url) + '" target="_blank" rel="noopener">' + Penetrator.esc(title) + ' ↗</a>'
+      : '<span class="qa9-web-src-title">' + Penetrator.esc(title) + '</span>';
+    const meta = host ? '<div class="qa9-web-src-host">🔗 ' + Penetrator.esc(host) + '</div>' : '';
+    const snip = snippet ? '<div class="qa9-web-src-snippet">' + Penetrator.esc(this._clip(snippet, 220)) + '</div>' : '';
+    return '<div class="qa9-web-src">' + titleHtml + meta + snip + '</div>';
   },
 
   qaCardHtml(d, n) {

@@ -22,7 +22,9 @@ import sqlite3
 import subprocess
 import sys
 import time
+import concurrent.futures
 import urllib.error
+import urllib.parse
 import urllib.request
 
 from fastapi import FastAPI, Query, Request
@@ -96,6 +98,43 @@ LLM_PRESETS_DEFAULT = [
     {"id": "agnes", "name": "Agnes AI",
      "base_url": "https://api.agnes-ai.cn/v1",
      "models": ["AGNES"], "default_model": "AGNES"},
+    # ---- 以下为免费 / 免费额度服务商（OpenAI 兼容，仅需粘贴对应平台的免费 Key 即可用）----
+    {"id": "google", "name": "Google Gemini（免费额度）",
+     "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+     "models": ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash", "gemini-1.5-flash"],
+     "default_model": "gemini-2.5-flash"},
+    {"id": "groq", "name": "Groq（免费 · 极速）",
+     "base_url": "https://api.groq.com/openai/v1",
+     "models": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant",
+                "mixtral-8x7b-32768", "gemma2-9b-it"],
+     "default_model": "llama-3.3-70b-versatile"},
+    {"id": "openrouter", "name": "OpenRouter（含免费模型）",
+     "base_url": "https://openrouter.ai/api/v1",
+     "models": ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-flash-1.5:free",
+                "deepseek/deepseek-r1-distill-llama-70b:free", "qwen/qwen2.5-72b-instruct:free",
+                "mistralai/mistral-7b-instruct:free"],
+     "default_model": "meta-llama/llama-3.3-70b-instruct:free"},
+    {"id": "mistral", "name": "Mistral（免费额度）",
+     "base_url": "https://api.mistral.ai/v1",
+     "models": ["mistral-small-latest", "open-mistral-7b", "mistral-large-latest"],
+     "default_model": "mistral-small-latest"},
+    {"id": "perplexity", "name": "Perplexity（原生联网搜索）",
+     "base_url": "https://api.perplexity.ai",
+     "models": ["sonar", "sonar-reasoning", "sonar-pro"], "default_model": "sonar"},
+    {"id": "siliconflow", "name": "硅基流动 SiliconFlow（含免费）",
+     "base_url": "https://api.siliconflow.cn/v1",
+     "models": ["deepseek-ai/DeepSeek-V3", "Qwen/Qwen2.5-72B-Instruct",
+                "meta-llama/Llama-3.1-8B-Instruct", "THUDM/glm-4-9b-chat"],
+     "default_model": "deepseek-ai/DeepSeek-V3"},
+    {"id": "together", "name": "Together AI（免费额度）",
+     "base_url": "https://api.together.xyz/v1",
+     "models": ["meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                "Qwen/Qwen2.5-72B-Instruct-Turbo", "deepseek-ai/DeepSeek-V3"],
+     "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo"},
+    {"id": "github", "name": "GitHub Models（免费）",
+     "base_url": "https://models.inference.ai.azure.com",
+     "models": ["gpt-4o-mini", "gpt-4o", "Phi-3.5-mini-instruct", "Meta-Llama-3.1-405B-Instruct"],
+     "default_model": "gpt-4o-mini"},
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
@@ -105,8 +144,12 @@ LLM_PRESETS = []            # 运行时生效预设（来自 llm_presets.json，
 
 
 def _load_presets():
-    """加载内置模型预设：优先 llm_presets.json（用户增删改后的持久化结果），
-    文件不存在/损坏则用 LLM_PRESETS_DEFAULT 种子并写盘。返回规整后的 list。"""
+    """加载内置模型预设：优先 llm_presets.json（用户增删改后的持久化结果）；
+    文件不存在/损坏则用 LLM_PRESETS_DEFAULT 种子并写盘。
+
+    合并策略：以文件内容为准；若种子默认项中有「文件里缺失的 id」（例如升级后
+    新增的免费模型），则自动补齐并写回，使新模型对老用户立即可见，且不会覆盖
+    用户对已有模型的自定义编辑。"""
     data = None
     if os.path.isfile(LLM_PRESETS_FILE):
         try:
@@ -128,6 +171,19 @@ def _load_presets():
                 "custom": bool(p.get("custom")),
             })
         if out:
+            # 补齐缺失的默认项（新增免费模型等），避免老用户看不到
+            ids = {p["id"] for p in out}
+            added = False
+            for d in LLM_PRESETS_DEFAULT:
+                if d["id"] not in ids:
+                    out.append(dict(d))
+                    added = True
+            if added:
+                try:
+                    with open(LLM_PRESETS_FILE, "w", encoding="utf-8") as f:
+                        json.dump(out, f, ensure_ascii=False, indent=2)
+                except Exception:
+                    pass
             return out
     # 用种子写盘，便于后续编辑
     try:
@@ -459,19 +515,20 @@ _RAG_SYSTEM = """你是中国药品法规专家「9527」。只依据下面提�
 - 只输出 JSON，不要任何额外文字或 markdown 代码块标记。"""
 
 
-_WEB_SYSTEM = """你是中国药品法规 AI 助手「Agnes AI」。请基于你掌握的知识（如模型具备联网检索能力，请主动联网检索最新公开信息）回答用户关于药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题。
+_WEB_SYSTEM = """你是中国药品法规 AI 助手「Agnes AI」。你正在使用「AI 联网搜索」模式：系统已为你实时检索了公开网络结果（见下方「检索材料」），请综合这些信息回答用户关于药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题；若检索材料不足以完全覆盖，可结合你的通用知识补充，但需注明。
 
 要求：
 1. 以四段式 JSON 作答：
 {
  "结论":"一句话直答",
- "法规依据":[{"标题":"","引用原文":"关键条款摘录（来自记忆请注明，切勿编造文号/日期","来源":"","发布日期":"","状态":""}],
+ "法规依据":[{"标题":"","引用原文":"关键条款摘录（来自检索材料请标注编号如 [1]；来自自身记忆请注明，切勿编造文号/日期","来源":"","发布日期":"","状态":""}],
  "适用提示":"实操要点 / 常见误区",
  "时效说明":"当前是否有效、是否有更新趋势；不确定请注明『以官方最新发布为准』"
 }
-2. 注意：你不依赖本地知识库，凡引用法规尽量给出准确的发布机构、文号、发布日期与状态；若不确定请明确说明，不要编造。
-3. 医疗器械 / 化妆品问题：本库聚焦药品，须说明超出范围。
-4. 只输出 JSON，不要任何额外文字或 markdown 代码块标记。"""
+2. 引用规范：对检索材料中的信息，在结论 / 依据里用 [1]、[2] 等编号对应下方来源；务必保证编号与「检索材料」列表顺序一致。
+3. 不依赖本地知识库；凡引用法规尽量给出准确发布机构、文号、发布日期与状态；若不确定请明确说明，不要编造。
+4. 医疗器械 / 化妆品问题：本库聚焦药品，须说明超出范围。
+5. 只输出 JSON，不要任何额外文字或 markdown 代码块标记。"""
 
 
 class _RateLimited(Exception):
@@ -483,13 +540,12 @@ _RAG_CACHE = {}            # (q, only_valid) -> (timestamp, answer)
 _RAG_CACHE_TTL = 3600     # 1 小时
 
 
-def _call_llm(system, user, attempts=2):
-    """调用 OpenAI 兼容 chat/completions。未配置返回 None；限流抛 _RateLimited。"""
+def _build_llm_request(system, user, strip_json):
+    """构造 OpenAI 兼容 chat/completions 请求。strip_json=True 时去掉
+    response_format / temperature（部分免费模型不支持，会返回 400）。"""
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
     model = LLM_CFG.get("model", "").strip()
-    if not (base and key and model):
-        return None
     url = base.rstrip("/") + "/chat/completions"
     # 部分推理模型（deepseek-reasoner / o1 / r1 等）不支持 response_format 与自定义 temperature
     no_json = bool(re.search(r"reasoner|o1|o3|o4|r1|deepseek-reasoner", model, re.I))
@@ -500,21 +556,52 @@ def _call_llm(system, user, attempts=2):
             {"role": "user", "content": user},
         ],
     }
-    if not no_json:
+    if not no_json and not strip_json:
         payload["temperature"] = 0.2
         payload["response_format"] = {"type": "json_object"}
     data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
+    return urllib.request.Request(
         url, data=data,
         headers={"Content-Type": "application/json",
                  "Authorization": "Bearer " + key},
     )
+
+
+def _call_llm(system, user, attempts=2):
+    """调用 OpenAI 兼容 chat/completions。未配置返回 None；限流抛 _RateLimited。"""
+    base = LLM_CFG.get("base_url", "").strip()
+    key = LLM_CFG.get("api_key", "").strip()
+    model = LLM_CFG.get("model", "").strip()
+    if not (base and key and model):
+        return None
+    return _call_llm_ex(system, user, attempts=attempts)[0]
+
+
+def _call_llm_ex(system, user, attempts=2):
+    """同 _call_llm，但额外返回 citations（Perplexity 等会返回联网引用 URL 列表）。
+
+    返回 (content_or_None, [citation_url, ...])。兼容策略：
+    - 限流（429）抛 _RateLimited；
+    - 部分免费模型不支持 response_format/temperature（400），自动去掉后重试一次；
+    - 其余异常按 attempts 重试。"""
+    base = LLM_CFG.get("base_url", "").strip()
+    key = LLM_CFG.get("api_key", "").strip()
+    model = LLM_CFG.get("model", "").strip()
+    if not (base and key and model):
+        return None, []
+    req = _build_llm_request(system, user, False)
     timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
+    retried = False
     for attempt in range(attempts):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                j = json.loads(r.read().decode("utf-8"))
-            return j["choices"][0]["message"]["content"]
+                raw = r.read().decode("utf-8")
+            j = json.loads(raw)
+            content = j["choices"][0]["message"]["content"]
+            cites = j.get("citations") or []
+            if not isinstance(cites, list):
+                cites = []
+            return content, [str(c) for c in cites if c]
         except urllib.error.HTTPError as e:
             try:
                 body = e.read().decode("utf-8", "ignore")
@@ -522,12 +609,17 @@ def _call_llm(system, user, attempts=2):
                 body = ""
             if e.code == 429 or "1302" in body or "rate" in body.lower():
                 raise _RateLimited(body or "rate limited")
+            # 部分免费模型不支持 response_format/temperature：去掉后重试一次
+            if e.code == 400 and not retried:
+                retried = True
+                req = _build_llm_request(system, user, True)
+                continue
             if attempt < attempts - 1:
                 time.sleep(6)
         except Exception:
             if attempt < attempts - 1:
                 time.sleep(6)
-    return None
+    return None, []
 
 
 def _kb_one(q, only_valid):
@@ -679,8 +771,184 @@ def _rag_query(q, only_valid, mode="local"):
     return ans
 
 
+# ---------------------------------------------------------------- 联网检索（AI 联网搜索模式）
+# 默认走 keyless 的 DuckDuckGo / Wikipedia；若配置了 TAVILY_API_KEY / BRAVE_API_KEY
+# 环境变量，则优先使用对应的免费搜索 API（更稳定、返回结构化结果）。
+
+def _search_tavily(query, n):
+    """Tavily 搜索（需 TAVILY_API_KEY 环境变量；有免费额度）。"""
+    key = os.environ.get("TAVILY_API_KEY", "").strip()
+    if not key:
+        return []
+    try:
+        payload = json.dumps({"api_key": key, "query": query,
+                              "max_results": n, "search_depth": "basic"}).encode("utf-8")
+        req = urllib.request.Request("https://api.tavily.com/search", data=payload,
+                                     headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode("utf-8", "ignore"))
+        out = []
+        for it in j.get("results", []) or []:
+            out.append({"title": (it.get("title") or "").strip(),
+                        "url": (it.get("url") or "").strip(),
+                        "snippet": re.sub(r"<[^>]+>", "", str(it.get("content", ""))).strip()})
+        return out
+    except Exception:
+        return []
+
+
+def _search_brave(query, n):
+    """Brave Search API（需 BRAVE_API_KEY 环境变量；有免费额度）。"""
+    key = os.environ.get("BRAVE_API_KEY", "").strip()
+    if not key:
+        return []
+    try:
+        url = ("https://api.search.brave.com/res/v1/web/search?q="
+               + urllib.parse.quote(query) + "&count=" + str(n))
+        req = urllib.request.Request(url, headers={
+            "Accept": "application/json",
+            "X-Subscription-Token": key,
+        })
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode("utf-8", "ignore"))
+        out = []
+        for it in (j.get("web", {}) or {}).get("results", []) or []:
+            out.append({"title": (it.get("title") or "").strip(),
+                        "url": (it.get("url") or "").strip(),
+                        "snippet": re.sub(r"<[^>]+>", "", str(it.get("description", ""))).strip()})
+        return out
+    except Exception:
+        return []
+
+
+def _search_ddg(query, n):
+    """DuckDuckGo HTML（keyless，尽力解析结果）。"""
+    try:
+        data = urllib.parse.urlencode({"q": query, "kl": "cn-zh"}).encode("utf-8")
+        req = urllib.request.Request("https://html.duckduckgo.com/html/", data=data, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+            "Content-Type": "application/x-www-form-urlencoded",
+        })
+        with urllib.request.urlopen(req, timeout=10) as r:
+            html = r.read().decode("utf-8", "ignore")
+    except Exception:
+        return []
+    titles = re.findall(r'class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', html, re.S)
+    snips = re.findall(r'class="result__snippet"[^>]*>(.*?)</a>', html, re.S)
+    out = []
+    for i, (href, title) in enumerate(titles):
+        title = re.sub(r"<[^>]+>", "", title).strip()
+        snippet = re.sub(r"<[^>]+>", "", snips[i]).strip() if i < len(snips) else ""
+        m = re.search(r"uddg=([^&]+)", href)
+        real = urllib.parse.unquote(m.group(1)) if m else href
+        if real.startswith("//"):
+            real = "https:" + real
+        if title and real:
+            out.append({"title": title, "url": real, "snippet": snippet})
+        if len(out) >= n:
+            break
+    return out
+
+
+def _search_wiki(query, n):
+    """Wikipedia 搜索 API（keyless，适合概念 / 术语类问题）。"""
+    try:
+        url = ("https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
+               + urllib.parse.quote(query) + "&format=json&srlimit=" + str(n))
+        req = urllib.request.Request(url, headers={"User-Agent": "AgnesAI/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode("utf-8", "ignore"))
+        out = []
+        for it in (j.get("query", {}) or {}).get("search", []) or []:
+            title = (it.get("title") or "").strip()
+            snippet = re.sub(r"<[^>]+>", "", str(it.get("snippet", ""))).strip()
+            out.append({"title": title,
+                        "url": "https://en.wikipedia.org/wiki/" + urllib.parse.quote(title.replace(" ", "_")),
+                        "snippet": snippet})
+        return out
+    except Exception:
+        return []
+
+
+def _search_bing(query, n):
+    """必应搜索（keyless，中国大陆可访问，作为主力免费检索源）。"""
+    try:
+        url = "https://www.bing.com/search?q=" + urllib.parse.quote(query) + "&setlang=zh-CN&ensearch=0"
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+        })
+        with urllib.request.urlopen(req, timeout=8) as r:
+            html = r.read().decode("utf-8", "ignore")
+    except Exception:
+        return []
+    out = []
+    # 每条结果：<li class="b_algo"> ... <h2><a href="URL">标题</a></h2> ... <p>摘要</p>
+    blocks = re.findall(r'<li class="b_algo">(.*?)</li>', html, re.S)
+    for b in blocks:
+        m = re.search(r'<h2>\s*<a[^>]+href="([^"]+)"', b)
+        if not m:
+            continue
+        u = m.group(1)
+        if not u.startswith("http"):
+            continue
+        t = re.search(r'<h2>\s*<a[^>]*>(.*?)</a>', b, re.S)
+        title = re.sub(r"<[^>]+>", "", t.group(1)).strip() if t else ""
+        s = re.search(r'<p[^>]*>(.*?)</p>', b, re.S)
+        snippet = re.sub(r"<[^>]+>", "", s.group(1)).strip() if s else ""
+        if title and u:
+            out.append({"title": title, "url": u, "snippet": snippet})
+        if len(out) >= n:
+            break
+    return out
+
+
+def _web_search(query, max_results=6):
+    """实时联网检索：聚合多个免费来源，去重返回 [{title,url,snippet}]。
+
+    优先级：Tavily/Brave（若配置了环境变量 Key，结果最结构化）> 并行抓取
+    Bing（国内容易访问）/ DuckDuckGo / Wikipedia（keyless）。全部失败则返回空列表。
+    关键源并行执行，把总耗时收敛到单个超时上限，避免串行累加导致前端长时间等待。"""
+    results, seen = [], set()
+
+    def _add(items):
+        for it in items:
+            u = (it.get("url") or "").strip()
+            if u and u not in seen and len(results) < max_results:
+                seen.add(u)
+                results.append({"title": (it.get("title") or "").strip(),
+                                "url": u,
+                                "snippet": (it.get("snippet") or "").strip()})
+
+    # 1) 先快速试「需 Key 的优质源」（无 Key 立即返回空，不耗时）
+    _add(_search_tavily(query, max_results))
+    _add(_search_brave(query, max_results))
+    if len(results) >= max_results:
+        return results[:max_results]
+    # 2) keyless 源并行抓取（Bing 为主力，DDG/Wiki 补充）
+    keyless = [_search_bing, _search_ddg, _search_wiki]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(keyless)) as ex:
+        futs = {ex.submit(fn, query, max_results): fn for fn in keyless}
+        for fut in concurrent.futures.as_completed(futs):
+            try:
+                _add(fut.result() or [])
+            except Exception:
+                pass
+            if len(results) >= max_results:
+                break
+    return results[:max_results]
+
+
 def _web_query(q):
-    """AI 联网搜索模式：不检索本地知识库，直接调用大模型（模型可联网则联网作答）。"""
+    """AI 联网搜索模式：先实时检索公开网络，再交给大模型综合作答并带 [n] 引用。
+
+    - 检索：DuckDuckGo / Wikipedia（keyless）+ 可选 Tavily/Brave（免费 Key）。
+    - 综合：把检索结果作为上下文喂给大模型，要求按 [1][2] 引用来源。
+    - 若所选模型本身具备原生联网（如 Perplexity sonar），则直接利用其返回的真实
+      citations 作为来源（更权威）。
+    - 降级：大模型未配置/不可用时，仍返回真实检索结果，保证「联网检索」可用。"""
     cache_key = ("web", q)
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
@@ -689,13 +957,37 @@ def _web_query(q):
         ans["source"] = "web"
         ans["cached"] = True
         return ans
+    results = _web_search(q, max_results=6)
+    provider = LLM_CFG.get("provider", "")
+    # 构造提示：有检索结果则作为上下文；否则请模型凭通用知识作答
+    if results:
+        ctx = ["【检索材料】（实时网络检索结果，编号对应下方来源）", ""]
+        for i, r in enumerate(results, 1):
+            ctx.append("[%d] 《%s》\nURL: %s\n摘要: %s" % (i, r["title"], r["url"], r.get("snippet", "")))
+        ctx.append("")
+        ctx.append("用户问题：" + q)
+        user_p = "\n".join(ctx)
+    else:
+        user_p = q
     try:
-        raw = _call_llm(_WEB_SYSTEM, q)
+        if provider == "perplexity":
+            raw, native_cites = _call_llm_ex(_WEB_SYSTEM, user_p)
+            # 合并原生引用（真实 URL）到检索来源
+            for c in native_cites:
+                if c and c not in [r["url"] for r in results]:
+                    results.append({"title": c, "url": c, "snippet": ""})
+        else:
+            raw = _call_llm(_WEB_SYSTEM, user_p)
     except _RateLimited:
-        return {"error": "llm_rate_limited", "fallback": True}
+        return {"error": "llm_rate_limited", "fallback": True,
+                "web_sources": results, "source": "web"}
     if not raw:
-        return {"error": "llm_not_configured", "fallback": True}
+        # 模型未配置/不可用：仍返回真实检索结果，保证联网检索可用
+        return {"结论": "（当前 AI 模型未配置或不可用，已为你检索到以下实时网络结果）",
+                "法规依据": [], "适用提示": "", "时效说明": "",
+                "web_sources": results, "source": "web", "llm_error": True}
     ans = _parse_llm_json(raw)
+    ans["web_sources"] = results
     ans["source"] = "web"
     _RAG_CACHE[cache_key] = (now, ans)
     return ans

@@ -291,3 +291,11 @@
 .qa9-form-row label { font-size: 12px; color: var(--text-muted); }
 .qa9-form-check label { flex-direction: row; align-items: center; gap: 6px; color: var(--text-primary); font-size: 12px; }
 .qa9-preset-form .qa9-input-full { width: 100%; box-sizing: border-box; }
+
+/* ---- 联网搜索：实时检索来源卡片 ---- */
+.qa9-web-src-list { display: flex; flex-direction: column; gap: 8px; }
+.qa9-web-src { background: #fff; border: 1px solid var(--border-light); border-left: 3px solid var(--primary); border-radius: 8px; padding: 8px 12px; }
+.qa9-web-src-title { font-size: 13px; font-weight: 600; color: var(--primary); text-decoration: none; line-height: 1.4; }
+.qa9-web-src-title:hover { text-decoration: underline; }
+.qa9-web-src-host { font-size: 11px; color: var(--text-muted); margin-top: 2px; word-break: break-all; }
+.qa9-web-src-snippet { font-size: 12px; color: var(--text-secondary, #475569); margin-top: 4px; line-height: 1.5; }
