@@ -2039,6 +2039,8 @@ const App = {
     this._renderQaMode();
     this._initModelPanel();
     this.loadInlineModels();
+    this._qaMode = 'local';
+    this._initModeSeg();
     this._initQaChat();
   },
 
@@ -2057,11 +2059,12 @@ const App = {
 
   _renderQaMode() {
     const el = document.getElementById('qa9Mode'); if (!el) return;
+    const modeTxt = (this._qaMode === 'web') ? 'AI 联网搜索' : '本地数据库';
     if (this.qaApiBase) {
-      el.textContent = '🤖 AI 问答模式 · 在线';
+      el.textContent = '🤖 ' + modeTxt + ' · 在线';
       el.className = 'qa9-mode live';
     } else {
-      el.textContent = '🤖 AI 问答模式 · 未连接';
+      el.textContent = '🤖 ' + modeTxt + ' · 未连接';
       el.className = 'qa9-mode snap';
     }
   },
@@ -2183,7 +2186,7 @@ const App = {
     const welcome =
       '<div class="qa9-welcome-screen">' +
         '<div class="qa9-welcome-title">👋 你好，我是 Agnes AI</div>' +
-        '<div class="qa9-welcome-sub">我可以基于本地法规知识库进行 AI 推理，回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等问题，并给出结论与依据。选择一个问题，或直接输入你的问题。</div>' +
+        '<div class="qa9-welcome-sub">切换下方「本地数据库 / AI 联网搜索」可分别基于本地法规库推理，或由大模型联网作答（不依赖本地库）。选择一个问题，或直接输入你的问题。</div>' +
         '<div class="qa9-welcome-cards">' + cards + '</div>' +
       '</div>';
     const wrap = document.createElement('div');
@@ -2215,10 +2218,12 @@ const App = {
         this._scrollMsgs();
         return;
       }
-      const rag = await this.qaRag(text, { onlyValid: ov });
+      const rag = await this.qaRag(text, { onlyValid: ov, mode: this._qaMode || 'local' });
       if (rag && !rag.fallback && rag['结论']) {
         const blocks = { abstract: rag['结论'] || '', tips: rag['适用提示'] || '', timeNote: rag['时效说明'] || '' };
-        const intro = 'Agnes AI 基于以下法规材料作答：';
+        const intro = (this._qaMode === 'web')
+          ? 'Agnes AI 已基于联网 / 通用知识作答：'
+          : 'Agnes AI 基于以下法规材料作答：';
         const html = this._buildRagReply({ intro: intro, rag: rag, source: 'rag', query: text });
         this._updateMsg(typingId, html);
         this._scrollMsgs();
@@ -2279,7 +2284,7 @@ const App = {
       const resp = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: text, only_valid: opts && opts.onlyValid !== false })
+        body: JSON.stringify({ q: text, only_valid: opts && opts.onlyValid !== false, mode: (opts && opts.mode) || 'local' })
       });
       if (!resp.ok) return { fallback: true };
       return await resp.json();
@@ -2303,6 +2308,12 @@ const App = {
     if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModelModal(); });
     const inline = document.getElementById('qa9ModelInline');
     if (inline) inline.addEventListener('change', () => this.onInlineModelChange());
+    const pAdd = document.getElementById('qa9PresetAdd');
+    if (pAdd) pAdd.addEventListener('click', () => this.addPreset());
+    const pSave = document.getElementById('qa9PresetSave');
+    if (pSave) pSave.addEventListener('click', () => this.savePreset());
+    const pCancel = document.getElementById('qa9PresetCancel');
+    if (pCancel) pCancel.addEventListener('click', () => this._hidePresetForm());
   },
 
   // 加载内置模型到输入框下方的切换下拉（按服务商分组）
@@ -2413,6 +2424,7 @@ const App = {
     if (msg) { msg.textContent = ''; msg.className = 'qa9-model-msg'; }
     this.loadModelPresets();
     this.loadModelConfig();
+    this.loadPresetManage();
   },
 
   closeModelModal() {
@@ -2543,6 +2555,164 @@ const App = {
     }
   },
 
+  // ---------------- 问答模式切换（本地数据库 / AI 联网搜索） ----------------
+  _initModeSeg() {
+    const seg = document.getElementById('qa9ModeSeg');
+    if (!seg) return;
+    seg.querySelectorAll('.qa9-seg-btn').forEach(b => {
+      b.addEventListener('click', () => this._setMode(b.dataset.mode));
+    });
+  },
+
+  _setMode(mode) {
+    if (mode !== 'web' && mode !== 'local') mode = 'local';
+    this._qaMode = mode;
+    const seg = document.getElementById('qa9ModeSeg');
+    if (seg) seg.querySelectorAll('.qa9-seg-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === mode);
+    });
+    const ovWrap = document.getElementById('qa9OnlyValidWrap');
+    if (ovWrap) ovWrap.style.display = (mode === 'web') ? 'none' : '';
+    this._renderQaMode();
+    this._toast(mode === 'web' ? '已切换：AI 联网搜索（不依赖本地库）' : '已切换：本地数据库');
+  },
+
+  // ---------------- 内置模型管理（新增 / 修改 / 删除） ----------------
+  async loadPresetManage() {
+    const list = document.getElementById('qa9PresetList');
+    if (!list) return;
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-presets');
+      if (!r.ok) return;
+      const j = await r.json();
+      const presets = (j && j.presets) || [];
+      this._presets = presets;
+      if (!presets.length) { list.innerHTML = '<div class="qa9-empty">暂无预设</div>'; return; }
+      list.innerHTML = presets.map(p => {
+        const editable = p.id !== 'custom';
+        return '<div class="qa9-preset-item" data-id="' + Penetrator.esc(p.id) + '">' +
+          '<div class="qa9-preset-meta"><span class="qa9-preset-name">' + Penetrator.esc(p.name) + '</span>' +
+          '<span class="qa9-preset-id">' + Penetrator.esc(p.id) + (p.custom ? ' · 自定义' : '') + '</span></div>' +
+          '<div class="qa9-preset-ops">' +
+            (editable ? '<button type="button" class="qa9-mini-btn" data-act="edit">编辑</button>' : '') +
+            (editable ? '<button type="button" class="qa9-mini-btn danger" data-act="del">删除</button>'
+                      : '<span class="qa9-preset-locked">内置保护</span>') +
+          '</div></div>';
+      }).join('');
+      list.querySelectorAll('.qa9-preset-item').forEach(it => {
+        const id = it.dataset.id;
+        const edit = it.querySelector('[data-act="edit"]');
+        const del = it.querySelector('[data-act="del"]');
+        if (edit) edit.addEventListener('click', () => this.editPreset(id));
+        if (del) del.addEventListener('click', () => this.deletePreset(id));
+      });
+    } catch (e) { /* 忽略 */ }
+  },
+
+  addPreset() {
+    this._showPresetForm(null);
+  },
+
+  editPreset(id) {
+    const p = (this._presets || []).find(x => x.id === id);
+    this._showPresetForm(p || null);
+  },
+
+  _showPresetForm(p) {
+    const form = document.getElementById('qa9PresetForm');
+    if (!form) return;
+    const msg = document.getElementById('qa9PresetMsg');
+    if (msg) { msg.textContent = ''; msg.className = 'qa9-model-msg'; }
+    const idEl = document.getElementById('qa9PId');
+    const nameEl = document.getElementById('qa9PName');
+    const baseEl = document.getElementById('qa9PBase');
+    const modelsEl = document.getElementById('qa9PModels');
+    const defEl = document.getElementById('qa9PDefault');
+    const customEl = document.getElementById('qa9PCustom');
+    if (idEl) { idEl.value = p ? p.id : ''; idEl.readOnly = !!p; idEl.style.opacity = p ? '0.6' : '1'; }
+    if (nameEl) nameEl.value = p ? p.name : '';
+    if (baseEl) baseEl.value = p ? (p.base_url || '') : '';
+    if (modelsEl) modelsEl.value = p ? (p.models || []).join(', ') : '';
+    if (defEl) defEl.value = p ? (p.default_model || '') : '';
+    if (customEl) customEl.checked = p ? !!p.custom : false;
+    form.style.display = '';
+    if (idEl && !p) idEl.focus();
+  },
+
+  _hidePresetForm() {
+    const form = document.getElementById('qa9PresetForm');
+    if (form) form.style.display = 'none';
+  },
+
+  async savePreset() {
+    const msg = document.getElementById('qa9PresetMsg');
+    const idEl = document.getElementById('qa9PId');
+    const nameEl = document.getElementById('qa9PName');
+    const baseEl = document.getElementById('qa9PBase');
+    const modelsEl = document.getElementById('qa9PModels');
+    const defEl = document.getElementById('qa9PDefault');
+    const customEl = document.getElementById('qa9PCustom');
+    const pid = idEl ? idEl.value.trim() : '';
+    if (!pid) { if (msg) { msg.className = 'qa9-model-msg err'; msg.textContent = '❌ 请填写标识 ID'; } return; }
+    if (!/^[A-Za-z0-9_\-]+$/.test(pid)) { if (msg) { msg.className = 'qa9-model-msg err'; msg.textContent = '❌ ID 仅含字母数字 _ -'; } return; }
+    const models = modelsEl ? modelsEl.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const custom = customEl ? customEl.checked : false;
+    const payload = {
+      id: pid,
+      name: nameEl ? nameEl.value.trim() : pid,
+      base_url: baseEl ? baseEl.value.trim() : '',
+      models: models,
+      default_model: defEl ? defEl.value.trim() : (models[0] || ''),
+      custom: custom,
+    };
+    if (msg) { msg.textContent = '保存中…'; msg.className = 'qa9-model-msg'; }
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-presets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const j = await r.json();
+      if (msg) {
+        if (j.ok) {
+          msg.className = 'qa9-model-msg ok';
+          msg.textContent = '✅ 已保存：' + ((j.preset && j.preset.name) || pid);
+          this._hidePresetForm();
+          this.loadPresetManage();
+          this.loadInlineModels();
+          this.loadModelPresets();
+        } else {
+          msg.className = 'qa9-model-msg err';
+          msg.textContent = '❌ ' + (j.error || '保存失败');
+        }
+      }
+    } catch (e) {
+      if (msg) { msg.className = 'qa9-model-msg err'; msg.textContent = '❌ 网络错误，请重试'; }
+    }
+  },
+
+  async deletePreset(id) {
+    if (!window.confirm('确定删除内置模型「' + id + '」？此操作不可撤销。')) return;
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-presets', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      const j = await r.json();
+      if (j.ok) {
+        this.loadPresetManage();
+        this.loadInlineModels();
+        this.loadModelPresets();
+        this._toast('已删除预设：' + id);
+      } else {
+        this._toast('删除失败：' + (j.error || '未知错误'));
+      }
+    } catch (e) {
+      this._toast('网络错误，请重试');
+    }
+  },
+
   // 渲染大模型 RAG 的四段式回复（同序：结论→依据→提示→时效）
   _buildRagReply(o) {
     let html = '';
@@ -2551,12 +2721,18 @@ const App = {
     if (o.blocks && o.blocks.abstract) {
       html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(o.blocks.abstract) + '</div>';
     }
-    const badge = '<span class="qa9-src-badge rag">● AI 推理</span>';
+    const src = (o.rag && o.rag.source) || 'rag';
+    const badge = src === 'web'
+      ? '<span class="qa9-src-badge web">🌐 AI 联网搜索</span>'
+      : '<span class="qa9-src-badge rag">● AI 推理</span>';
+    const srcNote = src === 'web'
+      ? '基于大模型联网 / 通用知识作答，未引用本地数据库'
+      : '依据来自 Agnes AI 实时数据库 + 大模型解读';
     html += '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
-            '<div class="qa9-src-note">依据来自 Agnes AI 实时数据库 + 大模型解读</div></div><div class="qa9-cite-list">';
+            '<div class="qa9-src-note">' + srcNote + '</div></div><div class="qa9-cite-list">';
     const basis = (o.rag && o.rag['法规依据']) || [];
     if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
-    else html += '<div class="qa9-empty">未检索到明确依据。</div>';
+    else html += '<div class="qa9-empty">' + (src === 'web' ? '（AI 联网作答，未附本地依据）' : '未检索到明确依据。') + '</div>';
     html += '</div></div>';
     if (o.blocks && o.blocks.tips) {
       html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(o.blocks.tips) + '</div>';

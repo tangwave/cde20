@@ -255,3 +255,39 @@
   .qa9-bubble { max-width: 88%; }
   .qa9-composer-hint { display: none; }
 }
+
+/* ---- 问答模式分段切换（本地数据库 / AI 联网搜索） ---- */
+.qa9-mode-seg { display: inline-flex; background: #eef0f3; border: 1px solid var(--border-light); border-radius: 999px; padding: 2px; }
+.qa9-seg-btn { border: none; background: transparent; color: var(--text-muted); font-size: 12px; padding: 5px 12px; border-radius: 999px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.qa9-seg-btn:hover { color: var(--text-primary); }
+.qa9-seg-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,.22); }
+
+/* 窄屏：工具栏换行 */
+@media (max-width: 640px) {
+  .qa9-tool-left { flex-wrap: wrap; gap: 8px; }
+  .qa9-mode-seg { order: -1; }
+}
+
+/* ---- 来源徽章：联网搜索 ---- */
+.qa9-src-badge.web { background: linear-gradient(135deg,#7c3aed,#2563eb); color:#fff; }
+
+/* ---- 内置模型管理 ---- */
+.qa9-manage { margin-top: 18px; border-top: 1px dashed var(--border-light); padding-top: 14px; }
+.qa9-manage-head { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+.qa9-link-btn { border: none; background: transparent; color: var(--primary); font-size: 13px; cursor: pointer; padding: 2px 6px; border-radius: 6px; }
+.qa9-link-btn:hover { background: var(--bg-active); }
+.qa9-preset-list { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; }
+.qa9-preset-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border: 1px solid var(--border-light); border-radius: 10px; padding: 8px 12px; }
+.qa9-preset-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.qa9-preset-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.qa9-preset-id { font-size: 11px; color: var(--text-muted); }
+.qa9-preset-ops { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.qa9-mini-btn { border: 1px solid var(--border-light); background: #fff; color: var(--text-primary); font-size: 12px; padding: 4px 10px; border-radius: 7px; cursor: pointer; }
+.qa9-mini-btn:hover { border-color: var(--primary); color: var(--primary); }
+.qa9-mini-btn.danger:hover { border-color: #c0392b; color: #c0392b; background: #fdecec; }
+.qa9-preset-locked { font-size: 11px; color: var(--text-muted); background: #eef0f3; padding: 3px 8px; border-radius: 6px; }
+.qa9-preset-form { margin-top: 12px; background: #f8fafc; border: 1px solid var(--border-light); border-radius: 10px; padding: 12px 14px; }
+.qa9-form-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.qa9-form-row label { font-size: 12px; color: var(--text-muted); }
+.qa9-form-check label { flex-direction: row; align-items: center; gap: 6px; color: var(--text-primary); font-size: 12px; }
+.qa9-preset-form .qa9-input-full { width: 100%; box-sizing: border-box; }

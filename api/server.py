@@ -62,7 +62,8 @@ _load_dotenv()
 # ---------------------------------------------------------------- 多模型预设（免重启切换）
 # 内置多家 OpenAI 兼容服务商；用户只需选 provider + 粘贴 API Key 即可使用，
 # 模型列表由预设提供（自定义 provider 允许手填 base_url / model）。
-LLM_PRESETS = [
+# 种子预设：首次运行时写入 llm_presets.json；之后以文件为准（用户可增/改/删）。
+LLM_PRESETS_DEFAULT = [
     {"id": "zhipu", "name": "智谱 BigModel（GLM）",
      "base_url": "https://open.bigmodel.cn/api/paas/v4/",
      "models": ["glm-4.7-flash", "glm-4-plus", "glm-4", "glm-4-air", "glm-4-flash", "glm-4-long"],
@@ -98,6 +99,57 @@ LLM_PRESETS = [
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
+
+LLM_PRESETS_FILE = os.path.join(APP_DIR, "llm_presets.json")
+LLM_PRESETS = []            # 运行时生效预设（来自 llm_presets.json，缺省用种子）
+
+
+def _load_presets():
+    """加载内置模型预设：优先 llm_presets.json（用户增删改后的持久化结果），
+    文件不存在/损坏则用 LLM_PRESETS_DEFAULT 种子并写盘。返回规整后的 list。"""
+    data = None
+    if os.path.isfile(LLM_PRESETS_FILE):
+        try:
+            with open(LLM_PRESETS_FILE, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            data = None
+    if isinstance(data, list) and data:
+        out = []
+        for p in data:
+            if not isinstance(p, dict) or not p.get("id"):
+                continue
+            out.append({
+                "id": str(p["id"]),
+                "name": p.get("name", p["id"]),
+                "base_url": p.get("base_url", ""),
+                "models": p.get("models") or [],
+                "default_model": p.get("default_model", ""),
+                "custom": bool(p.get("custom")),
+            })
+        if out:
+            return out
+    # 用种子写盘，便于后续编辑
+    try:
+        with open(LLM_PRESETS_FILE, "w", encoding="utf-8") as f:
+            json.dump(LLM_PRESETS_DEFAULT, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+    return [dict(p) for p in LLM_PRESETS_DEFAULT]
+
+
+def _save_presets(presets):
+    """写回 llm_presets.json 并同步运行时全局。"""
+    global LLM_PRESETS
+    LLM_PRESETS = presets
+    try:
+        with open(LLM_PRESETS_FILE, "w", encoding="utf-8") as f:
+            json.dump(presets, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
+LLM_PRESETS = _load_presets()
 
 LLM_CFG_FILE = os.path.join(APP_DIR, "llm_config.json")
 LLM_CFG = {}            # 运行时生效配置（effective）：{provider, base_url, api_key, model}
@@ -407,6 +459,21 @@ _RAG_SYSTEM = """你是中国药品法规专家「9527」。只依据下面提�
 - 只输出 JSON，不要任何额外文字或 markdown 代码块标记。"""
 
 
+_WEB_SYSTEM = """你是中国药品法规 AI 助手「Agnes AI」。请基于你掌握的知识（如模型具备联网检索能力，请主动联网检索最新公开信息）回答用户关于药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题。
+
+要求：
+1. 以四段式 JSON 作答：
+{
+ "结论":"一句话直答",
+ "法规依据":[{"标题":"","引用原文":"关键条款摘录（来自记忆请注明，切勿编造文号/日期","来源":"","发布日期":"","状态":""}],
+ "适用提示":"实操要点 / 常见误区",
+ "时效说明":"当前是否有效、是否有更新趋势；不确定请注明『以官方最新发布为准』"
+}
+2. 注意：你不依赖本地知识库，凡引用法规尽量给出准确的发布机构、文号、发布日期与状态；若不确定请明确说明，不要编造。
+3. 医疗器械 / 化妆品问题：本库聚焦药品，须说明超出范围。
+4. 只输出 JSON，不要任何额外文字或 markdown 代码块标记。"""
+
+
 class _RateLimited(Exception):
     """大模型调用被限流（如免费额度耗尽）。"""
     pass
@@ -576,7 +643,9 @@ def _parse_llm_json(raw):
             "法规依据": [], "适用提示": "", "时效说明": ""}
 
 
-def _rag_query(q, only_valid):
+def _rag_query(q, only_valid, mode="local"):
+    if mode == "web":
+        return _web_query(q)
     cache_key = (q, bool(only_valid))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
@@ -610,10 +679,32 @@ def _rag_query(q, only_valid):
     return ans
 
 
+def _web_query(q):
+    """AI 联网搜索模式：不检索本地知识库，直接调用大模型（模型可联网则联网作答）。"""
+    cache_key = ("web", q)
+    now = time.time()
+    cached = _RAG_CACHE.get(cache_key)
+    if cached and now - cached[0] < _RAG_CACHE_TTL:
+        ans = dict(cached[1])
+        ans["source"] = "web"
+        ans["cached"] = True
+        return ans
+    try:
+        raw = _call_llm(_WEB_SYSTEM, q)
+    except _RateLimited:
+        return {"error": "llm_rate_limited", "fallback": True}
+    if not raw:
+        return {"error": "llm_not_configured", "fallback": True}
+    ans = _parse_llm_json(raw)
+    ans["source"] = "web"
+    _RAG_CACHE[cache_key] = (now, ans)
+    return ans
+
+
 @app.get("/api/qa-rag")
 @app.post("/api/qa-rag")
 async def api_qa_rag(request: Request):
-    q, only_valid = "", True
+    q, only_valid, mode = "", True, "local"
     if request.method == "POST":
         try:
             body = await request.json()
@@ -623,13 +714,15 @@ async def api_qa_rag(request: Request):
             body = {}
         q = (body.get("q") or "")
         only_valid = body.get("only_valid", True)
+        mode = (body.get("mode") or "local").strip()
     else:
         q = request.query_params.get("q", "")
         only_valid = request.query_params.get("only_valid", "true") != "false"
+        mode = (request.query_params.get("mode") or "local").strip()
     if not q or not q.strip():
         return JSONResponse({"error": "missing q"}, status_code=400)
     try:
-        return _rag_query(q.strip(), only_valid)
+        return _rag_query(q.strip(), only_valid, mode)
     except Exception as e:
         return JSONResponse({"error": str(e), "fallback": True}, status_code=500)
 
@@ -640,6 +733,66 @@ async def api_qa_rag(request: Request):
 def llm_presets():
     """返回内置服务商预设（含 base_url 与可选模型）。"""
     return {"presets": LLM_PRESETS, "configurable": True}
+
+
+@app.post("/api/llm-presets")
+async def llm_presets_post(request: Request):
+    """新增或更新一个内置模型预设（按 id 覆盖；不存在则新增）。"""
+    global LLM_PRESETS
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        return JSONResponse({"ok": False, "error": "请求体应为 JSON 对象"}, status_code=400)
+    pid = (body.get("id") or "").strip()
+    if not pid:
+        return JSONResponse({"ok": False, "error": "缺少 id（服务商标识）"}, status_code=400)
+    name = (body.get("name") or "").strip() or pid
+    base_url = (body.get("base_url") or "").strip()
+    models = body.get("models") or []
+    if isinstance(models, str):
+        models = [m.strip() for m in models.split(",") if m.strip()]
+    models = [str(m) for m in models]
+    default_model = (body.get("default_model") or "").strip()
+    if not default_model and models:
+        default_model = models[0]
+    custom = bool(body.get("custom"))
+    preset = {"id": pid, "name": name, "base_url": base_url,
+              "models": models, "default_model": default_model, "custom": custom}
+    new_list = [p for p in LLM_PRESETS if p["id"] != pid]
+    new_list.append(preset)
+    _save_presets(new_list)
+    return {"ok": True, "preset": preset, "presets": LLM_PRESETS}
+
+
+@app.delete("/api/llm-presets")
+async def llm_presets_delete(request: Request):
+    """删除一个内置模型预设（custom 受保护不可删；删除当前生效服务商时会重置配置）。"""
+    global LLM_PRESETS, LLM_CFG
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+    pid = (body.get("id") or "").strip()
+    if not pid:
+        return JSONResponse({"ok": False, "error": "缺少 id"}, status_code=400)
+    target = next((p for p in LLM_PRESETS if p["id"] == pid), None)
+    if not target:
+        return JSONResponse({"ok": False, "error": "预设不存在"}, status_code=404)
+    if target.get("custom"):
+        return JSONResponse({"ok": False, "error": "自定义项不可删除"}, status_code=400)
+    new_list = [p for p in LLM_PRESETS if p["id"] != pid]
+    _save_presets(new_list)
+    # 若删除的是当前生效服务商，重置配置避免悬空
+    if LLM_CFG.get("provider") == pid:
+        LLM_CFG.clear()
+        LLM_KEYS.pop(pid, None)
+        LLM_CFG.update({"provider": "", "base_url": "", "api_key": "", "model": ""})
+        _save_llm_cfg(LLM_CFG)
+    return {"ok": True, "presets": LLM_PRESETS}
 
 
 @app.get("/api/llm-config")
