@@ -74,6 +74,7 @@ const App = {
     this.renderTopbarStats();
     this.bindEvents();
     this.initPenCard();           // 术语悬浮卡
+    this.initSelectionAI();       // 选中文字 → AI 解释（覆盖所有界面）
     this.initRegLibrary();        // 法规原文库
     this.initQaAi();            // 法规问答 · 海云AI
     SearchEngine.init();
@@ -322,11 +323,11 @@ const App = {
     const statsEl = document.getElementById('topbarStats');
     if (!statsEl) return;
     const varietyCount = this.getAllVarieties().length;
-    statsEl.innerHTML = `
-      <span class="topbar-stats-item">📄 文档: ${KB_DATA.meta.totalDocs}</span>
-      <span class="topbar-stats-item">💊 品种: ${varietyCount}</span>
-      <span class="topbar-stats-item">📅 更新: ${KB_DATA.meta.lastUpdated}</span>
-    `;
+    const regCount = (globalThis.REG_KB_FULL || []).length;
+    statsEl.innerHTML =
+      '<span class="topbar-stats-item">📄 法规原文: ' + regCount + '</span>' +
+      '<span class="topbar-stats-item">💊 品种: ' + varietyCount + '</span>' +
+      '<span class="topbar-stats-item">📅 更新: ' + (KB_DATA.meta.lastUpdated || '') + '</span>';
   },
 
   /* ============ 侧边栏（2级：分类 → 品种） ============ */
@@ -2035,11 +2036,13 @@ const App = {
     if (sbtn) sbtn.addEventListener('click', () => this.sendQaMessage());
     const clearBtn = document.getElementById('qa9Clear');
     if (clearBtn) clearBtn.addEventListener('click', () => this._resetQaChat());
-    // 「延伸问题」气泡：事件委托（消息体是动态 innerHTML，无法逐个绑定）
+    // 「延伸问题」气泡 + 「AI 拓展此回答」：事件委托（消息体是动态 innerHTML，无法逐个绑定）
     const msgs = document.getElementById('qa9Msgs');
     if (msgs) msgs.addEventListener('click', (e) => {
       const chip = e.target && e.target.closest ? e.target.closest('.qa9-followup') : null;
-      if (chip && chip.dataset.q) this.sendQaMessage(chip.dataset.q);
+      if (chip && chip.dataset.q) { this.sendQaMessage(chip.dataset.q); return; }
+      const exp = e.target && e.target.closest ? e.target.closest('.qa9-expand-btn') : null;
+      if (exp) { this._qaExpandAnswer(exp); return; }
     });
     this.qaApiBase = this._readQaApiBase();
     this._renderQaMode();
@@ -2816,6 +2819,8 @@ const App = {
       });
       html += '</div></div>';
     }
+    // ⑨ AI 拓展此回答
+    html += '<div class="qa9-block qa9-expand"><button type="button" class="qa9-expand-btn" data-expand="1">🤖 AI 拓展此回答</button></div>';
     return html;
   },
 
@@ -3066,6 +3071,8 @@ Object.assign(App, {
     document.addEventListener('click', (e) => {
       const term = e.target.closest && e.target.closest('.pen-term');
       if (term) { e.preventDefault(); cancelHide(); this.showPenCard(term); return; }
+      const aiBtn = e.target.closest && e.target.closest('.pen-card-ai');
+      if (aiBtn) { e.preventDefault(); cancelHide(); this._penAiExplain(aiBtn.dataset.term, card); return; }
       const srcBtn = e.target.closest && e.target.closest('.pen-card-source');
       if (srcBtn) { e.preventDefault(); card.style.display = 'none'; if (srcBtn.dataset.rid) this.openRegulation(srcBtn.dataset.rid); return; }
       const reg = e.target.closest && e.target.closest('.pen-reg');
@@ -3079,7 +3086,8 @@ Object.assign(App, {
     const rid = Penetrator.regIdForTerm(t);
     const reg = rid != null ? (globalThis.REG_INDEX || []).find(r => r.id === rid) : null;
     const aliases = (t.a && t.a.length) ? '<div class="pen-card-alias">' + t.a.map(a => Penetrator.esc(a)).join(' · ') + '</div>' : '';
-    const src = reg ? '<button class="pen-card-source" data-rid="' + reg.id + '">📖 来源法规《' + Penetrator.esc(reg.title) + '》 →</button>' : '';
+    const aiBtn = '<button type="button" class="pen-card-ai" data-term="' + Penetrator.esc(t.t) + '">🤖 AI 深入解释</button>';
+    const src = (reg ? '<button class="pen-card-source" data-rid="' + reg.id + '">📖 来源法规《' + Penetrator.esc(reg.title) + '》 →</button>' : '') + aiBtn;
     this._penCard.innerHTML =
       '<div class="pen-card-head"><span class="pen-card-term">' + Penetrator.esc(t.t) + '</span><span class="pen-card-cat">' + Penetrator.esc(t.c) + '</span></div>' +
       aliases +
@@ -3187,11 +3195,12 @@ Object.assign(App, {
 
   renderRegCatFilters() {
     const el = document.getElementById('regCatFilters'); if (!el) return;
-    const R = globalThis.REG_INDEX || [];
-    const cats = ['法律', '行政法规', '部门规章', '技术指导原则', '行业共识'];
-    const counts = {}; R.forEach(r => counts[r.cat] = (counts[r.cat] || 0) + 1);
+    const R = this._regList();
+    const order = ['法律', '行政法规', '部门规章', '技术指导原则', '规范性文件', '行业共识', '更新日志'];
+    const counts = {}; R.forEach(r => { const c = r.cat || '其他'; counts[c] = (counts[c] || 0) + 1; });
+    const cats = order.filter(c => counts[c]).concat(Object.keys(counts).filter(c => order.indexOf(c) < 0));
     let html = '<button class="reg-cat-btn ' + (this.state.regCat === 'all' ? 'active' : '') + '" data-cat="all">全部 ' + R.length + '</button>';
-    cats.forEach(c => { if (counts[c]) html += '<button class="reg-cat-btn ' + (this.state.regCat === c ? 'active' : '') + '" data-cat="' + c + '">' + c + ' ' + counts[c] + '</button>'; });
+    cats.forEach(c => { html += '<button class="reg-cat-btn ' + (this.state.regCat === c ? 'active' : '') + '" data-cat="' + Penetrator.esc(c) + '">' + Penetrator.esc(c) + ' ' + counts[c] + '</button>'; });
     el.innerHTML = html;
     el.querySelectorAll('.reg-cat-btn').forEach(b => b.addEventListener('click', () => {
       this.state.regCat = b.dataset.cat;
@@ -3203,29 +3212,33 @@ Object.assign(App, {
   renderRegDocList() {
     const el = document.getElementById('regDocList'); if (!el) return;
     const q = (this.state.regQuery || '').trim().toLowerCase();
-    const R = globalThis.REG_INDEX || [];
+    const R = this._regList();
     let list = R.filter(r => this.state.regCat === 'all' || r.cat === this.state.regCat);
     if (q) list = list.filter(r =>
       r.title.toLowerCase().includes(q) ||
       (r.summary && r.summary.toLowerCase().includes(q)) ||
       (r.issuer && r.issuer.toLowerCase().includes(q))
     );
+    list.sort((a, b) => (a.tier - b.tier) || a.title.localeCompare(b.title, 'zh'));
     let html = '';
     if (!list.length) {
       html = '<div class="reg-doc-empty">无匹配法规</div>';
     } else {
-      const order = ['法律', '行政法规', '部门规章', '技术指导原则', '行业共识'];
-      order.forEach(cat => {
-        const items = list.filter(r => r.cat === cat);
-        if (!items.length) return;
-        html += '<div class="reg-doc-group-title">' + cat + ' <span>' + items.length + '</span></div>';
+      const order = ['法律', '行政法规', '部门规章', '技术指导原则', '规范性文件', '行业共识', '更新日志'];
+      const groups = {};
+      list.forEach(r => { const c = r.cat || '其他'; (groups[c] = groups[c] || []).push(r); });
+      const catOrder = order.filter(c => groups[c]).concat(Object.keys(groups).filter(c => order.indexOf(c) < 0));
+      catOrder.forEach(cat => {
+        const items = groups[cat];
+        html += '<div class="reg-doc-group-title">' + Penetrator.esc(cat) + ' <span>' + items.length + '</span></div>';
         items.forEach(r => {
-          const badge = r.seed ? '<span class="reg-doc-badge seed">目录</span>' : '<span class="reg-doc-badge full">全文</span>';
-          const zhBadge = r.zh ? '<span class="reg-doc-badge zh">中文</span>' : '';
-          html += '<div class="reg-doc-item ' + (this.state.currentRegId === r.id ? 'active' : '') + '" data-id="' + r.id + '">' +
+          const tierBadge = r.tier === 9 ? '<span class="reg-doc-badge seed">废止/征求</span>'
+                           : r.tier === 0 ? '<span class="reg-doc-badge full">现行</span>'
+                           : '<span class="reg-doc-badge zh">其他</span>';
+          html += '<div class="reg-doc-item ' + (this.state.currentRegId === r.id ? 'active' : '') + '" data-id="' + Penetrator.esc(r.id) + '">' +
             '<div class="reg-doc-item-title">' + Penetrator.esc(r.title) + '</div>' +
-            '<div class="reg-doc-item-meta">' + badge + zhBadge +
-            (r.sub ? '<span class="reg-doc-sub">' + Penetrator.esc(r.sub) + '</span>' : '') +
+            '<div class="reg-doc-item-meta">' + tierBadge +
+            (r.issuer ? '<span class="reg-doc-sub">' + Penetrator.esc(r.issuer) + '</span>' : '') +
             (r.effective ? '<span class="reg-doc-date">' + Penetrator.esc(r.effective) + '</span>' : '') +
             '</div></div>';
         });
@@ -3235,56 +3248,49 @@ Object.assign(App, {
     el.querySelectorAll('.reg-doc-item').forEach(it => it.addEventListener('click', () => this.openRegulation(it.dataset.id)));
   },
 
-  openRegulation(id, lang) {
+  openRegulation(idOrPath, lang) {
     if (typeof lang === 'string') this.state.regLang = lang;
     if (!this.state.regLibOpen) this.openRegulationLibrary();
-    const reg = (globalThis.REG_INDEX || []).find(r => r.id === id);
+    this._regList();
+    const reg = this._resolveRegId(idOrPath) || (this._regByPath && this._regByPath[idOrPath]) || null;
     if (!reg) return;
-    this.state.currentRegId = id;
-    const hasZh = !!reg.zh;
-    const useLang = (this.state.regLang === 'zh' && hasZh) ? 'zh' : 'orig';
-    const file = useLang === 'zh' ? reg.zh : reg.file;
+    this.state.currentRegId = reg.id;
     const list = document.getElementById('regDocList');
     if (list) {
-      list.querySelectorAll('.reg-doc-item').forEach(it => it.classList.toggle('active', it.dataset.id === id));
+      list.querySelectorAll('.reg-doc-item').forEach(it => it.classList.toggle('active', it.dataset.id === reg.id));
       const act = list.querySelector('.reg-doc-item.active');
       if (act) act.scrollIntoView({ block: 'nearest' });
     }
     const reader = document.getElementById('regReader'); if (!reader) return;
     reader.innerHTML = '<div class="reg-reader-loading">正在载入《' + Penetrator.esc(reg.title) + '》…</div>';
-    fetch('regulations/' + file, { cache: 'no-cache' })
-      .then(r => r.ok ? r.text() : Promise.reject(r.status))
-      .then(md => {
-        const bodyHtml = this.mdToHtml(md);
-        const meta = [reg.issuer, reg.effective ? ('施行 ' + reg.effective) : '', reg.status].filter(Boolean).map(x => Penetrator.esc(x)).join(' · ');
-        const seedNote = reg.seed ? '<div class="reg-seed-note">📌 此为分类目录条目，正文尚未全文入库。请点击下方官方来源查看权威全文。</div>' : '';
-        const src = reg.url ? '<a class="reg-official-link" href="' + Penetrator.esc(reg.url) + '" target="_blank" rel="noopener">🔗 官方来源全文 ↗</a>' : '';
-        const zhBadge = useLang === 'zh' ? '<span class="reg-zh-badge">机器翻译</span>' : '';
-        const summaryBox = (reg.summary && reg.summary.trim())
-          ? '<div class="reg-summary-box"><div class="reg-summary-label">💡 讲解 / 要点</div><div class="reg-summary-body">' + Penetrator.esc(reg.summary) + '</div></div>'
-          : '';
-        const langToggle = hasZh
-          ? '<div class="reg-lang-toggle">' +
-              '<span class="reg-lang-label">版本</span>' +
-              '<button class="reg-lang-btn ' + (useLang === 'orig' ? 'active' : '') + '" data-lang="orig">原文</button>' +
-              '<button class="reg-lang-btn ' + (useLang === 'zh' ? 'active' : '') + '" data-lang="zh">中文翻译</button>' +
-            '</div>'
-          : '';
+    const url = this._apiUrl('/api/reg?path=') + encodeURIComponent(reg.path);
+    fetch(url, { cache: 'no-cache' })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(d => {
+        const meta = (d && d.meta) || reg;
+        const body = (d && d.body) || '';
+        const bodyHtml = body ? this.mdToHtml(body)
+          : (meta.summary ? this.mdToHtml(meta.summary)
+            : '<p class="reg-reader-empty">该法规正文暂未入库，请点击下方官方来源查看权威全文。</p>');
+        const issuer = meta.issuer || reg.issuer || '';
+        const eff = meta.effective_date || meta.effective || reg.effective || '';
+        const status = meta.status || reg.status || '';
+        const metaLine = [issuer, eff ? ('施行 ' + eff) : '', status].filter(Boolean).map(x => Penetrator.esc(x)).join(' · ');
+        const src = (meta.source_url || reg.url)
+          ? '<a class="reg-official-link" href="' + Penetrator.esc(meta.source_url || reg.url) + '" target="_blank" rel="noopener">🔗 官方来源全文 ↗</a>' : '';
+        const aiBtn = '<button type="button" class="reg-ai-btn" id="regAiExpandBtn" title="让 海云AI 拓展解读本条法规">🤖 AI 拓展解读</button>';
         reader.innerHTML =
           '<div class="reg-reader-inner">' +
           '<div class="reg-reader-head">' +
-          '<div class="reg-reader-cat">' + Penetrator.esc(reg.cat) + (reg.sub ? ' / ' + Penetrator.esc(reg.sub) : '') + zhBadge + '</div>' +
+          '<div class="reg-reader-cat">' + Penetrator.esc(reg.cat || '') + '</div>' +
           '<h1 class="reg-reader-title">' + Penetrator.esc(reg.title) + '</h1>' +
-          '<div class="reg-reader-meta">' + meta + '</div>' + src + langToggle +
-          '</div>' + seedNote + summaryBox +
+          '<div class="reg-reader-meta">' + metaLine + '</div>' + src + aiBtn +
+          '</div>' +
           '<div class="reg-reader-body">' + bodyHtml + '</div>' +
+          '<div class="reg-ai-box" id="regAiBox" style="display:none;"></div>' +
           '</div>';
-        if (hasZh) {
-          reader.querySelectorAll('.reg-lang-btn').forEach(b => b.addEventListener('click', () => {
-            if (b.dataset.lang === useLang) return;
-            this.openRegulation(id, b.dataset.lang);
-          }));
-        }
+        const ab = reader.querySelector('#regAiExpandBtn');
+        if (ab) ab.addEventListener('click', () => this._regAiExpand(reg));
         const bodyEl = reader.querySelector('.reg-reader-body');
         if (bodyEl) this.penetrateDom(bodyEl);
         reader.scrollTop = 0;
@@ -3293,6 +3299,218 @@ Object.assign(App, {
         reader.innerHTML = '<div class="reg-reader-loading">载入失败（' + Penetrator.esc(String(err)) + '）。' +
           (reg.url ? '可点击 <a href="' + Penetrator.esc(reg.url) + '" target="_blank" rel="noopener">官方来源</a> 查看。' : '') + '</div>';
       });
+  },
+
+  // 法规原文库统一数据源：直接来自知识库（REG_KB_FULL，kb.sqlite 导出的全量索引，与知识库数量一致）
+  _regList() {
+    const FULL = globalThis.REG_KB_FULL || [];
+    if (this._regListCache) return this._regListCache;
+    const list = FULL.map(d => ({
+      id: d.path,
+      title: d.t || '',
+      issuer: d.i || '',
+      cat: (d.c || '').replace(/^\d+_/, ''),
+      category: d.c || '',
+      publish: d.p || '',
+      effective: d.e || '',
+      status: d.st || '',
+      url: d.u || '',
+      summary: d.m || '',
+      path: d.path || '',
+      tier: (typeof d.tier === 'number') ? d.tier : 9
+    }));
+    this._regByPath = {};
+    this._titleToPath = {};
+    this._titleNormToPath = {};
+    const norm = s => (s || '').replace(/[（）()\s]/g, '');
+    list.forEach(r => {
+      if (r.path) this._regByPath[r.path] = r;
+      if (r.title) { this._titleToPath[r.title] = r.path; this._titleNormToPath[norm(r.title)] = r.path; }
+    });
+    this._regListCache = list;
+    return list;
+  },
+
+  // 兼容旧调用：术语卡 / 分类关联法规传入的是 REG_INDEX 的 id（reg_XXX），需解析成 path
+  _resolveRegId(idOrPath) {
+    if (!idOrPath) return null;
+    if (idOrPath.indexOf('reg_') === 0) {
+      const ri = (globalThis.REG_INDEX || []).find(r => r.id === idOrPath);
+      if (ri) {
+        const n = (ri.title || '').replace(/[（）()\s]/g, '');
+        const path = this._titleToPath[ri.title] || (n && this._titleNormToPath[n]);
+        if (path) return this._regByPath[path] || null;
+      }
+      return null;
+    }
+    return this._regByPath[idOrPath] || null;
+  },
+
+  _apiUrl(p) {
+    const base = (this.qaApiBase === '/' || this.qaApiBase === 'same-origin' || !this.qaApiBase) ? '' : this.qaApiBase;
+    return base + p;
+  },
+
+  // 通用 AI 拓展 / 术语解释（POST /api/explain）
+  async explainText(text, context) {
+    const url = this._apiUrl('/api/explain');
+    if (!url) return { fallback: true, error: 'no backend' };
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text, context: context || '' })
+      });
+      if (!resp.ok) {
+        const j = await resp.json().catch(() => ({}));
+        return { fallback: true, error: j.error || resp.status };
+      }
+      return await resp.json();
+    } catch (e) { return { fallback: true, error: String(e) }; }
+  },
+
+  // 法规阅读器中的「🤖 AI 拓展解读」
+  async _regAiExpand(reg) {
+    const box = document.getElementById('regAiBox'); if (!box) return;
+    if (box.dataset.loading === '1') return;
+    box.dataset.loading = '1';
+    box.style.display = 'block';
+    box.innerHTML = '<div class="reg-ai-loading">🤖 海云AI 正在拓展解读《' + Penetrator.esc(reg.title) + '》…</div>';
+    const ctx = '标题：' + reg.title + (reg.summary ? '\n要点：' + reg.summary : '');
+    try {
+      const resp = await this.explainText(reg.title, ctx);
+      if (resp && resp.fallback) {
+        box.innerHTML = '<div class="reg-ai-res">⚠️ 当前未配置 AI 模型或调用受限，无法生成拓展解读。请在「AI 模型设置」中配置后重试。</div>';
+      } else if (resp && resp.explain) {
+        box.innerHTML = '<div class="reg-ai-res"><div class="reg-ai-res-h">🤖 AI 拓展解读</div>' + this.mdToHtml(resp.explain) + '</div>';
+        const el = box.querySelector('.reg-ai-res'); if (el) this.penetrateDom(el);
+      } else {
+        box.innerHTML = '<div class="reg-ai-res">未获取到解读内容。</div>';
+      }
+    } catch (e) {
+      box.innerHTML = '<div class="reg-ai-res">拓展解读失败：' + Penetrator.esc(String(e)) + '</div>';
+    } finally {
+      box.dataset.loading = '0';
+    }
+  },
+
+  // 术语悬浮卡中的「🤖 AI 深入解释」
+  async _penAiExplain(term, card) {
+    if (!card) card = this._penCard;
+    if (!card) return;
+    if (card.dataset.aiLoading === '1') return;
+    card.dataset.aiLoading = '1';
+    let resEl = card.querySelector('.pen-card-ai-res');
+    if (!resEl) {
+      resEl = document.createElement('div');
+      resEl.className = 'pen-card-ai-res pen-loading';
+      card.appendChild(resEl);
+    } else {
+      resEl.className = 'pen-card-ai-res pen-loading';
+    }
+    resEl.textContent = '🤖 正在生成解释…';
+    try {
+      const resp = await this.explainText(term, '');
+      if (resp && resp.fallback) {
+        resEl.className = 'pen-card-ai-res';
+        resEl.textContent = '⚠️ 未配置 AI 模型，无法生成解释。';
+      } else {
+        resEl.className = 'pen-card-ai-res';
+        resEl.innerHTML = '<b>🤖 AI 解释</b><br>' + this.mdToHtml(resp && resp.explain ? resp.explain : '');
+        this.penetrateDom(resEl);
+      }
+    } catch (e) {
+      resEl.className = 'pen-card-ai-res';
+      resEl.textContent = '解释失败：' + e;
+    } finally {
+      card.dataset.aiLoading = '0';
+    }
+  },
+
+  // 全局：选中文字 → 浮动「🤖 AI 解释」按钮（覆盖所有界面，含 QA 回答）
+  initSelectionAI() {
+    if (this._selAiInited) return; this._selAiInited = true;
+    const self = this;
+    const btn = document.createElement('button');
+    btn.id = 'selAiBtn'; btn.className = 'sel-ai-btn'; btn.type = 'button';
+    btn.textContent = '🤖 AI 解释'; btn.style.display = 'none';
+    document.body.appendChild(btn);
+    const hide = () => { btn.style.display = 'none'; };
+    document.addEventListener('mouseup', (e) => {
+      if (e.target.closest && e.target.closest('.sel-ai-btn')) return;
+      setTimeout(() => {
+        const sel = window.getSelection();
+        const text = sel && sel.toString().trim();
+        if (!text || text.length < 2) { hide(); return; }
+        let rect = null;
+        try { rect = sel.getRangeAt(0).getBoundingClientRect(); } catch (_) {}
+        if (!rect || (rect.width === 0 && rect.height === 0)) { hide(); return; }
+        btn.style.display = 'block';
+        let left = rect.left + rect.width / 2 - 34;
+        let top = rect.top - 38;
+        if (top < 8) top = rect.bottom + 8;
+        if (left < 8) left = 8;
+        if (left + 88 > window.innerWidth - 8) left = window.innerWidth - 96;
+        btn.style.left = left + 'px'; btn.style.top = top + 'px';
+        btn.dataset.text = text.slice(0, 600);
+      }, 10);
+    });
+    document.addEventListener('mousedown', (e) => {
+      if (e.target.closest && e.target.closest('.sel-ai-btn')) return;
+      const sel = window.getSelection();
+      if (!sel || !sel.toString().trim()) hide();
+    });
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.text || ''; if (!text) return;
+      btn.textContent = '⏳ 生成中…'; btn.disabled = true;
+      const resp = await self.explainText(text, '');
+      btn.disabled = false; btn.textContent = '🤖 AI 解释';
+      hide();
+      if (resp && resp.fallback) {
+        self._toast ? self._toast('未配置 AI 模型或调用受限，无法生成解释。') : alert('当前未配置 AI 模型或调用受限，无法生成解释。');
+      } else {
+        self._showSelAiPopover(text, resp && resp.explain ? resp.explain : '');
+      }
+    });
+  },
+
+  _showSelAiPopover(text, explain) {
+    let pop = document.getElementById('selAiPop');
+    if (!pop) { pop = document.createElement('div'); pop.id = 'selAiPop'; pop.className = 'sel-ai-pop'; document.body.appendChild(pop); }
+    pop.innerHTML =
+      '<div class="sel-ai-pop-h">🤖 AI 拓展解释<button type="button" class="sel-ai-pop-x" id="selAiPopX">×</button></div>' +
+      '<div class="sel-ai-pop-q">“' + Penetrator.esc(text.slice(0, 140)) + '”</div>' +
+      '<div class="sel-ai-pop-body">' + this.mdToHtml(explain || '（无内容）') + '</div>';
+    pop.style.display = 'block';
+    pop.style.left = Math.max(12, window.innerWidth / 2 - 250) + 'px';
+    pop.style.top = Math.max(12, window.innerHeight / 2 - 170) + 'px';
+    const x = pop.querySelector('#selAiPopX');
+    if (x) x.addEventListener('click', () => { pop.style.display = 'none'; });
+    const el = pop.querySelector('.sel-ai-pop-body'); if (el) this.penetrateDom(el);
+  },
+
+  // QA 回答底部「🤖 AI 拓展此回答」
+  async _qaExpandAnswer(btn) {
+    const msg = btn.closest('.qa9-msg'); if (!msg) return;
+    const body = msg.querySelector('.qa9-msg-body') || msg.querySelector('.qa9-bubble');
+    if (!body) return;
+    const clone = body.cloneNode(true);
+    clone.querySelectorAll('button').forEach(b => b.remove());
+    const text = (clone.innerText || clone.textContent || '').trim().slice(0, 1200);
+    if (!text) return;
+    const box = document.createElement('div');
+    box.className = 'qa9-expand-box';
+    if (btn.parentNode) btn.parentNode.insertBefore(box, btn.nextSibling);
+    box.innerHTML = '<div class="qa9-ai-loading">🤖 正在拓展解读…</div>';
+    btn.disabled = true;
+    try {
+      const resp = await this.explainText(text, '');
+      if (resp && resp.fallback) box.innerHTML = '<div class="qa9-ai-res">⚠️ 未配置 AI 模型，无法拓展。</div>';
+      else box.innerHTML = '<div class="qa9-ai-res"><b>🤖 AI 拓展</b><br>' + this.mdToHtml(resp.explain || '') + '</div>';
+      const el = box.querySelector('.qa9-ai-res'); if (el) this.penetrateDom(el);
+    } catch (e) {
+      box.innerHTML = '<div class="qa9-ai-res">拓展失败：' + Penetrator.esc(String(e)) + '</div>';
+    } finally { btn.disabled = false; }
   },
 
   /* ---------- 轻量 Markdown 渲染 ---------- */

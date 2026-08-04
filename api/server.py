@@ -1908,6 +1908,93 @@ async def api_qa_rag(request: Request):
         return JSONResponse({"error": str(e), "fallback": True}, status_code=500)
 
 
+# ---------------------------------------------------------------- /api/reg（法规原文：按 path 从 kb.sqlite 取正文）
+@app.get("/api/reg")
+def api_reg(path: str = ""):
+    """按 docs.path 返回法规元数据 + 正文（来自 kb.sqlite fts.body）。仅允许库中存在的路径。"""
+    if not path or not path.strip():
+        return JSONResponse({"error": "missing path"}, status_code=400)
+    p = path.strip().replace("\\", "/")
+    db = _db_path()
+    if not os.path.isfile(db):
+        return JSONResponse({"error": "kb not ready"}, status_code=503)
+    try:
+        con = sqlite3.connect(db)
+        row = con.execute(
+            "SELECT path,title,type,issuer,publish_date,effective_date,source_url,status,category,topic,doc_no,summary "
+            "FROM docs WHERE path=?", (p,)
+        ).fetchone()
+        con.close()
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    if not row:
+        return JSONResponse({"error": "not found"}, status_code=404)
+    meta = dict(zip(
+        ["path", "title", "type", "issuer", "publish_date", "effective_date",
+         "source_url", "status", "category", "topic", "doc_no", "summary"], row))
+    body = _read_kb_body(p, cap=20000)
+    return JSONResponse({"meta": meta, "body": body, "source": "kb"})
+
+
+# ---------------------------------------------------------------- /api/explain（AI 拓展解释 / 术语解释）
+_EXPLAIN_SYSTEM = """你是中国药品监管（NMPA/CDE/CFDI）、GMP 与药品研发注册领域的资深法规专家。
+用户会给出一个术语、法规名称或一段内容，请你用中文进行清晰、有深度的解释或拓展：
+- 先给出准确的定义/含义，再说明其在实际研发、生产、注册或质量体系中的意义；
+- 若涉及具体法规，只引用法规名称与核心要求，严禁编造文号、条款号、发布日期；
+- 表述精炼、条理清楚，3-6 句话，必要时用「·」分点；
+- 若内容超出法规常识框架，明确说明「以官方发布为准」。
+- 直接输出纯文本解释，不要使用 JSON 或代码块包裹。"""
+
+
+def _normalize_explain(raw):
+    """把模型可能返回的 JSON 包裹（如 {"answer":"..."}）或代码块还原为纯文本。"""
+    if not raw:
+        return ""
+    s = raw.strip()
+    if s.startswith("```"):
+        s = re.sub(r"^```[a-zA-Z]*\n?", "", s)
+        s = re.sub(r"\n?```$", "", s).strip()
+    try:
+        j = json.loads(s)
+        if isinstance(j, dict):
+            for k in ("answer", "explanation", "解释", "内容", "text", "result"):
+                if isinstance(j.get(k), str) and j[k].strip():
+                    s = j[k].strip()
+                    break
+    except Exception:
+        pass
+    return s
+
+
+@app.post("/api/explain")
+async def api_explain(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+    text = (body.get("text") or "").strip()
+    context = (body.get("context") or "").strip()
+    if not text:
+        return JSONResponse({"error": "missing text"}, status_code=400)
+    if not _llm_configured():
+        return JSONResponse({"error": "llm not configured", "fallback": True}, status_code=503)
+    usr = "待解释/拓展的内容：\n" + text
+    if context:
+        usr += "\n\n参考语境（仅供理解，不要照抄）：\n" + context[:1500]
+    try:
+        raw = _call_llm(_EXPLAIN_SYSTEM, usr)
+    except _RateLimited:
+        return JSONResponse({"error": "rate limited", "fallback": True}, status_code=429)
+    except Exception as e:
+        return JSONResponse({"error": str(e), "fallback": True}, status_code=500)
+    explain = _normalize_explain(raw)
+    if not explain:
+        return JSONResponse({"error": "empty response", "fallback": True}, status_code=502)
+    return JSONResponse({"text": text, "explain": explain, "source": "llm"})
+
+
 # ---------------------------------------------------------------- /api/llm-*（模型切换，免重启）
 
 @app.get("/api/llm-presets")
@@ -2056,6 +2143,10 @@ def spa(full_path: str):
     f = os.path.join(STATIC, full_path)
     if os.path.isfile(f):
         return FileResponse(f)
+    # 对明显带扩展名的静态资源（.md/.json/.txt 等）缺失时返回真 404，
+    # 避免回退成 index.html 被前端当成“法规原文”渲染成网页源码。
+    if os.path.splitext(full_path)[1]:
+        return JSONResponse({"error": "not found"}, status_code=404)
     return FileResponse(os.path.join(STATIC, "index.html"))
 
 

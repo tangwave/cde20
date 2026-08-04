@@ -361,3 +361,65 @@ details.qa9-think[open] .qa9-think-sum::before { content: '▾ '; }
 .qa9-seg-btn[data-mode="hybrid"].active {
   background: linear-gradient(135deg, #7c3aed, #2563eb); color: #fff; border-color: transparent;
 }
+
+/* ============ AI 拓展问答 / 术语解释 ============ */
+/* 术语悬浮卡中的 AI 按钮 */
+.pen-card-ai {
+  display: inline-block; margin-top: 8px; padding: 5px 12px;
+  font-size: 12.5px; border: 1px solid var(--primary); border-radius: 14px;
+  background: #fff; color: var(--primary); cursor: pointer; transition: all .15s;
+}
+.pen-card-ai:hover { background: var(--primary); color: #fff; }
+.pen-card-ai-res { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-light);
+  font-size: 13px; line-height: 1.6; color: var(--text); }
+.pen-card-ai-res.pen-loading { color: var(--text-muted); font-style: italic; }
+.pen-card-ai-res b { color: var(--primary-dark); }
+
+/* 法规阅读器 AI 拓展 */
+.reg-ai-btn {
+  margin-left: 10px; padding: 5px 14px; font-size: 13px;
+  border: 1px solid var(--primary); border-radius: 16px; background: #fff;
+  color: var(--primary); cursor: pointer; transition: all .15s;
+}
+.reg-ai-btn:hover { background: var(--primary); color: #fff; }
+.reg-ai-box { margin-top: 16px; padding: 14px 16px; background: #f8faff;
+  border: 1px solid var(--border-light); border-left: 3px solid var(--primary); border-radius: 10px; }
+.reg-ai-loading, .qa9-ai-loading { color: var(--text-muted); font-style: italic; padding: 6px 0; }
+.reg-ai-res-h { font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+.reg-ai-res, .qa9-ai-res { font-size: 13.5px; line-height: 1.7; color: var(--text); }
+.reg-ai-res p, .qa9-ai-res p { margin: 6px 0; }
+.reg-reader-empty { color: var(--text-muted); font-style: italic; }
+
+/* QA 回答底部 AI 拓展按钮 */
+.qa9-expand { background: #fff; border-style: dashed; }
+.qa9-expand-btn {
+  border: 1px solid var(--primary); background: #fff; color: var(--primary);
+  font-size: 12.5px; padding: 5px 14px; border-radius: 14px; cursor: pointer; transition: all .15s;
+}
+.qa9-expand-btn:hover { background: var(--primary); color: #fff; }
+.qa9-expand-btn:disabled { opacity: .6; cursor: default; }
+.qa9-expand-box { margin-top: 8px; padding: 12px 14px; background: #f8faff;
+  border: 1px solid var(--border-light); border-left: 3px solid var(--primary); border-radius: 10px; }
+
+/* 全局选中文字 → AI 解释 浮动按钮 + 弹层 */
+.sel-ai-btn {
+  position: fixed; z-index: 9999; padding: 6px 12px; font-size: 12.5px;
+  border: none; border-radius: 16px; background: var(--primary); color: #fff;
+  cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,.35); transition: transform .1s;
+}
+.sel-ai-btn:hover { transform: translateY(-1px); }
+.sel-ai-btn:disabled { opacity: .7; cursor: default; }
+.sel-ai-pop {
+  position: fixed; z-index: 10000; width: 500px; max-width: 92vw; max-height: 70vh; overflow: auto;
+  background: #fff; border: 1px solid var(--border-light); border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.18); padding: 14px 16px;
+}
+.sel-ai-pop-h { font-weight: 700; color: var(--primary-dark); display: flex;
+  justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.sel-ai-pop-x { border: none; background: #f1f3f5; color: var(--text-muted); width: 24px; height: 24px;
+  border-radius: 50%; cursor: pointer; font-size: 16px; line-height: 1; }
+.sel-ai-pop-x:hover { background: #e2e6ea; }
+.sel-ai-pop-q { font-size: 13px; color: var(--text-muted); margin-bottom: 8px;
+  border-left: 3px solid var(--primary); padding-left: 8px; }
+.sel-ai-pop-body { font-size: 13.5px; line-height: 1.7; color: var(--text); }
+.sel-ai-pop-body p { margin: 6px 0; }
