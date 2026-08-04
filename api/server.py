@@ -54,11 +54,10 @@ def _load_dotenv():
 
 _load_dotenv()
 
-# 默认大模型：智谱 BigModel GLM-4.7-Flash（OpenAI 兼容）。
-# 仅当未通过环境变量 / .env 指定时才生效；API Key 不写死在本文件，
-# 请从仓库根 .env（已 gitignore）或环境变量注入，避免泄露到 git 历史。
-os.environ.setdefault("LLM_BASE_URL", "https://open.bigmodel.cn/api/paas/v4/")
-os.environ.setdefault("LLM_MODEL", "glm-4.7-flash")
+# 配置优先级（见 _load_llm_cfg）：环境变量 / .env  >  llm_config.json（文件）  >  预设默认模型。
+# 注意：不再用 os.environ.setdefault 注入「默认模型」，否则该隐式默认值会盖过用户在
+# llm_config.json 里明确写下的模型（如自定义的 Agnes-2.5-Flash）。仅在文件与环境都未指定时，
+# 才回退到对应服务商的 default_model。API Key 不写死在本文件，请从 .env 或环境变量注入。
 
 # ---------------------------------------------------------------- 多模型预设（免重启切换）
 # 内置多家 OpenAI 兼容服务商；用户只需选 provider + 粘贴 API Key 即可使用，
@@ -101,7 +100,9 @@ LLM_PRESETS = [
 ]
 
 LLM_CFG_FILE = os.path.join(APP_DIR, "llm_config.json")
-LLM_CFG = {}            # 运行时生效配置：{provider, base_url, api_key, model}
+LLM_CFG = {}            # 运行时生效配置（effective）：{provider, base_url, api_key, model}
+LLM_KEYS = {}           # 每个服务商独立保存的 API Key：{provider_id: api_key}
+LLM_CUSTOM = {}         # 自定义服务商配置：{base_url, model}
 
 
 def _provider_of(base_url):
@@ -113,33 +114,67 @@ def _provider_of(base_url):
 
 
 def _load_llm_cfg():
-    """配置优先级：.env / 环境变量  >  llm_config.json（运行时保存，免重启覆盖）。"""
-    cfg = {
-        "provider": os.environ.get("LLM_PROVIDER", "").strip(),
-        "base_url": os.environ.get("LLM_BASE_URL", "").strip(),
-        "api_key": os.environ.get("LLM_API_KEY", "").strip(),
-        "model": os.environ.get("LLM_MODEL", "").strip(),
-    }
+    """配置优先级：.env / 环境变量  >  llm_config.json（运行时保存，免重启覆盖）。
+    支持『每个服务商独立保存 API Key』（llm_config.json 的 keys 字典），
+    这样在前端下拉框里切换模型/服务商时无需重复粘贴 Key。旧版单 Key 格式自动兼容。"""
+    global LLM_KEYS, LLM_CUSTOM
+    LLM_KEYS = {}
+    LLM_CUSTOM = {}
+    raw = {}
     if os.path.isfile(LLM_CFG_FILE):
         try:
             with open(LLM_CFG_FILE, encoding="utf-8") as f:
-                d = json.load(f)
-            if isinstance(d, dict):
-                for k in ("provider", "base_url", "api_key", "model"):
-                    if d.get(k):
-                        cfg[k] = d[k]
+                raw = json.load(f) or {}
         except Exception:
-            pass
-    if not cfg.get("provider") and cfg.get("base_url"):
-        cfg["provider"] = _provider_of(cfg["base_url"])
-    return cfg
+            raw = {}
+    if not isinstance(raw, dict):
+        raw = {}
+    provider = (os.environ.get("LLM_PROVIDER") or raw.get("provider") or "").strip()
+    # 文件中的 base_url / model 优先于（可能存在的）隐式环境默认值；真实环境变量仍会胜出
+    base_url = (raw.get("base_url") or os.environ.get("LLM_BASE_URL") or "").strip()
+    model = (raw.get("model") or os.environ.get("LLM_MODEL") or "").strip()
+    # 每个服务商独立的 API Key
+    keys = {}
+    if isinstance(raw.get("keys"), dict):
+        keys = {str(k): str(v) for k, v in raw["keys"].items() if v}
+    elif raw.get("api_key"):
+        p0 = provider or _provider_of(base_url)
+        if p0:
+            keys[p0] = raw["api_key"]
+    env_key = os.environ.get("LLM_API_KEY", "").strip()
+    if env_key:
+        p0 = provider or _provider_of(base_url)
+        if p0:
+            keys[p0] = env_key
+    custom = raw.get("custom") if isinstance(raw.get("custom"), dict) else {}
+    LLM_KEYS = keys
+    LLM_CUSTOM = custom
+    if not provider and base_url:
+        provider = _provider_of(base_url)
+    if provider:
+        preset = next((p for p in LLM_PRESETS if p["id"] == provider), None)
+        if preset and not preset.get("custom"):
+            base_url = preset["base_url"]
+            if not model:
+                model = preset.get("default_model", "")
+    effective = keys.get(provider, "")
+    return {"provider": provider, "base_url": base_url,
+            "api_key": effective, "model": model}
 
 
 def _save_llm_cfg(cfg):
-    """把运行时配置写入 llm_config.json（已 gitignore），使下次启动仍生效。"""
+    """把运行时配置写入 llm_config.json（已 gitignore），使下次启动仍生效。
+    持久化 provider / model / 各服务商 keys / 自定义项；敏感 Key 仅本地保存，不回传前端。"""
     try:
+        out = {
+            "provider": cfg.get("provider", ""),
+            "model": cfg.get("model", ""),
+            "keys": LLM_KEYS,
+        }
+        if LLM_CUSTOM:
+            out["custom"] = LLM_CUSTOM
         with open(LLM_CFG_FILE, "w", encoding="utf-8") as f:
-            json.dump(cfg, f, ensure_ascii=False, indent=2)
+            json.dump(out, f, ensure_ascii=False, indent=2)
     except Exception:
         pass
 
@@ -610,13 +645,14 @@ def llm_presets():
 @app.get("/api/llm-config")
 def llm_config_get():
     """返回当前生效配置（不回传明文 key，仅给掩码与是否已设置标记）。"""
-    key = LLM_CFG.get("api_key", "")
+    provider = LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", ""))
+    key = LLM_KEYS.get(provider, "")
     masked = (key[:6] + "…" + key[-4:]) if len(key) > 10 else (key or "")
     return {
-        "provider": LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", "")),
+        "provider": provider,
         "base_url": LLM_CFG.get("base_url", ""),
         "model": LLM_CFG.get("model", ""),
-        "configured": _llm_configured(),
+        "configured": bool(LLM_CFG.get("base_url") and key and LLM_CFG.get("model")),
         "key_set": bool(key),
         "api_key_masked": masked,
     }
@@ -625,7 +661,9 @@ def llm_config_get():
 @app.post("/api/llm-config")
 async def llm_config_post(request: Request):
     """运行时设置模型：选 provider + 粘贴 API Key 即可；自定义还需填 base_url/model。
+    每个服务商的 Key 独立保存（keys 字典），切换时无需重复粘贴。
     保存后写入 llm_config.json，立即生效且下次启动保留（免重启）。"""
+    global LLM_KEYS, LLM_CUSTOM
     try:
         body = await request.json()
     except Exception:
@@ -636,33 +674,41 @@ async def llm_config_post(request: Request):
     api_key = (body.get("api_key") or "").strip()
     model = (body.get("model") or "").strip()
     base_url = (body.get("base_url") or "").strip()
-    # 空 API Key 表示沿用当前已配置的 key（便于仅切换模型/服务商，无需重复粘贴）
-    if not api_key and LLM_CFG.get("api_key"):
-        api_key = LLM_CFG["api_key"]
     preset = next((p for p in LLM_PRESETS if p["id"] == provider), None)
     if not preset:
         return JSONResponse({"ok": False, "error": "未知的服务商 provider"}, status_code=400)
-    if not preset.get("custom"):
-        # 内置服务商：base_url 固定取自预设；model 为空则用默认模型
+    # 仅更新当前服务商的 Key；空 Key 表示沿用该服务商已保存的 Key
+    keys = dict(LLM_KEYS)
+    if api_key:
+        keys[provider] = api_key
+    if preset.get("custom"):
+        if not base_url:
+            base_url = (LLM_CUSTOM.get("base_url") or "")
+        if not model:
+            model = (LLM_CUSTOM.get("model") or "")
+    else:
         base_url = preset["base_url"]
         if not model:
             model = preset.get("default_model", "")
-    if not (base_url and api_key and model):
-        missing = []
-        if not api_key:
-            missing.append("API Key")
-        if not model:
-            missing.append("模型" if preset.get("custom") else "模型")
-        if preset.get("custom") and not base_url:
-            missing.append("Base URL")
+    effective = keys.get(provider, "")
+    missing = []
+    if not effective:
+        missing.append("API Key")
+    if not model:
+        missing.append("模型")
+    if preset.get("custom") and not base_url:
+        missing.append("Base URL")
+    if missing:
         return JSONResponse({"ok": False,
                              "error": "请填写：" + "、".join(missing)},
                             status_code=400)
-    cfg = {"provider": provider, "base_url": base_url,
-           "api_key": api_key, "model": model}
+    LLM_KEYS = keys
+    if preset.get("custom"):
+        LLM_CUSTOM = {"base_url": base_url, "model": model}
     LLM_CFG.clear()
-    LLM_CFG.update(cfg)
-    _save_llm_cfg(cfg)
+    LLM_CFG.update({"provider": provider, "base_url": base_url,
+                    "api_key": effective, "model": model})
+    _save_llm_cfg(LLM_CFG)
     return {"ok": True, "provider": provider, "provider_name": preset["name"],
             "model": model, "base_url": base_url}
 

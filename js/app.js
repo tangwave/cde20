@@ -2025,16 +2025,20 @@ const App = {
     const closeBtn = document.getElementById('qa9Close');
     if (closeBtn) closeBtn.addEventListener('click', () => this.closeQa9527());
     const input = document.getElementById('qa9Input');
-    if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.sendQaMessage(); });
+    if (input) {
+      input.addEventListener('input', () => this._autoGrowInput());
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.sendQaMessage(); }
+      });
+    }
     const sbtn = document.getElementById('qa9SendBtn');
     if (sbtn) sbtn.addEventListener('click', () => this.sendQaMessage());
     const clearBtn = document.getElementById('qa9Clear');
     if (clearBtn) clearBtn.addEventListener('click', () => this._resetQaChat());
-    this.renderQaFaqList();
-    this.renderQaSuggestions();
     this.qaApiBase = this._readQaApiBase();
     this._renderQaMode();
     this._initModelPanel();
+    this.loadInlineModels();
     this._initQaChat();
   },
 
@@ -2089,31 +2093,6 @@ const App = {
         const dl = document.getElementById('detailLayout'); if (dl) dl.style.display = '';
       }
     }
-  },
-
-  renderQaFaqList() {
-    const el = document.getElementById('qa9FaqList'); if (!el) return;
-    const QA = globalThis.REG_QA_9527 || [];
-    let html = '';
-    QA.forEach((item, idx) => {
-      html += '<button class="qa9-faq-item" data-idx="' + idx + '">' +
-        '<span class="qa9-faq-tag">' + Penetrator.esc(item.tag || '') + '</span>' +
-        '<span class="qa9-faq-q">' + Penetrator.esc(item.q) + '</span></button>';
-    });
-    el.innerHTML = html;
-    el.querySelectorAll('.qa9-faq-item').forEach(b => b.addEventListener('click', () => {
-      const item = (globalThis.REG_QA_9527 || [])[parseInt(b.dataset.idx, 10)];
-      if (item) this.sendQaMessage(item.q);
-    }));
-  },
-
-  renderQaSuggestions() {
-    const el = document.getElementById('qa9Suggestions'); if (!el) return;
-    const samples = ['IND 非临床研究资料', 'GLP 适用范围', '化学药1类 定义', 'MAH 持有人制度', 'GMP 基本要求', '加快上市程序'];
-    el.innerHTML = samples.map(s => '<span class="qa9-sug" data-q="' + Penetrator.esc(s) + '">' + Penetrator.esc(s) + '</span>').join('');
-    el.querySelectorAll('.qa9-sug').forEach(s => s.addEventListener('click', () => {
-      this.sendQaMessage(s.dataset.q);
-    }));
   },
 
   async runQaSearch() {
@@ -2183,13 +2162,37 @@ const App = {
     this._resetQaChat();
   },
 
-  // 真正清空并重置对话（"清空对话"按钮调用）
+  // 真正清空并重置对话（"清空对话"按钮调用）→ 渲染 WorkBuddy 风格欢迎屏 + 建议卡片
   _resetQaChat() {
     this._qaMid = 0;
     const box = document.getElementById('qa9Msgs'); if (!box) return;
     box.innerHTML = '';
-    const welcome = '您好，我是 Agnes AI 🤖。\n我会基于本地法规知识库进行 AI 推理，回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等法规问题，并给出结论与依据。\n\n请直接描述您的问题，例如：\n· IND 申报需要哪些非临床研究资料？\n· GLP 适用于哪些研究？\n· 化学药 1 类如何定义？\n· MAH 制度的核心是什么？';
-    this._appendMsg('bot', '<div class="qa9-welcome">' + Penetrator.esc(welcome).replace(/\n/g, '<br>') + '</div>');
+    const FAQ = globalThis.REG_QA_9527 || [];
+    const samples = ['IND 非临床研究资料', 'GLP 适用范围', '化学药1类 定义', 'MAH 持有人制度', 'GMP 基本要求', '加快上市程序'];
+    let cards = '';
+    FAQ.slice(0, 4).forEach((item) => {
+      cards += '<button class="qa9-welcome-card" data-q="' + Penetrator.esc(item.q) + '">' +
+        '<span class="qa9-welcome-card-tag">' + Penetrator.esc(item.tag || '常见问题') + '</span>' +
+        '<span class="qa9-welcome-card-q">' + Penetrator.esc(item.q) + '</span></button>';
+    });
+    samples.forEach((s) => {
+      cards += '<button class="qa9-welcome-card" data-q="' + Penetrator.esc(s) + '">' +
+        '<span class="qa9-welcome-card-tag">试试问</span>' +
+        '<span class="qa9-welcome-card-q">' + Penetrator.esc(s) + '</span></button>';
+    });
+    const welcome =
+      '<div class="qa9-welcome-screen">' +
+        '<div class="qa9-welcome-title">👋 你好，我是 Agnes AI</div>' +
+        '<div class="qa9-welcome-sub">我可以基于本地法规知识库进行 AI 推理，回答药品注册、GLP/GCP/GMP/GVP、MAH、上市后变更等问题，并给出结论与依据。选择一个问题，或直接输入你的问题。</div>' +
+        '<div class="qa9-welcome-cards">' + cards + '</div>' +
+      '</div>';
+    const wrap = document.createElement('div');
+    wrap.className = 'qa9-msg bot welcome';
+    wrap.innerHTML = '<div class="qa9-bubble">' + welcome + '</div>';
+    box.appendChild(wrap);
+    box.querySelectorAll('.qa9-welcome-card').forEach(b => b.addEventListener('click', () => {
+      this.sendQaMessage(b.dataset.q);
+    }));
   },
 
   // 发送一条消息（对话模式主入口）—— 仅走大模型 RAG（纯 AI 推理），彻底移除离线条文检索回退
@@ -2200,7 +2203,7 @@ const App = {
       text = (inp ? inp.value : '').trim();
     }
     if (!text) return;
-    const input = document.getElementById('qa9Input'); if (input) input.value = '';
+    const input = document.getElementById('qa9Input'); if (input) { input.value = ''; this._autoGrowInput(); }
     this._appendMsg('user', Penetrator.esc(text));
     const ovEl = document.getElementById('qa9OnlyValid');
     const ov = ovEl ? ovEl.checked : true;
@@ -2298,6 +2301,104 @@ const App = {
     if (prov) prov.addEventListener('change', () => this.onProviderChange());
     const modal = document.getElementById('qa9ModelModal');
     if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModelModal(); });
+    const inline = document.getElementById('qa9ModelInline');
+    if (inline) inline.addEventListener('change', () => this.onInlineModelChange());
+  },
+
+  // 加载内置模型到输入框下方的切换下拉（按服务商分组）
+  async loadInlineModels() {
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-presets');
+      if (!r.ok) return;
+      const j = await r.json();
+      const presets = (j && j.presets) || [];
+      this._presets = presets;
+      const sel = document.getElementById('qa9ModelInline');
+      if (!sel) return;
+      let html = '';
+      presets.forEach(p => {
+        if (p.custom) {
+          html += '<option value="custom::' + Penetrator.esc(p.id) + '">' + Penetrator.esc(p.name) + '</option>';
+        } else {
+          (p.models || []).forEach(m => {
+            html += '<option value="' + Penetrator.esc(p.id) + '::' + Penetrator.esc(m) + '">' +
+              Penetrator.esc(p.name) + ' · ' + Penetrator.esc(m) + '</option>';
+          });
+        }
+      });
+      sel.innerHTML = html;
+      const cfg = await this._loadCurrentModel();
+      if (cfg && sel) {
+        const val = (cfg.provider || '') + '::' + (cfg.model || '');
+        let found = false;
+        for (const o of sel.options) { if (o.value === val) { o.selected = true; found = true; break; } }
+        if (!found && cfg.model) {
+          const opt = document.createElement('option');
+          opt.value = val; opt.textContent = Penetrator.esc((cfg.provider || '') + ' · ' + cfg.model) + '（当前）';
+          opt.selected = true; sel.appendChild(opt);
+        }
+      }
+    } catch (e) { /* 忽略 */ }
+  },
+
+  async _loadCurrentModel() {
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-config');
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  },
+
+  // 输入框下方切换模型：沿用该服务商已保存的 Key；若该服务商未配置 Key，则打开设置弹窗预选
+  async onInlineModelChange() {
+    const sel = document.getElementById('qa9ModelInline');
+    if (!sel || !sel.value) return;
+    const parts = sel.value.split('::');
+    const provider = parts[0], model = parts[1] || '';
+    const preset = (this._presets || []).find(p => p.id === provider) || {};
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: provider, model: model, api_key: '' })
+      });
+      const j = await r.json();
+      if (j && j.ok) {
+        this._toast('已切换至 ' + (j.provider_name || provider) + ' / ' + j.model);
+        this._renderQaMode();
+      } else if (j && j.error && j.error.indexOf('API Key') >= 0) {
+        this.openModelModal();
+        const prov = document.getElementById('qa9Provider');
+        if (prov) { for (const o of prov.options) { if (o.value === provider) { o.selected = true; break; } } this.onProviderChange(); }
+        const key = document.getElementById('qa9ApiKey');
+        if (key) { key.value = ''; key.focus(); }
+        const status = document.getElementById('qa9ModelStatus');
+        if (status) { status.className = 'qa9-model-status warn'; status.textContent = '「' + (preset.name || provider) + '」尚未配置 API Key，请粘贴后保存。'; }
+      } else {
+        this._toast('切换失败：' + (j && j.error || '未知错误'));
+      }
+    } catch (e) {
+      this._toast('网络错误，请重试');
+    }
+  },
+
+  _toast(msg) {
+    let t = document.getElementById('qa9Toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'qa9Toast'; t.className = 'qa9-toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  },
+
+  _autoGrowInput() {
+    const el = document.getElementById('qa9Input'); if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 180) + 'px';
   },
 
   _apiBase() {
@@ -2429,6 +2530,8 @@ const App = {
         if (j.ok) {
           msg.className = 'qa9-model-msg ok';
           msg.textContent = '✅ 已切换至 ' + (j.provider_name || j.provider) + ' / ' + j.model;
+          this.loadInlineModels();
+          this._renderQaMode();
         } else {
           msg.className = 'qa9-model-msg err';
           msg.textContent = '❌ ' + (j.error || '保存失败');
