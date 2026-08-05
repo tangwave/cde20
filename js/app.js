@@ -2316,7 +2316,7 @@ const App = {
       const resp = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: text, only_valid: opts && opts.onlyValid !== false, mode: (opts && opts.mode) || 'local' })
+        body: JSON.stringify({ q: text, only_valid: opts && opts.onlyValid !== false, mode: (opts && opts.mode) || 'local', speed: !!(opts && opts.speed) || !!(document.getElementById('qa9Speed') && document.getElementById('qa9Speed').checked) })
       });
       if (!resp.ok) return { fallback: true };
       return await resp.json();

@@ -534,16 +534,21 @@ _QUALITY_RULES = """【回答质量硬要求】
 
 _SCHEMA = """【输出格式】只输出如下 JSON，不要任何额外文字、解释或 markdown 代码块标记：
 {
- "思考分析":"3-6 句，呈现真实推理链：用户实际关心 X → 材料显示 Y（注意 Z 处差异）→ 故判断为 W。具体、有见地。",
- "结论":"直接完整地回答问题，3-6 句。先给核心判断，再补必要限定条件。禁止一句话敷衍，禁止写成『需具体分析』。",
- "要点解析":[{"要点":"简短小标题（6-14 字）","说明":"该要点的具体展开，2-4 句，须有实操信息量"}],
+ "思考分析":"2-3 句，呈现真实推理链：用户实际关心 X → 材料显示 Y（注意 Z 处差异）→ 故判断为 W。具体、有见地。",
+ "结论":"直接完整地回答问题，2-3 句。先给核心判断，再补必要限定条件。禁止一句话敷衍，禁止写成『需具体分析』。",
+ "要点解析":[{"要点":"简短小标题（6-14 字）","说明":"该要点的具体展开，1-2 句，须有实操信息量"}],
  "法规依据":[{"标题":"","引用原文":"关键条款摘录（本地材料逐字摘录；联网材料用 [n] 标注编号；凭自身知识须注明『依据通用知识，以官方发布为准』）","本地路径":"","来源":"","文号":"","发布日期":"","状态":""}],
- "适用提示":"实操落地：怎么做、找谁、备什么、关键时间节点。2-5 句。",
+ "适用提示":"实操落地：怎么做、找谁、备什么、关键时间节点。1-2 句。",
  "风险提示":"常见误区、易被发补 / 现场检查缺陷项、合规处罚风险。确无则写空字符串。",
  "时效说明":"现行有效性、同名多版本关系、施行日期、修订趋势；不确定写『以官方最新发布为准』。",
  "延伸问题":["用户接下来最可能追问的 2-3 个具体问题，每条不超过 24 字"]
 }
-「要点解析」至少 2 条、至多 5 条；「延伸问题」须与本次问题强相关，不得泛泛而谈。"""
+「要点解析」至少 2 条、至多 3 条；「延伸问题」须与本次问题强相关，不得泛泛而谈。
+- 整体作答精炼为上：中文正文控制在 500-800 字，要点齐全但不铺陈；能用一句说清的不用两句，单句以 30-50 字为度。"""
+
+_SPEED_APPEND = """
+
+【极速模式·强制精简】严格按下列字数上限作答，绝不展开：结论 1-2 句（≤60字）；思考分析 1 句（≤40字）；要点解析 至多 2 条、每条说明 1 句（≤40字）；法规依据 至多 2 条、引用原文 限 25 字以内；适用提示 1 句（≤40字）；风险提示 / 时效说明各 1 句或空；延伸问题 2 条。整段正文（不含字段名）总计不超过 350 字。宁可短而准，绝不铺陈。"""
 
 
 _RAG_SYSTEM = _PERSONA + """
@@ -622,9 +627,11 @@ _RAG_CACHE = {}            # (q, only_valid) -> (timestamp, answer)
 _RAG_CACHE_TTL = 3600     # 1 小时
 
 
-def _build_llm_request(system, user, strip_json):
+def _build_llm_request(system, user, strip_json, max_tokens=None):
     """构造 OpenAI 兼容 chat/completions 请求。strip_json=True 时去掉
-    response_format / temperature（部分免费模型不支持，会返回 400）。"""
+    response_format / temperature（部分免费模型不支持，会返回 400）。
+    max_tokens 可显式限定输出长度（仅作安全上限，不强制填满）；
+    缺省取 LLM_MAX_TOKENS 环境变量（默认 1800），避免 8 段式冗长拖慢响应。"""
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
     model = LLM_CFG.get("model", "").strip()
@@ -640,7 +647,9 @@ def _build_llm_request(system, user, strip_json):
     }
     # 深度作答需要一定发散：温度过低会退化成条文复读；0.35 兼顾严谨与见地。
     if not no_json:
-        payload["max_tokens"] = int(os.environ.get("LLM_MAX_TOKENS", "3000") or "3000")
+        if max_tokens is None:
+            max_tokens = int(os.environ.get("LLM_MAX_TOKENS", "1800") or "1800")
+        payload["max_tokens"] = max_tokens
     if not no_json and not strip_json:
         payload["temperature"] = 0.35
         payload["response_format"] = {"type": "json_object"}
@@ -652,17 +661,17 @@ def _build_llm_request(system, user, strip_json):
     )
 
 
-def _call_llm(system, user, attempts=2):
+def _call_llm(system, user, attempts=2, max_tokens=None):
     """调用 OpenAI 兼容 chat/completions。未配置返回 None；限流抛 _RateLimited。"""
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
     model = LLM_CFG.get("model", "").strip()
     if not (base and key and model):
         return None
-    return _call_llm_ex(system, user, attempts=attempts)[0]
+    return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens)[0]
 
 
-def _call_llm_ex(system, user, attempts=2):
+def _call_llm_ex(system, user, attempts=2, max_tokens=None):
     """同 _call_llm，但额外返回 citations（Perplexity 等会返回联网引用 URL 列表）。
 
     返回 (content_or_None, [citation_url, ...])。兼容策略：
@@ -674,7 +683,7 @@ def _call_llm_ex(system, user, attempts=2):
     model = LLM_CFG.get("model", "").strip()
     if not (base and key and model):
         return None, []
-    req = _build_llm_request(system, user, False)
+    req = _build_llm_request(system, user, False, max_tokens=max_tokens)
     timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
     retried = False
     for attempt in range(attempts):
@@ -697,7 +706,7 @@ def _call_llm_ex(system, user, attempts=2):
             # 部分免费模型不支持 response_format/temperature：去掉后重试一次
             if e.code == 400 and not retried:
                 retried = True
-                req = _build_llm_request(system, user, True)
+                req = _build_llm_request(system, user, True, max_tokens=max_tokens)
                 continue
             if attempt < attempts - 1:
                 time.sleep(6)
@@ -1144,12 +1153,12 @@ def _parse_llm_json(raw):
     return _normalize_answer({"结论": raw or "（模型未返回有效内容）"})
 
 
-def _rag_query(q, only_valid, mode="local"):
+def _rag_query(q, only_valid, mode="local", speed=False):
     if mode == "web":
-        return _web_query(q)
+        return _web_query(q, speed=speed)
     if mode == "hybrid":
-        return _hybrid_query(q, only_valid)
-    cache_key = (q, bool(only_valid))
+        return _hybrid_query(q, only_valid, speed=speed)
+    cache_key = (q, bool(only_valid), bool(speed))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
     if cached and now - cached[0] < _RAG_CACHE_TTL:
@@ -1169,12 +1178,15 @@ def _rag_query(q, only_valid, mode="local"):
             "search_queries": queries, "source": "rag", "empty": True,
         }
     docs_ctx = []
-    for r in rows[:5]:
+    _ndocs = 3 if speed else 5
+    _dcap = 600 if speed else 1500
+    for r in rows[:_ndocs]:
         rel = r.get("本地路径", "")
-        docs_ctx.append({"meta": r, "body": _read_kb_body(rel, cap=3000)})
+        docs_ctx.append({"meta": r, "body": _read_kb_body(rel, cap=_dcap)})
     sys_p, usr_p = _build_rag_prompt(q, docs_ctx, queries)
     try:
-        raw = _call_llm(sys_p, usr_p)
+        sys_p_eff = sys_p + (_SPEED_APPEND if speed else "")
+        raw = _call_llm(sys_p_eff, usr_p, max_tokens=1200 if speed else 1500)
     except _RateLimited:
         return {"error": "llm_rate_limited", "fallback": True}
     if not raw:
@@ -1555,7 +1567,7 @@ def _refine_queries(q):
     domain = _domain_queries(q)
     # 1) 大模型提炼（最准，能补充规范术语与机构限定）
     try:
-        raw = _call_llm(_REFINE_SYSTEM, q, attempts=1)
+        raw = _call_llm(_REFINE_SYSTEM, q, attempts=1, max_tokens=800)
         if raw:
             data = _parse_llm_json(raw)
             qs = data.get("检索式") or data.get("queries") or []
@@ -1735,7 +1747,7 @@ def _web_search(query, max_results=6):
     return results[:max_results]
 
 
-def _web_query(q):
+def _web_query(q, speed=False):
     """AI 联网搜索模式：先实时检索公开网络，再交给大模型综合作答并带 [n] 引用。
 
     - 检索：DuckDuckGo / Wikipedia（keyless）+ 可选 Tavily/Brave（免费 Key）。
@@ -1743,7 +1755,7 @@ def _web_query(q):
     - 若所选模型本身具备原生联网（如 Perplexity sonar），则直接利用其返回的真实
       citations 作为来源（更权威）。
     - 降级：大模型未配置/不可用时，仍返回真实检索结果，保证「联网检索」可用。"""
-    cache_key = ("web", q)
+    cache_key = ("web", q, bool(speed))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
     if cached and now - cached[0] < _RAG_CACHE_TTL:
@@ -1771,13 +1783,13 @@ def _web_query(q):
         user_p = q
     try:
         if provider == "perplexity":
-            raw, native_cites = _call_llm_ex(_WEB_SYSTEM, user_p)
+            raw, native_cites = _call_llm_ex(_WEB_SYSTEM + (_SPEED_APPEND if speed else ""), user_p, max_tokens=1300 if speed else 1800)
             # 合并原生引用（真实 URL）到检索来源
             for c in native_cites:
                 if c and c not in [r["url"] for r in results]:
                     results.append({"title": c, "url": c, "snippet": ""})
         else:
-            raw = _call_llm(_WEB_SYSTEM, user_p)
+            raw = _call_llm(_WEB_SYSTEM + (_SPEED_APPEND if speed else ""), user_p, max_tokens=1300 if speed else 1800)
     except _RateLimited:
         return {"error": "llm_rate_limited", "fallback": True,
                 "web_sources": results, "source": "web"}
@@ -1796,7 +1808,7 @@ def _web_query(q):
     return ans
 
 
-def _hybrid_query(q, only_valid=True):
+def _hybrid_query(q, only_valid=True, speed=False):
     """🧠 深度融合：本地权威法规原文 + 实时联网检索并行取回，交叉核验后综合作答。
 
     这是三种模式里深度最高的一档：
@@ -1804,7 +1816,7 @@ def _hybrid_query(q, only_valid=True):
       · 联网给「最新修订、新政解读、官方问答」的时效补充；
       · 提示词强制模型做版本交叉核验，冲突时给出取舍判断。
     两路检索并行执行（线程池），总耗时≈max(本地, 联网)，不叠加。"""
-    cache_key = ("hybrid", q, bool(only_valid))
+    cache_key = ("hybrid", q, bool(only_valid), bool(speed))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
     if cached and now - cached[0] < _RAG_CACHE_TTL:
@@ -1840,14 +1852,14 @@ def _hybrid_query(q, only_valid=True):
 
     docs_ctx = []
     for r in rows[:5]:
-        docs_ctx.append({"meta": r, "body": _read_kb_body(r.get("本地路径", ""), cap=3000)})
+        docs_ctx.append({"meta": r, "body": _read_kb_body(r.get("本地路径", ""), cap=(600 if speed else 1500))})
 
     lines = ["【用户问题】\n%s\n" % q]
     lines.append("【本地库检索式】" + (" ｜ ".join(kb_queries) or "—"))
     lines.append("【联网检索式】" + (" ｜ ".join(web_queries) or "—") + "\n")
     if docs_ctx:
         lines.append("【A. 法规材料】（本地权威法规库全文，可逐字引用，已按相关度+效力层级排序）\n")
-        lines += _fmt_kb_materials(docs_ctx, cap=2600)
+        lines += _fmt_kb_materials(docs_ctx, cap=(600 if speed else 1500))
     else:
         lines.append("【A. 法规材料】本次本地库未命中相关条文。\n")
     if results:
@@ -1863,7 +1875,7 @@ def _hybrid_query(q, only_valid=True):
     user_p = "\n".join(lines)
 
     try:
-        raw = _call_llm(_HYBRID_SYSTEM, user_p)
+        raw = _call_llm(_HYBRID_SYSTEM + (_SPEED_APPEND if speed else ""), user_p, max_tokens=1400 if speed else 2000)
     except _RateLimited:
         return {"error": "llm_rate_limited", "fallback": True,
                 "web_sources": results, "source": "hybrid"}
@@ -1896,6 +1908,7 @@ async def api_qa_rag(request: Request):
         q = (body.get("q") or "")
         only_valid = body.get("only_valid", True)
         mode = (body.get("mode") or "local").strip()
+        speed = bool(body.get("speed", False))
     else:
         q = request.query_params.get("q", "")
         only_valid = request.query_params.get("only_valid", "true") != "false"
@@ -1903,7 +1916,7 @@ async def api_qa_rag(request: Request):
     if not q or not q.strip():
         return JSONResponse({"error": "missing q"}, status_code=400)
     try:
-        return _rag_query(q.strip(), only_valid, mode)
+        return _rag_query(q.strip(), only_valid, mode, speed=speed)
     except Exception as e:
         return JSONResponse({"error": str(e), "fallback": True}, status_code=500)
 
