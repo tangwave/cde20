@@ -103,6 +103,9 @@ LLM_PRESETS_DEFAULT = [
     {"id": "agnes", "name": "Agnes AI",
      "base_url": "https://api.agnes-ai.cn/v1",
      "models": ["agnes-2.0-flash"], "default_model": "agnes-2.0-flash"},
+    {"id": "qwen3-local", "name": "本地 Qwen3-8B（Ollama）",
+     "base_url": "http://127.0.0.1:11434/v1",
+     "models": ["qwen3:8b"], "default_model": "qwen3:8b"},
     # ---- 以下为免费 / 免费额度服务商（OpenAI 兼容，仅需粘贴对应平台的免费 Key 即可用）----
     {"id": "google", "name": "Google Gemini（免费额度）",
      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -383,8 +386,8 @@ def _snippet_from_db(rel, terms, width=120, maxn=2):
 
 
 def _llm_configured():
-    return bool(LLM_CFG.get("base_url") and LLM_CFG.get("api_key")
-                and LLM_CFG.get("model"))
+    # 本地模型（如 Ollama）无需 API Key；只要 base_url + model 齐备即视为已配置
+    return bool(LLM_CFG.get("base_url") and LLM_CFG.get("model"))
 
 
 def st_tier(st):
@@ -664,11 +667,10 @@ def _build_llm_request(system, user, strip_json, max_tokens=None):
         payload["temperature"] = 0.35
         payload["response_format"] = {"type": "json_object"}
     data = json.dumps(payload).encode("utf-8")
-    return urllib.request.Request(
-        url, data=data,
-        headers={"Content-Type": "application/json",
-                 "Authorization": "Bearer " + key},
-    )
+    headers = {"Content-Type": "application/json"}
+    if key:  # 本地模型（Ollama 等）无需鉴权，省略 Authorization
+        headers["Authorization"] = "Bearer " + key
+    return urllib.request.Request(url, data=data, headers=headers)
 
 
 def _call_llm(system, user, attempts=2, max_tokens=None):
@@ -676,7 +678,7 @@ def _call_llm(system, user, attempts=2, max_tokens=None):
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
     model = LLM_CFG.get("model", "").strip()
-    if not (base and key and model):
+    if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None
     return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens)[0]
 
@@ -691,7 +693,7 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None):
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
     model = LLM_CFG.get("model", "").strip()
-    if not (base and key and model):
+    if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None, []
     req = _build_llm_request(system, user, False, max_tokens=max_tokens)
     timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
@@ -1970,7 +1972,8 @@ _EXPLAIN_SYSTEM = """你是中国药品监管（NMPA/CDE/CFDI）、GMP 与药品
 
 
 def _normalize_explain(raw):
-    """把模型可能返回的 JSON 包裹（如 {"answer":"..."}）或代码块还原为纯文本。"""
+    """把模型可能返回的 JSON 包裹（如 {"answer":"..."}）或代码块还原为纯文本。
+    兼容本地模型（如 Qwen3）习惯性把解释包成任意 JSON 的情况：退化收集所有字符串叶子拼成可读文本。"""
     if not raw:
         return ""
     s = raw.strip()
@@ -1984,6 +1987,23 @@ def _normalize_explain(raw):
                 if isinstance(j.get(k), str) and j[k].strip():
                     s = j[k].strip()
                     break
+            else:
+                # 退化：递归收集所有字符串叶子，拼成一个可读解释
+                parts = []
+                def _collect(o):
+                    if isinstance(o, str) and o.strip():
+                        parts.append(o.strip())
+                    elif isinstance(o, dict):
+                        for v in o.values():
+                            _collect(v)
+                    elif isinstance(o, list):
+                        for v in o:
+                            _collect(v)
+                _collect(j)
+                if parts:
+                    s = "\n".join(parts)
+        elif isinstance(j, str):
+            s = j.strip()
     except Exception:
         pass
     return s
@@ -2096,7 +2116,8 @@ def llm_config_get():
         "provider": provider,
         "base_url": LLM_CFG.get("base_url", ""),
         "model": LLM_CFG.get("model", ""),
-        "configured": bool(LLM_CFG.get("base_url") and key and LLM_CFG.get("model")),
+        # 本地模型（Ollama 等）允许空 Key，故 configured 不要求 key
+        "configured": bool(LLM_CFG.get("base_url") and LLM_CFG.get("model")),
         "key_set": bool(key),
         "api_key_masked": masked,
     }
