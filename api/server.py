@@ -103,9 +103,9 @@ LLM_PRESETS_DEFAULT = [
     {"id": "agnes", "name": "Agnes AI",
      "base_url": "https://api.agnes-ai.cn/v1",
      "models": ["agnes-2.0-flash"], "default_model": "agnes-2.0-flash"},
-    {"id": "qwen3-local", "name": "本地 Qwen3-8B（Ollama）",
+    {"id": "qwen3-local", "name": "本地 Qwen3（Ollama）",
      "base_url": "http://127.0.0.1:11434/v1",
-     "models": ["qwen3:8b"], "default_model": "qwen3:8b"},
+     "models": ["qwen3:8b", "qwen3:14b", "qwen3:32b"], "default_model": "qwen3:8b"},
     # ---- 以下为免费 / 免费额度服务商（OpenAI 兼容，仅需粘贴对应平台的免费 Key 即可用）----
     {"id": "google", "name": "Google Gemini（免费额度）",
      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -589,6 +589,97 @@ _RAG_SYSTEM = _PERSONA + """
 """ + _QUALITY_RULES + "\n\n" + _SCHEMA
 
 
+# —— 小模型（如 Qwen3-8B）专用精简提示词分支 ——
+# 8B 级模型在复杂 8 段式 + 严格引用约束下容易「脑补用户意图」「从无关文档拼凑答案」，
+# 故单独给一套更短、更克制、强调『只答字面问题 + 库未覆盖就明说』的提示词。
+_RAG_SYSTEM_SMALL = (
+    "你是「海云AI」药品法规 QA 助手。请严格遵循：\n"
+    "1) 只回答用户『字面问题』，不要自行改写、扩展或猜测用户未说明的意图；"
+    "简单定义题（如『XX 是什么』）直接给定义，不要扯到无关子话题。\n"
+    "2) 下方「法规材料」若与问题无关、或本地库未收录该问题的专门条文，"
+    "必须明确说明『本地库未收录相关专门条文』，并仅基于通用知识给谨慎提示，"
+    "严禁从无关文档拼凑答案或伪造引用原文。\n"
+    "3) 引用原文须逐字摘录；材料无法回答时不要用材料凑数。\n\n"
+    + _QUALITY_RULES + "\n\n" + _SCHEMA
+)
+
+
+# —— 检索相关性兜底：命中偏低时提示模型诚实声明「库未覆盖」 ——
+_STOP = {"什么", "如何", "怎样", "怎么", "是否", "可以", "需要", "请问", "请", "关于",
+         "以及", "还有", "哪些", "我们", "你们", "他们", "为什么", "条件", "的", "了", "是"}
+
+_SMALL_MODEL_HINT = re.compile(r"8b|7b|3b|1\.5b|0\.5b|mini|qwen3-?8b|qwen2\.5-?7b", re.I)
+
+
+def _is_small_model():
+    """判断当前激活模型是否为小模型（需更克制的提示词）。"""
+    if os.environ.get("LLM_SMALL_MODEL"):
+        return True
+    return bool(_SMALL_MODEL_HINT.search((LLM_CFG.get("model") or "")))
+
+
+def _retrieval_low_confidence(q, rows):
+    """若命中文档与问题核心实体基本不相关，判定为低置信（库 likely 未覆盖）。"""
+    if not rows:
+        return False
+    canon = _domain_queries(q)
+    tops = rows[:3]
+    blob = " ".join(((r.get("标题", "") or "") + " " + (r.get("摘要", "") or "")) for r in tops)
+    for c in canon:                      # 具体领域规范名出现在 top 文档 -> 高置信
+        if c and c in blob:
+            return False
+    qcn = {t for t in re.findall(r"[一-龥]{2,}", q or "") if t not in _STOP}
+    if qcn and not any(t in blob for t in qcn):
+        return True
+    return False
+
+
+def _has_cloud_reviewer():
+    """是否已配置云端复核模型（本地 + 云端混合模式用）。"""
+    return bool(os.environ.get("LLM_REVIEW_BASE_URL") and os.environ.get("LLM_REVIEW_MODEL"))
+
+
+def _build_review_request(system, user, model, base, key, max_tokens=900):
+    url = base.rstrip("/") + "/chat/completions"
+    payload = {"model": model,
+               "messages": [{"role": "system", "content": system},
+                            {"role": "user", "content": user}],
+               "max_tokens": max_tokens, "temperature": 0.2}
+    data = json.dumps(payload).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
+    if key:
+        headers["Authorization"] = "Bearer " + key
+    return urllib.request.Request(url, data=data, headers=headers)
+
+
+def _cloud_review(q, answer):
+    """由云端大模型复核本地模型回答，返回中文复核意见；未配置/失败返回 None。"""
+    base = (os.environ.get("LLM_REVIEW_BASE_URL") or "").strip().rstrip("/")
+    key = (os.environ.get("LLM_REVIEW_API_KEY") or "").strip()
+    model = (os.environ.get("LLM_REVIEW_MODEL") or "").strip()
+    if not (base and model):
+        return None
+    try:
+        local_txt = json.dumps(answer, ensure_ascii=False, indent=1)
+    except Exception:
+        local_txt = str(answer)
+    system = ("你是药品法规领域资深复核专家。用户问题如下，下方是『本地模型』给出的回答。"
+              "请严格复核：①是否有事实或法规错误；②是否遗漏关键要点；③引用是否准确；"
+              "④是否答非所问或过度发挥。用中文分条列出『需修正/补充』的内容；"
+              "若回答基本正确则写『经复核未见明显问题』。不要重复原答案，只输出复核意见，"
+              "3-6 条，每条先给结论再简述理由。")
+    user = "【用户问题】\n%s\n\n【本地模型回答】\n%s" % (q, local_txt)
+    try:
+        req = _build_review_request(system, user, model, base, key)
+        timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            j = json.loads(r.read().decode("utf-8", "ignore"))
+        content = j["choices"][0]["message"]["content"]
+        return _normalize_explain(content)
+    except Exception:
+        return None
+
+
 _WEB_SYSTEM = _PERSONA + """
 
 【当前模式：🌐 AI 联网搜索】
@@ -664,7 +755,7 @@ def _build_llm_request(system, user, strip_json, max_tokens=None):
             max_tokens = int(os.environ.get("LLM_MAX_TOKENS", "1800") or "1800")
         payload["max_tokens"] = max_tokens
     if not no_json and not strip_json:
-        payload["temperature"] = 0.35
+        payload["temperature"] = float(os.environ.get("LLM_TEMP", "0.35") or "0.35")
         payload["response_format"] = {"type": "json_object"}
     data = json.dumps(payload).encode("utf-8")
     headers = {"Content-Type": "application/json"}
@@ -1061,14 +1152,14 @@ def _fmt_kb_materials(docs_ctx, cap=2600, start=1):
     return lines
 
 
-def _build_rag_prompt(q, docs_ctx, queries=None):
+def _build_rag_prompt(q, docs_ctx, queries=None, small=False):
     lines = ["【用户问题】\n%s\n" % q]
     if queries:
         lines.append("【本次本地库实际使用的检索式】" + " ｜ ".join(queries) + "\n")
     lines.append("【法规材料】（本地权威法规库检索结果，已按相关度 + 效力层级 + 时效排序）\n")
     lines += _fmt_kb_materials(docs_ctx)
     lines.append("请严格按系统提示的五步思考与 JSON 结构作答。")
-    return _RAG_SYSTEM, "\n".join(lines)
+    return (_RAG_SYSTEM_SMALL if small else _RAG_SYSTEM), "\n".join(lines)
 
 
 _ANSWER_KEYS = ("思考分析", "结论", "要点解析", "法规依据",
@@ -1170,6 +1261,14 @@ def _rag_query(q, only_valid, mode="local", speed=False):
         return _web_query(q, speed=speed)
     if mode == "hybrid":
         return _hybrid_query(q, only_valid, speed=speed)
+    if mode == "review":
+        base_ans = _rag_query(q, only_valid, "local", speed=speed)
+        if isinstance(base_ans, dict) and not base_ans.get("error") and _has_cloud_reviewer():
+            rev = _cloud_review(q, base_ans)
+            if rev:
+                base_ans["云端复核"] = rev
+                base_ans["source"] = "review"
+        return base_ans
     cache_key = (q, bool(only_valid), bool(speed))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
@@ -1195,9 +1294,17 @@ def _rag_query(q, only_valid, mode="local", speed=False):
     for r in rows[:_ndocs]:
         rel = r.get("本地路径", "")
         docs_ctx.append({"meta": r, "body": _read_kb_body(rel, cap=_dcap)})
-    sys_p, usr_p = _build_rag_prompt(q, docs_ctx, queries)
+    small = _is_small_model()
+    sys_p, usr_p = _build_rag_prompt(q, docs_ctx, queries, small=small)
     try:
         sys_p_eff = sys_p + (_SPEED_APPEND if speed else "")
+        if _retrieval_low_confidence(q, rows):
+            note = ("\n\n【检索相关性提示】本次本地检索命中文档与问题相关度偏低"
+                "（很可能未收录该问题的专门条文）。若材料无法回答，请如实说明"
+                "『本地库未收录相关专门条文』，并仅作谨慎通用提示，"
+                "严禁从无关文档拼凑答案或伪造引用。")
+            sys_p_eff += note
+            usr_p += note
         raw = _call_llm(sys_p_eff, usr_p, max_tokens=1200 if speed else 1500)
     except _RateLimited:
         return {"error": "llm_rate_limited", "fallback": True}

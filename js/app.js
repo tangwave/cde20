@@ -2230,7 +2230,9 @@ const App = {
     const mode = this._qaMode || 'local';
     const thinkTxt = (mode === 'hybrid')
       ? '海云AI 正在并行调阅本地法规原文与实时网络资料，交叉核验中…'
-      : (mode === 'web' ? '海云AI 正在实时联网检索并推理…' : '海云AI 正在检索法规库并深度推理…');
+      : (mode === 'web' ? '海云AI 正在实时联网检索并推理…'
+        : (mode === 'review' ? '海云AI 正在本地作答，并转交云端大模型复核…'
+          : '海云AI 正在检索法规库并深度推理…'));
     const typingId = this._appendMsg('bot', '<span class="qa9-typing"><span class="qa9-dot"></span>' + thinkTxt + '</span>', true);
     try {
       if (!this.qaApiBase) {
@@ -2248,11 +2250,13 @@ const App = {
           tips:     rag['适用提示'] || '',
           risk:     rag['风险提示'] || '',
           timeNote: rag['时效说明'] || '',
-          followUps: rag['延伸问题'] || []
+          followUps: rag['延伸问题'] || [],
+          review:   rag['云端复核'] || ''
         };
         const intros = {
           web:    '海云AI 已实时联网检索并综合作答：',
           hybrid: '海云AI 已交叉核验「本地法规原文 + 实时网络资料」后作答：',
+          review: '海云AI 已生成本地回答，并由云端大模型复核（见底部「云端大模型复核」）：',
           local:  '海云AI 基于以下法规材料深度分析后作答：'
         };
         const intro = intros[rag.source] || intros[mode] || intros.local;
@@ -2804,7 +2808,7 @@ const App = {
       html += '</ol></div>';
     }
     // ④ 依据 / 来源（hybrid 两段都渲染）
-    if (src === 'local' || src === 'rag' || src === 'hybrid') html += this._citeBlock(rag);
+    if (src === 'local' || src === 'rag' || src === 'hybrid' || src === 'review') html += this._citeBlock(rag);
     if (src === 'web' || src === 'hybrid') html += this._webBlock(rag);
     // ⑤ 适用提示
     if (B.tips) {
@@ -2828,16 +2832,22 @@ const App = {
       });
       html += '</div></div>';
     }
-    // ⑨ AI 拓展此回答
+    // ⑨ 云端大模型复核（本地 + 云端混合模式）
+    if (B.review) {
+      html += '<div class="qa9-block qa9-review"><div class="qa9-block-h">🛡️ 【云端大模型复核】</div>' + lines(B.review) + '</div>';
+    }
+    // ⑩ AI 拓展此回答
     html += '<div class="qa9-block qa9-expand"><button type="button" class="qa9-expand-btn" data-expand="1">🤖 AI 拓展此回答</button></div>';
     return html;
   },
 
   // 【法规依据】块（本地库 / 深度融合）
   _citeBlock(rag) {
-    const badge = (rag.source === 'hybrid')
-      ? '<span class="qa9-src-badge rag">🧠 深度融合 · 本地原文</span>'
-      : '<span class="qa9-src-badge rag">📚 本地法规库</span>';
+    const badge = (rag.source === 'review')
+      ? '<span class="qa9-src-badge rag">🛡️ 本地+云端复核 · 本地原文</span>'
+      : (rag.source === 'hybrid'
+        ? '<span class="qa9-src-badge rag">🧠 深度融合 · 本地原文</span>'
+        : '<span class="qa9-src-badge rag">📚 本地法规库</span>');
     const hits = rag.kb_hits || [];
     const note = hits.length
       ? '本次实际调阅本地法规原文 ' + hits.length + ' 篇（3096 篇全文库），由大模型解读'
