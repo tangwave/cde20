@@ -2202,7 +2202,7 @@ const App = {
     const welcome =
       '<div class="qa9-welcome-screen">' +
         '<div class="qa9-welcome-title">👋 你好，我是海云AI</div>' +
-        '<div class="qa9-welcome-sub">中国药品注册与生产质量管理领域的法规专家助手。我会先拆解你的问题、调阅法规原文，再给出可直接执行的结论、要点解析与风险提示。<br>' +
+        '<div class="qa9-welcome-sub">深耕药品研发生产数十年、熟悉全生命周期法规与各项注册申报要求的 QA 专家。我会先拆解你的问题、调阅法规原文，再给出可直接执行的结论、要点解析与风险提示。<br>' +
         '下方可切换三种作答方式：<b>📚 本地法规库</b>（3096 篇全文，引用可溯源）· <b>🌐 联网搜索</b>（实时网络动态）· <b>🧠 深度融合</b>（两者并行、交叉核验，答案最完整）。</div>' +
         '<div class="qa9-welcome-cards">' + cards + '</div>' +
       '</div>';
