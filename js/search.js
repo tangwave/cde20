@@ -1,5 +1,5 @@
 /**
- * 药品研发与生产质量体系知识库 - 搜索功能 (v3.0)
+ * 海云AI - 搜索功能 (v3.0)
  * 数据结构：categories → varieties → stages
  */
 

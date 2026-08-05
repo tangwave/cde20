@@ -1,5 +1,5 @@
 /**
- * 药品研发与生产质量体系知识库 - 主应用逻辑 (v3.0)
+ * 海云AI · 药品研发生产 QA 专家 - 主应用逻辑 (v3.0)
  * 数据结构：categories → varieties → stages
  */
 
@@ -1190,7 +1190,7 @@ const App = {
       contentEl.innerHTML = `
         <div class="empty-state">
           <div class="empty-state-icon">💊</div>
-          <div class="empty-state-title">药品研发与生产质量体系知识库</div>
+          <div class="empty-state-title">海云AI · 药品研发生产 QA 专家</div>
           <div class="empty-state-desc">
             请从左侧选择药品品种（化药 / 生物药 / 中药 / 其他），或点击顶部"矩阵视图"按钮查看全览。<br>
             知识库覆盖 ${varietyCount} 个品种 × ${KB_DATA.stages.length} 个研发阶段的全生命周期质量体系要求。

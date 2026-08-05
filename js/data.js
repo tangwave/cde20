@@ -1,10 +1,10 @@
 const KB_DATA = {
   "meta": {
-    "title": "药品研发与生产质量体系知识库",
+    "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
     "lastUpdated": "2026-08-01",
     "totalDocs": 271,
-    "description": "覆盖化药/生物药/中药三大类、12个品种、9个研发阶段的全生命周期质量体系知识库"
+    "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
     {
