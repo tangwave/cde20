@@ -10,7 +10,7 @@
 2. /api/qa 实时查询 kb.sqlite（经 scripts/kb_query.py），返回最新法规引用；
    命中片段改由本服务直接从 fts.body 取真实正文摘录（不依赖外部 .md 文件）。
 3. /api/qa-rag：真·问答，三种模式（mode=local | web | hybrid）——
-   · local  本地法规库 RAG：多路检索改写 → SQLite FTS5 直查 + 重排 → 全文喂模型；
+   · local  本地法规库 RAG：多路检索改写 → SQLite FTS5 直查 + 向量语义召回 + 重排 → 全文喂模型；
    · web    AI 联网搜索：AI 提炼检索式 → Bing RSS 等多源检索 → 相关性过滤 → 综合作答；
    · hybrid 深度融合：本地权威原文 + 实时网络材料并行取回，交叉核验后作答。
    统一输出「海云AI 深度推理」结构（思考分析/结论/要点解析/法规依据/适用提示/风险提示/
@@ -324,6 +324,12 @@ STATIC = _find_root(HERE, "index.html") or APP_DIR
 PY = os.environ.get("KB_QUERY_PY") or sys.executable or "python3"
 KB_QUERY = os.path.join(KB_ROOT, "scripts", "kb_query.py")
 
+# 语义向量检索配置（BM25 + 向量混合召回，弥补 FTS5 近义/同义盲区）
+EMBED_BASE = (os.environ.get("EMBED_BASE") or "http://127.0.0.1:11434").rstrip("/")
+EMBED_MODEL = os.environ.get("EMBED_MODEL") or "nomic-embed-text"
+KB_SEMANTIC = (os.environ.get("KB_SEMANTIC") or "1") not in ("0", "false", "False", "")
+_VEC_WEIGHT = 25.0           # 向量相似度在重排中的权重（cosine 0.x → +x）
+
 
 app = FastAPI(title="海云AI 法规问答 API", version="2.0.0")
 
@@ -473,6 +479,7 @@ def health():
         "llm_configured": _llm_configured(),
         "llm_provider": LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", "")),
         "llm_model": LLM_CFG.get("model", ""),
+        "kb_semantic": KB_SEMANTIC and bool(_vec_index().get("ready")),
         "python": PY,
     }
 
@@ -1051,6 +1058,132 @@ def _kb_fts(query, only_valid=True, n=8):
     return out
 
 
+# ------------------------------------------------ 语义向量召回（BM25 的混合补强）
+# 背景：FTS5 trigram / 标题 2-gram 都只能做「字面/子串」匹配，对近义同义
+# （「BE试验豁免」↔《人体生物等效性试验豁免指导原则》）无能为力。向量召回补上这一环：
+# docs.vec 由 scripts/kb_embed.py 用 Ollama nomic-embed-text 离线生成（float32 字节）。
+
+_VEC_INDEX = None
+_embed_cache = {}
+
+
+def _vec_index():
+    """懒加载并缓存：全部文档向量（L2 归一化矩阵）+ 元数据。
+
+    语义关闭 / 库无 vec 列 / 加载失败时返回 ready=False，调用方自动回退纯 BM25。"""
+    global _VEC_INDEX
+    if _VEC_INDEX is not None:
+        return _VEC_INDEX
+    empty = {"ready": False, "paths": [], "mats": None, "meta": {}}
+    if not KB_SEMANTIC:
+        _VEC_INDEX = empty
+        return _VEC_INDEX
+    db = _db_path()
+    if not os.path.isfile(db):
+        _VEC_INDEX = empty
+        return _VEC_INDEX
+    try:
+        import numpy as np
+        con = sqlite3.connect(db)
+        rows = con.execute(
+            "SELECT path, title, type, issuer, publish_date, effective_date,"
+            " source_url, status, category, topic, doc_no, vec FROM docs"
+        ).fetchall()
+        con.close()
+        paths, vecs, meta = [], [], {}
+        for (path, title, typ, issuer, pd, ed, url, status, cat, topic,
+             dno, vec) in rows:
+            if not vec:
+                continue
+            arr = np.frombuffer(vec, dtype=np.float32)
+            if arr.size == 0:
+                continue
+            nrm = np.linalg.norm(arr)
+            if nrm < 1e-9:
+                continue
+            paths.append(path)
+            vecs.append(arr / nrm)
+            meta[path] = {
+                "标题": title or "", "类型": typ or "",
+                "发布机构": issuer or "", "发布日期": pd or "",
+                "生效日期": ed or "", "状态": status or "",
+                "分类": (cat or "") + ("/" + topic if topic else ""),
+                "文号": dno or "", "本地路径": path or "",
+                "来源": url or "",
+            }
+        if not paths:
+            _VEC_INDEX = empty
+            return _VEC_INDEX
+        _VEC_INDEX = {"ready": True, "paths": paths,
+                      "mats": np.stack(vecs), "meta": meta}
+    except Exception as e:
+        print("[vec] 向量索引加载失败，回退纯 BM25：%s" % e)
+        _VEC_INDEX = empty
+    return _VEC_INDEX
+
+
+def _embed_query(q):
+    """查询文本 → 向量（带缓存）。Ollama 不可用/失败返回 None → 调用方降级。"""
+    if not KB_SEMANTIC:
+        return None
+    key = (q or "").strip()
+    if key in _embed_cache:
+        return _embed_cache[key]
+    try:
+        payload = {"model": EMBED_MODEL, "input": "search_query: " + key}
+        data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            EMBED_BASE + "/api/embed",
+            data=data,
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=60) as r:
+            j = json.loads(r.read().decode("utf-8"))
+        emb = (j.get("embeddings") or [None])[0]
+        _embed_cache[key] = emb if emb else None
+        return _embed_cache[key]
+    except Exception as e:
+        print("[vec] 查询向量化失败，回退纯 BM25：%s" % e)
+        _embed_cache[key] = None
+        return None
+
+
+def _kb_vector_scan(q, only_valid=True, n=8, limit=8):
+    """向量语义召回：查询向量与全部文档向量做余弦相似度，取 top。"""
+    import numpy as np
+    idx = _vec_index()
+    if not idx.get("ready"):
+        return []
+    qv = _embed_query(q)
+    if qv is None:
+        return []
+    qv = np.asarray(qv, dtype=np.float32)
+    nrm = np.linalg.norm(qv)
+    if nrm < 1e-9:
+        return []
+    qv = qv / nrm
+    sims = idx["mats"].dot(qv)            # (N,)
+    order = np.argsort(-sims)
+    out = []
+    for i in order[: limit * 3]:
+        p = idx["paths"][i]
+        m = idx["meta"].get(p)
+        if not m:
+            continue
+        if only_valid and not (str(m.get("状态", "")).startswith("现行有效")
+                                or m.get("状态") in ("有效", "现行")):
+            continue
+        row = dict(m)
+        row["_score"] = 0.0
+        row["_cat"] = (m.get("分类", "") or "").split("/")[0]
+        row["_title_score"] = 0.0
+        row["_vec_score"] = round(float(sims[i]), 4)
+        out.append(row)
+        if len(out) >= n:
+            break
+    return out
+
+
 def _kb_rank(q, rows):
     """本地检索结果重排：标题命中 + 效力层级 + 状态档位 + bm25。分越大越靠前。"""
     qn = _normalize_query(q) or q
@@ -1074,6 +1207,7 @@ def _kb_rank(q, rows):
         score += _CAT_WEIGHT.get(r.get("_cat", ""), 10)      # 效力层级
         score -= st_tier(r.get("状态", "")) * 8              # 现行有效优先
         score += max(0.0, 12.0 + float(r.get("_score", 0)))  # bm25（负值，越小越好）
+        score += float(r.get("_vec_score", 0) or 0) * _VEC_WEIGHT  # 向量语义相似度
         r["_rank"] = round(score, 2)
     rows.sort(key=lambda x: -x.get("_rank", 0))
     return rows
@@ -1101,6 +1235,8 @@ def _kb_retrieve(q, only_valid, limit=8):
                                             float(r.get("_title_score", 0)))
                     if not e.get("_score") and r.get("_score"):
                         e["_score"] = r["_score"]
+                    if not e.get("_vec_score") and r.get("_vec_score"):
+                        e["_vec_score"] = r["_vec_score"]
                     break
             return
         seen.add(p)
@@ -1130,6 +1266,13 @@ def _kb_retrieve(q, only_valid, limit=8):
                 _add(r)
             if merged:
                 break
+    # ④ 语义向量召回（近义/同义补强，BM25 够强时影响很小，但能救回字面漏召）
+    if KB_SEMANTIC:
+        try:
+            for r in _kb_vector_scan(q, bool(only_valid), n=limit):
+                _add(r)
+        except Exception as e:
+            print("[vec] 向量召回异常，忽略：%s" % e)
     return _kb_rank(q, merged)[:limit]
 
 
