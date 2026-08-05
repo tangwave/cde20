@@ -2048,7 +2048,7 @@ const App = {
     this._renderQaMode();
     this._initModelPanel();
     this.loadInlineModels();
-    this._qaMode = 'local';
+    this._qaMode = 'review';
     this._initModeSeg();
     this._initQaChat();
   },
@@ -2066,10 +2066,11 @@ const App = {
     return base.replace(/\/api\/?$/, '').replace(/\/+$/, '');  // 归一，避免 /api/api/qa
   },
 
-  // 模式文案（三档：本地法规库 / 联网搜索 / 深度融合）
+  // 模式文案（四档：本地法规库 / 联网搜索 / 深度融合 / 本地+云端复核）
   _modeLabel(m) {
     if (m === 'web') return '联网搜索';
     if (m === 'hybrid') return '深度融合';
+    if (m === 'review') return '本地+云端复核';
     return '本地法规库';
   },
 
@@ -2610,7 +2611,7 @@ const App = {
   },
 
   _setMode(mode) {
-    if (mode !== 'web' && mode !== 'local' && mode !== 'hybrid') mode = 'local';
+    if (mode !== 'web' && mode !== 'local' && mode !== 'hybrid' && mode !== 'review') mode = 'local';
     this._qaMode = mode;
     const seg = document.getElementById('qa9ModeSeg');
     if (seg) seg.querySelectorAll('.qa9-seg-btn').forEach(b => {
@@ -2623,6 +2624,7 @@ const App = {
     const tips = {
       web: '已切换：🌐 联网搜索（实时检索网络，不依赖本地库）',
       hybrid: '已切换：🧠 深度融合（本地法规原文 + 实时联网并行交叉核验，用时略长）',
+      review: '已切换：🛡️ 本地+云端复核（本地先答，云端大模型复核纠错，质量最稳）',
       local: '已切换：📚 本地法规库（3096 篇全文，引用可溯源）'
     };
     this._toast(tips[mode] || tips.local);
