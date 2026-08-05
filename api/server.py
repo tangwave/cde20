@@ -102,7 +102,7 @@ LLM_PRESETS_DEFAULT = [
      "default_model": "doubao-seed-1.6-250615"},
     {"id": "agnes", "name": "Agnes AI",
      "base_url": "https://api.agnes-ai.cn/v1",
-     "models": ["AGNES"], "default_model": "AGNES"},
+     "models": ["agnes-2.0-flash"], "default_model": "agnes-2.0-flash"},
     # ---- 以下为免费 / 免费额度服务商（OpenAI 兼容，仅需粘贴对应平台的免费 Key 即可用）----
     {"id": "google", "name": "Google Gemini（免费额度）",
      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -267,7 +267,10 @@ def _load_llm_cfg():
     if provider:
         preset = next((p for p in LLM_PRESETS if p["id"] == provider), None)
         if preset and not preset.get("custom"):
-            base_url = preset["base_url"]
+            # 用户已在 env / llm_config.json 里明确设置了 base_url，保留；
+            # 仅当 base_url 为空时才回退到 preset 默认值（保持向后兼容）
+            if not base_url:
+                base_url = preset["base_url"]
             if not model:
                 model = preset.get("default_model", "")
     effective = keys.get(provider, "")

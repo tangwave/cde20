@@ -2507,11 +2507,14 @@ const App = {
           : '粘贴你的 API Key';
       }
       const custom = document.getElementById('qa9CustomWrap');
+      const baseUrlInput = document.getElementById('qa9BaseUrl');
       if (custom && j.provider === 'custom') {
-        const bu = document.getElementById('qa9BaseUrl');
-        if (bu && j.base_url) bu.value = j.base_url;
+        if (baseUrlInput && j.base_url) baseUrlInput.value = j.base_url;
         const mt = document.getElementById('qa9ModelText');
         if (mt && j.model) mt.value = j.model;
+      } else if (baseUrlInput) {
+        // 非 custom：也回填 URL 输入框（preset 默认或上次自定义的）
+        baseUrlInput.value = j.base_url || '';
       }
       const status = document.getElementById('qa9ModelStatus');
       if (status) {
@@ -2530,9 +2533,14 @@ const App = {
     const prov = document.getElementById('qa9Provider');
     const modelSel = document.getElementById('qa9Model');
     const customWrap = document.getElementById('qa9CustomWrap');
+    const baseUrlInput = document.getElementById('qa9BaseUrl');
     if (!prov || !modelSel) return;
     const pid = prov.value;
     const preset = (this._presets || []).find(p => p.id === pid) || { models: [] };
+    // 始终显示 URL 输入框，并填入当前预设的默认 base_url（可让用户自由覆盖）
+    if (baseUrlInput) {
+      baseUrlInput.value = preset.base_url || '';
+    }
     if (preset.custom) {
       if (customWrap) customWrap.style.display = '';
       modelSel.style.display = 'none';
@@ -2548,14 +2556,15 @@ const App = {
     const msg = document.getElementById('qa9ModelMsg');
     const prov = document.getElementById('qa9Provider');
     const key = document.getElementById('qa9ApiKey');
+    const baseUrlInput = document.getElementById('qa9BaseUrl');
     const pid = prov ? prov.value : '';
     const preset = (this._presets || []).find(p => p.id === pid) || {};
-    let model = '', base_url = '';
+    // 所有 provider 均读取 URL 输入框（非 custom 时可能覆盖 preset 默认）
+    const base_url = baseUrlInput ? baseUrlInput.value.trim() : '';
+    let model = '';
     if (preset.custom) {
       const mt = document.getElementById('qa9ModelText');
-      const bu = document.getElementById('qa9BaseUrl');
       model = mt ? mt.value.trim() : '';
-      base_url = bu ? bu.value.trim() : '';
     } else {
       const ms = document.getElementById('qa9Model');
       model = ms ? ms.value : '';
