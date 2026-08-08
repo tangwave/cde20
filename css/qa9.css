@@ -423,3 +423,19 @@ details.qa9-think[open] .qa9-think-sum::before { content: '▾ '; }
   border-left: 3px solid var(--primary); padding-left: 8px; }
 .sel-ai-pop-body { font-size: 13.5px; line-height: 1.7; color: var(--text); }
 .sel-ai-pop-body p { margin: 6px 0; }
+
+/* ============ 模型设置弹窗：免费/低成本服务商速览（一目了然，免付费 Key 即用） ============ */
+.qa9-free-legend { margin: 0 0 14px; }
+.qa9-fl-head { font-size: 12px; font-weight: 700; color: var(--text-secondary); margin: 12px 0 6px; display: flex; align-items: center; gap: 4px; }
+.qa9-fl-head:first-child { margin-top: 2px; }
+.qa9-fl-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.qa9-fl-chip {
+  font-size: 12px; line-height: 1.4; padding: 4px 10px; border-radius: 999px;
+  background: #eef0f3; border: 1px solid var(--border-light); color: var(--text-secondary);
+  white-space: nowrap;
+}
+.qa9-fl-chip.ok {
+  background: rgba(39,174,96,.10); border-color: rgba(39,174,96,.35);
+  color: #1e7e4f; font-weight: 600;
+}
+.qa9-fl-note { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }

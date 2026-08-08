@@ -13,7 +13,7 @@
   <title>海云AI · 药品研发生产 QA 专家 · 法规与注册申报顾问</title>
   <link rel="stylesheet" href="css/style.css?v=20260806g">
   <link rel="stylesheet" href="css/portal.css?v=20260806g">
-  <link rel="stylesheet" href="css/qa9.css?v=20260806g">
+  <link rel="stylesheet" href="css/qa9.css?v=20260809">
 </head>
 <body>
   <div class="app">
@@ -179,7 +179,28 @@
         <button id="qa9ModelClose" class="qa9-close" title="关闭">×</button>
       </div>
       <div class="qa9-modal-body">
-        <p class="qa9-modal-tip">输入框下方可直接切换已配置的内置模型；更换服务商时在此粘贴对应 API Key 即可（各服务商 Key 独立保存，无需重复填写）。已内置 12 家免费/低成本服务商，选服务商 + 粘贴 Key 即用：OpenRouter（真免费聚合） / 智谱 GLM（glm-4.7-flash 永久免费） / 通义千问 Qwen（qwen-turbo 永久免费） / Kimi（15 元代金券起步） / 火山方舟 豆包 / 腾讯混元（hunyuan-lite 永久免费） / 百度千帆（ERNIE-Speed 永久免费） / 硅基流动 / DeepSeek（V3-Lite 永久免费） / Google Gemini（gemini-2.5-flash 免费） / Groq（LPU 超快） / Ollama（本地无需 Key）；另有「自定义」入口（任意 OpenAI 兼容）。详见 DEPLOY.md 对照表。</p>
+        <p class="qa9-modal-tip">已内置 12 家免费/低成本服务商，选服务商 + 粘贴 Key 即用；各服务商 Key 独立保存、不重复填写。下方可直接切换内置模型，或点「+ 新增」自定义（任意 OpenAI 兼容）。</p>
+        <div class="qa9-free-legend">
+          <div class="qa9-fl-head">🆓 真正免费（无需付费 Key 即可用）</div>
+          <div class="qa9-fl-grid">
+            <span class="qa9-fl-chip ok">OpenRouter · 4 个 :free 模型</span>
+            <span class="qa9-fl-chip ok">智谱 GLM · glm-4.7-flash</span>
+            <span class="qa9-fl-chip ok">通义千问 · qwen-turbo</span>
+            <span class="qa9-fl-chip ok">腾讯混元 · hunyuan-lite</span>
+            <span class="qa9-fl-chip ok">百度千帆 · ERNIE-Speed</span>
+            <span class="qa9-fl-chip ok">Google Gemini · 2.5-flash</span>
+            <span class="qa9-fl-chip ok">Groq · LPU 超快</span>
+            <span class="qa9-fl-chip ok">Ollama · 本地无需 Key</span>
+          </div>
+          <div class="qa9-fl-head">🎁 免费额度起步 / 极廉价</div>
+          <div class="qa9-fl-grid">
+            <span class="qa9-fl-chip">Kimi · 15 元代金券</span>
+            <span class="qa9-fl-chip">火山方舟 豆包 · 每日 200 万</span>
+            <span class="qa9-fl-chip">硅基流动 · 2000 万额度</span>
+            <span class="qa9-fl-chip">DeepSeek · V3-Lite 免费</span>
+          </div>
+          <div class="qa9-fl-note">选「真正免费」档的服务商后粘贴对应 Key（Ollama 连本地、OpenRouter :free 无需付费 Key）即可直接问答；其余为注册送额度或极廉价、按量计费。详见 DEPLOY.md 对照表。</div>
+        </div>
         <div id="qa9ModelStatus" class="qa9-model-status"></div>
         <label class="qa9-field-label">服务商（Provider）</label>
         <select id="qa9Provider" class="qa9-select"></select>

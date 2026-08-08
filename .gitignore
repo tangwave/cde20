@@ -25,3 +25,4 @@ llm_presets.json
 .DS_Store
 Thumbs.db
 backend.log
+backend_run.log
