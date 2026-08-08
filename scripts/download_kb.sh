@@ -24,7 +24,9 @@ if [ -n "$SHARDS" ]; then
   # shellcheck disable=SC2086
   cat $SHARDS | gzip -d > "$DEST.tmp"
   mv "$DEST.tmp" "$DEST"
-  echo "[download_kb] 完成：$(du -h "$DEST" | cut -f1)"
+  # 合并成功后删除分卷，降低部署环境磁盘占用（下次重部署会重新从 git 拉取分卷）
+  rm -f "$DIR"/kb.sqlite.gz.[0-9]*
+  echo "[download_kb] 完成：$(du -h "$DEST" | cut -f1)，已清理分卷"
   exit 0
 fi
 
