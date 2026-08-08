@@ -62,6 +62,23 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 - **OpenRouter** 是标准 OpenAI 兼容网关，是本项目免费模型的汇聚入口（默认 `inclusionai/ling-3.0-tiny:free`，无需付费 Key；免费目录随官方调整，以 openrouter.ai 实时列表为准）。
 - 也试过原生 **DeepSeek `/responses` 联网检索**：它走 DeepSeek 私有接口、且**不回吐可展示的来源链接**，对「法规问答需展示权威出处」是硬伤，故未作为默认。
 
+### OpenRouter 真·免费模型一览（手动切换对照）
+
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08 实测真免费（均 `:free` 后缀且 prompt / completion 价格均为 0）：
+
+| 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
+|---|---|---|---|
+| `inclusionai/ling-3.0-tiny:free` | 通用小模型（262K 上下文） | **默认推荐**：常规法规问答、长文摘要 | 上下文最大，通用能力均衡 |
+| `poolside/laguna-s-2.1:free` | 代码 / 推理向 | 涉及代码示例、技术文档生成 | 偏代码，通用问答弱于上者 |
+| `poolside/laguna-xs-2.1:free` | 超轻量代码模型 | 简单代码补全 / 低延迟 | 体量更小，能力更窄 |
+| `cohere/north-mini-code:free` | 代码生成模型 | 代码相关片段生成 | 同上，偏代码 |
+
+切换方式（任选其一）：
+1. **网页内**：设置 → 服务商选 `OpenRouter` → 模型下拉里直接选；
+2. **环境变量 / render.yaml**：把 `LLM_MODEL` 改成上表任一 ID 即可，其余（`LLM_PROVIDER=openai`、`LLM_BASE_URL`）不变。
+
+> 💡 本项目是「药品法规问答」，默认 `inclusionai/ling-3.0-tiny:free` 最稳；其余三个偏代码，仅在你明确需要代码能力时换用。
+
 ### 完整配置项（已在 render.yaml 预填，你只需填 Key）
 ```
 LLM_PROVIDER=openai                  # 务必是 openai，不是 deepseek！
