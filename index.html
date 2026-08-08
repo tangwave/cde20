@@ -154,10 +154,9 @@
         <div class="qa9-composer-toolbar">
           <div class="qa9-tool-left">
             <div class="qa9-mode-seg" id="qa9ModeSeg">
-              <button type="button" class="qa9-seg-btn" data-mode="local" title="仅基于本地 3096 篇法规全文推理，引用可溯源">📚 本地法规库</button>
+              <button type="button" class="qa9-seg-btn active" data-mode="local" title="仅基于本地 3096 篇法规全文推理，引用可溯源">📚 本地法规库</button>
               <button type="button" class="qa9-seg-btn" data-mode="web" title="实时联网检索后综合作答，不依赖本地库">🌐 联网搜索</button>
               <button type="button" class="qa9-seg-btn" data-mode="hybrid" title="本地法规原文 + 实时联网并行检索，交叉核验后深度作答（最慢但最完整）">🧠 深度融合</button>
-              <button type="button" class="qa9-seg-btn active" data-mode="review" title="本地 Qwen3 先作答，再由云端大模型（Agnes）复核指出错漏，双重保险（最稳但最慢）">🛡️ 本地+云端复核</button>
             </div>
             <span class="qa9-model-pick">
               <span class="qa9-model-ico">🧠</span>
@@ -180,7 +179,7 @@
         <button id="qa9ModelClose" class="qa9-close" title="关闭">×</button>
       </div>
       <div class="qa9-modal-body">
-        <p class="qa9-modal-tip">输入框下方可直接切换已配置的内置模型；更换服务商时在此粘贴对应 API Key 即可（各服务商 Key 独立保存，无需重复填写）。支持：Agnes AI / 智谱 / DeepSeek / 通义千问 / OpenAI / Kimi / 混元 / 火山方舟 / 自定义。</p>
+        <p class="qa9-modal-tip">输入框下方可直接切换已配置的内置模型；更换服务商时在此粘贴对应 API Key 即可（各服务商 Key 独立保存，无需重复填写）。内置服务商：OpenRouter（真·免费模型汇聚） / DeepSeek（R1 推理） / 智谱 GLM（GLM-5.1 旗舰 · glm-4.7-flash 免费） / 自定义（任意 OpenAI 兼容）。</p>
         <div id="qa9ModelStatus" class="qa9-model-status"></div>
         <label class="qa9-field-label">服务商（Provider）</label>
         <select id="qa9Provider" class="qa9-select"></select>

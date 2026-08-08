@@ -70,79 +70,29 @@ _load_dotenv()
 # 内置多家 OpenAI 兼容服务商；用户只需选 provider + 粘贴 API Key 即可使用，
 # 模型列表由预设提供（自定义 provider 允许手填 base_url / model）。
 # 种子预设：首次运行时写入 llm_presets.json；之后以文件为准（用户可增/改/删）。
+# 2026-08 重新梳理：OpenRouter 免费目录已大幅缩水，仅保留实测真免费（pricing 双 0）的模型；
+# 顶级模型改为按服务商独立接入——DeepSeek（R1 推理）、智谱 GLM（GLM-5.1 旗舰），
+# 各需自备 API Key；并保留「自定义」入口。
+# 注意：OpenRouter 免费模型 ID 随官方调整，以 https://openrouter.ai/api/v1/models 中
+# pricing.prompt==0 且 completion==0 的模型为准；免费目录随官方调整，以实时列表为准。
 LLM_PRESETS_DEFAULT = [
-    {"id": "zhipu", "name": "智谱 BigModel（GLM）",
-     "base_url": "https://open.bigmodel.cn/api/paas/v4/",
-     "models": ["glm-4.7-flash", "glm-4-plus", "glm-4", "glm-4-air", "glm-4-flash", "glm-4-long"],
-     "default_model": "glm-4.7-flash"},
-    {"id": "deepseek", "name": "DeepSeek",
-     "base_url": "https://api.deepseek.com/v1",
-     "models": ["deepseek-chat", "deepseek-reasoner", "deepseek-v4-flash"],
-     "default_model": "deepseek-chat"},
-    {"id": "qwen", "name": "通义千问（阿里云 DashScope）",
-     "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-     "models": ["qwen-plus", "qwen-max", "qwen-turbo", "qwen-long", "qwen2.5-72b-instruct"],
-     "default_model": "qwen-plus"},
-    {"id": "openai", "name": "OpenAI",
-     "base_url": "https://api.openai.com/v1",
-     "models": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-3.5-turbo"],
-     "default_model": "gpt-4o-mini"},
-    {"id": "moonshot", "name": "月之暗面 Kimi（Moonshot）",
-     "base_url": "https://api.moonshot.cn/v1",
-     "models": ["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"],
-     "default_model": "moonshot-v1-8k"},
-    {"id": "hunyuan", "name": "腾讯混元（Hunyuan）",
-     "base_url": "https://api.hunyuan.cloud.tencent.com/v1",
-     "models": ["hunyuan-turbo", "hunyuan-pro", "hunyuan-standard", "hunyuan-lite"],
-     "default_model": "hunyuan-turbo"},
-    {"id": "doubao", "name": "火山方舟 Doubao（字节）",
-     "base_url": "https://ark.cn-beijing.volces.com/api/v3",
-     "models": ["doubao-seed-1.6-250615", "doubao-pro-32k-241028",
-                "doubao-pro-256k-241115", "doubao-lite-32k-240828"],
-     "default_model": "doubao-seed-1.6-250615"},
-    {"id": "agnes", "name": "Agnes AI",
-     "base_url": "https://api.agnes-ai.cn/v1",
-     "models": ["agnes-2.0-flash"], "default_model": "agnes-2.0-flash"},
-    {"id": "qwen3-local", "name": "本地 Qwen3（Ollama）",
-     "base_url": "http://127.0.0.1:11434/v1",
-     "models": ["qwen3:8b", "qwen3:14b", "qwen3:32b"], "default_model": "qwen3:8b"},
-    # ---- 以下为免费 / 免费额度服务商（OpenAI 兼容，仅需粘贴对应平台的免费 Key 即可用）----
-    {"id": "google", "name": "Google Gemini（免费额度）",
-     "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
-     "models": ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash", "gemini-1.5-flash"],
-     "default_model": "gemini-2.5-flash"},
-    {"id": "groq", "name": "Groq（免费 · 极速）",
-     "base_url": "https://api.groq.com/openai/v1",
-     "models": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant",
-                "mixtral-8x7b-32768", "gemma2-9b-it"],
-     "default_model": "llama-3.3-70b-versatile"},
-    {"id": "openrouter", "name": "OpenRouter（含免费模型）",
+    {"id": "openrouter", "name": "OpenRouter（真·免费模型 · 无需付费 Key）",
      "base_url": "https://openrouter.ai/api/v1",
-     "models": ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-flash-1.5:free",
-                "deepseek/deepseek-r1-distill-llama-70b:free", "qwen/qwen2.5-72b-instruct:free",
-                "mistralai/mistral-7b-instruct:free"],
-     "default_model": "meta-llama/llama-3.3-70b-instruct:free"},
-    {"id": "mistral", "name": "Mistral（免费额度）",
-     "base_url": "https://api.mistral.ai/v1",
-     "models": ["mistral-small-latest", "open-mistral-7b", "mistral-large-latest"],
-     "default_model": "mistral-small-latest"},
-    {"id": "perplexity", "name": "Perplexity（原生联网搜索）",
-     "base_url": "https://api.perplexity.ai",
-     "models": ["sonar", "sonar-reasoning", "sonar-pro"], "default_model": "sonar"},
-    {"id": "siliconflow", "name": "硅基流动 SiliconFlow（含免费）",
-     "base_url": "https://api.siliconflow.cn/v1",
-     "models": ["deepseek-ai/DeepSeek-V3", "Qwen/Qwen2.5-72B-Instruct",
-                "meta-llama/Llama-3.1-8B-Instruct", "THUDM/glm-4-9b-chat"],
-     "default_model": "deepseek-ai/DeepSeek-V3"},
-    {"id": "together", "name": "Together AI（免费额度）",
-     "base_url": "https://api.together.xyz/v1",
-     "models": ["meta-llama/Llama-3.3-70B-Instruct-Turbo",
-                "Qwen/Qwen2.5-72B-Instruct-Turbo", "deepseek-ai/DeepSeek-V3"],
-     "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo"},
-    {"id": "github", "name": "GitHub Models（免费）",
-     "base_url": "https://models.inference.ai.azure.com",
-     "models": ["gpt-4o-mini", "gpt-4o", "Phi-3.5-mini-instruct", "Meta-Llama-3.1-405B-Instruct"],
-     "default_model": "gpt-4o-mini"},
+     "models": [
+        "inclusionai/ling-3.0-tiny:free",                   # 实测真免费，262K 上下文，通用小模型
+        "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
+        "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
+        "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
+     ],
+     "default_model": "inclusionai/ling-3.0-tiny:free"},
+    {"id": "deepseek", "name": "DeepSeek（R1 推理最强 · 自备 Key 极廉价）",
+     "base_url": "https://api.deepseek.com/v1",
+     "models": ["deepseek-reasoner", "deepseek-chat"],     # R1 推理最强 / 通用便宜
+     "default_model": "deepseek-reasoner"},
+    {"id": "zhipu", "name": "智谱 GLM（GLM-5.1 旗舰 · glm-4.7-flash 真免费）",
+     "base_url": "https://open.bigmodel.cn/api/paas/v4",
+     "models": ["glm-5.1", "glm-4.7-flash", "glm-4-flash"], # GLM-5.1 旗舰 / glm-4.7-flash 真免费 / glm-4-flash 免费别名
+     "default_model": "glm-4.7-flash"},
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
@@ -329,7 +279,7 @@ EMBED_BASE = (os.environ.get("EMBED_BASE") or "http://127.0.0.1:11434").rstrip("
 EMBED_MODEL = os.environ.get("EMBED_MODEL") or "nomic-embed-text"
 KB_SEMANTIC = (os.environ.get("KB_SEMANTIC") or "1") not in ("0", "false", "False", "")
 _VEC_WEIGHT = 25.0           # 向量相似度在重排中的权重（cosine 0.x → +x）
-QA_DEFAULT_MODE = (os.environ.get("QA_DEFAULT_MODE") or "").strip().lower()  # 外网部署可设为 local/web/hybrid/review，覆盖前端硬编码默认
+QA_DEFAULT_MODE = (os.environ.get("QA_DEFAULT_MODE") or "").strip().lower()  # 外网部署可设为 local/web/hybrid，覆盖前端硬编码默认
 
 
 app = FastAPI(title="海云AI 法规问答 API", version="2.0.0")
@@ -643,50 +593,10 @@ def _retrieval_low_confidence(q, rows):
     return False
 
 
-def _has_cloud_reviewer():
-    """是否已配置云端复核模型（本地 + 云端混合模式用）。"""
-    return bool(os.environ.get("LLM_REVIEW_BASE_URL") and os.environ.get("LLM_REVIEW_MODEL"))
+# （「本地 + 云端复核 / review」模式已于 2026-08 移除：该模式依赖本地 Qwen3 先答 +
+#  云端 Agnes 复核，与当前部署形态（云端无本地模型）不符。现仅保留 local / web / hybrid
+#  三种作答模式，见 _rag_query 与前端 _modeLabel。）
 
-
-def _build_review_request(system, user, model, base, key, max_tokens=900):
-    url = base.rstrip("/") + "/chat/completions"
-    payload = {"model": model,
-               "messages": [{"role": "system", "content": system},
-                            {"role": "user", "content": user}],
-               "max_tokens": max_tokens, "temperature": 0.2}
-    data = json.dumps(payload).encode("utf-8")
-    headers = {"Content-Type": "application/json"}
-    if key:
-        headers["Authorization"] = "Bearer " + key
-    return urllib.request.Request(url, data=data, headers=headers)
-
-
-def _cloud_review(q, answer):
-    """由云端大模型复核本地模型回答，返回中文复核意见；未配置/失败返回 None。"""
-    base = (os.environ.get("LLM_REVIEW_BASE_URL") or "").strip().rstrip("/")
-    key = (os.environ.get("LLM_REVIEW_API_KEY") or "").strip()
-    model = (os.environ.get("LLM_REVIEW_MODEL") or "").strip()
-    if not (base and model):
-        return None
-    try:
-        local_txt = json.dumps(answer, ensure_ascii=False, indent=1)
-    except Exception:
-        local_txt = str(answer)
-    system = ("你是药品法规领域资深复核专家。用户问题如下，下方是『本地模型』给出的回答。"
-              "请严格复核：①是否有事实或法规错误；②是否遗漏关键要点；③引用是否准确；"
-              "④是否答非所问或过度发挥。用中文分条列出『需修正/补充』的内容；"
-              "若回答基本正确则写『经复核未见明显问题』。不要重复原答案，只输出复核意见，"
-              "3-6 条，每条先给结论再简述理由。")
-    user = "【用户问题】\n%s\n\n【本地模型回答】\n%s" % (q, local_txt)
-    try:
-        req = _build_review_request(system, user, model, base, key)
-        timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            j = json.loads(r.read().decode("utf-8", "ignore"))
-        content = j["choices"][0]["message"]["content"]
-        return _normalize_explain(content)
-    except Exception:
-        return None
 
 
 _WEB_SYSTEM = _PERSONA + """
@@ -1406,14 +1316,6 @@ def _rag_query(q, only_valid, mode="local", speed=False):
         return _web_query(q, speed=speed)
     if mode == "hybrid":
         return _hybrid_query(q, only_valid, speed=speed)
-    if mode == "review":
-        base_ans = _rag_query(q, only_valid, "local", speed=speed)
-        if isinstance(base_ans, dict) and not base_ans.get("error") and _has_cloud_reviewer():
-            rev = _cloud_review(q, base_ans)
-            if rev:
-                base_ans["云端复核"] = rev
-                base_ans["source"] = "review"
-        return base_ans
     cache_key = (q, bool(only_valid), bool(speed))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
