@@ -32,26 +32,27 @@ services:
       # 例如 GitHub Release 资源 / 对象存储签名 URL / 自有服务器直链。
       - key: KB_SQLITE_URL
         sync: false
-      # 海云AI 大模型：当前用 Agnes AI（agnes-2.0-flash）
+      # 大模型：DeepSeek（云端 API，外网部署直接调用，无需本机模型/穿透）
+      # 切回 Agnes 或换其他服务商：在 Render 控制台环境变量覆盖下列 4 项即可，无需改本文件。
       - key: LLM_PROVIDER
-        value: agnes
+        value: deepseek
       - key: LLM_BASE_URL
-        value: https://api.agnes-ai.cn/v1
+        value: https://api.deepseek.com/v1
       - key: LLM_MODEL
-        value: agnes-2.0-flash
+        value: deepseek-chat
+      # 安全：密钥只放 Render 控制台环境变量（sync:false 不进仓库）。
+      # 切勿把真实 key 提交到 Gitee/GitHub。
       - key: LLM_API_KEY
         sync: false
-        value: sk-A7wduJ5d9RCufqP65cJU36Vn8xAm249qtfxURs5ABOX5ljsS
-      # === 切换 DeepSeek（取消注释下方 4 行，注释上方 LLM_* 4 行）===
+      # === 切回 Agnes（取消注释下方、注释上方）===
       # - key: LLM_PROVIDER
-      #   value: deepseek
+      #   value: agnes
       # - key: LLM_BASE_URL
-      #   value: https://api.deepseek.com/v1
+      #   value: https://api.agnes-ai.cn/v1
       # - key: LLM_MODEL
-      #   value: deepseek-chat
+      #   value: agnes-2.0-flash
       # - key: LLM_API_KEY
       #   sync: false
-      #   value: sk-93fe6d3739c94d32983498ecd641a0c6
       # === 切换智谱（取消注释下方 4 行，注释上方 LLM_* 4 行）===
       # - key: LLM_PROVIDER
       #   value: zhipu
