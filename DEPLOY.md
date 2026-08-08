@@ -9,7 +9,7 @@
 
 1. **代码已经在 GitHub 上**：`tangwave/cde20`，分支 `master`。Render 只支持 GitHub / GitLab / Bitbucket，**不支持 Gitee**，所以走 GitHub 这路（Gitee 是国内的镜像仓，可不用管）。
 2. **法规库随代码一起进了仓库**：`kb.sqlite`（约 243MB）已 gzip 后按 40MB 切成 4 个分卷 `00_索引/kb.sqlite.gz.00~.03`（约 138MB）入库。构建时 `scripts/download_kb.sh` 会**自动合并解压还原成 `kb.sqlite`**，你**不需要**提供任何下载直链。
-3. **大模型后端默认已配好 OpenRouter 免费模型**：`inclusionai/ling-3.0-tiny:free`，标准 OpenAI 兼容接口，无需付费 Key。网页内也可一键切换到 DeepSeek（R1 推理）/ 智谱 GLM（GLM-5.2 编码）等自备 Key 的服务商（见第三、四节）。
+3. **大模型后端默认已配好 OpenRouter 免费模型**：`inclusionai/ling-3.0-tiny:free`，标准 OpenAI 兼容接口，无需付费 Key。网页内也可一键切换到 智谱 GLM（glm-4.7-flash 永久免费）/ 通义千问 / Kimi / 火山方舟 / 腾讯混元 / 百度千帆 / 硅基流动 / DeepSeek（V3-Lite 永久免费）/ Google Gemini / Groq / Ollama（本地）等内置服务商（见第三、四节及下方对照表）。
 
 ---
 
@@ -79,6 +79,32 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 > 💡 本项目是「药品法规问答」，默认 `inclusionai/ling-3.0-tiny:free` 最稳；其余三个偏代码，仅在你明确需要代码能力时换用。
 
+### 全部 12 家内置服务商对照（base_url + 免费模型）
+
+> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外主流 OpenAI 兼容服务商。
+> 网页内：设置 → 选服务商 → 粘贴 API Key（各服务商 Key 独立保存）→ 选模型即可，**无需改代码**。
+> 免费额度与模型 ID 随各平台调整，以官方文档为准；新增服务商会自动并入老用户的 `llm_presets.json`。
+
+| # | 服务商 | `base_url`（已内置） | 免费模型（**加粗=默认**） | 免费形态 | 备注 |
+|---|--------|----------------------|---------------------------|----------|------|
+| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`inclusionai/ling-3.0-tiny:free`**、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free`、`cohere/north-mini-code:free` | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0） |
+| 2 | 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | **`glm-4.7-flash`**（永久免费）、`glm-4-flash`（永久免费）、`glm-5.1` | glm-4.7/4-flash 永久免费 | 新用户赠 2000 万 token |
+| 3 | 通义千问 Qwen | `https://dashscope.aliyuncs.com/compatible-mode/v1` | **`qwen-plus`**（每日 100 万免费）、`qwen-turbo`（永久免费）、`qwen-long`、`qwen2.5-72b-instruct` | qwen-turbo 永久免费 | 阿里云百炼 |
+| 4 | Kimi（月之暗面） | `https://api.moonshot.cn/v1` | **`kimi-k2.6`**、`kimi-k3`（旗舰 1M 上下文）、`kimi-k2.7-code` | 15 元永久代金券起步 | 超长上下文，免费起步 |
+| 5 | 火山方舟 豆包 | `https://ark.cn-beijing.volces.com/api/v3` | **`doubao-lite-32k`**（每日 200 万免费）、`doubao-pro-32k`、`doubao-pro-128k` | doubao-lite 每日 200 万免费 | 火山引擎方舟 |
+| 6 | 腾讯混元 | `https://api.hunyuan.cloud.tencent.com/v1` | **`hunyuan-lite`**（永久免费不限量）、`hunyuan-turbo-s`、`hunyuan-t1` | hunyuan-lite 永久免费 | 通用包 1 年有效 |
+| 7 | 百度千帆 | `https://qianfan.baidubce.com/v2` | **`ernie-speed-8k`**（永久免费）、`ernie-lite-8k`、`ernie-3.5-8k`、`ernie-4.5-turbo-128k` | ERNIE-Speed/Lite/3.5 永久免费 | 50 QPS 不限量 |
+| 8 | 硅基流动 | `https://api.siliconflow.cn/v1` | **`Qwen/Qwen2.5-7B-Instruct`**（永久免费）、`deepseek-ai/DeepSeek-V3`、`deepseek-ai/DeepSeek-R1` | 2000 万 token + 轻量模型永久免费 | 聚合多开源模型 |
+| 9 | DeepSeek | `https://api.deepseek.com/v1` | **`deepseek-v3-lite`**（永久免费）、`deepseek-v4-flash`、`deepseek-v4-pro` | V3-Lite 永久免费不限量 | 选 v4 模型走原生联网 |
+| 10 | Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | **`gemini-2.5-flash`**（免费层 500 RPD）、`gemini-2.5-flash-lite`、`gemma-3-12b-it` | gemini-2.5-flash 免费·无需信用卡 | 1M 上下文 |
+| 11 | Groq | `https://api.groq.com/openai/v1` | **`llama-3.3-70b-versatile`**、`llama-4-scout-17b-16e-instruct`、`qwen3-32b`、`gpt-oss-120b` | 免费层·无需信用卡 | LPU 超快推理 |
+| 12 | Ollama（本地） | `http://localhost:11434/v1` | **`qwen2.5:7b`**、`llama3.1`、`deepseek-r1:7b` | 本地部署·无需 Key | 数据不出机，合规友好 |
+| — | 自定义 | （自填） | （自填） | 任意 OpenAI 兼容 | 填入 base_url / model 即可 |
+
+> 选型建议：国内中文法规问答首选 **智谱 glm-4.7-flash / 通义 qwen-plus / 腾讯 hunyuan-lite / 百度 ernie-speed**（均永久免费）；
+> 想要零 Key 且数据不出机用 **Ollama 本地**；想要多模型聚合零付费用 **OpenRouter**；
+> 想要超快英文/代码用 **Groq**；想要长上下文多模态用 **Gemini / Kimi**。
+
 ### 完整配置项（已在 render.yaml 预填，你只需填 Key）
 ```
 LLM_PROVIDER=openai                  # 务必是 openai，不是 deepseek！
@@ -89,7 +115,7 @@ LLM_API_KEY=sk-or-v1-xxxxxxxx        # 在 Render 控制台填，sync:false
 > ⚠️ **`LLM_PROVIDER` 必须保持 `openai`**。本项目的代码里，只有 `provider=deepseek` 且模型含 `v4` 才会走 DeepSeek 私有的 `/responses` 路径；OpenRouter 是通用 `/chat/completions`，设成 `deepseek` 会误走私有接口而报错。
 
 ### 想换别的 OpenAI 兼容代理？
-同理：把 `LLM_BASE_URL` / `LLM_MODEL` 改成你的代理地址和模型名，`LLM_PROVIDER` 保持 `openai` 即可。例如换 DeepSeek 直连：`LLM_BASE_URL=https://api.deepseek.com/v1`、`LLM_MODEL=deepseek-reasoner`（走 api.deepseek.com 时用 `deepseek-reasoner`/`deepseek-chat` 均保持 `provider=openai`；本项目的私有 `/responses` 原生联网路径仅在 `provider=deepseek` 且模型含 `v4` 时触发，常规直连无需启用）。
+同理：把 `LLM_BASE_URL` / `LLM_MODEL` 改成你的代理地址和模型名，`LLM_PROVIDER` 保持 `openai` 即可。例如换 DeepSeek 直连：`LLM_BASE_URL=https://api.deepseek.com/v1`、`LLM_MODEL=deepseek-v3-lite`（V3-Lite 永久免费；若用 `deepseek-v4-flash`/`deepseek-v4-pro` 则本项目会在 `provider=deepseek` 且模型含 `v4` 时自动走原生 `/responses` 联网路径）。
 
 ---
 

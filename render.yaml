@@ -59,7 +59,7 @@ services:
       # - key: LLM_BASE_URL
       #   value: https://api.deepseek.com/v1
       # - key: LLM_MODEL
-      #   value: deepseek-reasoner
+      #   value: deepseek-v3-lite
       # - key: LLM_API_KEY
       #   sync: false
       # === 切换智谱 GLM（取消注释下方 4 行，并注释上方 LLM_* 4 行）===

@@ -70,29 +70,67 @@ _load_dotenv()
 # 内置多家 OpenAI 兼容服务商；用户只需选 provider + 粘贴 API Key 即可使用，
 # 模型列表由预设提供（自定义 provider 允许手填 base_url / model）。
 # 种子预设：首次运行时写入 llm_presets.json；之后以文件为准（用户可增/改/删）。
-# 2026-08 重新梳理：OpenRouter 免费目录已大幅缩水，仅保留实测真免费（pricing 双 0）的模型；
-# 顶级模型改为按服务商独立接入——DeepSeek（R1 推理）、智谱 GLM（GLM-5.1 旗舰），
-# 各需自备 API Key；并保留「自定义」入口。
-# 注意：OpenRouter 免费模型 ID 随官方调整，以 https://openrouter.ai/api/v1/models 中
-# pricing.prompt==0 且 completion==0 的模型为准；免费目录随官方调整，以实时列表为准。
+# 2026-08 全量梳理「当前可免费/低成本使用的 AI 模型」：覆盖国内外 12 家 OpenAI 兼容服务商，
+# 每家给出 base_url 与免费（或免费起步）模型清单；用户只需在网页里选服务商 + 粘贴 API Key 即可用。
+# 免费形态分两类：(1) 真·免费无需付费 Key（OpenRouter :free、智谱/通义/混元/千帆的免费档、
+#   Gemini/Groq 免费层、Ollama 本地无需 Key）；(2) 免费额度/代金券起步（Kimi 15 元代金券、
+#   硅基流动 2000 万 token、DeepSeek 注册额度）。
+# 注意：免费模型 ID 与额度随官方调整，以各平台文档实时为准；新增服务商会被自动并入老用户的
+# llm_presets.json（_load_presets 的缺失项补齐逻辑），无需手动改文件。
 LLM_PRESETS_DEFAULT = [
-    {"id": "openrouter", "name": "OpenRouter（真·免费模型 · 无需付费 Key）",
+    {"id": "openrouter", "name": "OpenRouter（免费模型聚合 · 无需付费 Key）",
      "base_url": "https://openrouter.ai/api/v1",
      "models": [
-        "inclusionai/ling-3.0-tiny:free",                   # 实测真免费，262K 上下文，通用小模型
+        "inclusionai/ling-3.0-tiny:free",                   # 真免费，262K 上下文，通用小模型
         "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
         "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
      ],
      "default_model": "inclusionai/ling-3.0-tiny:free"},
-    {"id": "deepseek", "name": "DeepSeek（R1 推理最强 · 自备 Key 极廉价）",
-     "base_url": "https://api.deepseek.com/v1",
-     "models": ["deepseek-reasoner", "deepseek-chat"],     # R1 推理最强 / 通用便宜
-     "default_model": "deepseek-reasoner"},
-    {"id": "zhipu", "name": "智谱 GLM（GLM-5.1 旗舰 · glm-4.7-flash 真免费）",
+    {"id": "zhipu", "name": "智谱 GLM（glm-4.7-flash / glm-4-flash 永久免费）",
      "base_url": "https://open.bigmodel.cn/api/paas/v4",
-     "models": ["glm-5.1", "glm-4.7-flash", "glm-4-flash"], # GLM-5.1 旗舰 / glm-4.7-flash 真免费 / glm-4-flash 免费别名
+     "models": ["glm-4.7-flash", "glm-4-flash", "glm-5.1"], # glm-4.7/4-flash 永久免费 / glm-5.1 旗舰付费
      "default_model": "glm-4.7-flash"},
+    {"id": "qwen", "name": "通义千问 Qwen（阿里云百炼 · qwen-turbo 永久免费）",
+     "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+     "models": ["qwen-plus", "qwen-turbo", "qwen-long", "qwen2.5-72b-instruct"],
+     "default_model": "qwen-plus"},                         # qwen-plus 每日 100 万免费；qwen-turbo 永久免费
+    {"id": "kimi", "name": "Kimi（月之暗面 · 15 元永久代金券起步）",
+     "base_url": "https://api.moonshot.cn/v1",
+     "models": ["kimi-k3", "kimi-k2.7-code", "kimi-k2.6"],  # K3 旗舰(1M 上下文)/K2.7 编码/K2.6 通用
+     "default_model": "kimi-k2.6"},
+    {"id": "volcengine", "name": "火山方舟 豆包（doubao-lite 每日 200 万免费）",
+     "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+     "models": ["doubao-lite-32k", "doubao-pro-32k", "doubao-pro-128k"],
+     "default_model": "doubao-lite-32k"},                   # doubao-lite 每日 200 万 token 免费
+    {"id": "hunyuan", "name": "腾讯混元（hunyuan-lite 永久免费不限量）",
+     "base_url": "https://api.hunyuan.cloud.tencent.com/v1",
+     "models": ["hunyuan-lite", "hunyuan-turbo-s", "hunyuan-t1"],
+     "default_model": "hunyuan-lite"},                       # hunyuan-lite 永久免费不限量
+    {"id": "qianfan", "name": "百度千帆（ERNIE-Speed/Lite 永久免费不限量）",
+     "base_url": "https://qianfan.baidubce.com/v2",
+     "models": ["ernie-speed-8k", "ernie-lite-8k", "ernie-3.5-8k", "ernie-4.5-turbo-128k"],
+     "default_model": "ernie-speed-8k"},                     # ERNIE-Speed/Lite/3.5 永久免费不限量
+    {"id": "siliconflow", "name": "硅基流动 SiliconFlow（2000 万免费 · 轻量模型永久免费）",
+     "base_url": "https://api.siliconflow.cn/v1",
+     "models": ["Qwen/Qwen2.5-7B-Instruct", "deepseek-ai/DeepSeek-V3", "deepseek-ai/DeepSeek-R1"],
+     "default_model": "Qwen/Qwen2.5-7B-Instruct"},           # Qwen2.5-7B 永久免费；其余有免费额度
+    {"id": "deepseek", "name": "DeepSeek（V3-Lite 永久免费 · V4 极廉价）",
+     "base_url": "https://api.deepseek.com/v1",
+     "models": ["deepseek-v3-lite", "deepseek-v4-flash", "deepseek-v4-pro"],
+     "default_model": "deepseek-v3-lite"},                   # V3-Lite 永久免费不限量(200万上下文)
+    {"id": "gemini", "name": "Google Gemini（gemini-2.5-flash 免费 · 无需信用卡）",
+     "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+     "models": ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemma-3-12b-it"],
+     "default_model": "gemini-2.5-flash"},                   # gemini-2.5-flash 免费层 500 RPD / 1M 上下文
+    {"id": "groq", "name": "Groq（LPU 超快 · 无需信用卡）",
+     "base_url": "https://api.groq.com/openai/v1",
+     "models": ["llama-3.3-70b-versatile", "llama-4-scout-17b-16e-instruct", "qwen3-32b", "gpt-oss-120b"],
+     "default_model": "llama-3.3-70b-versatile"},
+    {"id": "ollama", "name": "Ollama（本地部署 · 无需 API Key）",
+     "base_url": "http://localhost:11434/v1",
+     "models": ["qwen2.5:7b", "llama3.1", "deepseek-r1:7b"],
+     "default_model": "qwen2.5:7b"},                         # 本地运行，数据不出机；Key 可留空
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]

@@ -175,7 +175,7 @@ cp .env.example .env        # 然后填入下面三项（默认已指向智谱�
 |---|---|---|
 | `LLM_BASE_URL` | OpenAI 兼容的 API 基址（不含 `/chat/completions`） | `https://open.bigmodel.cn/api/paas/v4/` |
 | `LLM_API_KEY` | 你的 API Key（智谱形如 `id.secret`） | `5d8c7367....QCO4oPW....` |
-| `LLM_MODEL` | 模型名 | `glm-4.7-flash` / `deepseek-chat` / `qwen-plus` / `glm-4-plus` / `gpt-4o` |
+| `LLM_MODEL` | 模型名 | `glm-4.7-flash` / `deepseek-v3-lite` / `qwen-plus` / `gemini-2.5-flash` / `llama-3.3-70b-versatile` |
 | `LLM_TIMEOUT` | 可选，默认 60 秒 | `60` |
 
 支持 DeepSeek / 通义千问 / 智谱 GLM / OpenAI 等任意 OpenAI 兼容端点。
