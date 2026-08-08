@@ -1,15 +1,16 @@
-# Render 一键部署（经 GitHub 镜像；Render 原生不支持 Gitee）
+# Render 一键部署（GitHub 仓库 tangwave/cde20，分支 master）
 #
 # 使用步骤：
-#   1. 本仓库主仓在 Gitee；Render 只支持 GitHub/GitLab/Bitbucket。
-#      先用仓库内 scripts/sync_to_github.sh 把代码镜像到 GitHub（见 README 方式二）。
-#      （kb.sqlite 约 212MB，超过 GitHub 100MB 单文件限制，
-#       请勿直接提交；用「构建时下载」KB_SQLITE_URL，见 README）。
-#   2. 在 Render 控制台 → New → Blueprint → 选该 GitHub 仓库，
-#      自动按本文件创建 Web Service。
-#   3. 在 Render 环境变量里设置 KB_SQLITE_URL（指向 kb.sqlite 的可下载地址）。
+#   1. 代码已推送到 GitHub（含法规库分卷 kb.sqlite.gz.00~.03，约 138MB）。
+#   2. Render 控制台 → New → Blueprint → 选 GitHub 仓库 tangwave/cde20，
+#      自动按本文件创建 Web Service（分支固定为 master）。
+#   3. 创建表单里只需填一个必填项：LLM_API_KEY（你的 DeepSeek key）。
+#      KB_SQLITE_URL 可留空——构建时 download_kb.sh 会自动合并分卷还原 kb.sqlite。
 #   4. 部署完成后拿到 https://pharma-qa-9527.onrender.com，
 #      前端 index.html 已设 meta[qa-api-base]="/"（同域实时），无需再改。
+#
+# 默认问答模式：QA_DEFAULT_MODE=local（用共享法规库做 RAG 问答，最稳）。
+#   想试 DeepSeek 原生联网检索，可在环境变量改成 web，或在网页 UI 里直接切换模式。
 #
 # 注意：免费实例会休眠，首次访问需冷启动数秒；如需稳定可升级 Starter/Standard。
 services:
@@ -18,7 +19,7 @@ services:
     runtime: python
     plan: free
     region: oregon
-    branch: main
+    branch: master
     # 先准备 kb.sqlite（缺失则报错并提示），再装 Python 依赖
     buildCommand: bash scripts/download_kb.sh && pip install -r api/requirements.txt
     startCommand: uvicorn api.server:app --host 0.0.0.0 --port $PORT
@@ -44,6 +45,10 @@ services:
       # 切勿把真实 key 提交到 Gitee/GitHub。
       - key: LLM_API_KEY
         sync: false
+      # 默认问答模式：local=共享法规库 RAG（最稳）；web=DeepSeek 原生联网检索
+      # 也可在网页 UI 里随时切换，此项仅决定初始默认
+      - key: QA_DEFAULT_MODE
+        value: local
       # === 切回 Agnes（取消注释下方、注释上方）===
       # - key: LLM_PROVIDER
       #   value: agnes
