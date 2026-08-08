@@ -33,19 +33,20 @@ services:
       # 例如 GitHub Release 资源 / 对象存储签名 URL / 自有服务器直链。
       - key: KB_SQLITE_URL
         sync: false
-      # 大模型：DeepSeek（云端 API，外网部署直接调用，无需本机模型/穿透）
-      # 切回 Agnes 或换其他服务商：在 Render 控制台环境变量覆盖下列 4 项即可，无需改本文件。
+      # 大模型：OpenRouter 代理的 DeepSeek v4-flash（OpenAI 兼容 /chat/completions，云端调用，无需本机模型/穿透）
+      # 切回 Agnes/DeepSeek 直连等：在 Render 控制台环境变量覆盖下列 4 项即可，无需改本文件。
+      # 注意：OpenRouter 为通用 chat 代理，provider 设为 openai（非 deepseek），避免误走 DeepSeek /responses 原生联网路径。
       - key: LLM_PROVIDER
-        value: deepseek
+        value: openai
       - key: LLM_BASE_URL
-        value: https://api.deepseek.com/v1
+        value: https://openrouter.ai/api/v1
       - key: LLM_MODEL
-        value: deepseek-v4-flash
+        value: deepseek/deepseek-v4-flash
       # 安全：密钥只放 Render 控制台环境变量（sync:false 不进仓库）。
       # 切勿把真实 key 提交到 Gitee/GitHub。
       - key: LLM_API_KEY
         sync: false
-      # 默认问答模式：local=共享法规库 RAG（最稳）；web=DeepSeek 原生联网检索
+      # 默认问答模式：local=共享法规库 RAG（最稳）；web=内置联网检索（DuckDuckGo 等，可出引用）
       # 也可在网页 UI 里随时切换，此项仅决定初始默认
       - key: QA_DEFAULT_MODE
         value: local
