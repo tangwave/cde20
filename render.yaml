@@ -62,7 +62,7 @@ services:
       #   value: glm-4-flash
       # - key: LLM_API_KEY
       #   sync: false
-      #   value: 5d8c736720d74887ac5dc0e9eeeda1a8.QCO4oPW395uWfKjj
+      #   value: <你的智谱key>
       # 可选：KB_QUERY_PY 指向虚拟环境 python；不填则默认用运行 server.py 的解释器
       # - key: KB_QUERY_PY
       #   value: /opt/render/project/venv/bin/python
