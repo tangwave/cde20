@@ -11,12 +11,15 @@ llm_config.json
 llm_presets.json
 *.local
 
-# 大文件：kb.sqlite 约 212MB，超过 GitHub 100MB 单文件限制。
-# 默认用「构建时下载」（scripts/download_kb.sh + Render 环境变量 KB_SQLITE_URL）。
-# 若改用 Git LFS，请删掉下面这行并在 .gitattributes 中启用 LFS 规则（见 README）。
-# 整个 00_索引 目录（含本机 junction 符号链接、kb.sqlite、索引文件）均不入库；
-# 部署时通过挂载卷 / KB_SQLITE_URL 下载 / 手动放入 kb.sqlite。
-00_索引
+# 法规库 kb.sqlite 约 238MB，gzip 后约 138MB，超过 GitHub 100MB 单文件限制，
+# 故以「分卷 gzip」入库（kb.sqlite.gz.00/.01/...，每卷 40MB），构建时合并解压。
+# 索引辅助文件（INDEX.md / metadata.json / 临床前研究板块索引.md）较小，直接入库。
+# 排除该目录其余内容（原始 kb.sqlite、sqlite 临时文件 -wal/-shm、可能的符号链接等）。
+00_索引/*
+!00_索引/kb.sqlite.gz.*
+!00_索引/INDEX.md
+!00_索引/metadata.json
+!00_索引/临床前研究板块索引.md
 
 # 系统文件
 .DS_Store

@@ -2050,6 +2050,7 @@ const App = {
     this.loadInlineModels();
     this._qaMode = 'review';
     this._initModeSeg();
+    this._applyDefaultModeFromHealth();
     this._initQaChat();
   },
 
@@ -2628,6 +2629,21 @@ const App = {
       local: '已切换：📚 本地法规库（3096 篇全文，引用可溯源）'
     };
     this._toast(tips[mode] || tips.local);
+  },
+
+  // 外网部署：用后端 /api/health 的 qa_default_mode 覆盖前端硬编码默认（如设为 local）
+  _applyDefaultModeFromHealth() {
+    const base = this._apiBase();
+    if (!base) return;
+    fetch(base + '/api/health', { cache: 'no-cache' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(j => {
+        const m = (j && j.qa_default_mode) || '';
+        if (m === 'web' || m === 'local' || m === 'hybrid' || m === 'review') {
+          this._setMode(m);
+        }
+      })
+      .catch(() => {});
   },
 
   // ---------------- 内置模型管理（新增 / 修改 / 删除） ----------------

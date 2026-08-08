@@ -77,7 +77,7 @@ LLM_PRESETS_DEFAULT = [
      "default_model": "glm-4.7-flash"},
     {"id": "deepseek", "name": "DeepSeek",
      "base_url": "https://api.deepseek.com/v1",
-     "models": ["deepseek-chat", "deepseek-reasoner"],
+     "models": ["deepseek-chat", "deepseek-reasoner", "deepseek-v4-flash"],
      "default_model": "deepseek-chat"},
     {"id": "qwen", "name": "通义千问（阿里云 DashScope）",
      "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
@@ -329,6 +329,7 @@ EMBED_BASE = (os.environ.get("EMBED_BASE") or "http://127.0.0.1:11434").rstrip("
 EMBED_MODEL = os.environ.get("EMBED_MODEL") or "nomic-embed-text"
 KB_SEMANTIC = (os.environ.get("KB_SEMANTIC") or "1") not in ("0", "false", "False", "")
 _VEC_WEIGHT = 25.0           # 向量相似度在重排中的权重（cosine 0.x → +x）
+QA_DEFAULT_MODE = (os.environ.get("QA_DEFAULT_MODE") or "").strip().lower()  # 外网部署可设为 local/web/hybrid/review，覆盖前端硬编码默认
 
 
 app = FastAPI(title="海云AI 法规问答 API", version="2.0.0")
@@ -481,6 +482,7 @@ def health():
         "llm_model": LLM_CFG.get("model", ""),
         "kb_semantic": KB_SEMANTIC and bool(_vec_index().get("ready")),
         "python": PY,
+        "qa_default_mode": QA_DEFAULT_MODE or "",
     }
 
 
@@ -2009,6 +2011,140 @@ def _web_search(query, max_results=6):
     return results[:max_results]
 
 
+def _call_responses_web(system, user, max_tokens=1800):
+    """调 DeepSeek Responses API（/responses），启用 web_search 工具做服务端联网检索。
+    返回 (text_or_None, [web_source, ...])。若该端点不支持 json_object 格式则去掉重试。"""
+    base = LLM_CFG.get("base_url", "").strip()
+    key = LLM_CFG.get("api_key", "").strip()
+    model = LLM_CFG.get("model", "").strip()
+    if not (base and model):
+        return None, []
+    url = base.rstrip("/")
+    if url.endswith("/v1"):
+        url = url[:-3]
+    url = url + "/responses"
+    payload = {
+        "model": model,
+        "instructions": system,
+        "input": user,
+        "tools": [{"type": "web_search"}],
+        "text": {"format": {"type": "json_object"}},
+    }
+
+    def _do(use_fmt):
+        p = dict(payload)
+        if not use_fmt:
+            p.pop("text", None)
+        data = json.dumps(p).encode("utf-8")
+        headers = {"Content-Type": "application/json"}
+        if key:
+            headers["Authorization"] = "Bearer " + key
+        req = urllib.request.Request(url, data=data, headers=headers)
+        timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read().decode("utf-8")
+
+    for attempt in range(2):
+        try:
+            raw = _do(use_fmt=True)
+            return _parse_responses(raw)
+        except urllib.error.HTTPError as e:
+            body = ""
+            try:
+                body = e.read().decode("utf-8", "ignore")
+            except Exception:
+                pass
+            if e.code == 429 or "rate" in body.lower():
+                raise _RateLimited(body or "rate limited")
+            if e.code == 400 and attempt == 0 and ("format" in body.lower() or "text" in body.lower()):
+                # 该端点不支持 json_object：去掉后重试一次
+                try:
+                    raw = _do(use_fmt=False)
+                    return _parse_responses(raw)
+                except urllib.error.HTTPError as e2:
+                    b2 = ""
+                    try:
+                        b2 = e2.read().decode("utf-8", "ignore")
+                    except Exception:
+                        pass
+                    if e2.code == 429 or "rate" in b2.lower():
+                        raise _RateLimited(b2 or "rate limited")
+                    return None, []
+            if attempt < 1:
+                time.sleep(6)
+        except _RateLimited:
+            raise
+        except Exception:
+            if attempt < 1:
+                time.sleep(6)
+    return None, []
+
+
+def _parse_responses(raw):
+    """解析 DeepSeek Responses API 返回：抽取最终文本与 web_search_call 的检索来源。"""
+    try:
+        j = json.loads(raw)
+    except Exception:
+        return "", []
+    items = j.get("output", []) or []
+    text = ""
+    sources = []
+    for it in items:
+        t = it.get("type")
+        if t == "message":
+            for c in it.get("content", []) or []:
+                if c.get("type") == "output_text":
+                    text += c.get("text", "")
+        elif t == "web_search_call":
+            action = it.get("action") or {}
+            for q in (action.get("queries") or []):
+                sources.append({"title": "检索式: " + str(q), "url": "", "snippet": "", "query": str(q)})
+            for res in (action.get("results") or action.get("sources") or []):
+                if isinstance(res, dict):
+                    sources.append({"title": res.get("title") or res.get("url") or "",
+                                    "url": res.get("url") or "",
+                                    "snippet": res.get("snippet") or res.get("content") or "",
+                                    "query": ""})
+    seen = set()
+    uniq = []
+    for s in sources:
+        k = (s.get("url"), s.get("title"))
+        if k in seen:
+            continue
+        seen.add(k)
+        uniq.append(s)
+    return text, uniq
+
+
+def _web_query_responses(q, speed=False):
+    """DeepSeek Responses API 原生联网增强档（v4-flash + web_search）。
+    服务端执行检索、无需第三方搜索 key；黑盒检索不回吐原文，来源以检索式/URL 展示。"""
+    cache_key = ("web-ds", q, bool(speed))
+    now = time.time()
+    cached = _RAG_CACHE.get(cache_key)
+    if cached and now - cached[0] < _RAG_CACHE_TTL:
+        ans = dict(cached[1])
+        ans["source"] = "web"
+        ans["cached"] = True
+        return ans
+    system = _WEB_SYSTEM + (_SPEED_APPEND if speed else "")
+    try:
+        raw, sources = _call_responses_web(system, q, max_tokens=1300 if speed else 1800)
+    except _RateLimited:
+        return {"error": "llm_rate_limited", "fallback": True, "web_sources": [], "source": "web"}
+    if not raw:
+        return {"结论": "（当前 DeepSeek 模型未配置或不可用，无法使用原生联网检索）",
+                "思考分析": "", "要点解析": [], "法规依据": [], "适用提示": "",
+                "风险提示": "", "时效说明": "", "延伸问题": [],
+                "web_sources": sources, "search_queries": [], "source": "web", "llm_error": True}
+    ans = _parse_llm_json(raw)
+    ans["web_sources"] = sources
+    ans["search_queries"] = [s.get("query") or s.get("title") for s in sources if s.get("url")]
+    ans["source"] = "web"
+    _RAG_CACHE[cache_key] = (now, ans)
+    return ans
+
+
 def _web_query(q, speed=False):
     """AI 联网搜索模式：先实时检索公开网络，再交给大模型综合作答并带 [n] 引用。
 
@@ -2017,6 +2153,10 @@ def _web_query(q, speed=False):
     - 若所选模型本身具备原生联网（如 Perplexity sonar），则直接利用其返回的真实
       citations 作为来源（更权威）。
     - 降级：大模型未配置/不可用时，仍返回真实检索结果，保证「联网检索」可用。"""
+    # DeepSeek v4 支持 Responses API 原生联网（web_search 工具，服务端执行检索）：
+    # 选了 v4 模型且 provider 为 deepseek 时，走原生联网档，免去第三方搜索 key。
+    if LLM_CFG.get("provider", "") == "deepseek" and re.search(r"v4", LLM_CFG.get("model", "") or "", re.I) and _llm_configured():
+        return _web_query_responses(q, speed=speed)
     cache_key = ("web", q, bool(speed))
     now = time.time()
     cached = _RAG_CACHE.get(cache_key)
