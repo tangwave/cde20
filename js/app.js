@@ -2183,38 +2183,83 @@ const App = {
     this._resetQaChat();
   },
 
-  // 真正清空并重置对话（"清空对话"按钮调用）→ 渲染 WorkBuddy 风格欢迎屏 + 建议卡片
+  // 真正清空并重置对话（"清空对话"按钮调用）→ 渲染紧凑「快速提问」面板（研发/注册高频问题 + 换一批）
   _resetQaChat() {
     this._qaMid = 0;
+    this._qaQuickIdx = 0;
     const box = document.getElementById('qa9Msgs'); if (!box) return;
     box.innerHTML = '';
-    const FAQ = globalThis.REG_QA_FAQ || [];
-    const samples = ['IND 非临床研究资料', 'GLP 适用范围', '化学药1类 定义', 'MAH 持有人制度', 'GMP 基本要求', '加快上市程序'];
-    let cards = '';
-    FAQ.slice(0, 4).forEach((item) => {
-      cards += '<button class="qa9-welcome-card" data-q="' + Penetrator.esc(item.q) + '">' +
-        '<span class="qa9-welcome-card-tag">' + Penetrator.esc(item.tag || '常见问题') + '</span>' +
-        '<span class="qa9-welcome-card-q">' + Penetrator.esc(item.q) + '</span></button>';
-    });
-    samples.forEach((s) => {
-      cards += '<button class="qa9-welcome-card" data-q="' + Penetrator.esc(s) + '">' +
-        '<span class="qa9-welcome-card-tag">试试问</span>' +
-        '<span class="qa9-welcome-card-q">' + Penetrator.esc(s) + '</span></button>';
-    });
     const welcome =
-      '<div class="qa9-welcome-screen">' +
-        '<div class="qa9-welcome-title">👋 你好，我是海云AI</div>' +
-        '<div class="qa9-welcome-sub">深耕药品研发生产数十年、熟悉全生命周期法规与各项注册申报要求的 QA 专家。我会先拆解你的问题、调阅法规原文，再给出可直接执行的结论、要点解析与风险提示。<br>' +
-        '下方可切换三种作答方式：<b>📚 本地法规库</b>（3096 篇全文，引用可溯源）· <b>🌐 联网搜索</b>（实时网络动态）· <b>🧠 深度融合</b>（两者并行、交叉核验，答案最完整）。</div>' +
-        '<div class="qa9-welcome-cards">' + cards + '</div>' +
+      '<div class="qa9-quick">' +
+        '<div class="qa9-quick-greet">你好，我是 <b>海云AI</b> —— 专注药品研发生产与注册申报的 QA 助手。点击下方高频问题直接提问，也可以直接在下方输入你的问题：</div>' +
+        '<div class="qa9-quick-head">' +
+          '<span class="qa9-quick-title">💡 快速提问 · 研发 / 注册高频</span>' +
+          '<button type="button" class="qa9-quick-refresh" id="qa9QuickRefresh">🔄 换一批</button>' +
+        '</div>' +
+        '<div class="qa9-quick-chips" id="qa9QuickChips"></div>' +
       '</div>';
     const wrap = document.createElement('div');
     wrap.className = 'qa9-msg bot welcome';
     wrap.innerHTML = '<div class="qa9-bubble">' + welcome + '</div>';
     box.appendChild(wrap);
-    box.querySelectorAll('.qa9-welcome-card').forEach(b => b.addEventListener('click', () => {
-      this.sendQaMessage(b.dataset.q);
-    }));
+    this._renderQuickBatch();
+    const refresh = document.getElementById('qa9QuickRefresh');
+    if (refresh) refresh.addEventListener('click', () => { this._qaQuickIdx++; this._renderQuickBatch(); });
+  },
+
+  // 研发 / 注册相关的预设高频问题池（"换一批"在池中循环切片）
+  _buildQuickQuestions() {
+    return [
+      // —— 药物研发 ——
+      'IND 申报需要哪些非临床研究资料？',
+      '化学药 1 类与 2 类的注册分类区别？',
+      '创新药临床试验申请（IND）流程是怎样的？',
+      '药物非临床研究质量管理规范（GLP）适用范围？',
+      '原料药与制剂关联审评怎么操作？',
+      '生物制品注册分类及申报路径？',
+      '中药注册分类有哪些？',
+      '药物临床试验（GCP）核心要求？',
+      '药理毒理研究一般包括哪些内容？',
+      '药代动力学（ADME）研究要求？',
+      // —— 注册申报 ——
+      'NDA 上市许可申请资料要求？',
+      'MAH（药品上市许可持有人）制度要点？',
+      '加快上市注册程序有哪些（突破性/优先审评/附条件）？',
+      '药品注册发补常见问题与应对策略？',
+      '申报资料 CTD 格式要求？',
+      'Pre-IND 沟通交流会议怎么申请？',
+      '境外已上市境内未上市药品（5.1 类）如何申报？',
+      '药品生产工艺信息表填写要求？',
+      '药品注册检验流程与时限？',
+      '注册申报资料真实性核查要点？',
+      // —— 质量体系 ——
+      'GMP 基本要求与现场检查要点？',
+      '变更管理（CMC 变更）如何分类？',
+      '偏差与 CAPA 管理要求？',
+      '供应商审计与物料管理要求？',
+      '数据完整性（ALCOA+）原则是什么？',
+      '质量风险管理（QRM）如何实施？',
+      '共线生产风险评估要点？',
+      // —— 通用 / 其他 ——
+      '仿制药质量和疗效一致性评价要求？',
+      '专利链接与专利期补偿制度？',
+      '处方药与非处方药（OTC）转换要求？',
+      '药品说明书与标签管理规定？'
+    ];
+  },
+
+  // 渲染当前批次的快速提问（每批 8 条，换一批循环）
+  _renderQuickBatch() {
+    const el = document.getElementById('qa9QuickChips'); if (!el) return;
+    const pool = this._qaQuickPool || (this._qaQuickPool = this._buildQuickQuestions());
+    const per = 8, total = pool.length;
+    const start = (this._qaQuickIdx * per) % total;
+    const batch = [];
+    for (let i = 0; i < per; i++) batch.push(pool[(start + i) % total]);
+    el.innerHTML = batch.map(q =>
+      '<button type="button" class="qa9-quick-chip" data-q="' + Penetrator.esc(q) + '">' + Penetrator.esc(q) + '</button>'
+    ).join('');
+    el.querySelectorAll('.qa9-quick-chip').forEach(b => b.addEventListener('click', () => this.sendQaMessage(b.dataset.q)));
   },
 
   // 发送一条消息（对话模式主入口）—— 仅走大模型 RAG（纯 AI 推理），彻底移除离线条文检索回退
@@ -2896,8 +2941,7 @@ const App = {
     }
   },
 
-  // 渲染海云AI 深度推理回复
-  // 顺序：思考过程 → 结论 → 要点解析 → 依据/来源 → 适用提示 → 风险提示 → 时效说明 → 延伸问题
+  // 渲染海云AI 回复（优化版：结论先行、要点为辅、依据/补充折叠，告别厚重八段式）
   _buildRagReply(o) {
     const B = o.blocks || {};
     const rag = o.rag || {};
@@ -2915,20 +2959,14 @@ const App = {
         : '<p>' + Penetrator.esc(t) + '</p>';
     }).join('');
 
-    // ① 思考过程（默认折叠，点开可见推理链路）
-    if (B.thinking) {
-      html += '<details class="qa9-block qa9-think">' +
-              '<summary class="qa9-think-sum">💡 深度思考过程<span class="qa9-think-hint">（点击展开）</span></summary>' +
-              '<div class="qa9-think-body">' + lines(B.thinking) + '</div></details>';
-    }
-    // ② 结论
+    // ① 结论 —— 作为主回答自然呈现（不再用沉重【结论】盒子）
     if (B.abstract) {
-      html += '<div class="qa9-block qa9-concl"><div class="qa9-block-h">【结论】</div>' + lines(B.abstract) + '</div>';
+      html += '<div class="qa9-ans">' + lines(B.abstract) + '</div>';
     }
-    // ③ 要点解析
+    // ② 要点解析 —— 干净的要点列表
     const pts = B.points || [];
     if (pts.length) {
-      html += '<div class="qa9-block qa9-points"><div class="qa9-block-h">【要点解析】</div><ol class="qa9-point-list">';
+      html += '<div class="qa9-pts"><div class="qa9-pts-h">要点</div><ol class="qa9-point-list">';
       pts.forEach((p) => {
         const t = (p && (p['要点'] || p.title)) || '';
         const d = (p && (p['说明'] || p.detail)) || (typeof p === 'string' ? p : '');
@@ -2939,69 +2977,66 @@ const App = {
       });
       html += '</ol></div>';
     }
-    // ④ 依据 / 来源（hybrid 两段都渲染）
-    if (src === 'local' || src === 'rag' || src === 'hybrid') html += this._citeBlock(rag);
-    if (src === 'web' || src === 'hybrid') html += this._webBlock(rag);
-    // ⑤ 适用提示
-    if (B.tips) {
-      html += '<div class="qa9-block"><div class="qa9-block-h">【适用提示】</div>' + lines(B.tips) + '</div>';
+    // ③ 法规依据 / 检索来源（折叠，按需展开，节省首屏空间）
+    if (src === 'local' || src === 'rag' || src === 'hybrid') {
+      html += '<details class="qa9-supp"><summary>📚 法规依据</summary>' + this._citeBlock(rag) + '</details>';
     }
-    // ⑥ 风险提示
-    if (B.risk) {
-      html += '<div class="qa9-block qa9-risk"><div class="qa9-block-h">⚠️ 【风险提示】</div>' + lines(B.risk) + '</div>';
+    if (src === 'web' || src === 'hybrid') {
+      html += '<details class="qa9-supp"><summary>🌐 检索来源</summary>' + this._webBlock(rag) + '</details>';
     }
-    // ⑦ 时效说明
-    if (B.timeNote) {
-      html += '<div class="qa9-block"><div class="qa9-block-h">【时效说明】</div>' + lines(B.timeNote) + '</div>';
+    // ④ 推理过程（折叠，默认收起）
+    if (B.thinking) {
+      html += '<details class="qa9-think"><summary class="qa9-think-sum">💡 推理过程<span class="qa9-think-hint">（点击展开）</span></summary>' +
+              '<div class="qa9-think-body">' + lines(B.thinking) + '</div></details>';
     }
-    // ⑧ 延伸问题（可点击继续追问）
+    // ⑤ 适用提示 + 风险提示 + 时效说明 —— 合并为一个「补充说明」折叠块
+    const suppParts = [];
+    if (B.tips) suppParts.push('<div class="qa9-supp-item"><span class="qa9-supp-k">适用提示</span><div class="qa9-supp-v">' + lines(B.tips) + '</div></div>');
+    if (B.risk) suppParts.push('<div class="qa9-supp-item qa9-supp-risk"><span class="qa9-supp-k">风险提示</span><div class="qa9-supp-v">' + lines(B.risk) + '</div></div>');
+    if (B.timeNote) suppParts.push('<div class="qa9-supp-item"><span class="qa9-supp-k">时效说明</span><div class="qa9-supp-v">' + lines(B.timeNote) + '</div></div>');
+    if (suppParts.length) {
+      html += '<details class="qa9-supp"><summary>📌 补充说明</summary><div class="qa9-supp-body">' + suppParts.join('') + '</div></details>';
+    }
+    // ⑥ 延伸问题（可点击继续追问）
     const fu = B.followUps || [];
     if (fu.length) {
-      html += '<div class="qa9-block qa9-followups"><div class="qa9-block-h">🔎 你可能还想问</div><div class="qa9-followup-row">';
+      html += '<div class="qa9-followups"><div class="qa9-followups-h">🔎 你可能还想问</div><div class="qa9-followup-row">';
       fu.forEach((q) => {
         html += '<button type="button" class="qa9-followup" data-q="' + Penetrator.esc(q) + '">' +
                 Penetrator.esc(q) + '</button>';
       });
       html += '</div></div>';
     }
-    // ⑨ AI 拓展此回答
-    html += '<div class="qa9-block qa9-expand"><button type="button" class="qa9-expand-btn" data-expand="1">🤖 AI 拓展此回答</button></div>';
+    // ⑦ AI 拓展（低调内联，不再独占一段）
+    html += '<div class="qa9-expand-inline"><button type="button" class="qa9-expand-btn" data-expand="1">🤖 AI 拓展此回答</button></div>';
     return html;
   },
 
-  // 【法规依据】块（本地库 / 深度融合）
+  // 【法规依据】内容（折叠块内复用，仅返回内部列表）
   _citeBlock(rag) {
-    const badge = (rag.source === 'hybrid')
-      ? '<span class="qa9-src-badge rag">🧠 深度融合 · 本地原文</span>'
-      : '<span class="qa9-src-badge rag">📚 本地法规库</span>';
     const hits = rag.kb_hits || [];
     const note = hits.length
-      ? '本次实际调阅本地法规原文 ' + hits.length + ' 篇（3096 篇全文库），由大模型解读'
+      ? '本次调阅本地法规原文 ' + hits.length + ' 篇（3096 篇全文库），由大模型解读'
       : '依据来自海云AI 本地法规库 + 大模型解读';
-    let html = '<div class="qa9-block"><div class="qa9-block-h">【法规依据】 ' + badge +
-               '<div class="qa9-src-note">' + Penetrator.esc(note) + '</div></div>';
+    let html = '<div class="qa9-src-note">' + Penetrator.esc(note) + '</div>';
     html += this._sqHtml(rag.search_queries, '📚 本地库检索式');
     html += '<div class="qa9-cite-list">';
     const basis = rag['法规依据'] || [];
     if (basis.length) basis.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
     else if (hits.length) hits.forEach((c, i) => { html += this.ragCardHtml(c, i + 1); });
     else html += '<div class="qa9-empty">未检索到明确依据。</div>';
-    return html + '</div></div>';
+    return html + '</div>';
   },
 
-  // 【实时检索来源】块（联网 / 深度融合）
+  // 【实时检索来源】内容（折叠块内复用，仅返回内部列表）
   _webBlock(rag) {
-    const badge = (rag.source === 'hybrid')
-      ? '<span class="qa9-src-badge web">🧠 深度融合 · 实时网络</span>'
-      : '<span class="qa9-src-badge web">🌐 实时联网检索</span>';
     const ws = rag.web_sources || [];
-    let html = '<div class="qa9-block"><div class="qa9-block-h">【检索来源】 ' + badge +
-               '<div class="qa9-src-note">以下为实时网络检索结果（点击可跳转原文）</div></div>';
+    let html = '<div class="qa9-src-note">以下为实时网络检索结果（点击可跳转原文）</div>';
     if (rag.source !== 'hybrid') html += this._sqHtml(rag.search_queries, '🔍 AI 提炼的检索式');
     html += '<div class="qa9-web-src-list">';
     if (ws.length) ws.forEach((s, i) => { html += this.webSrcHtml(s, i + 1); });
     else html += '<div class="qa9-empty">本次未检索到外部来源（可能当前网络受限，可切换网络后重试）。</div>';
-    return html + '</div></div>';
+    return html + '</div>';
   },
 
   // 检索式标签行：展示「AI 决定搜什么」，让思考过程可见

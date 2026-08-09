@@ -13,8 +13,9 @@
    · local  本地法规库 RAG：多路检索改写 → SQLite FTS5 直查 + 向量语义召回 + 重排 → 全文喂模型；
    · web    AI 联网搜索：AI 提炼检索式 → Bing RSS 等多源检索 → 相关性过滤 → 综合作答；
    · hybrid 深度融合：本地权威原文 + 实时网络材料并行取回，交叉核验后作答。
-   统一输出「海云AI 深度推理」结构（思考分析/结论/要点解析/法规依据/适用提示/风险提示/
-   时效说明/延伸问题）。需配置 LLM_BASE_URL / LLM_API_KEY / LLM_MODEL；未配置时优雅回退。
+   统一输出「海云AI 深度推理」结构化 JSON（思考分析/结论/要点解析/法规依据/适用提示/风险提示/
+   时效说明/延伸问题）；前端以「结论先行 + 要点列表 + 依据/补充折叠」的精简版式呈现，告别厚重八段式。
+   需配置 LLM_BASE_URL / LLM_API_KEY / LLM_MODEL；未配置时优雅回退。
 4. 安全白名单：/api/qa 仅暴露 query/cat/topic/issuer/status/since/until/only_valid/n；
    严禁 --path/--full（避免任意文件读取）。RAG 的全文读取在服务器内部、仅限 kb.sqlite。
 """

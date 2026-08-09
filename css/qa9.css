@@ -94,6 +94,59 @@
 .qa9-msg.welcome { max-width: 100%; }
 .qa9-msg.welcome .qa9-bubble { max-width: 100%; background: transparent; border: none; box-shadow: none; padding: 0 4px; }
 
+/* ===== 快速提问（紧凑药丸 + 换一批） ===== */
+.qa9-quick { width: 100%; }
+.qa9-quick-greet { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 2px 0 14px; }
+.qa9-quick-greet b { color: var(--primary-dark); }
+.qa9-quick-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.qa9-quick-title { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+.qa9-quick-refresh {
+  border: 1px solid var(--border-light); background: #fff; color: var(--primary-dark);
+  border-radius: 999px; padding: 5px 13px; font-size: 12.5px; cursor: pointer; transition: all .15s;
+}
+.qa9-quick-refresh:hover { border-color: var(--primary); background: var(--bg-active); }
+.qa9-quick-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.qa9-quick-chip {
+  text-align: left; background: #fff; border: 1px solid var(--border-light); border-radius: 999px;
+  padding: 7px 13px; font-size: 13px; color: var(--text-primary); cursor: pointer;
+  transition: all .15s; line-height: 1.4; max-width: 100%;
+}
+.qa9-quick-chip:hover { border-color: var(--primary); background: var(--bg-active); color: var(--primary); transform: translateY(-1px); }
+
+/* ===== 回答版式（优化：结论先行 / 要点列表 / 依据·补充折叠） ===== */
+.qa9-ans { margin: 4px 0 12px; font-size: 14.5px; line-height: 1.78; color: var(--text-primary); }
+.qa9-ans p { margin: 7px 0; }
+.qa9-pts { margin: 10px 0; }
+.qa9-pts-h { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: .05em; margin-bottom: 6px; }
+.qa9-point-list { margin: 0; padding-left: 20px; }
+.qa9-point { margin: 7px 0; line-height: 1.65; }
+.qa9-point-t { font-weight: 600; color: var(--primary-dark); margin-right: 6px; }
+.qa9-point-d { color: var(--text-primary); }
+/* 折叠块：法规依据 / 检索来源 / 补充说明 统一外观 */
+.qa9-supp { margin: 10px 0; border: 1px solid var(--border-light); border-radius: var(--radius-md); background: #fff; overflow: hidden; }
+.qa9-supp > summary {
+  cursor: pointer; padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  list-style: none; user-select: none; transition: background .15s;
+}
+.qa9-supp > summary:hover { background: var(--bg-active); }
+.qa9-supp > summary::-webkit-details-marker { display: none; }
+.qa9-supp > summary::before { content: '▸ '; display: inline-block; color: var(--primary); transition: transform .15s; }
+.qa9-supp[open] > summary::before { content: '▾ '; }
+.qa9-supp > summary::after { content: '展开'; font-weight: 400; font-size: 11px; color: #b8c0cc; margin-left: 8px; }
+.qa9-supp[open] > summary::after { content: '收起'; }
+.qa9-supp-body { padding: 2px 14px 12px 30px; }
+.qa9-supp-item { margin: 8px 0; }
+.qa9-supp-k {
+  display: inline-block; font-size: 12px; font-weight: 700; color: var(--primary-dark);
+  background: var(--bg-active); border-radius: 5px; padding: 1px 7px; margin-bottom: 3px;
+}
+.qa9-supp-risk .qa9-supp-k { color: #b91c1c; background: #fdeaea; }
+.qa9-supp-v p { margin: 3px 0; }
+/* 延伸问题 */
+.qa9-followups-h { font-size: 12px; font-weight: 700; color: var(--text-muted); margin: 12px 0 6px; }
+/* AI 拓展（内联低调） */
+.qa9-expand-inline { margin: 12px 0 2px; }
+
 /* 切换模型提示 toast */
 .qa9-toast {
   position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(10px);
@@ -365,7 +418,7 @@ details.qa9-think[open] .qa9-think-sum::before { content: '▾ '; }
 .qa9-block p.qa9-li::before { content: '·'; position: absolute; left: 3px; color: var(--primary); font-weight: 700; }
 
 /* 延伸问题气泡 */
-.qa9-followups { background: #fff; border-style: dashed; }
+.qa9-followups { background: transparent; border: none; padding: 0; }
 .qa9-followups .qa9-block-h { color: var(--text-muted); }
 .qa9-followup-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .qa9-followup {
