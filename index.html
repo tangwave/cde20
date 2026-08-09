@@ -13,7 +13,7 @@
   <title>海云AI · 药品研发生产 QA 专家 · 法规与注册申报顾问</title>
   <link rel="stylesheet" href="css/style.css?v=20260806g">
   <link rel="stylesheet" href="css/portal.css?v=20260806g">
-  <link rel="stylesheet" href="css/qa9.css?v=20260809">
+  <link rel="stylesheet" href="css/qa9.css?v=20260810">
 </head>
 <body>
   <div class="app">
@@ -161,6 +161,7 @@
             <span class="qa9-model-pick">
               <span class="qa9-model-ico">🧠</span>
               <select id="qa9ModelInline" class="qa9-model-select" title="切换内置 AI 模型"></select>
+              <span id="qa9ConnBadge" class="qa9-conn-badge none" title="当前模型连接状态">⚪ 未检测</span>
             </span>
             <label class="qa9-onlyvalid" id="qa9OnlyValidWrap"><input type="checkbox" id="qa9OnlyValid" checked /> 仅现行有效</label>
             <label class="qa9-onlyvalid" id="qa9SpeedWrap" title="极致精简作答（中文约 500 字以内），更快出结果；默认关闭以保留完整 8 段式深度推理"><input type="checkbox" id="qa9Speed" /> ⚡ 极速</label>
@@ -215,9 +216,11 @@
         <label class="qa9-field-label">API Key</label>
         <input id="qa9ApiKey" class="qa9-input-full" type="password" placeholder="粘贴你的 API Key" autocomplete="off" />
         <div class="qa9-modal-actions">
-          <button id="qa9ModelSave" class="qa9-send-btn">保存并应用</button>
+          <button id="qa9TestConn" class="qa9-send-btn qa9-btn-ghost" type="button">🔌 测试连接</button>
+          <button id="qa9ModelSave" class="qa9-send-btn" type="button" disabled>保存并应用</button>
           <span id="qa9ModelMsg" class="qa9-model-msg"></span>
         </div>
+        <div id="qa9TestResult" class="qa9-test-result">填写完成后点【测试连接】，确认可连通后再保存。</div>
         <p class="qa9-modal-foot">Key 仅保存在本机服务端 <code>llm_config.json</code>（已 gitignore），不会上传任何第三方。</p>
         <div class="qa9-manage">
           <div class="qa9-manage-head">
@@ -282,7 +285,7 @@
   <script src="js/stage-qm-addon.js?v=20260806g"></script>
   <script src="js/reg-kb-full.js?v=20260806g"></script>
   <script src="js/reg-qa-faq.js?v=20260806g"></script>
-  <script src="js/app.js?v=20260806g"></script>
+  <script src="js/app.js?v=20260810"></script>
   <script src="js/knowledge-portal.js?v=20260806g"></script>
 </body>
 </html>

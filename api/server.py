@@ -776,6 +776,60 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None):
     return None, []
 
 
+def _test_llm_connection(base_url, api_key, model):
+    """对指定端点做最小连通性测试：发一条极短消息，能拿到回复即视为成功。
+    不改动任何全局配置（LLM_CFG / LLM_KEYS），仅用于「保存前自检」与「切换后状态提示」。
+    返回 (ok, model, latency_ms, error)。"""
+    base = (base_url or "").strip().rstrip("/")
+    key = (api_key or "").strip()
+    model = (model or "").strip()
+    if not base:
+        return False, model, 0, "缺少 API Base URL"
+    if not model:
+        return False, model, 0, "缺少模型名称"
+    url = base + "/chat/completions"
+    # 极简 payload：不强制 response_format / temperature，避免部分免费模型直接 400。
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": "ping"}],
+        "max_tokens": 8,
+        "stream": False,
+    }
+    data = json.dumps(payload).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
+    if key:  # 本地模型（Ollama 等）允许空 Key
+        headers["Authorization"] = "Bearer " + key
+    req = urllib.request.Request(url, data=data, headers=headers)
+    timeout = min(int(os.environ.get("LLM_TIMEOUT", "60") or "60"), 30)
+    try:
+        t0 = time.time()
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read().decode("utf-8", "ignore")
+        latency = int((time.time() - t0) * 1000)
+        j = json.loads(raw)
+        content = (((j.get("choices") or [{}])[0] or {}).get("message") or {}).get("content")
+        if content is None:
+            content = ""
+        return True, model, latency, ""
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read().decode("utf-8", "ignore")
+        except Exception:
+            body = ""
+        if e.code in (401, 403):
+            return False, model, 0, "鉴权失败（API Key 无效或无权访问该模型）"
+        if e.code == 404:
+            return False, model, 0, "模型或端点不存在（HTTP 404），请确认 Base URL 与模型名"
+        if e.code == 429:
+            return False, model, 0, "请求被限流（HTTP 429），稍后重试或检查免费额度是否耗尽"
+        return False, model, 0, "HTTP %d：%s" % (e.code, (body[:200] if body else ""))
+    except urllib.error.URLError as e:
+        reason = getattr(e, "reason", e)
+        return False, model, 0, "无法连接（地址/网络错误）：%s" % reason
+    except Exception as e:
+        return False, model, 0, "连接测试异常：%s" % str(e)
+
+
 def _kb_one(q, only_valid):
     """Run kb_query.py for a single query string; returns list of rows."""
     cmd = [PY, KB_QUERY, q, "--json", "-n", "8"]
@@ -2506,6 +2560,55 @@ async def llm_config_post(request: Request):
     _save_llm_cfg(LLM_CFG)
     return {"ok": True, "provider": provider, "provider_name": preset["name"],
             "model": model, "base_url": base_url}
+
+
+@app.post("/api/llm-test")
+async def llm_test_post(request: Request):
+    """连接测试：先验证，再保存。不写盘、不改全局配置，仅用当前填写的
+    provider / api_key / model / base_url（或已保存的 Key / 预设默认）发起一次
+    极短调用，确认可连通后前端才允许「保存并应用」。
+    返回 {ok, model, latency_ms, error}；鉴权 / 网络 / 404 / 限流均有明确错误文案。"""
+    global LLM_KEYS, LLM_CUSTOM
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    if not isinstance(body, dict):
+        body = {}
+    provider = (body.get("provider") or "").strip()
+    api_key = (body.get("api_key") or "").strip()
+    model = (body.get("model") or "").strip()
+    base_url = (body.get("base_url") or "").strip()
+    preset = next((p for p in LLM_PRESETS if p["id"] == provider), None)
+    if not preset:
+        return JSONResponse({"ok": False, "error": "未知的服务商 provider"}, status_code=400)
+    # 解析实际要测试的 base_url / key / model（不写盘，不影响当前生效配置）
+    keys = dict(LLM_KEYS)
+    if not api_key and provider in keys:
+        api_key = keys[provider]            # 没新填 Key 时，复用已保存的（对「切换后状态提示」更友好）
+    if preset.get("custom"):
+        custom = LLM_CUSTOM or {}
+        if not base_url:
+            base_url = custom.get("base_url", "")
+        if not model:
+            model = custom.get("model", "")
+    else:
+        if not base_url:
+            base_url = preset.get("base_url", "")
+        if not model:
+            model = preset.get("default_model", "")
+    missing = []
+    if not model:
+        missing.append("模型")
+    if preset.get("custom") and not base_url:
+        missing.append("Base URL")
+    if missing:
+        return JSONResponse({"ok": False, "error": "请填写：" + "、".join(missing)},
+                            status_code=400)
+    ok, mdl, latency, err = _test_llm_connection(base_url, api_key, model)
+    if ok:
+        return {"ok": True, "provider": provider, "model": mdl, "latency_ms": latency}
+    return JSONResponse({"ok": False, "error": err or "连接失败"}, status_code=200)
 
 
 # ---------------------------------------------------------------- SPA 回退

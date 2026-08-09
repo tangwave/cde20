@@ -2048,6 +2048,7 @@ const App = {
     this._renderQaMode();
     this._initModelPanel();
     this.loadInlineModels();
+    this.updateConnBadge();   // 启动时检测当前模型连接状态并展示徽标
     this._qaMode = 'local';
     this._initModeSeg();
     this._applyDefaultModeFromHealth();
@@ -2336,6 +2337,8 @@ const App = {
     if (close) close.addEventListener('click', () => this.closeModelModal());
     const save = document.getElementById('qa9ModelSave');
     if (save) save.addEventListener('click', () => this.saveModelConfig());
+    const testBtn = document.getElementById('qa9TestConn');
+    if (testBtn) testBtn.addEventListener('click', () => this.testConnection());
     const prov = document.getElementById('qa9Provider');
     if (prov) prov.addEventListener('change', () => this.onProviderChange());
     const modal = document.getElementById('qa9ModelModal');
@@ -2411,6 +2414,7 @@ const App = {
       if (j && j.ok) {
         this._toast('已切换至 ' + (j.provider_name || provider) + ' / ' + j.model);
         this._renderQaMode();
+        this.updateConnBadge();   // 切换后自动检测新模型连接状态
       } else if (j && j.error && j.error.indexOf('API Key') >= 0) {
         this.openModelModal();
         const prov = document.getElementById('qa9Provider');
@@ -2528,6 +2532,9 @@ const App = {
           status.textContent = '⚠️ 尚未配置 AI 模型：粘贴 API Key 并保存即可启用。';
         }
       }
+      // 打开弹窗时先清空连接测试态；若已配置则自动复测一次，通过即可直接保存
+      this._resetConnTest();
+      if (j.configured) this.testConnection();
     } catch (e) { /* 忽略 */ }
   },
 
@@ -2552,6 +2559,112 @@ const App = {
       modelSel.innerHTML = (preset.models || []).map(m =>
         '<option value="' + Penetrator.esc(m) + '">' + Penetrator.esc(m) + '</option>').join('');
     }
+    // 切换服务商后，之前的连接测试结果失效，需重新测试
+    this._resetConnTest();
+  },
+
+  // 根据是否通过连接测试，启用/禁用「保存并应用」按钮
+  _applySaveEnabled() {
+    const s = document.getElementById('qa9ModelSave');
+    if (!s) return;
+    if (this._connVerifiedSig) {
+      s.disabled = false;
+      s.title = '';
+    } else {
+      s.disabled = true;
+      s.title = '请先点击【测试连接】确认可连通后再保存';
+    }
+  },
+
+  // 切换服务商 / 改动字段 / 打开弹窗时，令先前的测试结果失效
+  _resetConnTest() {
+    this._connVerifiedSig = null;
+    const msg = document.getElementById('qa9TestResult');
+    if (msg) { msg.className = 'qa9-test-result'; msg.textContent = '填写完成后点【测试连接】，确认可连通后再保存。'; }
+    this._applySaveEnabled();
+  },
+
+  // 连接测试：用当前填写的 provider/api_key/model/base_url 发起一次极短调用，
+  // 成功后置位 _connVerifiedSig（保存时据此放行），失败则给出明确原因。
+  async testConnection() {
+    const msg = document.getElementById('qa9TestResult');
+    const prov = document.getElementById('qa9Provider');
+    const key = document.getElementById('qa9ApiKey');
+    const baseUrlInput = document.getElementById('qa9BaseUrl');
+    const pid = prov ? prov.value : '';
+    const preset = (this._presets || []).find(p => p.id === pid) || {};
+    const base_url = baseUrlInput ? baseUrlInput.value.trim() : '';
+    let model = '';
+    if (preset.custom) {
+      const mt = document.getElementById('qa9ModelText');
+      model = mt ? mt.value.trim() : '';
+    } else {
+      const ms = document.getElementById('qa9Model');
+      model = ms ? ms.value : '';
+    }
+    const apiKey = key ? key.value.trim() : '';
+    // 签名 = 实际生效的「服务商|模型|URL|是否带新Key」，仅当测试态与此一致时才放行保存
+    const sig = pid + '|' + model + '|' + base_url + '|' + (apiKey ? '1' : '0');
+    this._connVerifiedSig = null;
+    this._applySaveEnabled();
+    if (msg) { msg.className = 'qa9-test-result testing'; msg.textContent = '🔌 正在测试连接…'; }
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: pid, model: model, base_url: base_url, api_key: apiKey })
+      });
+      const j = await r.json();
+      if (j && j.ok) {
+        this._connVerifiedSig = sig;
+        this._applySaveEnabled();
+        if (msg) {
+          msg.className = 'qa9-test-result ok';
+          msg.textContent = '✅ 连接成功（' + (j.latency_ms || 0) + 'ms）· 模型 ' + (j.model || model) + ' —— 可以保存并应用';
+        }
+      } else {
+        if (msg) { msg.className = 'qa9-test-result err'; msg.textContent = '❌ 连接失败：' + ((j && j.error) || '未知错误') + ' —— 请检查填写内容后重试'; }
+      }
+    } catch (e) {
+      if (msg) { msg.className = 'qa9-test-result err'; msg.textContent = '❌ 网络错误，请重试'; }
+    }
+  },
+
+  // 输入框下方模型切换后，用当前生效配置测一次，并把结果体现在状态徽标上
+  async updateConnBadge() {
+    const badge = document.getElementById('qa9ConnBadge');
+    if (!badge) return;
+    const cfg = await this._loadCurrentModel();
+    if (!cfg || !cfg.configured) {
+      badge.className = 'qa9-conn-badge none';
+      badge.innerHTML = '⚪ 未配置';
+      badge.title = '尚未配置 AI 模型，点 ⚙️ 设置';
+      return;
+    }
+    badge.className = 'qa9-conn-badge testing';
+    badge.innerHTML = '🔌 连接测试…';
+    badge.title = '正在测试当前模型连接…';
+    try {
+      const r = await fetch(this._apiBase() + '/api/llm-test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: cfg.provider, model: cfg.model, base_url: cfg.base_url })
+      });
+      const j = await r.json();
+      if (j && j.ok) {
+        badge.className = 'qa9-conn-badge ok';
+        badge.innerHTML = '✅ 已连接 <span class="qa9-lat">' + (j.latency_ms || 0) + 'ms</span>';
+        badge.title = '当前模型 ' + (j.model || cfg.model) + ' 连接正常（' + (j.latency_ms || 0) + 'ms）';
+      } else {
+        badge.className = 'qa9-conn-badge err';
+        badge.innerHTML = '❌ 未连接';
+        badge.title = '连接失败：' + ((j && j.error) || '未知错误');
+      }
+    } catch (e) {
+      badge.className = 'qa9-conn-badge err';
+      badge.innerHTML = '❌ 网络错误';
+      badge.title = '无法联系后端，请刷新重试';
+    }
   },
 
   async saveModelConfig() {
@@ -2573,6 +2686,12 @@ const App = {
     }
     const apiKey = key ? key.value.trim() : '';
     const payload = { provider: pid, model: model, base_url: base_url, api_key: apiKey };
+    // 必须先通过连接测试（针对当前填写签名）才允许保存，落实「测试成功后再确认」
+    const sig = pid + '|' + model + '|' + base_url + '|' + (apiKey ? '1' : '0');
+    if (this._connVerifiedSig !== sig) {
+      if (msg) { msg.className = 'qa9-model-msg err'; msg.textContent = '请先点击【测试连接】确认可连通后再保存。'; }
+      return;
+    }
     if (msg) { msg.textContent = '保存中…'; msg.className = 'qa9-model-msg'; }
     try {
       const r = await fetch(this._apiBase() + '/api/llm-config', {
