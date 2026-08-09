@@ -3466,19 +3466,140 @@ Object.assign(App, {
           '<h1 class="reg-reader-title">' + Penetrator.esc(reg.title) + '</h1>' +
           '<div class="reg-reader-meta">' + metaLine + '</div>' + src + aiBtn +
           '</div>' +
-          '<div class="reg-reader-body">' + bodyHtml + '</div>' +
-          '<div class="reg-ai-box" id="regAiBox" style="display:none;"></div>' +
+          '<div class="reg-tabs">' +
+            '<button type="button" class="reg-tab active" data-tab="origin">📜 原文</button>' +
+            '<button type="button" class="reg-tab" data-tab="terms">🔤 术语表<span class="reg-tab-badge" id="regTermsBadge"></span></button>' +
+            '<button type="button" class="reg-tab" data-tab="rel">🔗 关系网络<span class="reg-tab-badge" id="regRelBadge"></span></button>' +
+            '<button type="button" class="reg-tab" data-tab="prod">🧬 适用产品<span class="reg-tab-badge" id="regProdBadge"></span></button>' +
+          '</div>' +
+          '<div class="reg-tab-panel" id="regTabOrigin" style="display:block;">' +
+            '<div class="reg-reader-body">' + bodyHtml + '</div>' +
+            '<div class="reg-ai-box" id="regAiBox" style="display:none;"></div>' +
+          '</div>' +
+          '<div class="reg-tab-panel" id="regTabTerms" style="display:none;"></div>' +
+          '<div class="reg-tab-panel" id="regTabRel" style="display:none;"></div>' +
+          '<div class="reg-tab-panel" id="regTabProd" style="display:none;"></div>' +
           '</div>';
         const ab = reader.querySelector('#regAiExpandBtn');
         if (ab) ab.addEventListener('click', () => this._regAiExpand(reg));
-        const bodyEl = reader.querySelector('.reg-reader-body');
+        const bodyEl = reader.querySelector('#regTabOrigin .reg-reader-body');
         if (bodyEl) this.penetrateDom(bodyEl);
+        // 计算徽标数量（术语 / 关系 / 产品）
+        const terms = this._regFindTerms(body);
+        const relArr = (globalThis.REG_RELATIONS && globalThis.REG_RELATIONS.byPath[reg.path]) || [];
+        const prodArr = (globalThis.REG_PRODUCTS && globalThis.REG_PRODUCTS.byPath[reg.path]) || [];
+        const tb = id => reader.querySelector(id);
+        if (tb('#regTermsBadge')) tb('#regTermsBadge').textContent = terms.length ? terms.length : '';
+        if (tb('#regRelBadge')) tb('#regRelBadge').textContent = relArr.length ? relArr.length : '';
+        if (tb('#regProdBadge')) tb('#regProdBadge').textContent = prodArr.length ? prodArr.length : '';
+        const panelMap = { origin: 'regTabOrigin', terms: 'regTabTerms', rel: 'regTabRel', prod: 'regTabProd' };
+        reader.querySelectorAll('.reg-tab').forEach(btn => btn.addEventListener('click', () => {
+          const tab = btn.dataset.tab;
+          reader.querySelectorAll('.reg-tab').forEach(x => x.classList.toggle('active', x === btn));
+          Object.keys(panelMap).forEach(k => {
+            const p = reader.querySelector('#' + panelMap[k]);
+            if (p) p.style.display = (k === tab) ? 'block' : 'none';
+          });
+          if (tab === 'terms' && tb('#regTabTerms') && !tb('#regTabTerms').dataset.done) this._renderRegTerms(reader, terms);
+          if (tab === 'rel' && tb('#regTabRel') && !tb('#regTabRel').dataset.done) this._renderRegRelations(reader, reg.path);
+          if (tab === 'prod' && tb('#regTabProd') && !tb('#regTabProd').dataset.done) this._renderRegProducts(reader, reg.path);
+        }));
         reader.scrollTop = 0;
       })
       .catch(err => {
         reader.innerHTML = '<div class="reg-reader-loading">载入失败（' + Penetrator.esc(String(err)) + '）。' +
           (reg.url ? '可点击 <a href="' + Penetrator.esc(reg.url) + '" target="_blank" rel="noopener">官方来源</a> 查看。' : '') + '</div>';
       });
+  },
+
+  // 在法规正文中查找命中的穿透术语（去重）
+  _regFindTerms(body) {
+    const PEN = globalThis.PEN_TERMS || [];
+    if (!body) return [];
+    const found = [], seen = new Set();
+    PEN.forEach(t => {
+      if (!t || seen.has(t.t)) return;
+      const names = [t.t].concat(t.a || []);
+      if (names.some(n => n && body.indexOf(n) >= 0)) { seen.add(t.t); found.push(t); }
+    });
+    return found;
+  },
+
+  _renderRegTerms(reader, terms) {
+    const panel = reader.querySelector('#regTabTerms');
+    if (!panel) return;
+    panel.dataset.done = '1';
+    if (!terms || !terms.length) { panel.innerHTML = '<div class="reg-panel-empty">本法规正文未命中术语库术语。</div>'; return; }
+    let html = '<div class="reg-term-list">';
+    terms.forEach(t => {
+      const alias = (t.a && t.a.length) ? ('（' + t.a.join('、') + '）') : '';
+      html += '<div class="reg-term-card">' +
+        '<div class="reg-term-head"><span class="reg-term-name">' + Penetrator.esc(t.t) + '</span>' +
+        '<span class="reg-term-cat">' + Penetrator.esc(t.c || '') + '</span>' +
+        (alias ? '<span class="reg-term-alias">' + Penetrator.esc(alias) + '</span>' : '') + '</div>' +
+        '<p class="reg-term-desc">' + Penetrator.esc(t.d || '') + '</p>' +
+        (t.r ? '<div class="reg-term-rel">来源关联：' + Penetrator.esc(t.r) + '</div>' : '') +
+        '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+  },
+
+  _renderRegRelations(reader, path) {
+    const panel = reader.querySelector('#regTabRel');
+    if (!panel) return;
+    panel.dataset.done = '1';
+    const arr = (globalThis.REG_RELATIONS && globalThis.REG_RELATIONS.byPath[path]) || [];
+    if (!arr.length) { panel.innerHTML = '<div class="reg-panel-empty">暂无关联法规（本库内未建立与该法规的层级／引用关系）。</div>'; return; }
+    const typeLabel = { parent: '上位法', child: '下位／配套', supersede: '替代', related: '相关' };
+    let html = '<div class="reg-rel-list">';
+    arr.forEach(e => {
+      const dirTxt = e.dir === 'in' ? '← 被引用' : '→ 引用';
+      html += '<div class="reg-rel-item">' +
+        '<span class="reg-rel-type ' + Penetrator.esc(e.type) + '">' + (typeLabel[e.type] || e.type) + '</span>' +
+        '<span class="reg-rel-title" data-path="' + Penetrator.esc(e.target) + '">' + Penetrator.esc(e.targetTitle) + '</span>' +
+        '<span class="reg-rel-dir">' + dirTxt + '</span>' +
+        (e.note ? '<span class="reg-rel-note">' + Penetrator.esc(e.note) + '</span>' : '') +
+        '</div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.querySelectorAll('.reg-rel-title[data-path]').forEach(el => {
+      el.addEventListener('click', () => { const p = el.dataset.path; if (p) this.openRegulation(p); });
+    });
+  },
+
+  _renderRegProducts(reader, path) {
+    const panel = reader.querySelector('#regTabProd');
+    if (!panel) return;
+    panel.dataset.done = '1';
+    const arr = (globalThis.REG_PRODUCTS && globalThis.REG_PRODUCTS.byPath[path]) || [];
+    if (!arr.length) { panel.innerHTML = '<div class="reg-panel-empty">本法规暂无关联产品（质量体系知识库中未引用该法规）。</div>'; return; }
+    const groups = {};
+    arr.forEach(e => {
+      const c = e.category || '其他', v = e.variety || '通用';
+      groups[c] = groups[c] || {};
+      groups[c][v] = groups[c][v] || [];
+      groups[c][v].push(e);
+    });
+    let html = '';
+    Object.keys(groups).forEach(cat => {
+      html += '<div class="reg-prod-group"><div class="reg-prod-group-title">' + Penetrator.esc(cat) + '</div><div class="reg-prod-cards">';
+      Object.keys(groups[cat]).forEach(v => {
+        const items = groups[cat][v];
+        html += '<div class="reg-prod-card"><div class="reg-prod-variety">' + Penetrator.esc(v) + '</div><div class="reg-prod-stages">';
+        items.forEach(e => {
+          const cls = e.refType === 'quality_mgmt' ? 'reg-prod-chip qm' : 'reg-prod-chip';
+          const tag = e.refType === 'quality_mgmt' ? '·质管' : '';
+          html += '<span class="' + cls + '">' + Penetrator.esc(e.stageName || e.stage) + tag + '</span>';
+        });
+        html += '</div>';
+        if (items[0] && !items[0].resolved) html += '<div class="reg-prod-unresolved">（该法规未在原文库收录，仅记录于质量体系关联）</div>';
+        html += '</div>';
+      });
+      html += '</div></div>';
+    });
+    panel.innerHTML = html;
   },
 
   // 法规原文库统一数据源：直接来自知识库（REG_KB_FULL，kb.sqlite 导出的全量索引，与知识库数量一致）

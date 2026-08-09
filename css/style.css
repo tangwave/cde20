@@ -2085,6 +2085,118 @@ a:hover {
 }
 
 /* ============================================
+   法规原文库 · 阅读器 Tab（原文 / 术语表 / 关系网络 / 适用产品）
+   ============================================ */
+.reg-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 8px;
+}
+.reg-tab {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.reg-tab:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.reg-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.reg-tab-badge {
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(255,255,255,.25);
+  border-radius: 999px;
+  padding: 0 5px;
+}
+.reg-tab:not(.active) .reg-tab-badge {
+  background: var(--bg-hover);
+  color: var(--text-muted);
+}
+.reg-tab-panel { animation: regFade .18s ease; }
+@keyframes regFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* 术语表 */
+.reg-term-list { display: flex; flex-direction: column; gap: 10px; }
+.reg-term-card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  background: var(--bg-card);
+}
+.reg-term-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+.reg-term-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.reg-term-cat {
+  font-size: 11px; font-weight: 600; color: var(--accent-teal);
+  background: var(--bg-section); border-radius: 6px; padding: 1px 7px;
+}
+.reg-term-alias { font-size: 12px; color: var(--text-muted); }
+.reg-term-desc { font-size: 13px; line-height: 1.7; color: var(--text-secondary); margin: 4px 0 0; }
+.reg-term-rel { font-size: 11px; color: var(--accent-purple); margin-top: 4px; }
+
+/* 关系网络 */
+.reg-rel-list { display: flex; flex-direction: column; gap: 8px; }
+.reg-rel-item {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  border: 1px solid var(--border-light); border-radius: var(--radius-md);
+  padding: 9px 12px; background: var(--bg-card);
+}
+.reg-rel-type {
+  font-size: 11px; font-weight: 700; border-radius: 6px; padding: 1px 8px; white-space: nowrap;
+}
+.reg-rel-type.parent { background: #E3F2FD; color: #1565C0; }
+.reg-rel-type.child  { background: #E8F5E9; color: #2E7D32; }
+.reg-rel-type.supersede { background: #FFEBEE; color: #C62828; }
+.reg-rel-type.related { background: #F3E5F5; color: #6A1B9A; }
+.reg-rel-title { font-size: 14px; font-weight: 600; color: var(--text-primary); cursor: pointer; }
+.reg-rel-title:hover { color: var(--primary); text-decoration: underline; }
+.reg-rel-note { font-size: 12px; color: var(--text-muted); }
+.reg-rel-dir { font-size: 11px; color: var(--text-muted); }
+
+/* 适用产品 */
+.reg-prod-group { margin-bottom: 14px; }
+.reg-prod-group-title {
+  font-size: 13px; font-weight: 700; color: var(--accent-teal);
+  border-left: 3px solid var(--accent-teal); padding-left: 8px; margin-bottom: 8px;
+}
+.reg-prod-cards { display: flex; flex-direction: column; gap: 8px; }
+.reg-prod-card {
+  border: 1px solid var(--border-light); border-radius: var(--radius-md);
+  padding: 10px 12px; background: var(--bg-card);
+}
+.reg-prod-variety { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.reg-prod-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.reg-prod-chip {
+  font-size: 11px; font-weight: 600; border-radius: 999px;
+  padding: 2px 9px; background: var(--bg-section); color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+.reg-prod-chip.qm { background: #FFF3E0; color: #E65100; border-color: #FFCC80; }
+.reg-prod-unresolved { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 4px; }
+
+.reg-panel-empty { color: var(--text-muted); font-size: 13px; padding: var(--spacing-md) 0; font-style: italic; }
+.reg-panel-loading { color: var(--text-muted); font-size: 13px; padding: var(--spacing-md) 0; }
+
+/* ============================================
    响应式设计
    ============================================ */
 @media (max-width: 1024px) {
