@@ -70,7 +70,7 @@ _load_dotenv()
 # 内置多家 OpenAI 兼容服务商；用户只需选 provider + 粘贴 API Key 即可使用，
 # 模型列表由预设提供（自定义 provider 允许手填 base_url / model）。
 # 种子预设：首次运行时写入 llm_presets.json；之后以文件为准（用户可增/改/删）。
-# 2026-08 全量梳理「当前可免费/低成本使用的 AI 模型」：覆盖国内外 12 家 OpenAI 兼容服务商，
+# 2026-08 全量梳理「当前可免费/低成本使用的 AI 模型」：覆盖国内外 13 家 OpenAI 兼容服务商，
 # 每家给出 base_url 与免费（或免费起步）模型清单；用户只需在网页里选服务商 + 粘贴 API Key 即可用。
 # 免费形态分两类：(1) 真·免费无需付费 Key（OpenRouter :free、智谱/通义/混元/千帆的免费档、
 #   Gemini/Groq 免费层、Ollama 本地无需 Key）；(2) 免费额度/代金券起步（Kimi 15 元代金券、
@@ -87,6 +87,17 @@ LLM_PRESETS_DEFAULT = [
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
      ],
      "default_model": "inclusionai/ling-3.0-tiny:free"},
+    {"id": "chatanywhere", "name": "ChatAnywhere（GitHub 免费 Key · GPT/DeepSeek 免费额度）",
+     "base_url": "https://api.chatanywhere.tech/v1",
+     "models": [
+        "gpt-4o-mini",          # 免费 100 次/天，平衡之选（默认）
+        "gpt-3.5-turbo",        # 免费 100 次/天
+        "gpt-4.1-mini",         # 免费 100 次/天
+        "gpt-5-mini",           # 免费 100 次/天
+        "gpt-5-nano",           # 免费 100 次/天
+        "deepseek-r1",          # 免费 30 次/天，强推理
+     ],
+     "default_model": "gpt-4o-mini"},
     {"id": "zhipu", "name": "智谱 GLM（glm-4.7-flash / glm-4-flash 永久免费）",
      "base_url": "https://open.bigmodel.cn/api/paas/v4",
      "models": ["glm-4.7-flash", "glm-4-flash", "glm-5.1"], # glm-4.7/4-flash 永久免费 / glm-5.1 旗舰付费
