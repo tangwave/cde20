@@ -139,6 +139,10 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.groq.com/openai/v1",
      "models": ["llama-3.3-70b-versatile", "llama-4-scout-17b-16e-instruct", "qwen3-32b", "gpt-oss-120b"],
      "default_model": "llama-3.3-70b-versatile"},
+    {"id": "mistral", "name": "Mistral AI（La Plateforme 实验计划 · 免信用卡）",
+     "base_url": "https://api.mistral.ai/v1",
+     "models": ["mistral-small-4", "mistral-medium-3", "mistral-large-3", "mistral-nemo", "codestral", "ministral-8b"],
+     "default_model": "mistral-small-4"},                   # 实验计划免费 ~1B tokens/月, OpenAI 兼容, 无需信用卡(需手机验证)
     {"id": "ollama", "name": "Ollama（本地部署 · 无需 API Key）",
      "base_url": "http://localhost:11434/v1",
      "models": ["qwen2.5:7b", "llama3.1", "deepseek-r1:7b"],

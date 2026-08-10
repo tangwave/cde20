@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-09T23:54:31",
-  "total": 2201,
+  "generated_at": "2026-08-10T20:00:19",
+  "total": 2202,
   "documents": [
     {
       "file": "01_法律\\专利法.md",
@@ -22751,6 +22751,19 @@
       "category": "04_技术指导原则",
       "category_label": "技术指导原则",
       "summary": "\"TheInternationalCouncilforHarmonization(ICH)metinMontreal,CanadafromMay31toJune1,2017.TheICHAssemblyapprovedtheChinaFoodandDrugAdministrationasanewRegulatoryMem\""
+    },
+    {
+      "file": "04_技术指导原则\\ICH_转化\\关于公开征求ICHE6(R3)药物临床试验质量管理规范(GCP)附件2中文翻译稿及实施建议意见的通知.md",
+      "title": "\"关于公开征求ICH《E6（R3）：药物临床试验质量管理规范技术指导原则（GCP）》附件2中文翻译稿及实施建议意见的通知\"",
+      "type": "ICH指导原则",
+      "issuer": "国家药监局食品药品审核查验中心",
+      "publish_date": "2026-08-10",
+      "effective_date": "",
+      "source_url": "https://www.cfdi.org.cn/cfdi/resource/news/16828.html",
+      "status": "征求意见（进行中，截止约2026-09-10）",
+      "category": "04_技术指导原则",
+      "category_label": "技术指导原则",
+      "summary": "\"为推动新修订的ICH《E6（R3）：药物临床试验质量管理规范技术指导原则（GCP）》附件2（Annex 2）在国内平稳落地实施，国家药监局核查中心拟定了E6（R3）指导原则附件2中文翻译稿及实施建议，现公开征求意见，为期1个月。联系邮箱 wangyuyao@cfdi.org.cn。附件含：E6（R3）附件2中文翻译稿.pdf、英文原文.pdf、实施建议.pdf、征求意见反馈表.xlsx。此为E6（R3）附件2的国内落地实施（实施建议）环节，区别于2024年ICH第3阶段区域征求意见（针对Step 2b草案，已于2025-01-27截止）；E6（R3）全文已由2025年第125号公告宣布适用（自2026年3月31日后实施的临床试验均适用）。\""
     },
     {
       "file": "04_技术指导原则\\ICH_转化\\关于公开征求ICHE6(R3)药物临床试验质量管理规范(GCP)附件2草案意见的通知.md",

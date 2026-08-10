@@ -9,7 +9,7 @@
 
 1. **代码已经在 GitHub 上**：`tangwave/cde20`，分支 `master`。Render 只支持 GitHub / GitLab / Bitbucket，**不支持 Gitee**，所以走 GitHub 这路（Gitee 是国内的镜像仓，可不用管）。
 2. **法规库随代码一起进了仓库**：`kb.sqlite`（约 243MB）已 gzip 后按 40MB 切成 4 个分卷 `00_索引/kb.sqlite.gz.00~.03`（约 138MB）入库。构建时 `scripts/download_kb.sh` 会**自动合并解压还原成 `kb.sqlite`**，你**不需要**提供任何下载直链。
-3. **大模型后端默认已配好 OpenRouter 免费模型**：`inclusionai/ling-3.0-tiny:free`，标准 OpenAI 兼容接口，无需付费 Key。网页内也可一键切换到 ChatAnywhere（GitHub 免费 Key）/ 智谱 GLM（glm-4.7-flash 永久免费）/ 通义千问 / Kimi / 火山方舟 / 腾讯混元 / 百度千帆 / 硅基流动 / DeepSeek（V3-Lite 永久免费）/ Google Gemini / Groq / Ollama（本地）等内置服务商（见第三、四节及下方对照表）。
+3. **大模型后端默认已配好 OpenRouter 免费模型**：`inclusionai/ling-3.0-tiny:free`，标准 OpenAI 兼容接口，无需付费 Key。网页内也可一键切换到 ChatAnywhere（GitHub 免费 Key）/ 智谱 GLM（glm-4.7-flash 永久免费）/ 通义千问 / Kimi / 火山方舟 / 腾讯混元 / 百度千帆 / 硅基流动 / DeepSeek（V3-Lite 永久免费）/ Google Gemini / Groq / Mistral AI（实验计划免费）/ Ollama（本地）等内置服务商（见第三、四节及下方对照表）。
 
 ---
 
@@ -79,9 +79,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 > 💡 本项目是「药品法规问答」，默认 `inclusionai/ling-3.0-tiny:free` 最稳；其余三个偏代码，仅在你明确需要代码能力时换用。
 
-### 全部 13 家内置服务商对照（base_url + 免费模型）
+### 全部 14 家内置服务商对照（base_url + 免费模型）
 
-> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外 13 家主流 OpenAI 兼容服务商。
+> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外 14 家主流 OpenAI 兼容服务商。
 > 网页内：设置 → 选服务商 → 粘贴 API Key（各服务商 Key 独立保存）→ 选模型即可，**无需改代码**。
 > 免费额度与模型 ID 随各平台调整，以官方文档为准；新增服务商会自动并入老用户的 `llm_presets.json`。
 
@@ -99,7 +99,8 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | 10 | DeepSeek | `https://api.deepseek.com/v1` | **`deepseek-v3-lite`**（永久免费）、`deepseek-v4-flash`、`deepseek-v4-pro` | V3-Lite 永久免费不限量 | 选 v4 模型走原生联网 |
 | 11 | Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | **`gemini-2.5-flash`**（免费层 500 RPD）、`gemini-2.5-flash-lite`、`gemma-3-12b-it` | gemini-2.5-flash 免费·无需信用卡 | 1M 上下文 |
 | 12 | Groq | `https://api.groq.com/openai/v1` | **`llama-3.3-70b-versatile`**、`llama-4-scout-17b-16e-instruct`、`qwen3-32b`、`gpt-oss-120b` | 免费层·无需信用卡 | LPU 超快推理 |
-| 13 | Ollama（本地） | `http://localhost:11434/v1` | **`qwen2.5:7b`**、`llama3.1`、`deepseek-r1:7b` | 本地部署·无需 Key | 数据不出机，合规友好 |
+| 13 | Mistral AI | `https://api.mistral.ai/v1` | **`mistral-small-4`**（实验计划免费）、`mistral-medium-3`、`mistral-large-3`、`mistral-nemo`、`codestral`、`ministral-8b` | 实验计划免费·免信用卡 | La Plateforme；~1B tokens/月，需手机验证 |
+| 14 | Ollama（本地） | `http://localhost:11434/v1` | **`qwen2.5:7b`**、`llama3.1`、`deepseek-r1:7b` | 本地部署·无需 Key | 数据不出机，合规友好 |
 | — | 自定义 | （自填） | （自填） | 任意 OpenAI 兼容 | 填入 base_url / model 即可 |
 
 > 选型建议：国内中文法规问答首选 **智谱 glm-4.7-flash / 通义 qwen-plus / 腾讯 hunyuan-lite / 百度 ernie-speed**（均永久免费）；
