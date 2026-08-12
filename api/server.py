@@ -147,6 +147,20 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "http://localhost:11434/v1",
      "models": ["qwen2.5:7b", "llama3.1", "deepseek-r1:7b"],
      "default_model": "qwen2.5:7b"},                         # 本地运行，数据不出机；Key 可留空
+    {"id": "githubmodels", "name": "GitHub Models（GitHub 账号免费 · GPT-4.1/GPT-4o/o3/o4-mini）",
+     "base_url": "https://models.inference.ai.azure.com",
+     "models": ["gpt-4.1", "gpt-4o", "gpt-4o-mini", "o3-mini", "o4-mini", "Meta-Llama-3.3-70B-Instruct", "Phi-4"],
+     "default_model": "gpt-4.1"},                            # 免费层：GitHub 细粒度 PAT(需 Models 权限)，无需信用卡
+    {"id": "nvidia_nim", "name": "NVIDIA NIM（nvapi Key · DeepSeek V4 Flash 1M 上下文免费）",
+     "base_url": "https://integrate.api.nvidia.com/v1",
+     "models": ["deepseek-ai/deepseek-v4-flash", "meta/llama-3.3-70b-instruct",
+                "nvidia/llama-3.3-nemotron-super-49b-v1.5", "qwen/qwen3.5-122b-a10b",
+                "minimaxai/minimax-m2.7", "z-ai/glm-5.1"],
+     "default_model": "deepseek-ai/deepseek-v4-flash"},      # 免费 1000-5000 积分(永不过期)/40 RPM，无需信用卡
+    {"id": "cerebras", "name": "Cerebras（全球最快推理 · 1M tokens/天免费）",
+     "base_url": "https://api.cerebras.ai/v1",
+     "models": ["llama-3.3-70b", "llama3.1-70b", "gpt-oss-120b", "qwen-3-32b", "gemma-4-31b"],
+     "default_model": "llama-3.3-70b"},                      # 免费 1M TPD/30 RPM，无需信用卡；免费档上下文 8K
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]

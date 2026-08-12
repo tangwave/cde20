@@ -79,9 +79,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 > 💡 本项目是「药品法规问答」，默认 `inclusionai/ling-3.0-tiny:free` 最稳；其余三个偏代码，仅在你明确需要代码能力时换用。
 
-### 全部 14 家内置服务商对照（base_url + 免费模型）
+### 全部 17 家内置服务商对照（base_url + 免费模型）
 
-> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外 14 家主流 OpenAI 兼容服务商。
+> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外 17 家主流 OpenAI 兼容服务商。
 > 网页内：设置 → 选服务商 → 粘贴 API Key（各服务商 Key 独立保存）→ 选模型即可，**无需改代码**。
 > 免费额度与模型 ID 随各平台调整，以官方文档为准；新增服务商会自动并入老用户的 `llm_presets.json`。
 
@@ -101,6 +101,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | 12 | Groq | `https://api.groq.com/openai/v1` | **`llama-3.3-70b-versatile`**、`llama-4-scout-17b-16e-instruct`、`qwen3-32b`、`gpt-oss-120b` | 免费层·无需信用卡 | LPU 超快推理 |
 | 13 | Mistral AI | `https://api.mistral.ai/v1` | **`mistral-small-4`**（实验计划免费）、`mistral-medium-3`、`mistral-large-3`、`mistral-nemo`、`codestral`、`ministral-8b` | 实验计划免费·免信用卡 | La Plateforme；~1B tokens/月，需手机验证 |
 | 14 | Ollama（本地） | `http://localhost:11434/v1` | **`qwen2.5:7b`**、`llama3.1`、`deepseek-r1:7b` | 本地部署·无需 Key | 数据不出机，合规友好 |
+| 15 | GitHub Models | `https://models.inference.ai.azure.com` | **`gpt-4.1`**、`gpt-4o`、`gpt-4o-mini`、`o3-mini`、`o4-mini`、`Meta-Llama-3.3-70B-Instruct`、`Phi-4` | GitHub 账号免费·无需信用卡 | 用 GitHub 细粒度 PAT（需 Models 权限）；GPT-4.1/o3/o4-mini 等官方旗舰免费 |
+| 16 | NVIDIA NIM | `https://integrate.api.nvidia.com/v1` | **`deepseek-ai/deepseek-v4-flash`**（1M 上下文）、`meta/llama-3.3-70b-instruct`、`nvidia/llama-3.3-nemotron-super-49b-v1.5`、`qwen/qwen3.5-122b-a10b`、`minimaxai/minimax-m2.7`、`z-ai/glm-5.1` | nvapi 免费积分·无需信用卡 | 注册送 1000–5000 积分（永不过期）/40 RPM；DeepSeek V4 Flash 长上下文免费 |
+| 17 | Cerebras | `https://api.cerebras.ai/v1` | **`llama-3.3-70b`**、`llama3.1-70b`、`gpt-oss-120b`、`qwen-3-32b`、`gemma-4-31b` | 1M tokens/天免费·无需信用卡 | 全球最快推理（LPU）；免费档上下文 8K，付费档可更长 |
 | — | 自定义 | （自填） | （自填） | 任意 OpenAI 兼容 | 填入 base_url / model 即可 |
 
 > 选型建议：国内中文法规问答首选 **智谱 glm-4.7-flash / 通义 qwen-plus / 腾讯 hunyuan-lite / 百度 ernie-speed**（均永久免费）；
