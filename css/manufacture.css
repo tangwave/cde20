@@ -267,6 +267,87 @@
 .mf-feat li, .mf-qc li { font-size: 13.5px; line-height: 1.75; color: #34495e; margin-bottom: 4px; }
 .mf-qc li { color: #3a2c2c; }
 
+/* ---------- 入门引导卡 ---------- */
+.mf-intro {
+  background: linear-gradient(135deg, #f3f9ff 0%, #eaf3fb 100%);
+  border: 1px solid #cfe4f5;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+.mf-intro-title { font-size: 17px; font-weight: 800; color: var(--primary-dark, #0D47A1); margin-bottom: 8px; }
+.mf-intro-body { font-size: 13.5px; line-height: 1.85; color: #3c5168; }
+.mf-intro-body b { color: var(--primary-dark, #0D47A1); }
+.mf-intro-hint { margin-top: 10px; font-size: 13px; color: #1b73c9; font-weight: 600; }
+
+/* ---------- 分类体系概览面板（融合要点） ---------- */
+.mf-overview {
+  background: #fff;
+  border: 1px solid #e6ebf1;
+  border-left: 4px solid var(--accent-teal, #00695C);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.mf-ov-head { font-size: 16px; font-weight: 800; color: var(--accent-teal, #00695C); margin-bottom: 12px; }
+.mf-ov-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.mf-ov-cell {
+  background: #f6fafc;
+  border: 1px solid #e3ebf2;
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+.mf-ov-cell-diff { background: #fdf3f3; border-color: #f3dcdc; }
+.mf-ov-k { font-size: 12.5px; font-weight: 700; color: var(--primary-dark, #0D47A1); margin-bottom: 5px; }
+.mf-ov-cell-diff .mf-ov-k { color: var(--accent-red, #C62828); }
+.mf-ov-v { font-size: 13px; line-height: 1.7; color: #3c4a59; }
+.mf-ov-actions { margin-top: 14px; }
+.mf-ov-btn {
+  border: 1px solid var(--accent-teal, #00695C);
+  background: #fff;
+  color: var(--accent-teal, #00695C);
+  border-radius: 9px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all .15s;
+}
+.mf-ov-btn:hover { background: var(--accent-teal, #00695C); color: #fff; }
+.mf-termhint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #607d8b;
+  background: #f1f8f7;
+  border: 1px dashed #b2dfdb;
+  border-radius: 8px;
+  padding: 8px 11px;
+  line-height: 1.55;
+}
+.mf-termhint b { color: var(--accent-teal, #00695C); }
+
+/* ---------- 生产工序：目的 + 怎么做 双栏 ---------- */
+.mf-step-why, .mf-step-how {
+  font-size: 13px;
+  line-height: 1.65;
+  margin-top: 5px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.mf-step-why { color: #2c6e8f; }
+.mf-step-how { color: #34495e; }
+.mf-step-tag {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.mf-step-tag.why { background: #e3f2fd; color: #1565c0; }
+.mf-step-tag.how { background: #e0f2f1; color: #00695c; }
+
 /* ---------- 质量控制要点 表格 ---------- */
 .mf-section-qcp .mf-section-title { color: var(--accent-teal, #00695C); border-bottom-color: #e0f2f1; }
 .mf-qcp-note {
