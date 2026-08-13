@@ -87,7 +87,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 | # | 服务商 | `base_url`（已内置） | 免费模型（**加粗=默认**） | 免费形态 | 备注 |
 |---|--------|----------------------|---------------------------|----------|------|
-| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`inclusionai/ling-3.0-tiny:free`**、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free`、`cohere/north-mini-code:free` | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0） |
+| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`inclusionai/ling-3.0-tiny:free`**、`google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`nvidia/nemotron-3-super-120b-a12b:free`、`openai/gpt-oss-20b:free`、`nvidia/nemotron-nano-12b-v2-vl:free`(视觉)、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free`、`cohere/north-mini-code:free` | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0）；2026-08 新增 Gemma 4 / Nemotron 3 / GPT-OSS 系列真免费模型 |
 | 2 | ChatAnywhere | `https://api.chatanywhere.tech/v1` | **`gpt-4o-mini`**、`gpt-3.5-turbo`、`gpt-4.1-mini`、`gpt-5-mini`、`gpt-5-nano`、`deepseek-r1` | GitHub 免费 Key·每日额度 | 绑定 GitHub 领 Key；gpt-4o-mini/3.5/4.1-mini/5-mini/5-nano 各 100 次/天，deepseek-r1 30 次/天，gpt-5/4.1 仅 5 次/天；国内 `api.chatanywhere.tech`，国外 `api.chatanywhere.org` |
 | 3 | 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | **`glm-4.7-flash`**（永久免费）、`glm-4-flash`（永久免费）、`glm-5.1` | glm-4.7/4-flash 永久免费 | 新用户赠 2000 万 token |
 | 4 | 通义千问 Qwen | `https://dashscope.aliyuncs.com/compatible-mode/v1` | **`qwen-plus`**（每日 100 万免费）、`qwen-turbo`（永久免费）、`qwen-long`、`qwen2.5-72b-instruct` | qwen-turbo 永久免费 | 阿里云百炼 |

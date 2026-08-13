@@ -83,6 +83,11 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://openrouter.ai/api/v1",
      "models": [
         "inclusionai/ling-3.0-tiny:free",                   # 真免费，262K 上下文，通用小模型
+        "google/gemma-4-31b-it:free",                       # 真免费，Gemma 4 31B 通用强模型（2026-08 新增）
+        "google/gemma-4-26b-a4b-it:free",                   # 真免费，Gemma 4 26B A4B
+        "nvidia/nemotron-3-super-120b-a12b:free",           # 真免费，Nemotron 3 Super 120B 强模型
+        "openai/gpt-oss-20b:free",                          # 真免费，OpenAI 开放权重 20B
+        "nvidia/nemotron-nano-12b-v2-vl:free",              # 真免费，支持视觉(vision)
         "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
         "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
