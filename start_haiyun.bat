@@ -4,11 +4,11 @@ REM 双击即常驻；或交给 Windows 计划任务「登录时」运行，实�
 setlocal
 cd /d "%~dp0"
 set PORT=8000
-REM 大模型：OpenRouter 真·免费模型 inclusionai/ling-3.0-tiny:free（OpenAI 兼容 /chat/completions）
+REM 大模型：OpenRouter 真·免费模型 openai/gpt-oss-20b:free（OpenAI 兼容 /chat/completions）
 REM 非密钥项显式传入，避免被系统/用户环境变量（如 LLM_MODEL=qwen3:8b）覆盖 .env
 set LLM_PROVIDER=openai
 set LLM_BASE_URL=https://openrouter.ai/api/v1
-set LLM_MODEL=inclusionai/ling-3.0-tiny:free
+set LLM_MODEL=openai/gpt-oss-20b:free
 set LLM_TIMEOUT=120
 set LLM_TEMP=0.3
 REM 密钥从被 git 忽略的 .env 读取（不写进本文件，避免泄露到仓库）
