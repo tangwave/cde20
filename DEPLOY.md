@@ -64,12 +64,13 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-14 实测真免费（共 **15** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-15 实测真免费（共 **16** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
 > ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除，本项目默认模型已切换为 `openai/gpt-oss-20b:free`。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
 | **`openai/gpt-oss-20b:free`**（默认） | OpenAI 开放权重 20B 通用模型 | **默认推荐**：常规法规问答、长文摘要 | 通用能力强、稳定 |
+| `dots-studio/dots-3-note-preview:free` | Dots 3 Note 预览（长上下文） | 笔记 / 长文摘要、法规要点梳理 | 长上下文 |
 | `google/gemma-4-31b-it:free` | Gemma 4 31B 通用强模型 | 法规问答、中文理解 | 综合均衡 |
 | `google/gemma-4-26b-a4b-it:free` | Gemma 4 26B（A4B 激活） | 长文处理、摘要 | 高效 |
 | `nvidia/nemotron-3-super-120b-a12b:free` | Nemotron 3 Super 120B 强模型 | 复杂推理、深度问答 | 大体量 |
