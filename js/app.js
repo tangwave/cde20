@@ -1335,6 +1335,21 @@ const App = {
       coHtml = `<section class="qs-gmp-block qs-gmp-coline"><div class="qs-gmp-block-head"><h3>🧫 共线 / 交叉污染评估</h3></div><p class="qs-coline-summary">该品种共线生产的交叉污染风险较低，常规清洁验证与阶段性生产即可满足要求。</p></section>`;
     }
 
+    const qms = detail.qmsFocus || [];
+    let qmsHtml = '';
+    if (qms.length) {
+      const cards = qms.map(q => `
+        <div class="qs-qms-card">
+          <div class="qs-qms-area">${esc(q.area || '')}</div>
+          <ul class="qs-qms-list">${(q.points || []).map(p => `<li>${this.pen(p)}</li>`).join('')}</ul>
+        </div>`).join('');
+      qmsHtml = `
+      <section class="qs-gmp-block qs-gmp-qms">
+        <div class="qs-gmp-block-head"><h3>🎯 质量管理关注要点</h3><span class="qs-qms-count">${qms.length} 个管理域</span></div>
+        <div class="qs-qms-grid">${cards}</div>
+      </section>`;
+    }
+
     return `
     <div class="qs-gmp-card">
       <div class="qs-gmp-head">
@@ -1360,6 +1375,7 @@ const App = {
         </section>
       </div>
       ${coHtml}
+      ${qmsHtml}
       <div class="qs-gmp-actions">
         <button class="qs-gmp-act-btn" data-action="open-stage-matrix">查看「${esc(v.name)} × 各研发阶段」完整要求体系 →</button>
       </div>
