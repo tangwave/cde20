@@ -349,7 +349,8 @@ const App = {
       { name: '全景总览', icon: '🗺️', key: 'panorama' },
       { name: '知识框架', icon: '📚', key: 'framework' },
       { name: '案例库', icon: '🧭', key: 'caselibrary' },
-      { name: '术语表', icon: '🔤', key: 'glossary' }
+      { name: '术语表', icon: '🔤', key: 'glossary' },
+      { name: '飞行检查', icon: '✈️', key: 'flightchecks' }
     ];
     portalItems.forEach(p => {
       const act = (this.state.view === p.key) ? ' active' : '';

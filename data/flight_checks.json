@@ -1,0 +1,383 @@
+{
+  "meta": {
+    "updated": "2026-08-16",
+    "count": 13,
+    "scope": "国家局 + 重点省份药品生产飞行检查/监督检查通报（仅药品，公开可查范围）",
+    "sources": [
+      "国家药监局(跟踪检查/飞检通报) seed",
+      "广东省药监局 自动化",
+      "浙江/山东/四川 省级 seed"
+    ],
+    "note": "飞行检查制度实际始于约2006年；公开通报大量集中于2016年之后。本数据集为v1，结构可扩展，后续可补录更多省份。"
+  },
+  "items": [
+    {
+      "id": "gd_httpgdcecgdgovcnzwgkfxjc",
+      "title": "飞行检查（\"双随机\"公开）",
+      "date": "2026-08-14",
+      "year": 2026,
+      "doc_no": "",
+      "agency": "广东省药品监督管理局",
+      "level": "省级",
+      "province": "广东",
+      "companies": [],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [
+        "质量控制/检验",
+        "委托生产"
+      ],
+      "defect_level": "",
+      "measures": "暂停生产；暂停销售；风险控制措施",
+      "status": "详见通报",
+      "summary": "飞行检查（\"双随机\"公开）-广东省药品监督管理局审评认证中心                                                           首页   中心动态   政务公开   办事服务   互动交流   专题专栏   科普园地          \t\t\t您的位置： \t\t\t 首页  >  政务公开  >  飞行检查（\"双随机\"公开）             广东省药品监督管理局关于药品经营监督检查评定结果的通告（2026年 第69号）   ",
+      "url": "http://gdcec.gd.gov.cn/zwgk/fxjc/",
+      "source": "gd_auto"
+    },
+    {
+      "id": "gd_ccontentpost_4879437html",
+      "title": "广东省药品监督管理局关于药品委托生产监督检查情况的通告",
+      "date": "2026-04-07",
+      "year": 2026,
+      "doc_no": "",
+      "agency": "广东省药品监督管理局",
+      "level": "省级",
+      "province": "广东",
+      "companies": [],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "",
+      "defect_categories": [
+        "质量控制/检验",
+        "委托生产"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "暂停生产；风险控制措施",
+      "status": "详见通报",
+      "summary": "广东省药品监督管理局关于药品委托生产监督检查情况的通告-广东省药品监督管理局审评认证中心                                                                 首页   中心动态   政务公开   办事服务   互动交流   专题专栏   科普园地          \t\t\t您的位置： \t\t\t 首页  >  政务公开  >  飞行检查（\"双随机\"公开）         广东省药品监督管理局关于药品委托生产监督检查情况的通",
+      "url": "http://gdcec.gd.gov.cn/zwgk/fxjc/content/post_4879437.html",
+      "source": "gd_auto"
+    },
+    {
+      "id": "sc_2025_scmz",
+      "title": "四川省药品生产监督检查结果通告（间苯三酚注射液不符合要求）",
+      "date": "2025-03-19",
+      "doc_no": "2025年监督检查",
+      "agency": "四川省药品监督管理局",
+      "level": "省级",
+      "province": "四川",
+      "companies": [
+        "四川海梦智森生物制药有限公司",
+        "太极集团四川太极制药有限公司"
+      ],
+      "drug_types": [
+        "化学药"
+      ],
+      "check_scope": "小容量注射剂（间苯三酚注射液，第十批集采中选）",
+      "defect_categories": [
+        "生产管理",
+        "委托生产",
+        "质量控制/检验"
+      ],
+      "defect_level": "不符合GMP要求",
+      "measures": "暂停太极制药间苯三酚注射液生产；暂停海梦智森上市销售",
+      "status": "暂停生产/销售",
+      "summary": "持有人未对受托生产企业生产过程有效监控，受托企业部分批次关键生产过程出现偏差且未按规范开展偏差处理，综合评定不符合GMP要求。",
+      "url": "https://www.toutiao.com/article/7483350033186816538/",
+      "source": "sc_seed",
+      "year": 2025
+    },
+    {
+      "id": "js_2018_q707",
+      "title": "对江苏七0七天然制药有限公司跟踪检查通报",
+      "date": "2018-12-05",
+      "doc_no": "跟踪检查通报",
+      "agency": "国家药监局（核查中心）",
+      "level": "国家局",
+      "province": "江苏",
+      "companies": [
+        "江苏七0七天然制药有限公司"
+      ],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "中成药（沉香化气丸、金胆片）",
+      "defect_categories": [
+        "物料管理",
+        "生产管理",
+        "厂房与设施"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "责成江苏省局收回相关药品GMP证书并进一步调查",
+      "status": "收回GMP证书",
+      "summary": "物料管理不规范、生产操作发生混批（金胆片糖衣片混入）、冷库面积不足致中间产品超温存放、中间站物料标识不全等，沉香化气丸生产质量管理不符合药品GMP。",
+      "url": "https://wap.cqn.com.cn/ms/content/2018-12/05/content_6542428.htm",
+      "source": "nmpa_seed",
+      "year": 2018
+    },
+    {
+      "id": "zj_2018_q1",
+      "title": "浙江省药品生产企业飞行检查情况通报（2018年第一期）",
+      "date": "2018-10-22",
+      "doc_no": "2018年第一期",
+      "agency": "浙江省药品监督管理局",
+      "level": "省级",
+      "province": "浙江",
+      "companies": [
+        "浙江国光生物制药有限公司",
+        "宁波寿全斋中药饮片有限公司",
+        "杭州国光药业股份有限公司",
+        "浙江天瑞药业有限公司"
+      ],
+      "drug_types": [
+        "生物制品",
+        "中药",
+        "化学药"
+      ],
+      "check_scope": "生化药品/中药饮片/小容量注射剂/滴眼剂",
+      "defect_categories": [
+        "质量控制/检验",
+        "物料管理",
+        "生产管理",
+        "机构与人员"
+      ],
+      "defect_level": "严重缺陷/主要缺陷",
+      "measures": "省局发改正/警告通知书；收回/发回中药饮片GMP证书；市局跟踪",
+      "status": "整改跟踪",
+      "summary": "2018年3—8月对7家药品生产企业飞检：检验人员培训不到位、偏差未采取预防措施、共线风险评估不充分、留样真实性问题、原药材长霉、检验记录不可追溯、供应商审计过期等。",
+      "url": "https://www.nmpa.gov.cn/directory/web/nmpa/xxgk/ggtg/ypggtg/ypgmprzh/ypgmprzhgg/ypgmpshj/20181022000001554.html",
+      "source": "zj_seed",
+      "year": 2018
+    },
+    {
+      "id": "nmpa_2018_08",
+      "title": "国家药品监督管理局关于云南金七制药等8家企业严重违反GMP的通告",
+      "date": "2018-04-13",
+      "doc_no": "2018年（跟踪检查）",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "云南金七制药有限公司",
+        "湖南百草制药有限公司",
+        "亳州市京皖中药饮片厂",
+        "甘肃效灵生物开发有限责任公司",
+        "桂林鼎康中药饮片有限公司",
+        "焦作福瑞堂制药有限公司",
+        "湖南康尔佳制药股份有限公司",
+        "（另1家）"
+      ],
+      "drug_types": [
+        "中药",
+        "化学药",
+        "生物制品"
+      ],
+      "check_scope": "中成药/中药饮片/生化药品/化学药",
+      "defect_categories": [
+        "生产管理",
+        "数据可靠性",
+        "物料管理",
+        "质量控制/检验"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "收回涉事企业GMP证书；移交省级局依法立案调查",
+      "status": "收回GMP证书并立案",
+      "summary": "经跟踪检查，8家企业严重违反药品GMP：擅自改变已批准处方与关键工艺参数、批生产记录不真实、质量控制系统不能有效运行、非法外购中药提取物生产、物料管理混乱等。",
+      "url": "https://health.china.com.cn/2018-04/13/content_40290370.htm",
+      "source": "nmpa_seed",
+      "year": 2018
+    },
+    {
+      "id": "gd_2017_jh",
+      "title": "广东省药品生产安全监管飞行检查通报（广州巨虹药业）",
+      "date": "2017-08-14",
+      "doc_no": "2017年第4号",
+      "agency": "广东省药品监督管理局",
+      "level": "省级",
+      "province": "广东",
+      "companies": [
+        "广州巨虹药业有限公司"
+      ],
+      "drug_types": [
+        "化学药",
+        "中药"
+      ],
+      "check_scope": "感冒清片及浸膏粉等",
+      "defect_categories": [
+        "质量控制/检验",
+        "生产管理",
+        "物料管理"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "收回《药品GMP证书》（GD20150438）；约谈；召回；两年内二次收回",
+      "status": "收回GMP证书",
+      "summary": "2016年生产多批次感冒清片和感冒清片浸膏粉重点核查发现严重缺陷3项、主要缺陷2项、一般缺陷2项，不符合药品GMP要求，曾于2017年7月11日收回GMP证书。",
+      "url": "https://finance.ifeng.com/c/7rW0amg5r0e",
+      "source": "gd_seed",
+      "year": 2017
+    },
+    {
+      "id": "sc_2017_scgm",
+      "title": "对四川高原明珠制药有限公司跟踪检查通报",
+      "date": "2017-06-12",
+      "doc_no": "跟踪检查通报",
+      "agency": "国家药监局（CFDA）",
+      "level": "国家局",
+      "province": "四川",
+      "companies": [
+        "四川高原明珠制药有限公司"
+      ],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "中成药（复方板蓝根颗粒等）",
+      "defect_categories": [
+        "数据可靠性",
+        "生产管理",
+        "物料管理",
+        "厂房与设施"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "收回药品GMP证书；监督召回相关产品；对违法违规行为立案调查",
+      "status": "收回GMP证书并立案",
+      "summary": "存在记录造假、删除修改数据、擅自将复方板蓝根颗粒批量由5万袋变更为48万袋且未做变更控制与工艺验证、防鼠防虫措施不当、物料与清场不规范等5方面问题。",
+      "url": "https://static.nfapp.southcn.com/content/201706/12/c478605.html",
+      "source": "nmpa_seed",
+      "year": 2017
+    },
+    {
+      "id": "sd_2017_jrz",
+      "title": "对济南润正中药材有限公司飞行检查通报",
+      "date": "2017-03-27",
+      "doc_no": "飞行检查通报",
+      "agency": "山东省食品药品监督管理局",
+      "level": "省级",
+      "province": "山东",
+      "companies": [
+        "济南润正中药材有限公司"
+      ],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "中药饮片",
+      "defect_categories": [
+        "中药饮片专项",
+        "生产管理",
+        "物料管理",
+        "质量控制/检验"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "收回药品GMP证书；责成市局依法查处",
+      "status": "收回GMP证书",
+      "summary": "涉嫌违法经营具有批准文号的药品、超范围生产中药饮片且部分未经备案、部分批次中药饮片无生产/检验记录、关键岗位人员离职、生产管理混乱、检验能力不足、仓储未在库物料隔离。",
+      "url": "https://policy.ynby.cn/zc/article/detail/772406",
+      "source": "sd_seed",
+      "year": 2017
+    },
+    {
+      "id": "sd_2017_pde",
+      "title": "对平邑多尔药业有限公司飞行检查的通报",
+      "date": "2017-03-21",
+      "doc_no": "飞行检查通报",
+      "agency": "山东省食品药品监督管理局",
+      "level": "省级",
+      "province": "山东",
+      "companies": [
+        "平邑多尔药业有限公司"
+      ],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "中药饮片（丹参饮片/丹参提取物）",
+      "defect_categories": [
+        "中药饮片专项",
+        "物料管理",
+        "机构与人员"
+      ],
+      "defect_level": "严重缺陷/主要缺陷",
+      "measures": "收回药品GMP证书；责成市局依法查处",
+      "status": "收回GMP证书",
+      "summary": "与河北企业共用人员与检验中心、检验人员在岗仅1名、丹参原药材未按批管理、未按工艺规程生产仅简单拣选、新建冷库未确认、供应商管理混乱。",
+      "url": "https://policy.ynby.cn/zc/article/detail/772408",
+      "source": "sd_seed",
+      "year": 2017
+    },
+    {
+      "id": "gd_kcontentpost_4900025html",
+      "title": "广东省药品监督管理局关于药品委托生产监督检查情况的通告",
+      "date": "",
+      "year": null,
+      "doc_no": "",
+      "agency": "广东省药品监督管理局",
+      "level": "省级",
+      "province": "广东",
+      "companies": [],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [
+        "质量控制/检验",
+        "委托生产"
+      ],
+      "defect_level": "严重缺陷",
+      "measures": "暂停生产；风险控制措施",
+      "status": "详见通报",
+      "summary": "广东省药品监督管理局关于药品委托生产监督检查情况的通告                                               简体   |   繁体                   广东药品监管 关注 · 微信订阅号                       广东药品监管 关注 · 手机版             开启无障碍   |   开启长者助手                                         首页       ",
+      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4900025.html",
+      "source": "gd_auto"
+    },
+    {
+      "id": "gd_kcontentpost_4336852html",
+      "title": "药品生产安全监管通报（2024年第8号）",
+      "date": "",
+      "year": null,
+      "doc_no": "2024年第8号",
+      "agency": "广东省药品监督管理局",
+      "level": "省级",
+      "province": "广东",
+      "companies": [],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "",
+      "defect_categories": [
+        "质量控制/检验",
+        "中药饮片专项"
+      ],
+      "defect_level": "",
+      "measures": "暂停生产；风险控制措施",
+      "status": "详见通报",
+      "summary": "药品生产安全监管通报（2024年第8号）                                               简体   |   繁体                   广东药品监管 关注 · 微信订阅号                       广东药品监管 关注 · 手机版             开启无障碍   |   开启长者助手                                         首页       新闻动态   ",
+      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4336852.html",
+      "source": "gd_auto"
+    },
+    {
+      "id": "gd_kcontentpost_4303488html",
+      "title": "药品生产安全延伸检查（中药材GAP符合性检查）结果通报（2023年第1号）",
+      "date": "",
+      "year": null,
+      "doc_no": "2023年第1号",
+      "agency": "广东省药品监督管理局",
+      "level": "省级",
+      "province": "广东",
+      "companies": [],
+      "drug_types": [
+        "中药"
+      ],
+      "check_scope": "",
+      "defect_categories": [
+        "质量控制/检验"
+      ],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "药品生产安全延伸检查（中药材GAP符合性检查）结果通报（2023年第1号）                                               简体   |   繁体                   广东药品监管 关注 · 微信订阅号                       广东药品监管 关注 · 手机版             开启无障碍   |   开启长者助手                                        ",
+      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4303488.html",
+      "source": "gd_auto"
+    }
+  ]
+}
