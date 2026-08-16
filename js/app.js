@@ -4397,6 +4397,23 @@ Object.assign(App, {
     const n = lines.length;
     const isTableSep = s => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(s);
     const isBlockStart = s => /^(#{1,6}\s|\s*>|\s*[-*+]\s|\s*\d+[.)]\s)/.test(s) || /^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(s);
+    // 抢救被爬虫压平的单行表格（政府文件元数据条：| | | --- | --- | | 索引号 | … | 标题 | … |）
+    // 解析为干净的「项目 / 内容」两列表格，避免原文显示成一长串 | 与 --- 乱码。
+    const salvageFlatTable = raw => {
+      let cells = raw.split('|').map(x => x.trim());
+      while (cells.length && cells[0] === '') cells.shift();
+      while (cells.length && cells[cells.length - 1] === '') cells.pop();
+      let sep = -1;
+      for (let k = 0; k < cells.length; k++) { if (/^:?-{2,}:?$/.test(cells[k])) { sep = k; break; } }
+      const data = (sep >= 0 ? cells.slice(sep + 1) : cells).filter(x => x !== '');
+      if (data.length < 2) return null;
+      const rows = [];
+      for (let k = 0; k + 1 < data.length; k += 2) rows.push([data[k], data[k + 1]]);
+      if (!rows.length) return null;
+      let h = '<table class="reg-table"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody>';
+      rows.forEach(r => { h += '<tr><td>' + inline(r[0]) + '</td><td>' + inline(r[1]) + '</td></tr>'; });
+      return h + '</tbody></table>';
+    };
     let out = '', i = 0;
     while (i < n) {
       const line = lines[i];
@@ -4404,6 +4421,16 @@ Object.assign(App, {
       const hm = line.match(/^(#{1,6})\s+(.*)$/);
       if (hm) { const lv = hm[1].length; out += '<h' + lv + '>' + inline(hm[2].trim()) + '</h' + lv + '>'; i++; continue; }
       if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) { out += '<hr>'; i++; continue; }
+      // 压平的单行表格：本行内嵌 | --- | 分隔符（无论是否以 | 起头）→ 抢救为表格
+      if (/\|\s*:?-{2,}:?\s*\|/.test(line)) {
+        const ft = salvageFlatTable(line.trim());
+        if (ft) { out += ft; i++; continue; }
+        // 抢救失败（如孤立的 | --- | 分隔行，或 |…---…| 前缀后接正文）：
+        // 剥离前导表格残片，余下正文照常渲染；整行皆是 | 与 - 则视为分隔线。
+        const stripped = line.replace(/^\s*\|[\s|:-]*/, '').replace(/[\s|:-]*\|$/, '').trim();
+        if (stripped) { out += '<p>' + inline(stripped) + '</p>'; i++; continue; }
+        out += '<hr>'; i++; continue;
+      }
       if (line.indexOf('|') >= 0 && i + 1 < n && isTableSep(lines[i + 1])) {
         const splitRow = s => { const c = s.split('|').map(x => x.trim()); if (c.length && c[0] === '') c.shift(); if (c.length && c[c.length - 1] === '') c.pop(); return c; };
         const header = splitRow(line); i += 2; const rows = [];
