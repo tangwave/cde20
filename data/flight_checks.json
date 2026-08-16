@@ -1,7 +1,7 @@
 {
   "meta": {
     "updated": "2026-08-16",
-    "count": 13,
+    "count": 9,
     "scope": "国家局 + 重点省份药品生产飞行检查/监督检查通报（仅药品，公开可查范围）",
     "sources": [
       "国家药监局(跟踪检查/飞检通报) seed",
@@ -12,54 +12,33 @@
   },
   "items": [
     {
-      "id": "gd_httpgdcecgdgovcnzwgkfxjc",
-      "title": "飞行检查（\"双随机\"公开）",
-      "date": "2026-08-14",
-      "year": 2026,
-      "doc_no": "",
+      "id": "gd_2026_gh",
+      "title": "广东省药品监督管理局关于药品委托生产监督检查情况的通告（2026年第28号）",
+      "date": "2026-03-31",
+      "doc_no": "2026年第28号",
       "agency": "广东省药品监督管理局",
       "level": "省级",
       "province": "广东",
-      "companies": [],
+      "companies": [
+        "广州合和医药有限公司",
+        "成都天台山制药股份有限公司（受托方）"
+      ],
       "drug_types": [
-        "未标注"
+        "化学药"
       ],
-      "check_scope": "",
+      "check_scope": "药品委托生产（MAH+受托生产企业，覆盖26家）",
       "defect_categories": [
-        "质量控制/检验",
-        "委托生产"
+        "委托生产",
+        "生产管理",
+        "质量控制/检验"
       ],
-      "defect_level": "",
-      "measures": "暂停生产；暂停销售；风险控制措施",
-      "status": "详见通报",
-      "summary": "飞行检查（\"双随机\"公开）-广东省药品监督管理局审评认证中心                                                           首页   中心动态   政务公开   办事服务   互动交流   专题专栏   科普园地          \t\t\t您的位置： \t\t\t 首页  >  政务公开  >  飞行检查（\"双随机\"公开）             广东省药品监督管理局关于药品经营监督检查评定结果的通告（2026年 第69号）   ",
-      "url": "http://gdcec.gd.gov.cn/zwgk/fxjc/",
-      "source": "gd_auto"
-    },
-    {
-      "id": "gd_ccontentpost_4879437html",
-      "title": "广东省药品监督管理局关于药品委托生产监督检查情况的通告",
-      "date": "2026-04-07",
-      "year": 2026,
-      "doc_no": "",
-      "agency": "广东省药品监督管理局",
-      "level": "省级",
-      "province": "广东",
-      "companies": [],
-      "drug_types": [
-        "中药"
-      ],
-      "check_scope": "",
-      "defect_categories": [
-        "质量控制/检验",
-        "委托生产"
-      ],
-      "defect_level": "严重缺陷",
-      "measures": "暂停生产；风险控制措施",
-      "status": "详见通报",
-      "summary": "广东省药品监督管理局关于药品委托生产监督检查情况的通告-广东省药品监督管理局审评认证中心                                                                 首页   中心动态   政务公开   办事服务   互动交流   专题专栏   科普园地          \t\t\t您的位置： \t\t\t 首页  >  政务公开  >  飞行检查（\"双随机\"公开）         广东省药品监督管理局关于药品委托生产监督检查情况的通",
-      "url": "http://gdcec.gd.gov.cn/zwgk/fxjc/content/post_4879437.html",
-      "source": "gd_auto"
+      "defect_level": "不符合药品GMP要求",
+      "measures": "责令暂停相关风险产品的生产与销售，采取风险控制措施",
+      "status": "不符合要求（25家符合，1家不符）",
+      "summary": "2026年对省内26家药品上市许可持有人及受托生产企业开展委托生产监督检查，25家符合要求；广州合和医药有限公司因存在不符合药品GMP的情形被判定为不符合要求，监管部门责令暂停相关风险产品生产与销售。",
+      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4900025.html",
+      "source": "gd_seed",
+      "year": 2026
     },
     {
       "id": "sc_2025_scmz",
@@ -304,80 +283,6 @@
       "url": "https://policy.ynby.cn/zc/article/detail/772408",
       "source": "sd_seed",
       "year": 2017
-    },
-    {
-      "id": "gd_kcontentpost_4900025html",
-      "title": "广东省药品监督管理局关于药品委托生产监督检查情况的通告",
-      "date": "",
-      "year": null,
-      "doc_no": "",
-      "agency": "广东省药品监督管理局",
-      "level": "省级",
-      "province": "广东",
-      "companies": [],
-      "drug_types": [
-        "未标注"
-      ],
-      "check_scope": "",
-      "defect_categories": [
-        "质量控制/检验",
-        "委托生产"
-      ],
-      "defect_level": "严重缺陷",
-      "measures": "暂停生产；风险控制措施",
-      "status": "详见通报",
-      "summary": "广东省药品监督管理局关于药品委托生产监督检查情况的通告                                               简体   |   繁体                   广东药品监管 关注 · 微信订阅号                       广东药品监管 关注 · 手机版             开启无障碍   |   开启长者助手                                         首页       ",
-      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4900025.html",
-      "source": "gd_auto"
-    },
-    {
-      "id": "gd_kcontentpost_4336852html",
-      "title": "药品生产安全监管通报（2024年第8号）",
-      "date": "",
-      "year": null,
-      "doc_no": "2024年第8号",
-      "agency": "广东省药品监督管理局",
-      "level": "省级",
-      "province": "广东",
-      "companies": [],
-      "drug_types": [
-        "中药"
-      ],
-      "check_scope": "",
-      "defect_categories": [
-        "质量控制/检验",
-        "中药饮片专项"
-      ],
-      "defect_level": "",
-      "measures": "暂停生产；风险控制措施",
-      "status": "详见通报",
-      "summary": "药品生产安全监管通报（2024年第8号）                                               简体   |   繁体                   广东药品监管 关注 · 微信订阅号                       广东药品监管 关注 · 手机版             开启无障碍   |   开启长者助手                                         首页       新闻动态   ",
-      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4336852.html",
-      "source": "gd_auto"
-    },
-    {
-      "id": "gd_kcontentpost_4303488html",
-      "title": "药品生产安全延伸检查（中药材GAP符合性检查）结果通报（2023年第1号）",
-      "date": "",
-      "year": null,
-      "doc_no": "2023年第1号",
-      "agency": "广东省药品监督管理局",
-      "level": "省级",
-      "province": "广东",
-      "companies": [],
-      "drug_types": [
-        "中药"
-      ],
-      "check_scope": "",
-      "defect_categories": [
-        "质量控制/检验"
-      ],
-      "defect_level": "",
-      "measures": "",
-      "status": "详见通报",
-      "summary": "药品生产安全延伸检查（中药材GAP符合性检查）结果通报（2023年第1号）                                               简体   |   繁体                   广东药品监管 关注 · 微信订阅号                       广东药品监管 关注 · 手机版             开启无障碍   |   开启长者助手                                        ",
-      "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4303488.html",
-      "source": "gd_auto"
     }
   ]
 }
