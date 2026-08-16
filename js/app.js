@@ -1117,6 +1117,7 @@ const App = {
   renderMatrixView() {
     const matrixEl = document.getElementById('matrixView');
     if (!matrixEl) return;
+    this.state.qsGmpOpen = false;
     const DC = globalThis.DRUG_CLASSIFICATION;
     const lens = this.state.matrixLens || 'qs';
     const phases = this._matrixPhases();
@@ -1189,7 +1190,7 @@ const App = {
         body += `<tr class="mx-cat-row"><th class="mx-cat-th" colspan="${phases.length + 1}">${cat.icon || ''} ${esc(cat.name)} <span class="mx-cat-sub">（${vs.length} 类）</span></th></tr>`;
         vs.forEach(v => {
           const regCat = vReg[v.id] || '';
-          body += `<tr><th class="mx-rowhead"><span class="matrix-drug-icon">${v.icon || '●'}</span><span class="mx-rowname">${esc(v.name)}</span>${regCat ? `<span class="mx-regtag" data-regcat="${regCat}" title="查看对应注册分类">↗ ${regLabel[regCat]}</span>` : ''}</th>`;
+          body += `<tr><th class="mx-rowhead"><span class="matrix-drug-icon">${v.icon || '●'}</span><span class="mx-rowname">${esc(v.name)}</span><button class="mx-gmp-btn" data-variety-gmp="${v.id}" title="查看${esc(v.name)}的 GMP 要求卡片（工艺流程图 + 共线/交叉污染评估）">🔬 GMP 卡片</button>${regCat ? `<span class="mx-regtag" data-regcat="${regCat}" title="查看对应注册分类">↗ ${regLabel[regCat]}</span>` : ''}</th>`;
           phases.forEach(p => {
             let txt = '';
             p.kbStages.forEach(sid => { if (v.stages && v.stages[sid] && v.stages[sid].summary) txt += (txt ? '\n' : '') + v.stages[sid].summary; });
@@ -1245,6 +1246,124 @@ const App = {
     matrixEl.querySelectorAll('.mx-regtag').forEach(t => t.addEventListener('click', (e) => { e.stopPropagation(); this.openClassification(t.dataset.regcat); }));
     matrixEl.querySelectorAll('td[data-lens="qs"]').forEach(td => { td.style.cursor = 'pointer'; td.addEventListener('click', () => { this.selectVariety(td.dataset.varietyId); setTimeout(() => this.selectStage(td.dataset.stageId), 50); }); });
     matrixEl.querySelectorAll('td[data-lens="reg"]').forEach(td => { td.style.cursor = 'pointer'; td.addEventListener('click', () => this.openClassification(td.dataset.cat, td.dataset.code)); });
+    matrixEl.querySelectorAll('[data-variety-gmp]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); this.openQSGmpCard(b.dataset.varietyGmp); }));
+  },
+
+  /* ============ 质量体系分类 · 品种 GMP 要求卡片（下钻） ============ */
+
+  // 打开某品种的 GMP 要求卡片（典型工艺流程图 + 共线/交叉污染评估）
+  openQSGmpCard(varietyId) {
+    const v = this.findVarietyById(varietyId);
+    if (!v) return;
+    const detail = (globalThis.QS_GMP_DETAIL && QS_GMP_DETAIL[varietyId]) || {};
+    if (this.state.regLibOpen) this._exitRegLib();
+    this._exitClassViewIfOpen();
+    this._exitPortalIfOpen();
+    this.state.currentVarietyId = varietyId;
+    this.state.currentCategoryId = v.categoryId || null;
+    this.state.qsGmpOpen = true;
+    this.hideDetailLayout();
+    const el = document.getElementById('matrixView');
+    if (!el) return;
+    el.style.display = '';
+    el.innerHTML = this._renderQSGmpCard(v, detail);
+    const back = el.querySelector('[data-action="back-matrix"]');
+    if (back) back.addEventListener('click', () => this.renderMatrixView());
+    const am = el.querySelector('[data-action="open-stage-matrix"]');
+    if (am) am.addEventListener('click', () => this.selectVariety(varietyId));
+    el.querySelectorAll('.qs-gmp-item-header').forEach(h => {
+      const toggle = () => { const item = h.closest('.qs-gmp-item'); if (item) item.classList.toggle('open'); };
+      h.addEventListener('click', toggle);
+      h.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    });
+  },
+
+  // 渲染品种 GMP 要求卡片 HTML
+  _renderQSGmpCard(v, detail) {
+    const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const cat = this.findCategoryById(v.categoryId);
+    const appendix = detail.gmpAppendix || v.gmpAppendix || '—';
+    const intro = detail.intro || v.description || '';
+    const keyRisks = (v.keyRisks || []).map(esc).join('、') || '—';
+
+    const gmpItems = (detail.gmpItems || []).map((it, i) => `
+      <li class="qs-gmp-item">
+        <div class="qs-gmp-item-header" role="button" tabindex="0" aria-expanded="false">
+          <span class="qs-gmp-item-idx">${i + 1}</span>
+          <span class="qs-gmp-item-text">${this.pen(it.text)}</span>
+          <span class="qs-gmp-item-basis">${esc(it.basis || '')}</span>
+          <span class="qs-gmp-item-toggle">▸</span>
+        </div>
+        <div class="qs-gmp-item-body">
+          <div class="qs-gmp-item-detail">${this.pen(it.detail || '')}</div>
+        </div>
+      </li>`).join('');
+
+    const flowSvg = (globalThis.QS_FLOW_SVG && detail.process) ? globalThis.QS_FLOW_SVG(detail.process.steps) : '';
+    const flowNote = (detail.process && detail.process.note) ? `<p class="qs-gmp-flow-note">${this.pen(detail.process.note)}</p>` : '';
+
+    const co = detail.coLine || { applicable: false };
+    let coHtml = '';
+    if (co.applicable) {
+      const riskMap = { high: ['极高', 'qs-risk-high'], medium: ['中', 'qs-risk-med'], low: ['低', 'qs-risk-low'] };
+      const rm = riskMap[co.risk] || riskMap.medium;
+      const factors = (co.factors || []).map(f => `<li>${this.pen(f)}</li>`).join('');
+      const strategy = (co.strategy || []).map(s => `<li>${this.pen(s)}</li>`).join('');
+      const dedicated = (co.dedicated && co.dedicated.length)
+        ? `<div class="qs-coline-dedicated"><span class="qs-coline-dedicated-label">⚠ 需专用设施 / 区域：</span><ul>${co.dedicated.map(d => `<li>${this.pen(d)}</li>`).join('')}</ul></div>`
+        : '';
+      coHtml = `
+      <section class="qs-gmp-block qs-gmp-coline">
+        <div class="qs-gmp-block-head">
+          <h3>🧫 共线 / 交叉污染评估</h3>
+          <span class="qs-risk-badge ${rm[1]}">风险等级：${rm[0]}</span>
+        </div>
+        <p class="qs-coline-summary">${this.pen(co.summary || '')}</p>
+        <div class="qs-coline-cols">
+          <div class="qs-coline-col">
+            <div class="qs-coline-col-title">🔻 主要污染风险因素</div>
+            <ul class="qs-coline-list">${factors}</ul>
+          </div>
+          <div class="qs-coline-col">
+            <div class="qs-coline-col-title">🛡 控制策略</div>
+            <ul class="qs-coline-list">${strategy}</ul>
+          </div>
+        </div>
+        ${dedicated}
+      </section>`;
+    } else {
+      coHtml = `<section class="qs-gmp-block qs-gmp-coline"><div class="qs-gmp-block-head"><h3>🧫 共线 / 交叉污染评估</h3></div><p class="qs-coline-summary">该品种共线生产的交叉污染风险较低，常规清洁验证与阶段性生产即可满足要求。</p></section>`;
+    }
+
+    return `
+    <div class="qs-gmp-card">
+      <div class="qs-gmp-head">
+        <button class="qs-gmp-back" data-action="back-matrix">← 返回质量体系矩阵</button>
+        <div class="qs-gmp-titlerow">
+          <span class="qs-gmp-icon" style="background:${v.color || '#1565C0'}">${v.icon || '●'}</span>
+          <div>
+            <div class="qs-gmp-title">${esc(v.name)} · GMP 要求卡片</div>
+            <div class="qs-gmp-meta">GMP 依据：<b>${esc(appendix)}</b> ｜ 所属分类：${esc(cat ? cat.name : '')} ｜ 关键风险：${keyRisks}</div>
+          </div>
+        </div>
+      </div>
+      <p class="qs-gmp-intro">${this.pen(intro)}</p>
+      <div class="qs-gmp-grid">
+        <section class="qs-gmp-block qs-gmp-flow">
+          <h3>🏭 典型工艺流程图</h3>
+          <div class="qs-flow-wrap">${flowSvg}</div>
+          ${flowNote}
+        </section>
+        <section class="qs-gmp-block qs-gmp-reqs">
+          <h3>📋 GMP 符合性要点</h3>
+          <ul class="qs-gmp-list">${gmpItems || '<li class="qs-gmp-empty">该品种 GMP 要求数据建设中</li>'}</ul>
+        </section>
+      </div>
+      ${coHtml}
+      <div class="qs-gmp-actions">
+        <button class="qs-gmp-act-btn" data-action="open-stage-matrix">查看「${esc(v.name)} × 各研发阶段」完整要求体系 →</button>
+      </div>
+    </div>`;
   },
 
   /* ============ 空状态 ============ */
