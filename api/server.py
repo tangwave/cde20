@@ -403,20 +403,55 @@ def _read_kb_body(rel, cap=4000):
     return ""
 
 
+# ---- 片段去噪：清洗markdown表格/标题/引用/分隔线，使检索片段可读 ----
+_SEP_LINE = re.compile(r'^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$')
+_HEADING = re.compile(r'^#{1,6}\s+(.*)$')
+_BQUOTE = re.compile(r'^\s*>')
+_TABLE_ROW = re.compile(r'^\s*\|.*\|\s*$')
+
+
+def _clean_for_snippet(body):
+    """把正文化简为去噪文本：表格单元合并、去 # /> /--- 噪声，便于截取干净片段。"""
+    out = []
+    for ln in (body or "").split("\n"):
+        s = ln.rstrip()
+        if not s.strip():
+            continue
+        if _SEP_LINE.match(s):
+            continue
+        if _TABLE_ROW.match(s):
+            cells = [c.strip() for c in s.strip().strip("|").split("|")]
+            cells = [c for c in cells if c and not _SEP_LINE.match(c)]
+            if cells:
+                out.append(" ".join(cells))
+            continue
+        m = _HEADING.match(s)
+        if m:
+            out.append(m.group(1).strip())
+            continue
+        if _BQUOTE.match(s):
+            out.append(re.sub(r'^\s*>\s?', "", s))
+            continue
+        out.append(re.sub(r'^[#>\s]+', "", s))
+    return "\n".join(out)
+
+
 def _snippet_from_db(rel, terms, width=120, maxn=2):
     body = _read_kb_body(rel, cap=20000)
     if not body:
         return []
+    clean = _clean_for_snippet(body)
     outs = []
     for t in terms:
-        i = body.find(t)
+        i = clean.find(t)
         if i < 0:
             continue
         s = max(0, i - width // 2)
-        e = min(len(body), i + len(t) + width // 2)
-        frag = body[s:e].replace("\n", " ").strip()
-        frag = re.sub(r"\s+", " ", frag)
-        outs.append(("…" if s > 0 else "") + frag + ("…" if e < len(body) else ""))
+        e = min(len(clean), i + len(t) + width // 2)
+        frag = clean[s:e].replace("\n", " ").strip()
+        frag = frag.replace("|", " ").replace("#", "").replace(">", " ")
+        frag = re.sub(r"\s+", " ", frag).strip()
+        outs.append(("…" if s > 0 else "") + frag + ("…" if e < len(clean) else ""))
         if len(outs) >= maxn:
             break
     return outs
