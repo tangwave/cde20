@@ -1,14 +1,14 @@
 {
   "meta": {
     "updated": "2026-08-16",
-    "count": 9,
+    "count": 27,
     "scope": "国家局 + 重点省份药品生产飞行检查/监督检查通报（仅药品，公开可查范围）",
     "sources": [
       "国家药监局(跟踪检查/飞检通报) seed",
       "广东省药监局 自动化",
       "浙江/山东/四川 省级 seed"
     ],
-    "note": "飞行检查制度实际始于约2006年；公开通报大量集中于2016年之后。本数据集为v1，结构可扩展，后续可补录更多省份。"
+    "note": "飞行检查制度实际始于约2006年；公开通报大量集中于2016年之后。本数据集含国家局药品飞检栏目(2018-2019, 148条)已批量核查导入部分 + 重点省份精校种子，结构可扩展。"
   },
   "items": [
     {
@@ -70,6 +70,222 @@
       "year": 2025
     },
     {
+      "id": "nmpa_20190125180001122",
+      "title": "对甘肃博祥药业有限公司飞行检查通报",
+      "date": "2019-01-25",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "甘肃博祥药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190125180001122.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190125175401395",
+      "title": "对华润西安医药有限公司飞行检查通报",
+      "date": "2019-01-25",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "华润西安医药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190125175401395.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190125174501397",
+      "title": "对达州市朝阳医药有限责任公司飞行检查通报",
+      "date": "2019-01-25",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "达州市朝阳医药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190125174501397.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190125174201107",
+      "title": "对娄底民康医药有限公司飞行检查通报",
+      "date": "2019-01-25",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "娄底民康医药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190125174201107.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190125174001244",
+      "title": "对合肥顿克生物医药有限公司飞行检查通报",
+      "date": "2019-01-25",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "合肥顿克生物"
+      ],
+      "drug_types": [
+        "生物制品"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190125174001244.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190125173901291",
+      "title": "对鸡西市辰曦药业有限公司飞行检查通报",
+      "date": "2019-01-25",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "鸡西市辰曦药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190125173901291.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190118165801978",
+      "title": "对珠海亿邦制药股份有限公司飞行检查和处理结果通报",
+      "date": "2019-01-18",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "珠海亿邦制药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190118165801978.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190118165401648",
+      "title": "对四川协力制药股份有限公司飞行检查和处理结果通报",
+      "date": "2019-01-18",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "四川协力制药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190118165401648.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20190118164501652",
+      "title": "对湖北绿金子药业有限责任公司飞行检查和处理结果通报",
+      "date": "2019-01-18",
+      "year": 2019,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "湖北绿金子药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20190118164501652.html",
+      "source": "nmpa_list"
+    },
+    {
       "id": "js_2018_q707",
       "title": "对江苏七0七天然制药有限公司跟踪检查通报",
       "date": "2018-12-05",
@@ -96,6 +312,102 @@
       "url": "https://wap.cqn.com.cn/ms/content/2018-12/05/content_6542428.htm",
       "source": "nmpa_seed",
       "year": 2018
+    },
+    {
+      "id": "nmpa_20181205180001238",
+      "title": "对广州白云山天心制药股份有限公司跟踪检查通报",
+      "date": "2018-12-05",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "广州白云山天心制药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20181205180001238.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20181205180001677",
+      "title": "对贵州德良方药业股份有限责任公司跟踪检查通报",
+      "date": "2018-12-05",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "贵州德良方药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20181205180001677.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20181205180001733",
+      "title": "对贵州德良方佰仕特药业有限责任公司跟踪检查通报",
+      "date": "2018-12-05",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "贵州德良方佰仕特药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20181205180001733.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20181205180001479",
+      "title": "对上海安丁生物(汤阴)药业有限公司跟踪检查通报",
+      "date": "2018-12-05",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "上海安丁生物"
+      ],
+      "drug_types": [
+        "生物制品"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20181205180001479.html",
+      "source": "nmpa_list"
     },
     {
       "id": "zj_2018_q1",
@@ -130,6 +442,126 @@
       "url": "https://www.nmpa.gov.cn/directory/web/nmpa/xxgk/ggtg/ypggtg/ypgmprzh/ypgmprzhgg/ypgmpshj/20181022000001554.html",
       "source": "zj_seed",
       "year": 2018
+    },
+    {
+      "id": "nmpa_20180824175901612",
+      "title": "对陕西省汉中市医药总公司兴汉经销分公司飞行检查通报",
+      "date": "2018-08-24",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "陕西省汉中市医药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20180824175901612.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20180824175501258",
+      "title": "对贵州圣丰药业有限公司飞行检查通报",
+      "date": "2018-08-24",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "贵州圣丰药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20180824175501258.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20180824175201650",
+      "title": "对广西桂玉医药有限责任公司飞行检查通报",
+      "date": "2018-08-24",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "广西桂玉医药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20180824175201650.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20180824175001268",
+      "title": "对青海百辰药业有限公司飞行检查通报",
+      "date": "2018-08-24",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "青海百辰药业"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20180824175001268.html",
+      "source": "nmpa_list"
+    },
+    {
+      "id": "nmpa_20180824174901415",
+      "title": "对深圳市和顺堂医药有限公司飞行检查通报",
+      "date": "2018-08-24",
+      "year": 2018,
+      "doc_no": "",
+      "agency": "国家药监局",
+      "level": "国家局",
+      "province": "全国",
+      "companies": [
+        "深圳市和顺堂医药"
+      ],
+      "drug_types": [
+        "未标注"
+      ],
+      "check_scope": "",
+      "defect_categories": [],
+      "defect_level": "",
+      "measures": "",
+      "status": "详见通报",
+      "summary": "国家药监局药品飞行检查/跟踪检查通报，检查发现不符合药品GMP要求，原文见链接。",
+      "url": "https://www.nmpa.gov.cn/xxgk/fxjzh/ypfxjch/20180824174901415.html",
+      "source": "nmpa_list"
     },
     {
       "id": "nmpa_2018_08",
