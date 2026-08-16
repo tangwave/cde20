@@ -54,6 +54,7 @@ const App = {
     currentRegId: null,    // 当前阅读的法规 id
     regLang: 'orig',        // 法规阅读语言：orig=原文, zh=中文翻译版
     preSub: 'overview',    // 临床前研究子板块：overview | cmc | pk | safety | tox | formulation | ind
+    matrixLens: 'qs',       // 矩阵视图分类维度：qs=质量体系分类（9 类药品）, reg=注册分类（化药/生物/中药 子类）
     view: 'panorama',       // 当前主视图：panorama=全景总览, framework=知识框架, caselibrary=案例库, glossary=术语表, kb=常规知识库, classification=研发要求体系
     currentReqCat: null,   // 当前研发要求体系主类 chemo/bio/tcm
     currentReqCode: '',    // 当前研发要求体系子节点 code（''=总览）
@@ -1056,128 +1057,191 @@ const App = {
     `;
   },
 
-  /* ============ 矩阵视图 ============ */
+  /* ============ 矩阵视图（药品分类 · 双体系整合矩阵） ============ */
+
+  // 6 个标准研发阶段（与 CLASS_REQUIREMENTS 对齐），同时映射 KB_DATA 的 9 阶段
+  _matrixPhases() {
+    return [
+      { id: 'discovery',  name: '药物发现与立项', icon: '🎯', crId: 'discovery',  kbStages: ['target_discovery', 'lead_discovery', 'compound_optimization', 'candidate_selection'], clickStage: 'target_discovery', level: 'green' },
+      { id: 'preclinical', name: '临床前研究',     icon: '⚗️', crId: 'preclinical', kbStages: ['preclinical'], clickStage: 'preclinical', level: 'red' },
+      { id: 'clinical',   name: '临床试验',       icon: '🏥', crId: 'clinical',   kbStages: ['clinical_trial'], clickStage: 'clinical_trial', level: 'red' },
+      { id: 'nda',        name: '上市申请',       icon: '📄', crId: 'nda',        kbStages: ['nda_filing'], clickStage: 'nda_filing', level: 'red' },
+      { id: 'commercial', name: '商业化生产',     icon: '🏭', crId: 'commercial', kbStages: ['approval_launch'], clickStage: 'approval_launch', level: 'yellow' },
+      { id: 'postmarket', name: '上市后监测',     icon: '🔄', crId: 'postmarket', kbStages: ['post_market'], clickStage: 'post_market', level: 'yellow' }
+    ];
+  },
+
+  // 品种 id → 注册分类大类（用于行内交叉跳转）
+  _varietyRegMap() {
+    return { sterile: 'chemo', api: 'chemo', radiopharm: 'chemo', oral_solid: 'chemo', medical_gas: 'chemo', biological: 'bio', blood: 'bio', cell_gene: 'bio', tcm_prep: 'tcm', tcm_pieces: 'tcm' };
+  },
+
+  // 将注册分类子类的要点（特殊要求/考量/申报资料）按关键词归集到研发阶段（仅导航用）
+  _classifyBulletToPhase(text) {
+    const t = String(text || '');
+    const rules = [
+      ['discovery',  /立题|立项|靶点|筛选|结构明确|活性成份|已知活性|专利|知识产权|成药|苗头|先导|构效|候选药物|境内外均未上市|创新药|全新/],
+      ['clinical',   /临床|试验|GCP|受试者|疗效|耐受|给药|I期|II期|III期|期临床/],
+      ['nda',        /申报|上市|NDA|BLA|CTD|模块|资料|审评|批准|注册|证书|批件|申报资料/],
+      ['commercial', /生产|商业化|GMP|工艺验证|批生产|车间|厂房|设备|无菌保证|批签发|放行/],
+      ['postmarket', /上市后|变更|再注册|药物警戒|IV期|不良反应|监测|追溯|抽检|再评价/],
+      ['preclinical',/非临床|毒理|药代|GLP|安全性|IND|CMC|晶型|盐型|杂质|稳定性|制剂|质量研究|结构确证|工艺|对照品|溶出|释放|表征|细胞库|病毒安全|免疫原性|效价/]
+    ];
+    for (const [ph, re] of rules) if (re.test(t)) return ph;
+    return 'preclinical';
+  },
+
+  // 切换矩阵视图的分类维度（qs=质量体系分类 / reg=注册分类）
+  setMatrixLens(lens) {
+    if (this.state.matrixLens === lens) return;
+    this.state.matrixLens = lens;
+    if (this.state.viewMode === 'matrix') this.renderMatrixView();
+  },
+
+  // 从任意视图返回矩阵视图
+  openMatrixView() {
+    if (this.state.regLibOpen) this._exitRegLib();
+    this._exitClassViewIfOpen();
+    this._exitPortalIfOpen();
+    this.state.view = 'kb';
+    this.state.viewMode = 'matrix';
+    ['breadcrumb', 'stageTabs', 'detailLayout'].forEach(id => { const e = document.getElementById(id); if (e) e.style.display = 'none'; });
+    this.showMatrixView();
+    this.renderMatrixView();
+    const b = document.getElementById('matrixToggleBtn'); if (b) b.classList.add('active');
+  },
 
   renderMatrixView() {
     const matrixEl = document.getElementById('matrixView');
     if (!matrixEl) return;
-
-    const PRECLIN_STEPS = [
-      { id: 'cmc', name: 'CMC' },
-      { id: 'pk', name: '药代' },
-      { id: 'safety', name: '安全药理' },
-      { id: 'tox', name: '毒理' },
-      { id: 'formulation', name: '制剂' },
-      { id: 'ind', name: 'IND' }
-    ];
-    const DISCOVER_STEPS = [
-      { id: 'target', name: '靶点发现', kbId: 'target_discovery' },
-      { id: 'lead', name: '先导发现', kbId: 'lead_discovery' },
-      { id: 'sar', name: '构效优化', kbId: 'compound_optimization' },
-      { id: 'candidate', name: '候选确定', kbId: 'candidate_selection' }
-    ];
-    const CAT_TO_MAIN = { chemical: 'chemo', biological: 'bio', tcm: 'tcm', other: null };
-    const DISCOVER_IDS = DISCOVER_STEPS.map(d => d.kbId);
+    const DC = globalThis.DRUG_CLASSIFICATION;
+    const lens = this.state.matrixLens || 'qs';
+    const phases = this._matrixPhases();
     const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    // 统一列模型：药物发现 / 临床前 均展开为子步骤列（数据源 DISCOVERY_STEPS / PRECLINICAL_STEPS），其余为单阶段列
-    const COLUMNS = [];
-    let discoverGrouped = false;
-    KB_DATA.stages.forEach(s => {
-      if (DISCOVER_IDS.includes(s.id)) {
-        if (!discoverGrouped) { COLUMNS.push({ group: 'discovery', name: '药物发现', steps: DISCOVER_STEPS }); discoverGrouped = true; }
-      } else if (s.id === 'preclinical') {
-        COLUMNS.push({ group: 'preclinical', name: '临床前研究', steps: PRECLIN_STEPS });
-      } else {
-        COLUMNS.push({ single: s });
-      }
-    });
-    let MATRIX_HEAD1 = '<th rowspan="2">品种 \\ 研发阶段</th>';
-    let MATRIX_HEAD2 = '';
-    COLUMNS.forEach(c => {
-      if (c.group) {
-        const icon = c.group === 'discovery' ? '🎯' : '⚗️';
-        MATRIX_HEAD1 += `<th colspan="${c.steps.length}">${icon} ${esc(c.name)}（已细分为 ${c.steps.length} 个研究步骤）</th>`;
-        MATRIX_HEAD2 += c.steps.map(d => `<th>${esc(d.name)}</th>`).join('');
-      } else {
-        MATRIX_HEAD1 += `<th rowspan="2">${c.single.icon}<br>${esc(c.single.name)}</th>`;
-      }
-    });
+    const vReg = this._varietyRegMap();
+    const regLabel = { chemo: '化药', bio: '生物', tcm: '中药' };
 
-    let html = `
-      <div class="matrix-container">
-        <div class="matrix-legend">
-          <span style="font-weight:600; color:var(--text-primary);">矩阵视图：${this.getAllVarieties().length} 个品种 × ${KB_DATA.stages.length} 个研发阶段（药物发现细分为 ${DISCOVER_STEPS.length} 个步骤、临床前细分为 ${PRECLIN_STEPS.length} 个子模块，均采用统一子步骤数据模型）</span>
-          <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#4CAF50"></span> 要求明确</span>
-          <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#FFC107"></span> 部分要求</span>
-          <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#F44336"></span> 关键/复杂</span>
+    // ---- 顶部：两套分类体系整合指南 ----
+    const regCats = DC ? DC.categories.map(c => {
+      const items = (c.groups || [{ items: c.items }]).flatMap(g => g.items || []);
+      return { id: c.id, name: c.name, icon: c.icon, count: items.length };
+    }) : [];
+    const regTotal = regCats.reduce((a, c) => a + c.count, 0);
+    const qsVarieties = this.getAllVarieties();
+    const guide = `
+      <div class="mx-guide">
+        <div class="mx-guide-head">
+          <span class="mx-guide-title">🧭 药品分类矩阵 · 一图整合两套分类体系</span>
+          <span class="mx-guide-sub">注册分类决定申报路径与资料要求；质量体系分类决定 GMP 符合性要点与跨阶段控制策略——两者互补，覆盖药品全生命周期。</span>
         </div>
-        <table class="matrix-table">
-          <thead>
-            <tr>${MATRIX_HEAD1}</tr>
-            ${MATRIX_HEAD2 ? `<tr>${MATRIX_HEAD2}</tr>` : ''}
-          </thead>
-          <tbody>
+        <div class="mx-guide-cols">
+          <div class="mx-guide-card reg">
+            <div class="mx-guide-card-title">🗂️ 注册分类（按 NMPA 2020 注册分类及申报资料要求）</div>
+            <div class="mx-guide-chips">
+              ${regCats.map(c => `<span class="mx-guide-chip" data-regcat="${c.id}" title="查看${esc(c.name)}注册分类">${c.icon} ${esc(c.name)} <b>${c.count}</b></span>`).join('')}
+            </div>
+            <button class="mx-guide-btn" data-action="open-reg">打开注册分类全书 →</button>
+          </div>
+          <div class="mx-guide-card qs">
+            <div class="mx-guide-card-title">🧪 质量体系分类（按 GMP 附录 / 产品特性，覆盖 ${qsVarieties.length} 类）</div>
+            <div class="mx-guide-chips">
+              ${qsVarieties.map(v => `<span class="mx-guide-chip" data-variety="${v.id}" title="查看${esc(v.name)}质量体系矩阵">${v.icon || '●'} ${esc(v.name)}</span>`).join('')}
+            </div>
+            <button class="mx-guide-btn" data-action="open-qs">定位本矩阵（质量体系） →</button>
+          </div>
+        </div>
+      </div>
     `;
 
-    KB_DATA.categories.forEach(cat => {
-      cat.varieties.forEach(v => {
-        html += `<tr><th><span class="matrix-drug-icon">${v.icon}</span>${v.name}<br><span class="matrix-cat-tag">${cat.name}</span></th>`;
-        const mainKey = CAT_TO_MAIN[cat.id] || null;
-        COLUMNS.forEach(c => {
-          if (c.group === 'preclinical') {
-            const steps = (mainKey && globalThis.PRECLINICAL_STEPS && globalThis.PRECLINICAL_STEPS[mainKey] && globalThis.PRECLINICAL_STEPS[mainKey].steps) || [];
-            c.steps.forEach(d => {
-              const st = steps.find(x => x.id === d.id);
-              const txt = st ? ((st.requirement && st.requirement[0]) || st.desc || '') : '';
-              const shown = txt ? esc(txt).substring(0, 42) + (txt.length > 42 ? '…' : '') : '—';
-              html += `<td data-variety-id="${v.id}" data-stage-id="preclinical" data-substep="${d.id}">
-                <span class="matrix-cell-indicator red"></span>
-                <div class="matrix-cell-text">${shown}</div></td>`;
-            });
-          } else if (c.group === 'discovery') {
-            const steps = (mainKey && globalThis.DISCOVERY_STEPS && globalThis.DISCOVERY_STEPS[mainKey] && globalThis.DISCOVERY_STEPS[mainKey].steps) || [];
-            c.steps.forEach(d => {
-              const st = steps.find(x => x.id === d.id);
-              const txt = st ? ((st.requirement && st.requirement[0]) || st.desc || '') : '';
-              const shown = txt ? esc(txt).substring(0, 42) + (txt.length > 42 ? '…' : '') : '—';
-              html += `<td data-variety-id="${v.id}" data-stage-id="${d.kbId}" data-substep="${d.id}">
-                <span class="matrix-cell-indicator red"></span>
-                <div class="matrix-cell-text">${shown}</div></td>`;
-            });
-          } else {
-            const stage = c.single;
-            const stageData = v.stages[stage.id];
-            if (stageData) {
-              let level = 'green';
-              if (['preclinical', 'nda_filing', 'clinical_trial', 'target_discovery', 'lead_discovery', 'compound_optimization', 'candidate_selection'].includes(stage.id)) {
-                level = 'red';
-              } else if (['approval_launch', 'post_market'].includes(stage.id)) {
-                level = 'yellow';
-              }
-              const summary = stageData.summary || '';
-              html += `<td data-variety-id="${v.id}" data-stage-id="${stage.id}">
-                <span class="matrix-cell-indicator ${level}"></span>
-                <div class="matrix-cell-text">${esc(summary).substring(0, 60)}${summary.length > 60 ? '...' : ''}</div>
-              </td>`;
+    // ---- 维度切换 ----
+    const lensBar = `
+      <div class="mx-lens-bar">
+        <span class="mx-lens-label">分类维度：</span>
+        <button class="mx-lens-btn ${lens === 'qs' ? 'active' : ''}" data-lens="qs">质量体系分类（${qsVarieties.length} 类药品）</button>
+        <button class="mx-lens-btn ${lens === 'reg' ? 'active' : ''}" data-lens="reg">注册分类（${regTotal} 子类）</button>
+        <span class="mx-lens-hint">${lens === 'reg' ? '单元格按子类要点关键词自动归集到研发阶段，仅用于导航；点击查看完整分类与分阶段要求体系' : '点击单元格下钻到该品种 × 阶段的完整要求体系'}</span>
+      </div>
+    `;
+
+    // ---- 图例 ----
+    const legend = `
+      <div class="matrix-legend">
+        <span style="font-weight:600; color:var(--text-primary);">${lens === 'qs' ? `质量体系分类矩阵：${qsVarieties.length} 类药品 × 6 个研发阶段` : `注册分类矩阵：${regTotal} 个子类 × 6 个研发阶段`}</span>
+        <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#4CAF50"></span> 要求明确</span>
+        <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#FFC107"></span> 部分要求</span>
+        <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#F44336"></span> 关键/复杂</span>
+        <span class="matrix-legend-item"><span class="matrix-legend-dot" style="background:#1565C0"></span> 🔗 可下钻</span>
+      </div>
+    `;
+
+    // ---- 表头 ----
+    const head = `<thead><tr><th class="mx-rown">${lens === 'qs' ? '药品分类 \\ 研发阶段' : '注册分类 \\ 研发阶段'}</th>${phases.map(p => `<th>${p.icon}<br>${esc(p.name)}</th>`).join('')}</tr></thead>`;
+
+    let body = '<tbody>';
+    if (lens === 'qs') {
+      // 行 = 9 类药品（按 KB_DATA 分类分组）
+      KB_DATA.categories.forEach(cat => {
+        const vs = cat.varieties || [];
+        if (!vs.length) return;
+        body += `<tr class="mx-cat-row"><th class="mx-cat-th" colspan="${phases.length + 1}">${cat.icon || ''} ${esc(cat.name)} <span class="mx-cat-sub">（${vs.length} 类）</span></th></tr>`;
+        vs.forEach(v => {
+          const regCat = vReg[v.id] || '';
+          body += `<tr><th class="mx-rowhead"><span class="matrix-drug-icon">${v.icon || '●'}</span><span class="mx-rowname">${esc(v.name)}</span>${regCat ? `<span class="mx-regtag" data-regcat="${regCat}" title="查看对应注册分类">↗ ${regLabel[regCat]}</span>` : ''}</th>`;
+          phases.forEach(p => {
+            let txt = '';
+            p.kbStages.forEach(sid => { if (v.stages && v.stages[sid] && v.stages[sid].summary) txt += (txt ? '\n' : '') + v.stages[sid].summary; });
+            if (txt) {
+              const plain = txt.length > 96 ? txt.substring(0, 96) + '…' : txt;
+              body += `<td class="mx-cell" data-lens="qs" data-variety-id="${v.id}" data-stage-id="${p.clickStage}"><span class="matrix-cell-indicator ${p.level}"></span><div class="matrix-cell-text">${this.pen(plain)}</div></td>`;
             } else {
-              html += `<td><span class="matrix-cell-text">—</span></td>`;
+              body += `<td class="mx-cell empty"><span class="matrix-cell-text">—</span></td>`;
             }
-          }
+          });
+          body += '</tr>';
         });
-        html += '</tr>';
       });
-    });
+    } else {
+      // 行 = 注册分类子类（按 DC 三大类分组）
+      if (DC) {
+        DC.categories.forEach(cat => {
+          const groups = cat.groups || [{ name: '', items: cat.items || [] }];
+          const flat = groups.flatMap(g => (g.items || []).map(it => ({ g: g.name, it })));
+          body += `<tr class="mx-cat-row"><th class="mx-cat-th" colspan="${phases.length + 1}">${cat.icon} ${esc(cat.name)} <span class="mx-cat-sub">（${flat.length} 子类）</span></th></tr>`;
+          flat.forEach(({ g, it }) => {
+            const bullets = [].concat(it.special || [], it.considerations || [], it.dossier || []);
+            const counts = {}; phases.forEach(p => counts[p.id] = 0);
+            const firstByPhase = {};
+            bullets.forEach(b => { const ph = this._classifyBulletToPhase(b); counts[ph] = (counts[ph] || 0) + 1; if (!firstByPhase[ph]) firstByPhase[ph] = b; });
+            body += `<tr><th class="mx-rowhead"><span class="mx-rowcode">${esc(it.code)}</span><span class="mx-rowname">${esc(it.name)}</span>${g ? `<span class="mx-reggroup">${esc(g)}</span>` : ''}</th>`;
+            phases.forEach(p => {
+              const c = counts[p.id] || 0;
+              if (c > 0) {
+                const snip = firstByPhase[p.id] || '';
+                const plain = snip.length > 60 ? snip.substring(0, 60) + '…' : snip;
+                body += `<td class="mx-cell" data-lens="reg" data-cat="${cat.id}" data-code="${esc(it.code)}"><span class="matrix-cell-indicator red"></span><span class="mx-badge">${c}</span><div class="matrix-cell-text">${this.pen(plain)}</div></td>`;
+              } else {
+                body += `<td class="mx-cell empty"><span class="matrix-cell-text">—</span></td>`;
+              }
+            });
+            body += '</tr>';
+          });
+        });
+      } else {
+        body += `<tr><td class="mx-cell empty" colspan="${phases.length + 1}">注册分类数据未加载</td></tr>`;
+      }
+    }
+    body += '</tbody>';
+    matrixEl.innerHTML = guide + lensBar + legend + `<div class="matrix-container"><table class="matrix-table mx-table">${head}${body}</table></div>`;
 
-    html += '</tbody></table></div>';
-    matrixEl.innerHTML = html;
-
-    matrixEl.querySelectorAll('td[data-variety-id]').forEach(td => {
-      td.style.cursor = 'pointer';
-      td.addEventListener('click', () => {
-        this.selectVariety(td.dataset.varietyId);
-        setTimeout(() => this.selectStage(td.dataset.stageId), 50);
-      });
-    });
+    // ---- 事件绑定 ----
+    matrixEl.querySelectorAll('.mx-lens-btn').forEach(b => b.addEventListener('click', () => this.setMatrixLens(b.dataset.lens)));
+    matrixEl.querySelectorAll('.mx-guide-chip[data-regcat]').forEach(c => c.addEventListener('click', () => this.openClassification(c.dataset.regcat)));
+    matrixEl.querySelectorAll('.mx-guide-chip[data-variety]').forEach(c => c.addEventListener('click', () => { this.setMatrixLens('qs'); setTimeout(() => this.selectVariety(c.dataset.variety), 30); }));
+    matrixEl.querySelectorAll('.mx-guide-btn[data-action="open-reg"]').forEach(b => b.addEventListener('click', () => this.openClassification()));
+    matrixEl.querySelectorAll('.mx-guide-btn[data-action="open-qs"]').forEach(b => b.addEventListener('click', () => this.setMatrixLens('qs')));
+    matrixEl.querySelectorAll('.mx-regtag').forEach(t => t.addEventListener('click', (e) => { e.stopPropagation(); this.openClassification(t.dataset.regcat); }));
+    matrixEl.querySelectorAll('td[data-lens="qs"]').forEach(td => { td.style.cursor = 'pointer'; td.addEventListener('click', () => { this.selectVariety(td.dataset.varietyId); setTimeout(() => this.selectStage(td.dataset.stageId), 50); }); });
+    matrixEl.querySelectorAll('td[data-lens="reg"]').forEach(td => { td.style.cursor = 'pointer'; td.addEventListener('click', () => this.openClassification(td.dataset.cat, td.dataset.code)); });
   },
 
   /* ============ 空状态 ============ */
@@ -1341,6 +1405,7 @@ const App = {
           if (a.dataset.rid) this.openRegulation(a.dataset.rid);
         });
       });
+      c.querySelectorAll('.class-back-btn').forEach(b => b.addEventListener('click', () => this.openMatrixView()));
       if (focusCat) {
         const el = c.querySelector('.class-sub[data-cat="' + focusCat + '"][data-code="' + (focusCode || '') + '"]');
         const catEl = focusCode ? el : c.querySelector('.class-cat.cat-' + focusCat);
@@ -1697,6 +1762,7 @@ const App = {
     html += '<h1 class="class-title">🗂️ ' + this.pen(DC.meta.title) + '</h1>';
     html += '<div class="class-meta">依据：' + this.pen(DC.meta.basis) + '</div>';
     html += '<div class="class-note">' + this.pen(DC.meta.note) + '</div>';
+    html += '<button class="class-back-btn" data-action="matrix" title="返回整合后的药品分类矩阵">← 返回分类矩阵</button>';
     html += '</div>';
 
     DC.categories.forEach(cat => {
