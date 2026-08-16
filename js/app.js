@@ -60,7 +60,9 @@ const App = {
     currentReqCode: '',    // 当前研发要求体系子节点 code（''=总览）
     currentTopicId: null,  // 当前知识框架主题词 id
     currentCaseId: null,   // 当前案例库案例 id
-    caseDomain: null       // 案例库领域筛选
+    caseDomain: null,      // 案例库领域筛选
+    classLens: 'reg',      // 药品分类视图镜头：reg=按注册分类, prod=按产品分类·生产工艺
+    classProdForm: null    // 产品分类镜头下选中的具体类型 entry id（null=显示产品分类树）
   },
 
   /**
@@ -1384,6 +1386,8 @@ const App = {
     if (this.state.regLibOpen) this._exitRegLib();
     this._exitPortalIfOpen();
     this.state.view = 'classification';
+    this.state.classLens = 'reg';
+    this.state.classProdForm = null;
     ['breadcrumb', 'stageTabs', 'matrixView'].forEach(id => {
       const e = document.getElementById(id); if (e) e.style.display = 'none';
     });
@@ -1392,20 +1396,7 @@ const App = {
     if (c) {
       c.innerHTML = this.renderDrugClassification(focusCat, focusCode);
       const sc = c.parentElement; if (sc) sc.scrollTop = 0;
-      c.querySelectorAll('.class-sub-head').forEach(h => {
-        h.addEventListener('click', (e) => {
-          // 点击子分类标题 → 打开该子分类的完整研发要求体系（各阶段工艺/质量研究/质量管理）
-          const sub = h.closest('.class-sub');
-          if (sub) this.openClassReq(sub.dataset.cat, sub.dataset.code || '');
-        });
-      });
-      c.querySelectorAll('.class-sub .reg-link').forEach(a => {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (a.dataset.rid) this.openRegulation(a.dataset.rid);
-        });
-      });
-      c.querySelectorAll('.class-back-btn').forEach(b => b.addEventListener('click', () => this.openMatrixView()));
+      this._bindClassification(c);
       if (focusCat) {
         const el = c.querySelector('.class-sub[data-cat="' + focusCat + '"][data-code="' + (focusCode || '') + '"]');
         const catEl = focusCode ? el : c.querySelector('.class-cat.cat-' + focusCat);
@@ -1419,6 +1410,47 @@ const App = {
     }
     const btn = document.getElementById('classifyBtn');
     if (btn) btn.classList.add('active');
+  },
+
+  /* 重新渲染药品分类视图（镜头切换 / 产品类型下钻时复用，不丢失镜头状态） */
+  _repaintClassification() {
+    const c = document.getElementById('content');
+    if (!c) return;
+    c.innerHTML = this.renderDrugClassification();
+    const sc = c.parentElement; if (sc) sc.scrollTop = 0;
+    this._bindClassification(c);
+  },
+
+  /* 药品分类视图事件绑定（数据属性驱动） */
+  _bindClassification(c) {
+    c.querySelectorAll('.cls-lens-btn').forEach(b => b.addEventListener('click', () => {
+      const lens = b.dataset.clsLens;
+      if (lens === 'prod') { this.state.classLens = 'prod'; this.state.classProdForm = null; }
+      else { this.state.classLens = 'reg'; this.state.classProdForm = null; }
+      this._repaintClassification();
+    }));
+    c.querySelectorAll('[data-cls-prod-jump]').forEach(b => b.addEventListener('click', () => {
+      this.state.classLens = 'prod';
+      this.state.classProdForm = null;
+      this._repaintClassification();
+    }));
+    c.querySelectorAll('[data-cls-prod-entry]').forEach(card => card.addEventListener('click', () => {
+      this.state.classProdForm = card.dataset.clsProdEntry;
+      this._repaintClassification();
+    }));
+    c.querySelectorAll('[data-cls-prod-back]').forEach(b => b.addEventListener('click', () => {
+      this.state.classProdForm = null;
+      this._repaintClassification();
+    }));
+    c.querySelectorAll('.class-sub-head').forEach(h => h.addEventListener('click', () => {
+      const sub = h.closest('.class-sub');
+      if (sub) this.openClassReq(sub.dataset.cat, sub.dataset.code || '');
+    }));
+    c.querySelectorAll('.class-sub .reg-link').forEach(a => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (a.dataset.rid) this.openRegulation(a.dataset.rid);
+    }));
+    c.querySelectorAll('.class-back-btn').forEach(b => b.addEventListener('click', () => this.openMatrixView()));
   },
 
   closeClassification() {
@@ -1759,12 +1791,35 @@ const App = {
 
     let html = '<div class="class-view">';
     html += '<div class="class-header">';
-    html += '<h1 class="class-title">🗂️ ' + this.pen(DC.meta.title) + '</h1>';
+    html += '<h1 class="class-title">🗂️ ' + this.pen(DC.meta.title) + ' · 体系整合视图</h1>';
     html += '<div class="class-meta">依据：' + this.pen(DC.meta.basis) + '</div>';
     html += '<div class="class-note">' + this.pen(DC.meta.note) + '</div>';
     html += '<button class="class-back-btn" data-action="matrix" title="返回整合后的药品分类矩阵">← 返回分类矩阵</button>';
     html += '</div>';
 
+    /* 双镜头切换条 */
+    const lens = this.state.classLens || 'reg';
+    html += '<div class="cls-lens-bar">';
+    html += '<span class="cls-lens-label">分类视角：</span>';
+    html += '<button class="cls-lens-btn' + (lens === 'reg' ? ' active' : '') + '" data-cls-lens="reg">📋 按注册分类（化药/生物/中药）</button>';
+    html += '<button class="cls-lens-btn' + (lens === 'prod' ? ' active' : '') + '" data-cls-lens="prod">🏭 按产品分类 · 生产工艺</button>';
+    html += '<span class="cls-lens-hint">两套体系互通：注册分类决定申报路径，产品分类×生产工艺决定 GMP 符合性。</span>';
+    html += '</div>';
+
+    if (lens === 'prod') {
+      html += this._renderClassProductLens();
+    } else {
+      html += this._renderClassRegLens(DC, focusCat, focusCode);
+    }
+
+    html += '</div>';
+    return html;
+  },
+
+  /* ---- 镜头一：按注册分类（化药/生物/中药 子类 + 特殊要求/考量/申报资料/法规） ---- */
+  _renderClassRegLens(DC, focusCat, focusCode) {
+    let html = '<div class="cls-reg-lens">';
+    html += '<div class="cls-lens-tip">📋 按国家药监局 2020 年注册分类梳理：每一子类给出<strong>特殊要求 / 考量 / 申报资料清单 / 关联法规</strong>；点击子类标题可下钻「研发要求体系」（各阶段工艺·质量·GMP）。右下「🏭 查看生产工艺」可跳到产品分类视角看对应生产工艺。</div>';
     DC.categories.forEach(cat => {
       html += '<section class="class-cat cat-' + cat.accent + '">';
       html += '<div class="class-cat-head">';
@@ -1824,13 +1879,118 @@ const App = {
             });
             html += '</div></div>';
           }
+          html += '<div class="class-sub-foot">';
+          html += '<button class="cls-prod-jump" data-cls-prod-jump="' + cat.id + '">🏭 按产品分类查看生产工艺 →</button>';
+          html += '</div>';
           html += '</div></div>';
         });
         html += '</div>';
       });
       html += '</section>';
     });
+    html += '</div>';
+    return html;
+  },
 
+  /* ---- 镜头二：按产品分类 · 生产工艺（复用 MANUFACTURE_KB） ---- */
+  _renderClassProductLens() {
+    const MK = globalThis.MANUFACTURE_KB;
+    if (!MK || !MK.CLASSES) return '<div class="bookmark-empty">生产工艺知识库未加载（MANUFACTURE_KB 缺失）</div>';
+    const CLASSES = MK.CLASSES, ENTRIES = MK.ENTRIES || [], OVERVIEW = MK.CLASS_OVERVIEW || {};
+
+    // 选中的具体类型 → 渲染生产工艺详情
+    if (this.state.classProdForm) {
+      const e = ENTRIES.find(x => x.id === this.state.classProdForm);
+      if (e) return this._renderClassProdDetail(e, CLASSES);
+    }
+
+    // 产品分类树：化学药额外纳入放射性药品（radio-syn），满足"化药所有类型+剂型+放射性药品"
+    let html = '<div class="cls-prod-lens">';
+    html += '<div class="cls-lens-tip">🏭 按「药品类型 → 具体类型（含剂型）」组织，<strong>生产工艺 × 分类</strong>已整合到每一具体类型：点击任一类型查看其<strong>生产工序（目的→怎么做）/ 工艺特点 / 质量控制要点 / 主要依据</strong>。化学药下已纳入全部类型、剂型及放射性药品。</div>';
+
+    CLASSES.forEach(cl => {
+      // 收集该类的生产工艺条目；化药额外并入放射性药品
+      let entries = ENTRIES.filter(x => x.cls === cl.id);
+      if (cl.id === 'chem') {
+        const radio = ENTRIES.find(x => x.id === 'radio-syn');
+        if (radio) { entries = entries.concat([Object.assign({}, radio, { _radioTag: true })]); }
+      }
+      html += '<section class="cls-prod-class">';
+      html += '<div class="cls-prod-class-head"><span class="cls-prod-class-ico">' + cl.icon + '</span>'
+        + '<h3>' + this.pen(cl.name) + '</h3>'
+        + (cl.id === 'chem' ? '<span class="cls-prod-class-badge">已含全部类型 · 剂型 · 放射性药品</span>' : '')
+        + '</div>';
+      const ov = OVERVIEW[cl.id];
+      if (ov) {
+        html += '<div class="cls-prod-ov">'
+          + '<span class="cls-prod-ov-k">🔬 ' + this.pen(ov.rnd) + '</span>'
+          + '<span class="cls-prod-ov-k">⚠ ' + this.pen(ov.diff) + '</span>'
+          + '</div>';
+      }
+      html += '<div class="cls-prod-grid">';
+      entries.forEach(e => {
+        const routes = (e.routes || []).map(id => {
+          const r = (MK.ROUTE_CHIPS || []).find(x => x.id === id);
+          return r ? r.name : id;
+        }).map(n => '<span class="cls-prod-tag">' + this.pen(n) + '</span>').join('');
+        html += '<div class="cls-prod-entry" data-cls-prod-entry="' + e.id + '">';
+        html += '<div class="cls-prod-entry-h"><span class="cls-prod-entry-name">' + this.pen(e.name) + '</span>'
+          + (e._radioTag ? '<span class="cls-prod-entry-radio">☢️ 放射性药品</span>' : '') + '</div>';
+        html += '<div class="cls-prod-entry-tags">' + routes + '</div>';
+        html += '<div class="cls-prod-entry-sum">' + this.pen(e.summary || '') + '</div>';
+        html += '</div>';
+      });
+      html += '</div></section>';
+    });
+    html += '</div>';
+    return html;
+  },
+
+  /* 生产工艺条目详情（工序 / 特点 / 质控 / 依据） */
+  _renderClassProdDetail(e, CLASSES) {
+    const MK = globalThis.MANUFACTURE_KB || {};
+    const CLS_NAME = {};
+    (CLASSES || []).forEach(cl => { CLS_NAME[cl.id] = cl.name; });
+    const FORM_MAP = {};
+    (CLASSES || []).forEach(cl => (cl.forms || []).forEach(f => { FORM_MAP[f.id] = f.name; }));
+
+    const steps = (e.steps || []).map((s, i) => {
+      return '<div class="cls-pd-step"><div class="cls-pd-step-no">' + (i + 1) + '</div>'
+        + '<div class="cls-pd-step-body"><div class="cls-pd-step-name">' + this.pen(s.n) + '</div>'
+        + '<div class="cls-pd-step-why"><span class="cls-pd-tag why">目的</span>' + this.pen(s.purpose || '') + '</div>'
+        + '<div class="cls-pd-step-how"><span class="cls-pd-tag how">怎么做</span>' + this.pen(s.detail || '') + '</div></div></div>';
+    }).join('');
+    const feats = (e.features || []).map(f => '<li>' + this.pen(f) + '</li>').join('');
+    const qc = (e.qc_points || []).map(p =>
+      '<tr><td class="cls-pd-qcp-t">' + this.pen(p.t) + '</td>'
+      + '<td class="cls-pd-qcp-m">' + this.pen(p.m) + '</td>'
+      + '<td class="cls-pd-qcp-s">' + this.pen(p.s) + '</td></tr>'
+    ).join('');
+    const qcHtml = qc
+      ? '<div class="cls-pd-section"><div class="cls-pd-sec-title">🧪 质量控制要点</div>'
+        + '<table class="cls-pd-table"><thead><tr><th>检验项目</th><th>方法 / 检测手段</th><th>标准 · 可接受限度</th></tr></thead>'
+        + '<tbody>' + qc + '</tbody></table></div>'
+      : '';
+    const regs = (e.regs || []).map(r => '<span class="cls-pd-reg">' + this.pen(r) + '</span>').join('');
+    const routes = (e.routes || []).map(id => {
+      const r = (MK.ROUTE_CHIPS || []).find(x => x.id === id);
+      return r ? r.name : id;
+    }).map(n => '<span class="cls-pd-tag route">' + this.pen(n) + '</span>').join('');
+
+    const isRadio = !!(e._radioTag || e.id === 'radio-syn');
+    let html = '<div class="cls-prod-detail">';
+    html += '<button class="cls-prod-detail-back" data-cls-prod-back>← 返回产品分类</button>';
+    html += '<div class="cls-pd-head">';
+    html += '<div class="cls-pd-cls">' + (CLS_NAME[e.cls] || e.cls)
+      + (isRadio ? ' · ☢️ 放射性药品' : '') + '</div>';
+    html += '<h1 class="cls-pd-title">' + this.pen(e.name) + '</h1>';
+    html += '<div class="cls-pd-summary">' + this.pen(e.summary || '') + '</div>';
+    html += '<div class="cls-pd-routes">' + routes + '</div>';
+    html += '</div>';
+    html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">🔧 生产工序（目的 → 怎么做）</div><div class="cls-pd-steps">' + steps + '</div></div>';
+    html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">✨ 工艺特点</div><ul class="cls-pd-feat">' + feats + '</ul></div>';
+    html += qcHtml;
+    html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">📜 主要依据 · 指导原则</div><div class="cls-pd-regs">' + regs + '</div></div>';
     html += '</div>';
     return html;
   },
