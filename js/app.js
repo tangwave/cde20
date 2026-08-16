@@ -1426,8 +1426,9 @@ const App = {
   _bindClassification(c) {
     c.querySelectorAll('.cls-lens-btn').forEach(b => b.addEventListener('click', () => {
       const lens = b.dataset.clsLens;
-      if (lens === 'prod') { this.state.classLens = 'prod'; this.state.classProdForm = null; }
-      else { this.state.classLens = 'reg'; this.state.classProdForm = null; }
+      this.state.classLens = lens;
+      this.state.classProdForm = null;
+      this.state.classProdRoute = null;
       this._repaintClassification();
     }));
     c.querySelectorAll('[data-cls-prod-jump]').forEach(b => b.addEventListener('click', () => {
@@ -1435,7 +1436,20 @@ const App = {
       this.state.classProdForm = null;
       this._repaintClassification();
     }));
+    c.querySelectorAll('[data-cls-lens-jump]').forEach(b => b.addEventListener('click', () => {
+      this.state.classLens = b.dataset.clsLensJump;
+      this.state.classProdForm = null;
+      this.state.classProdRoute = null;
+      this._repaintClassification();
+    }));
+    c.querySelectorAll('[data-cls-qs-jump]').forEach(b => b.addEventListener('click', () => {
+      this.openMatrixView();
+    }));
+    c.querySelectorAll('[data-cls-req-jump]').forEach(b => b.addEventListener('click', () => {
+      this.openClassReq(b.dataset.clsReqJump || 'chemo', '');
+    }));
     c.querySelectorAll('[data-cls-prod-entry]').forEach(card => card.addEventListener('click', () => {
+      this.state.classLens = 'prod';
       this.state.classProdForm = card.dataset.clsProdEntry;
       this._repaintClassification();
     }));
@@ -1807,20 +1821,80 @@ const App = {
     html += '<button class="class-back-btn" data-action="matrix" title="返回整合后的药品分类矩阵">← 返回分类矩阵</button>';
     html += '</div>';
 
-    /* 双镜头切换条 */
+    /* 三镜头切换条 */
     const lens = this.state.classLens || 'reg';
     html += '<div class="cls-lens-bar">';
     html += '<span class="cls-lens-label">分类视角：</span>';
+    html += '<button class="cls-lens-btn' + (lens === 'map' ? ' active' : '') + '" data-cls-lens="map">🗺️ 分类地图（体系总览）</button>';
     html += '<button class="cls-lens-btn' + (lens === 'reg' ? ' active' : '') + '" data-cls-lens="reg">📋 按注册分类（化药/生物/中药）</button>';
     html += '<button class="cls-lens-btn' + (lens === 'prod' ? ' active' : '') + '" data-cls-lens="prod">🏭 按产品分类 · 生产工艺</button>';
-    html += '<span class="cls-lens-hint">两套体系互通：注册分类决定申报路径，产品分类×生产工艺决定 GMP 符合性。</span>';
+    html += '<span class="cls-lens-hint">四套体系互通：注册分类定申报路径，产品分类×生产工艺定 GMP 符合性，质量体系分类定品种合规，研发要求体系定各阶段技术门槛。</span>';
     html += '</div>';
 
-    if (lens === 'prod') {
+    if (lens === 'map') {
+      html += this._renderClassMapLens();
+    } else if (lens === 'prod') {
       html += this._renderClassProductLens();
     } else {
       html += this._renderClassRegLens(DC, focusCat, focusCode);
     }
+
+    html += '</div>';
+    return html;
+  },
+
+  /* ---- 镜头零：分类地图（四体系互通总览） ---- */
+  _renderClassMapLens() {
+    let html = '<div class="cls-map">';
+    html += '<div class="cls-map-tip">🗺️ 四类药品分类体系相互关联，可点击下方任一体系卡片进入对应视图。横轴为「申报路径 → 生产合规 → 品种合规 → 研发门槛」的逻辑链路。</div>';
+
+    html += '<div class="cls-map-flow">';
+    html += '<div class="cls-map-node cls-map-reg" data-cls-lens-jump="reg">';
+    html += '<div class="cls-map-node-ico">📋</div><div class="cls-map-node-title">注册分类</div>';
+    html += '<div class="cls-map-node-sub">化药 1~5 类 · 生物制品 T1~T4/单抗/ADC · 中药 1~4 类</div>';
+    html += '<div class="cls-map-node-desc">决定「怎么申报、走哪条路径、交什么资料」</div></div>';
+    html += '<div class="cls-map-arrow">→</div>';
+
+    html += '<div class="cls-map-node cls-map-prod" data-cls-lens-jump="prod">';
+    html += '<div class="cls-map-node-ico">🏭</div><div class="cls-map-node-title">产品分类 · 生产工艺</div>';
+    html += '<div class="cls-map-node-sub">原料药/片剂/注射/冻干 · 单抗/疫苗/CGT/血液 · 饮片/提取 · 放射性</div>';
+    html += '<div class="cls-map-node-desc">决定「怎么生产、工艺与质控怎么控、适用哪类 GMP」</div></div>';
+    html += '<div class="cls-map-arrow">→</div>';
+
+    html += '<div class="cls-map-node cls-map-qs" data-cls-qs-jump="1">';
+    html += '<div class="cls-map-node-ico">🛡️</div><div class="cls-map-node-title">质量体系分类</div>';
+    html += '<div class="cls-map-node-sub">无菌/原料药/生物/血液/中药/气体/放射性/细胞基因 等 9 类</div>';
+    html += '<div class="cls-map-node-desc">决定「品种合规边界与质量体系归属」（见矩阵视图）</div></div>';
+    html += '<div class="cls-map-arrow">→</div>';
+
+    html += '<div class="cls-map-node cls-map-req" data-cls-req-jump="chemo">';
+    html += '<div class="cls-map-node-ico">📐</div><div class="cls-map-node-title">研发要求体系</div>';
+    html += '<div class="cls-map-node-sub">化学药 / 生物制品 / 中药 三大主线 × 6 阶段 × 4 维度</div>';
+    html += '<div class="cls-map-node-desc">决定「各研发阶段工艺/质量/质量管理门槛」</div></div>';
+    html += '</div>';
+
+    /* 四体系 → 具体类型 的快捷入口网格 */
+    html += '<div class="cls-map-legend">💡 进入任一体系后，均可下钻到「具体药品类型」并查看其<strong>生产工艺（工序/CPP/CQA/中控）</strong>与<strong>质量控制要点</strong>。</div>';
+
+    html += '<div class="cls-map-grid">';
+    const MK = globalThis.MANUFACTURE_KB || {};
+    const CLASSES = MK.CLASSES || [];
+    CLASSES.forEach(cl => {
+      let entries = (MK.ENTRIES || []).filter(x => x.cls === cl.id);
+      if (cl.id === 'chem') {
+        const radio = (MK.ENTRIES || []).find(x => x.id === 'radio-syn');
+        if (radio) entries = entries.concat([Object.assign({}, radio, { _radioTag: true })]);
+      }
+      html += '<div class="cls-map-group">';
+      html += '<div class="cls-map-group-head"><span class="cls-map-group-ico">' + cl.icon + '</span>' + this.pen(cl.name) + '</div>';
+      html += '<div class="cls-map-chips">';
+      entries.forEach(e => {
+        html += '<button class="cls-map-chip" data-cls-prod-entry="' + e.id + '">' + this.pen(e.name)
+          + (e._radioTag ? ' ☢️' : '') + '</button>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
 
     html += '</div>';
     return html;
@@ -2007,15 +2081,73 @@ const App = {
         + '<div class="cls-pd-step-how"><span class="cls-pd-tag how">怎么做</span>' + this.pen(s.detail || '') + '</div></div></div>';
     }).join('');
     const feats = (e.features || []).map(f => '<li>' + this.pen(f) + '</li>').join('');
+
+    // 关联注册分类（与"按注册分类"体系打通）
+    const regCat = (e.reg_cat || []).map(r => '<span class="cls-pd-regcat">' + this.pen(r) + '</span>').join('');
+    const regCatHtml = regCat
+      ? '<div class="cls-pd-section cls-pd-regsys"><div class="cls-pd-sec-title">📋 关联注册分类</div><div class="cls-pd-regcats">' + regCat + '</div></div>'
+      : '';
+    // 适用 GMP 附录 / 关键规范
+    const gmp = (e.gmp || []).map(g => '<span class="cls-pd-gmp">' + this.pen(g) + '</span>').join('');
+    const gmpHtml = gmp
+      ? '<div class="cls-pd-section cls-pd-regsys"><div class="cls-pd-sec-title">🛡️ 适用 GMP 附录 / 关键规范</div><div class="cls-pd-regcats">' + gmp + '</div></div>'
+      : '';
+
+    // 关键质量属性 CQA
+    const cqa = (e.cqa || []).map(a =>
+      '<tr><td class="cls-pd-cqa-a">' + this.pen(a.a) + '</td>'
+      + '<td class="cls-pd-cqa-t">' + this.pen(a.target || '') + '</td>'
+      + '<td class="cls-pd-cqa-m">' + this.pen(a.method || '') + '</td>'
+      + '<td class="cls-pd-cqa-w">' + this.pen(a.why || '') + '</td></tr>'
+    ).join('');
+    const cqaHtml = cqa
+      ? '<div class="cls-pd-section"><div class="cls-pd-sec-title">🎯 关键质量属性（CQA）</div>'
+        + '<div class="cls-pd-sub">决定产品安全性与有效性的核心属性，是工艺确认与放行关注重点</div>'
+        + '<table class="cls-pd-table cls-pd-cqa-table"><thead><tr><th>质量属性</th><th>目标 / 限度</th><th>检测方法</th><th>为什么是关键</th></tr></thead>'
+        + '<tbody>' + cqa + '</tbody></table></div>'
+      : '';
+
+    // 关键工艺参数 CPP
+    const cpp = (e.cpp || []).map(p =>
+      '<li class="cls-pd-cpp-item"><span class="cls-pd-cpp-p">' + this.pen(p.p) + '</span>'
+      + '<span class="cls-pd-cpp-r">范围：' + this.pen(p.range || '') + '</span>'
+      + '<span class="cls-pd-cpp-w">' + this.pen(p.why || '') + '</span></li>'
+    ).join('');
+    const cppHtml = cpp
+      ? '<div class="cls-pd-section"><div class="cls-pd-sec-title">⚙️ 关键工艺参数（CPP）</div>'
+        + '<div class="cls-pd-sub">对 CQA 有显著影响、须受控的工艺参数（QbD 核心）</div>'
+        + '<ul class="cls-pd-cpp-list">' + cpp + '</ul></div>'
+      : '';
+
+    // 中控策略
+    const pc = (e.process_control || []).map(p =>
+      '<tr><td class="cls-pd-pc-s">' + this.pen(p.stage || '') + '</td>'
+      + '<td class="cls-pd-pc-c">' + this.pen(p.check || '') + '</td>'
+      + '<td class="cls-pd-pc-m">' + this.pen(p.method || '') + '</td>'
+      + '<td class="cls-pd-pc-l">' + this.pen(p.limit || '') + '</td></tr>'
+    ).join('');
+    const pcHtml = pc
+      ? '<div class="cls-pd-section"><div class="cls-pd-sec-title">🔬 中控策略（过程控制）</div>'
+        + '<div class="cls-pd-sub">生产工序间的过程控制点，保障批内/批间一致</div>'
+        + '<table class="cls-pd-table cls-pd-pc-table"><thead><tr><th>工序</th><th>中控项目</th><th>方法</th><th>限度</th></tr></thead>'
+        + '<tbody>' + pc + '</tbody></table></div>'
+      : '';
+
     const qc = (e.qc_points || []).map(p =>
       '<tr><td class="cls-pd-qcp-t">' + this.pen(p.t) + '</td>'
       + '<td class="cls-pd-qcp-m">' + this.pen(p.m) + '</td>'
       + '<td class="cls-pd-qcp-s">' + this.pen(p.s) + '</td></tr>'
     ).join('');
+    const qcNote = (e.qc_note || []).map(n =>
+      '<li class="cls-pd-qcn-item"><span class="cls-pd-qcn-t">🔎 ' + this.pen(n.t) + '</span>'
+      + '<span class="cls-pd-qcn-w">' + this.pen(n.why || '') + '</span></li>'
+    ).join('');
     const qcHtml = qc
-      ? '<div class="cls-pd-section"><div class="cls-pd-sec-title">🧪 质量控制要点</div>'
+      ? '<div class="cls-pd-section"><div class="cls-pd-sec-title">🧪 质量控制要点（检验项目 · 方法 · 限度）</div>'
         + '<table class="cls-pd-table"><thead><tr><th>检验项目</th><th>方法 / 检测手段</th><th>标准 · 可接受限度</th></tr></thead>'
-        + '<tbody>' + qc + '</tbody></table></div>'
+        + '<tbody>' + qc + '</tbody></table>'
+        + (qcNote ? '<div class="cls-pd-qcn"><div class="cls-pd-sub">重点控制项「为什么控」解读</div><ul class="cls-pd-qcn-list">' + qcNote + '</ul></div>' : '')
+        + '</div>'
       : '';
     const regs = (e.regs || []).map(r => '<span class="cls-pd-reg">' + this.pen(r) + '</span>').join('');
     const routes = (e.routes || []).map(id => {
@@ -2034,6 +2166,8 @@ const App = {
     html += '<div class="cls-pd-routes">' + routes + '</div>';
     html += '</div>';
     html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">🔧 生产工序（目的 → 怎么做）</div><div class="cls-pd-steps">' + steps + '</div></div>';
+    html += regCatHtml + gmpHtml;
+    html += cqaHtml + cppHtml + pcHtml;
     html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">✨ 工艺特点</div><ul class="cls-pd-feat">' + feats + '</ul></div>';
     html += qcHtml;
     html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">📜 主要依据 · 指导原则</div><div class="cls-pd-regs">' + regs + '</div></div>';

@@ -987,18 +987,48 @@
              '<div class="mf-step-how"><span class="mf-step-tag how">怎么做</span>' + P(s.detail || '') + '</div></div></div>';
     }).join('');
     const feats = (e.features || []).map(function (f) { return '<li>' + P(f) + '</li>'; }).join('');
-    // 质量控制要点：表格（检验项目 / 方法 / 标准·限度）
+
+    // 关联注册分类 + 适用 GMP
+    const regCat = (e.reg_cat || []).map(function (r) { return '<span class="mf-regcat">' + P(r) + '</span>'; }).join('');
+    const regCatHtml = regCat ? '<div class="mf-section"><div class="mf-section-title">📋 关联注册分类</div><div class="mf-regcats">' + regCat + '</div></div>' : '';
+    const gmp = (e.gmp || []).map(function (g) { return '<span class="mf-regcat">' + P(g) + '</span>'; }).join('');
+    const gmpHtml = gmp ? '<div class="mf-section"><div class="mf-section-title">🛡️ 适用 GMP 附录 / 关键规范</div><div class="mf-regcats">' + gmp + '</div></div>' : '';
+
+    // 关键质量属性 CQA
+    const cqa = (e.cqa || []).map(function (a) {
+      return '<tr><td class="mf-cqa-a">' + P(a.a) + '</td><td class="mf-cqa-t">' + P(a.target || '') + '</td><td class="mf-cqa-m">' + P(a.method || '') + '</td><td class="mf-cqa-w">' + P(a.why || '') + '</td></tr>';
+    }).join('');
+    const cqaHtml = cqa ? '<div class="mf-section"><div class="mf-section-title">🎯 关键质量属性（CQA）</div><div class="mf-qcp-note">决定安全性与有效性的核心属性，工艺确认与放行关注重点</div><table class="mf-qcp-table"><thead><tr><th>质量属性</th><th>目标/限度</th><th>方法</th><th>为什么关键</th></tr></thead><tbody>' + cqa + '</tbody></table></div>' : '';
+
+    // 关键工艺参数 CPP
+    const cpp = (e.cpp || []).map(function (p) {
+      return '<li class="mf-cpp-item"><span class="mf-cpp-p">' + P(p.p) + '</span><span class="mf-cpp-r">范围：' + P(p.range || '') + '</span><span class="mf-cpp-w">' + P(p.why || '') + '</span></li>';
+    }).join('');
+    const cppHtml = cpp ? '<div class="mf-section"><div class="mf-section-title">⚙️ 关键工艺参数（CPP）</div><div class="mf-qcp-note">对 CQA 有显著影响、须受控的工艺参数（QbD 核心）</div><ul class="mf-cpp-list">' + cpp + '</ul></div>' : '';
+
+    // 中控策略
+    const pc = (e.process_control || []).map(function (p) {
+      return '<tr><td class="mf-pc-s">' + P(p.stage || '') + '</td><td class="mf-pc-c">' + P(p.check || '') + '</td><td class="mf-pc-m">' + P(p.method || '') + '</td><td class="mf-pc-l">' + P(p.limit || '') + '</td></tr>';
+    }).join('');
+    const pcHtml = pc ? '<div class="mf-section"><div class="mf-section-title">🔬 中控策略（过程控制）</div><div class="mf-qcp-note">生产工序间的过程控制点，保障批内/批间一致</div><table class="mf-qcp-table"><thead><tr><th>工序</th><th>中控项目</th><th>方法</th><th>限度</th></tr></thead><tbody>' + pc + '</tbody></table></div>' : '';
+
+    // 质量控制要点：表格（检验项目 / 方法 / 标准·限度）+ 重点控制解读
     const qcPoints = (e.qc_points || []).map(function (p) {
       return '<tr><td class="mf-qcp-t">' + P(p.t) + '</td>' +
              '<td class="mf-qcp-m">' + P(p.m) + '</td>' +
              '<td class="mf-qcp-s">' + P(p.s) + '</td></tr>';
+    }).join('');
+    const qcNote = (e.qc_note || []).map(function (n) {
+      return '<li class="mf-qcn-item"><span class="mf-qcn-t">🔎 ' + P(n.t) + '</span><span class="mf-qcn-w">' + P(n.why || '') + '</span></li>';
     }).join('');
     const qcPointsHtml = qcPoints
       ? '<div class="mf-section mf-section-qcp"><div class="mf-section-title">🧪 质量控制要点</div>' +
         '<div class="mf-qcp-note">检验项目 · 方法 · 标准/限度（QC 实验室放行视角，供梳理参考，以各论与企业内控为准）</div>' +
         '<table class="mf-qcp-table"><thead><tr>' +
         '<th>检验项目</th><th>方法 / 检测手段</th><th>标准 · 可接受限度</th>' +
-        '</tr></thead><tbody>' + qcPoints + '</tbody></table></div>'
+        '</tr></thead><tbody>' + qcPoints + '</tbody></table>' +
+        (qcNote ? '<div class="mf-qcn"><div class="mf-qcp-note">重点控制项「为什么控」解读</div><ul class="mf-qcn-list">' + qcNote + '</ul></div>' : '') +
+        '</div>'
       : '';
     const regs = (e.regs || []).map(function (r) { return '<span class="mf-regchip">' + esc(r) + '</span>'; }).join('');
     const tags = (e.routes || []).map(function (r) { return '<span class="mf-tag">' + esc(routeName(r)) + '</span>'; }).join('');
@@ -1012,6 +1042,7 @@
         '<div class="mf-card-tags">' + tags + '</div>' +
       '</div>' +
       '<div class="mf-section"><div class="mf-section-title">🔧 生产工序（目的 → 怎么做）</div><div class="mf-steps">' + steps + '</div></div>' +
+      regCatHtml + gmpHtml + cqaHtml + cppHtml + pcHtml +
       '<div class="mf-section"><div class="mf-section-title">✨ 工艺特点</div><ul class="mf-feat">' + feats + '</ul></div>' +
       qcPointsHtml +
       '<div class="mf-section"><div class="mf-section-title">📜 主要依据 · 指导原则</div><div class="mf-regs">' + regs + '</div></div>' +
