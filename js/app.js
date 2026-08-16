@@ -62,7 +62,8 @@ const App = {
     currentCaseId: null,   // 当前案例库案例 id
     caseDomain: null,      // 案例库领域筛选
     classLens: 'reg',      // 药品分类视图镜头：reg=按注册分类, prod=按产品分类·生产工艺
-    classProdForm: null    // 产品分类镜头下选中的具体类型 entry id（null=显示产品分类树）
+    classProdForm: null,   // 产品分类镜头下选中的具体类型 entry id（null=显示产品分类树）
+    classProdRoute: null   // 产品分类镜头下技术路线筛选（null=全部；synth/ferment/formulation/cm/culture/blood/paozhi/modern-ext/radio-syn）
   },
 
   /**
@@ -1442,6 +1443,15 @@ const App = {
       this.state.classProdForm = null;
       this._repaintClassification();
     }));
+    c.querySelectorAll('[data-cls-route]').forEach(chip => chip.addEventListener('click', () => {
+      const rid = chip.dataset.clsRoute;
+      this.state.classProdRoute = (rid === '__all__') ? null : rid;
+      this._repaintClassification();
+    }));
+    c.querySelectorAll('[data-open-req]').forEach(btn => btn.addEventListener('click', () => {
+      const parts = btn.dataset.openReq.split('::');
+      this.openClassReq(parts[0], parts[1] || '');
+    }));
     c.querySelectorAll('.class-sub-head').forEach(h => h.addEventListener('click', () => {
       const sub = h.closest('.class-sub');
       if (sub) this.openClassReq(sub.dataset.cat, sub.dataset.code || '');
@@ -1892,6 +1902,24 @@ const App = {
     return html;
   },
 
+  /* 产品类型 → 研发要求体系节点映射（id → [主类, 特殊品种code]） */
+  _entryReqRef(e) {
+    const MAP = {
+      'chem-api-synth': ['chemo', 'api'], 'chem-api-ferment': ['chemo', 'api'], 'chemo-cm': ['chemo', 'api'],
+      'chemo-solid-tablet': ['chemo', 'oral'], 'chemo-solid-capsule': ['chemo', 'oral'], 'chemo-solid-granule': ['chemo', 'oral'],
+      'chemo-liq-oral': ['chemo', null], 'chemo-inj-solution': ['chemo', 'sterile'], 'chemo-inj-freeze': ['chemo', 'sterile'],
+      'chemo-semi-ointment': ['chemo', null], 'radio-syn': ['chemo', 'radio'],
+      'bio-mab': ['bio', 'mab'], 'bio-bsab': ['bio', 'mab'], 'bio-adc': ['bio', 'adc'],
+      'bio-recombin': ['bio', 'recombin'], 'bio-vaccine': ['bio', 'vaccine'], 'bio-cgt': ['bio', 'cell'], 'bio-blood': ['bio', 'blood'],
+      'tcm-decoction': ['tcm', 'tcm-slice'], 'tcm-extract': ['tcm', 'tcm-prep'], 'tcm-gran': ['tcm', 'tcm-prep'],
+      'tcm-inj': ['tcm', null], 'tcm-ferment': ['tcm', null]
+    };
+    const ref = MAP[e.id];
+    if (ref) return { mainClass: ref[0], subCode: ref[1] };
+    const clsMap = { chem: 'chemo', bio: 'bio', tcm: 'tcm', radio: 'chemo' };
+    return { mainClass: clsMap[e.cls] || 'chemo', subCode: null };
+  },
+
   /* ---- 镜头二：按产品分类 · 生产工艺（复用 MANUFACTURE_KB） ---- */
   _renderClassProductLens() {
     const MK = globalThis.MANUFACTURE_KB;
@@ -1906,7 +1934,21 @@ const App = {
 
     // 产品分类树：化学药额外纳入放射性药品（radio-syn），满足"化药所有类型+剂型+放射性药品"
     let html = '<div class="cls-prod-lens">';
-    html += '<div class="cls-lens-tip">🏭 按「药品类型 → 具体类型（含剂型）」组织，<strong>生产工艺 × 分类</strong>已整合到每一具体类型：点击任一类型查看其<strong>生产工序（目的→怎么做）/ 工艺特点 / 质量控制要点 / 主要依据</strong>。化学药下已纳入全部类型、剂型及放射性药品。</div>';
+    html += '<div class="cls-lens-tip">🏭 按「药品类型 → 具体类型（含剂型）」组织，<strong>生产工艺 × 分类</strong>已整合到每一具体类型：点击任一类型查看其<strong>生产工序（目的→怎么做）/ 工艺特点 / 质量控制要点 / 主要依据</strong>，并可直接展开该类型的<strong>研发要求体系</strong>。化学药下已纳入全部类型、剂型及放射性药品。</div>';
+
+    // 技术路线筛选栏（合成 / 发酵 / 制剂 / 连续制造 / 细胞培养 / 血液 / 炮制 / 现代提取 / 放射性合成）
+    const ROUTES = MK.ROUTE_CHIPS || [];
+    if (ROUTES.length) {
+      html += '<div class="cls-route-bar"><span class="cls-route-bar-label">🔧 技术路线筛选</span>';
+      html += '<button class="cls-route-chip' + (this.state.classProdRoute ? '' : ' active') + '" data-cls-route="__all__">全部</button>';
+      ROUTES.forEach(r => {
+        const cnt = ENTRIES.filter(x => (x.routes || []).indexOf(r.id) !== -1).length;
+        if (!cnt) return;
+        const act = this.state.classProdRoute === r.id ? ' active' : '';
+        html += '<button class="cls-route-chip' + act + '" data-cls-route="' + r.id + '">' + this.pen(r.name) + '</button>';
+      });
+      html += '</div>';
+    }
 
     CLASSES.forEach(cl => {
       // 收集该类的生产工艺条目；化药额外并入放射性药品
@@ -1914,6 +1956,10 @@ const App = {
       if (cl.id === 'chem') {
         const radio = ENTRIES.find(x => x.id === 'radio-syn');
         if (radio) { entries = entries.concat([Object.assign({}, radio, { _radioTag: true })]); }
+      }
+      // 技术路线过滤
+      if (this.state.classProdRoute) {
+        entries = entries.filter(x => (x.routes || []).indexOf(this.state.classProdRoute) !== -1);
       }
       html += '<section class="cls-prod-class">';
       html += '<div class="cls-prod-class-head"><span class="cls-prod-class-ico">' + cl.icon + '</span>'
@@ -1991,6 +2037,34 @@ const App = {
     html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">✨ 工艺特点</div><ul class="cls-pd-feat">' + feats + '</ul></div>';
     html += qcHtml;
     html += '<div class="cls-pd-section"><div class="cls-pd-sec-title">📜 主要依据 · 指导原则</div><div class="cls-pd-regs">' + regs + '</div></div>';
+
+    // 研发要求体系速览（按 6 个标准研发阶段，合并特殊品种 override）
+    const reqRef = this._entryReqRef(e);
+    const CR = globalThis.CLASS_REQUIREMENTS;
+    if (CR && CR.mains[reqRef.mainClass]) {
+      const main = CR.mains[reqRef.mainClass];
+      const sp = reqRef.subCode && CR.specials[reqRef.mainClass] && CR.specials[reqRef.mainClass][reqRef.subCode];
+      const scopeLabel = reqRef.subCode ? (sp ? sp.subName : reqRef.subCode) : (main.name + ' · 全部研发要求');
+      html += '<div class="cls-pd-section cls-pd-req">';
+      html += '<div class="cls-pd-sec-title">📐 研发要求体系（按阶段速览）</div>';
+      html += '<div class="cls-pd-req-scope">所属研发要求体系：<strong>' + this.pen(scopeLabel) + '</strong> · 按「药品研发 / 生产相关工艺研究 / 质量研究 / 质量管理」四维度给出要求</div>';
+      html += '<ul class="cls-pd-req-list">';
+      (CR.stages || []).forEach(st => {
+        let tip = '';
+        if (typeof this.getReqCell === 'function') {
+          const cell = this.getReqCell(reqRef.mainClass, reqRef.subCode || '', st.id, 'rnd')
+                   || this.getReqCell(reqRef.mainClass, reqRef.subCode || '', st.id, 'process');
+          if (cell && cell.requirement && cell.requirement.length) tip = cell.requirement[0];
+        }
+        const tipShown = tip ? (tip.length > 56 ? tip.substring(0, 56) + '…' : tip) : '（与主类通用要求一致）';
+        html += '<li class="cls-pd-req-item"><span class="cls-pd-req-stage">' + this.pen(st.name) + '</span>'
+          + '<span class="cls-pd-req-tip">' + this.pen(tipShown) + '</span></li>';
+      });
+      html += '</ul>';
+      html += '<button class="cls-pd-req-open" data-open-req="' + reqRef.mainClass + '::' + (reqRef.subCode || '') + '">↗ 查看完整研发要求体系（' + this.pen(scopeLabel) + '）</button>';
+      html += '</div>';
+    }
+
     html += '</div>';
     return html;
   },
