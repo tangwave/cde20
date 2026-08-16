@@ -1,5 +1,6 @@
 fastapi>=0.110
 uvicorn[standard]>=0.27
 # kb_query.py -> kb_common.py 依赖
+requests>=2.31
 beautifulsoup4>=4.12
 markdownify>=0.11
