@@ -64,7 +64,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-15 实测真免费（共 **16** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-17 实测真免费（共 **17** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
 > ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除，本项目默认模型已切换为 `openai/gpt-oss-20b:free`。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
@@ -85,6 +85,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | `poolside/laguna-s-2.1:free` | 代码 / 推理向 | 代码示例、技术文档生成 | 偏代码 |
 | `poolside/laguna-xs-2.1:free` | 超轻量代码模型 | 代码补全 / 低延迟 | 体量更小 |
 | `cohere/north-mini-code:free` | 代码生成模型 | 代码片段生成 | 偏代码 |
+| `z-ai/glm-5.2:free` | 智谱 GLM-5.2 开放权重版 | 中文法规问答、通用理解 | 中文强、新晋免费 |
 
 切换方式（任选其一）：
 1. **网页内**：设置 → 服务商选 `OpenRouter` → 模型下拉里直接选；

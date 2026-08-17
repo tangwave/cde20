@@ -98,6 +98,7 @@ LLM_PRESETS_DEFAULT = [
         "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
         "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
+        "z-ai/glm-5.2:free",                              # 真免费，智谱 GLM-5.2 开放权重版
      ],
      "default_model": "openai/gpt-oss-20b:free"},
     {"id": "chatanywhere", "name": "ChatAnywhere（GitHub 免费 Key · GPT/DeepSeek 免费额度）",
