@@ -64,8 +64,8 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-17 实测真免费（共 **17** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
-> ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除，本项目默认模型已切换为 `openai/gpt-oss-20b:free`。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-18 实测真免费（共 **15** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
+> ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除；`liquid/lfm-2.5-2.6b:free` 与 `z-ai/glm-5.2:free` 已于 2026-08-18 从免费档移除（glm-5.2 转为付费），本项目默认模型保持 `openai/gpt-oss-20b:free`。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
@@ -81,17 +81,15 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | `nvidia/nemotron-3.5-content-safety:free` | Nemotron 3.5 内容安全 | 安全过滤场景 | 专项 |
 | `nvidia/nemotron-nano-12b-v2-vl:free` | Nemotron Nano 12B（视觉） | 图文多模态 | 支持视觉 |
 | `nvidia/nemotron-nano-9b-v2:free` | Nemotron Nano 9B | 轻量通用 | 小模型 |
-| `liquid/lfm-2.5-2.6b:free` | LiquidAI LFM2.5 2.6B 端侧小模型 | 端侧 / 低资源 | 极小 |
 | `poolside/laguna-s-2.1:free` | 代码 / 推理向 | 代码示例、技术文档生成 | 偏代码 |
 | `poolside/laguna-xs-2.1:free` | 超轻量代码模型 | 代码补全 / 低延迟 | 体量更小 |
 | `cohere/north-mini-code:free` | 代码生成模型 | 代码片段生成 | 偏代码 |
-| `z-ai/glm-5.2:free` | 智谱 GLM-5.2 开放权重版 | 中文法规问答、通用理解 | 中文强、新晋免费 |
 
 切换方式（任选其一）：
 1. **网页内**：设置 → 服务商选 `OpenRouter` → 模型下拉里直接选；
 2. **环境变量 / render.yaml**：把 `LLM_MODEL` 改成上表任一 ID 即可，其余（`LLM_PROVIDER=openai`、`LLM_BASE_URL`）不变。
 
-> 💡 本项目是「药品法规问答」，默认 `openai/gpt-oss-20b:free` 最稳；Nemotron 3 系列适合复杂/深度问答，Gemma 4 适合中文，其余偏代码，`liquid/lfm-2.5` 适合端侧低资源。
+> 💡 本项目是「药品法规问答」，默认 `openai/gpt-oss-20b:free` 最稳；Nemotron 3 系列适合复杂/深度问答，Gemma 4 适合中文，其余偏代码。
 
 ### 全部 17 家内置服务商对照（base_url + 免费模型）
 

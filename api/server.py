@@ -92,13 +92,11 @@ LLM_PRESETS_DEFAULT = [
         "nvidia/nemotron-3.5-content-safety:free",          # 真免费，Nemotron 3.5 内容安全
         "nvidia/nemotron-nano-12b-v2-vl:free",              # 真免费，支持视觉(vision)
         "nvidia/nemotron-nano-9b-v2:free",                   # 真免费，Nemotron Nano 9B
-        "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 端侧小模型
         "openai/gpt-oss-20b:free",                          # 真免费，OpenAI 开放权重 20B
         "dots-studio/dots-3-note-preview:free",             # 真免费，Dots 3 Note 预览（长上下文/笔记场景）
         "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
         "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
-        "z-ai/glm-5.2:free",                              # 真免费，智谱 GLM-5.2 开放权重版
      ],
      "default_model": "openai/gpt-oss-20b:free"},
     {"id": "chatanywhere", "name": "ChatAnywhere（GitHub 免费 Key · GPT/DeepSeek 免费额度）",
