@@ -322,6 +322,127 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
   </div>
   </section>
 
+  <section class="qm-ptype" id="qm-ptype">
+  <style>
+    .qm-ptype{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#f6f1ff);border:1px solid #e0d4f5;border-radius:14px}
+    .qm-ptype-h{font-size:19px;margin:0 0 4px;color:#4a2c7a}
+    .qm-ptype-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-ptype-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.65}
+    .qm-ptype-subh{font-size:16px;margin:18px 0 8px;color:#5b3a93;border-left:4px solid #8b5cf6;padding-left:10px}
+    .qm-ptype-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;margin-top:8px}
+    .qm-ptype-card{border:1px solid #e7ddf6;border-radius:10px;padding:11px 12px;background:#fdfbff}
+    .qm-ptype-card h4{margin:0 0 6px;font-size:14px;color:#4a2c7a}
+    .qm-ptype-card h4 .qm-p2{font-size:11.5px;color:#6b7280;font-weight:400;margin-left:6px}
+    .qm-ptype-card ul{margin:0;padding-left:20px;font-size:12.5px;color:#33414f;line-height:1.7}
+    .qm-ptype-ref{margin-top:14px;padding:11px 13px;background:#f3ecff;border-left:3px solid #8b5cf6;border-radius:6px;font-size:12.5px;color:#33414f}
+    .qm-ptype-ref b{color:#4a2c7a}
+    .qm-ptype-ref a{color:#7c3aed;text-decoration:none}
+  </style>
+  <h2 class="qm-ptype-h">🧫 各类药品工艺过程中的知识 · 关键工艺参数(CPP)的摸索<span class="cnt">6 类药品 · CPP 摸索方法论</span></h2>
+  <p class="qm-ptype-sub">不同药品类型（化学药、中药、生物制品、细胞与基因治疗、无菌制剂、原料药）的工艺路线、关键单元操作与敏感参数差异显著；而<strong>关键工艺参数(CPP)的摸索</strong>是贯穿各类药品的共性方法论——通过「风险评估识别 → 实验设计(DoE)确认 → 小试/中试/放大验证 → 工艺表征确立 → 持续监控再优化」的闭环，建立 CQA–CPP 关联，最终形成稳健、可验证的工艺控制策略。以下内容可作为研发/生产质量体系（工艺研究方案、中试报告、工艺表征报告、验证方案）的起草要点与迎检自查清单。</p>
+
+  <h3 class="qm-ptype-subh">一、各类药品类型的工艺过程知识</h3>
+  <div class="qm-ptype-grid">
+
+    <div class="qm-ptype-card"><h4>① 化学药（化药）工艺过程<span class="qm-p2">化学药</span></h4><ul>
+      <li><b>原料药</b>：合成路线设计与优化（ICH Q11），关注反应温度/时间/投料比/催化剂、结晶/成盐对晶型与粒度的影响（晶型影响溶出与生物利用度）</li>
+      <li><b>口服固体制剂</b>：粉碎过筛→混合→制粒（湿法/干法/流化床）→干燥→整粒→总混→压片/填充→包衣；关键属性为含量均匀度、溶出度</li>
+      <li><b>注射剂</b>：配液（pH、渗透压）→除菌过滤→灌装→灭菌/无菌工艺；关注无菌、内毒素、可见异物</li>
+      <li><b>缓控释制剂</b>：骨架/膜控/渗透泵，释放度是关键质量属性</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>② 中药 / 天然药物工艺过程<span class="qm-p2">中药</span></h4><ul>
+      <li><b>路线</b>：前处理（净制/切制/炮炙）→提取（水提/醇提/挥发油蒸馏）→纯化（醇沉/大孔树脂/萃取）→浓缩→干燥（喷雾/真空/流化床）→成型</li>
+      <li><b>量质传递</b>：研究饮片→中间体→成品有效成分转移率，建立中间体内控标准；以特征/指纹图谱、多指标含量做整体评价</li>
+      <li><b>中试放大</b>：设备与生产参数基本相符；投料量一般≥制剂处方量(以1000单位计)的10倍；申报临床至少1批稳定中试数据，考察关键工序参数与转移率</li>
+      <li><b>生产过程质控</b>：明确「关键物料质量属性＋关键过程参数」，探索设计空间</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>③ 生物制品 / 重组蛋白 / 单抗<span class="qm-p2">生物制品</span></h4><ul>
+      <li><b>上游</b>：细胞系构建/筛选、细胞培养（批式/流加/灌流）或发酵；关注细胞密度、活率、代谢（葡萄糖/乳酸/铵）、溶氧、pH</li>
+      <li><b>下游</b>：收获→澄清（离心/深层过滤）→层析纯化（亲和/离子交换/疏水）→病毒灭活/清除→超滤换液/浓缩→除菌过滤→配制→冻干/液体灌装</li>
+      <li><b>病毒安全</b>：按平台验证策略开展病毒清除工艺验证（指示病毒、最差条件），为生物制品特有重点</li>
+      <li><b>一次性/连续</b>：一次性系统与连续下游渐成主流，须关注可提取物/浸出物、系统完整性</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>④ 细胞与基因治疗(CGT)<span class="qm-p2">CGT</span></h4><ul>
+      <li><b>细胞治疗(CAR-T等)</b>：采集→分选/激活→基因转导/编辑→扩增培养→制剂（冻存/新鲜）→放行；全程无菌、密闭、冷链</li>
+      <li><b>基因治疗(病毒载体 AAV/慢病毒)</b>：包装细胞培养→病毒包装/收获→纯化（层析/超离）→灌装；关注载体滴度、空壳比、杂质</li>
+      <li><b>工艺特点</b>：高度个性化、批次小、工艺与产品耦合（自体）；CPP 多为生物过程参数，实时监测要求高</li>
+      <li><b>依据</b>：GMP 细胞治疗产品附录(征求意见稿)、细胞治疗产品生产检查指南</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>⑤ 无菌制剂工艺过程<span class="qm-p2">无菌</span></h4><ul>
+      <li><b>最终灭菌</b>：配液→除菌过滤前处理→灌装→终端灭菌（湿热为主，须灭菌验证+生物负载控制）→灯检/包装；优先终端灭菌</li>
+      <li><b>无菌分装/非最终灭菌</b>：A级（RABS/隔离器）下除菌过滤＋无菌灌装；须无菌工艺模拟（培养基灌装）覆盖最差条件</li>
+      <li><b>冻干粉针</b>：配制→除菌过滤→灌装→冻干（预冻/一次干燥/二次干燥，关注板层温度、真空度、制品温度）→压塞</li>
+      <li><b>关键</b>：无菌保障(CCS)、内毒素、不溶性微粒、容器密封完整性(CCI)</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>⑥ 原料药(API)工艺过程<span class="qm-p2">原料药</span></h4><ul>
+      <li><b>化学合成 API</b>：路线设计→多步反应→结晶/成盐→离心/过滤→干燥→粉碎/筛分→混合/总混→包装；关注晶型、粒度、残留溶剂、有关物质</li>
+      <li><b>发酵/提取 API</b>：发酵/培养→提取纯化→精制→干燥</li>
+      <li><b>起始物料(ICH Q11)</b>：须有适当控制且对质量有直接影响；合成步骤过少可能不被接受</li>
+      <li><b>工艺表征</b>：对关键步骤做 DoE 确定参数范围，杂质谱随工艺变化需论证</li>
+    </ul></div>
+
+  </div>
+
+  <h3 class="qm-ptype-subh">二、关键工艺参数(CPP)的摸索与确定方法</h3>
+  <div class="qm-ptype-grid">
+
+    <div class="qm-ptype-card"><h4>① 工艺理解是起点<span class="qm-p2">基础</span></h4><ul>
+      <li>建立对「物料属性—工艺参数—质量属性」三者关系的认知（ICH Q8）</li>
+      <li>先通过文献、先验知识、小试形成初始工艺理解，再层层验证与修正</li>
+      <li>理解越深，越能减少 CPP 摸索的盲目性，避免"仅终点检验"的误区</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>② 风险评估识别潜在 CPP（自上而下）<span class="qm-p2">风险识别</span></h4><ul>
+      <li>用 FMEA、鱼骨图(Ishikawa)、初步危害分析，从人/机/料/法/环识别可能影响 CQA 的参数</li>
+      <li>以 ICH Q9 质量风险管理为框架，结合专家判断与历史数据缩小候选参数范围</li>
+      <li>输出"潜在 CPP 清单"作为后续实验设计的输入</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>③ 实验设计(DoE)筛选与确认（自下而上）<span class="qm-p2">DoE</span></h4><ul>
+      <li>单因素/正交试验初筛重要参数；再用多因素 DoE（全因子/部分因子/响应面 RSM）量化参数对 CQA 的影响与交互作用</li>
+      <li><b>务必关注交互作用</b>——只做单因素易漏判，DoE 能揭示参数耦合效应</li>
+      <li>以统计显著的参数—属性关系确定哪些是真正的 CPP</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>④ 小试→中试→放大中的参数探索<span class="qm-p2">放大</span></h4><ul>
+      <li>小试确定原理与范围；中试验证设备匹配与可放大性（中药中试≥10倍处方量）</li>
+      <li><b>放大效应</b>：传质/传热/混合不均/停留时间分布改变会重塑参数敏感性，须研究放大相关性</li>
+      <li>商业规模工艺确认(PQ)以连续3批验证确定可操作范围</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>⑤ 工艺表征确立 CPP 与设计空间<span class="qm-p2">表征</span></h4><ul>
+      <li>在代表性/最差条件下运行，确认"变异对 CQA 有显著影响"者=CPP</li>
+      <li>建立 <b>CQA–CPP 关联矩阵</b>；由 CPP 范围＋物料属性组合形成设计空间(QbD)或经验证可接受范围(PAR)</li>
+      <li>CPP 须受监控并控制在已验证范围内；非 CPP 可放宽但须有理由</li>
+    </ul></div>
+
+    <div class="qm-ptype-card"><h4>⑥ 持续监控与再摸索（闭环）<span class="qm-p2">闭环</span></h4><ul>
+      <li>CPV/趋势数据发现参数漂移或新相关因素时，重新评估 CPP 范围，必要时补充 DoE 与验证</li>
+      <li>工艺变更（ICH Q12）以可比性研究论证 CPP 调整合理性</li>
+      <li><b>常见陷阱</b>：只做终点检验、单因素替代 DoE、未做最差条件确认、中试/放大脱节致 CPP 失效、注册工艺≠实际工艺（飞检高风险）</li>
+    </ul></div>
+
+  </div>
+  <div class="qm-ptype-ref">
+    <b>核心权威依据：</b>
+    <a href="https://database.ich.org/sites/default/files/Q8%28R2%29%20Guideline.pdf" target="_blank" rel="noopener">ICH Q8(R2)药物研发（QbD/设计空间）</a> ·
+    <a href="https://database.ich.org/sites/default/files/Q11%20Guideline.pdf" target="_blank" rel="noopener">ICH Q11 原料药开发和生产</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=96b9ef7484064e3de32b93cf004e7ca7" target="_blank" rel="noopener">中药复方制剂生产工艺研究(2020)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=49f1ca080b1a9426e17466b6ed1e3ac4" target="_blank" rel="noopener">中药天然药物提取纯化研究</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=b9cf98594a0455fff54536f7be347ac6" target="_blank" rel="noopener">中药天然药物中试研究</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=8c89f1e7bbee6a7cf2ed0102bea1b871" target="_blank" rel="noopener">中药口服制剂生产过程质量控制研究(2024)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">治疗用重组蛋白病毒清除工艺平台验证(2024)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=ed41b3910ae75b922f4895909c187c5b" target="_blank" rel="noopener">已上市化学药品生产工艺变更(2017)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=45895c7b3a1c4ac932882559c7003885" target="_blank" rel="noopener">生物制品生产工艺过程变更管理</a> ·
+    <a href="https://www.cde.org.cn/main/news/viewInfoCommon/8a1c258dea8798a6c6d6c1e0a14d1c1f" target="_blank" rel="noopener">化学药品注射剂灭菌和无菌工艺指导原则</a>
+  </div>
+  </section>
+
   <section class="cat" id="cat-0">
     <h2>GMP·体系与品种附录（含2023版GMP指南、生产检查指南） <span class="cnt">23</span></h2>
     <div class="grid">
