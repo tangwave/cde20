@@ -45,11 +45,11 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
 <header><div class="wrap">
   <a class="back" href="index.html">← 返回法规问答首页</a>
   <h1>药品研发生产 · 质量管理知识库</h1>
-  <p>汇总药品研发与生产全链条质量管理权威文献 83 篇 · 覆盖 GMP / GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回 / 物料管理（原辅料·药包材·起始物料）</p>
+  <p>汇总药品研发与生产全链条质量管理权威文献 94 篇 · 覆盖 GMP / GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺开发与验证 / 工艺变更 / 连续制造 / 供应商审计 / 放行回顾 / 投诉召回 / 物料管理（原辅料·药包材·起始物料）</p>
 </div></header>
 <div class="bar"><div class="wrap">
   <input id="q" placeholder="搜索标题 / 发布机构 / 文号 / 关键词（如：无菌、共线、方法学、Q9、数据完整性）"/>
-  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (83)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺验证与持续工艺确认 (1)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button><button class="chip" data-cat="11">物料管理·原辅料·药包材·起始物料 (12)</button></div>
+  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (94)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺开发与验证·工艺变更·连续制造 (12)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button><button class="chip" data-cat="11">物料管理·原辅料·药包材·起始物料 (12)</button></div>
 </div></div>
 <main id="main">
 <section class="qm-cases" id="qm-cases">
@@ -210,6 +210,115 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
     <a href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">细胞治疗产品生产检查指南(2025)</a> ·
     <a href="https://www.cde.org.cn/zdyz/guideGwView/bf8092a1d031bf17fd3c9719d3394b26" target="_blank" rel="noopener">EMA 临床研究性药物化学与质量文件指南</a> ·
     2023年版GMP指南-物料系统(NMPA)
+  </div>
+  </section>
+
+  <section class="qm-proc" id="qm-proc">
+  <style>
+    .qm-proc{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#f1f5ff);border:1px solid #cfd9f2;border-radius:14px}
+    .qm-proc-h{font-size:19px;margin:0 0 4px;color:#15315c}
+    .qm-proc-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-proc-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.6}
+    .qm-proc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;margin-top:8px}
+    .qm-proc-card{border:1px solid #e1e8f5;border-radius:10px;padding:11px 12px;background:#fcfeff}
+    .qm-proc-card h4{margin:0 0 6px;font-size:14px;color:#0b3d91}
+    .qm-proc-card h4 .qm-t2{font-size:11.5px;color:#6b7280;font-weight:400;margin-left:6px}
+    .qm-proc-card ul{margin:0;padding-left:20px;font-size:12.5px;color:#33414f;line-height:1.7}
+    .qm-proc-ref{margin-top:14px;padding:11px 13px;background:#eef6ff;border-left:3px solid #1769e0;border-radius:6px;font-size:12.5px;color:#33414f}
+    .qm-proc-ref b{color:#15315c}
+    .qm-proc-ref a{color:#1769e0;text-decoration:none}
+  </style>
+  <h2 class="qm-proc-h">🔬 药品研发生产中的工艺知识（详细介绍）<span class="cnt">11 个主题 · 权威依据见文末</span></h2>
+  <p class="qm-proc-sub">工艺（Process）是把物料转化为符合预定用途与质量标准的药品的全过程，是 CMC（药学）的核心，贯穿<strong>工艺开发—工艺验证—持续工艺确认—工艺变更</strong>全生命周期。工艺理解（对物料属性、工艺参数与质量属性间关系的认知）是质量源于设计(QbD)与稳健生产的基础。以下按主题系统梳理工艺知识，可作为研发/生产质量体系（工艺规程、验证方案、技术转移报告、变更研究）的起草要点与迎检自查清单。</p>
+  <div class="qm-proc-grid">
+    <div class="qm-proc-card"><h4>① 工艺开发总论与研发阶段定位<span class="qm-t2">工艺开发</span></h4><ul>
+      <li>工艺开发是 CMC 核心，目标：持续、可靠地生产出符合预定用途和质量标准的产品</li>
+      <li>采用系统方法，建立对物料属性、工艺参数与质量属性关系的<strong>工艺理解</strong></li>
+      <li>研发阶段工艺可比商业化简化（I 期从简、II/III 期趋严），但关键步骤须有原理说明与初步确认</li>
+      <li>依据 ICH Q8(R2)药物研发、ICH Q11 原料药开发和生产</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>② 关键质量属性(CQA)与关键工艺参数(CPP)<span class="qm-t2">CQA/CPP</span></h4><ul>
+      <li>CQA：物理、化学、生物或微生物性质/特征，应在适当限度、范围或分布内以保证质量（ICH Q8）</li>
+      <li>以风险评估(ICH Q9)结合先验知识与实验设计识别 CQA，再反向推导影响 CQA 的 CPP</li>
+      <li>CPP：变异对 CQA 有影响的工艺参数，须控制在适宜范围（已验证范围/设计空间内）</li>
+      <li>形成<strong>CQA–CPP 关联矩阵</strong>，作为工艺控制策略的基础</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>③ 质量源于设计(QbD)与设计空间<span class="qm-t2">QbD</span></h4><ul>
+      <li>QbD：以预先确定的质量目标为起点，强调对产品与工艺的理解及工艺控制（ICH Q8 加强方法）</li>
+      <li>设计空间：申请人提出的、确保质量的多变量输入（物料属性+工艺参数）组合；机构在设计空间内变更不视为变更</li>
+      <li>控制策略：对物料、工艺、中间体、成品的主动控制措施（如 PAT、实时放行）</li>
+      <li>强调对产品和工艺的理解，而非仅靠终点检验</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>④ 工艺验证生命周期（三阶段）<span class="qm-t2">工艺验证</span></h4><ul>
+      <li>阶段1 工艺设计：基于研发数据定义商业化工艺，建立 CQA/CPP 与工艺理解</li>
+      <li>阶段2 工艺确认（IQ/OQ/PQ）：证明工艺能稳定重现，连续 3 批成功为常见判据；方式含前验证/同步验证/回顾验证</li>
+      <li>阶段3 持续工艺确认(CPV)：常规生产中持续监控，证明工艺处于受控状态</li>
+      <li>依据 FDA 2011 工艺验证总则与 CFDI《工艺验证检查指南》(2025)</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑤ 持续工艺确认(CPV)与工艺监控<span class="qm-t2">CPV</span></h4><ul>
+      <li>建立 CPV 计划：选定 CPP/CQA、取样与统计方法，持续收集并分析数据</li>
+      <li>运用统计过程控制(SPC)、趋势分析、警戒限/行动限，及时发现工艺偏移</li>
+      <li>工艺漂移/异常时启动偏差、调查与 CAPA，必要时补充验证</li>
+      <li>平台工艺/相似产品可借鉴先验知识，但须论证适用性</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑥ 工艺规程与批生产记录(BPR)<span class="qm-t2">工艺规程</span></h4><ul>
+      <li>工艺规程是生产法定技术文件：规定处方、工艺操作、关键参数、中间控制、设备、时限</li>
+      <li>BPR 须如实记录实际操作与参数，与工艺规程一致；偏差如实记录并调查</li>
+      <li><strong>注册工艺＝工艺规程＝实际生产</strong>，三者一致是 GMP 符合核心（飞检高频缺陷：擅自改变关键工艺参数）</li>
+      <li>关键工序/关键参数须重点记录与复核</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑦ 工艺转移 / 技术转移<span class="qm-t2">技术转移</span></h4><ul>
+      <li>将工艺从研发/中试/一方转移到另一方（或新场地/新生产线），须保证产品质量与工艺一致性</li>
+      <li>开展差距分析、风险评估、转移方案、批对比（质量属性/工艺性能）、培训与文件化</li>
+      <li>依据药品生产场地变更及相关规范，确认接收方具备相应条件</li>
+      <li>转移失败须调查纠正后再行转移</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑧ 工艺变更管理<span class="qm-t2">工艺变更</span></h4><ul>
+      <li>上市后工艺变更须基于风险开展可比性研究，评估对质量/安全/有效性的影响</li>
+      <li>依据：已上市化学药品/中药生产工艺变更、生物制品生产工艺过程变更管理、ICH Q12 生命周期管理</li>
+      <li>变更分类（重大/中等/微小）对应不同研究程度与申报路径（补充申请/备案/年报）</li>
+      <li>重大变更须验证、稳定性考察，必要时抽检；未经批准不得实施</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑨ 连续制造与先进制造（ICH Q13）<span class="qm-t2">连续制造</span></h4><ul>
+      <li>连续制造(CM)：物料连续进料、加工、出料，集成单元操作、实时监测与反馈控制</li>
+      <li>ICH Q13 提供原料药与制剂连续制造的研发、验证、控制策略、监管申报框架</li>
+      <li>优势：缩短周期、减少批间变异、灵活产能；挑战：实时放行、物料追溯、工艺模型验证</li>
+      <li>《化药口服固体制剂连续制造技术指导原则(试行)》提供国内落地指引</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑩ 无菌工艺与特殊工艺控制<span class="qm-t2">无菌/特殊</span></h4><ul>
+      <li>无菌制剂须开展无菌工艺模拟试验（培养基灌装），覆盖全线、最差条件，证明无菌保障能力</li>
+      <li>灭菌工艺：优先终端灭菌；注射剂须论证灭菌/无菌工艺选择并验证（注射剂灭菌和无菌工艺指导原则）</li>
+      <li>生物制品：细胞培养/纯化、病毒安全（病毒清除工艺平台验证）、一次性系统相容性</li>
+      <li>中药：提取/醇沉/浓缩/干燥等参数对成分转移率影响大，须研究参数与质量关联</li>
+    </ul></div>
+
+    <div class="qm-proc-card"><h4>⑪ 工艺相关杂质与交叉污染控制<span class="qm-t2">杂质/污染</span></h4><ul>
+      <li>工艺杂质：起始物料带入、副反应、降解、试剂/催化剂残留；依 ICH Q3A/Q3B 界定与控制</li>
+      <li>基因毒性杂质(GTI)：按 ICH M7 控制策略（优选限度/论证限度），工艺设计阶段即引入控制</li>
+      <li>共线生产交叉污染：依《药品共线生产质量风险管理指南》评估；高活性/高毒/高致敏产品须专用或阶段性生产</li>
+      <li>清洁验证：按毒性/活性/PDE 计算残留限度，验证清洁方法有效性</li>
+    </ul></div>
+  </div>
+  <div class="qm-proc-ref">
+    <b>核心权威依据：</b>
+    <a href="https://database.ich.org/sites/default/files/Q8%28R2%29%20Guideline.pdf" target="_blank" rel="noopener">ICH Q8(R2)药物研发（QbD/设计空间）</a> ·
+    <a href="https://www.cfdi.org.cn/cfdi/resource/news/16373.html" target="_blank" rel="noopener">CFDI 工艺验证检查指南(2025)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/guideGwView/a6216af73bbd6dc05243645036115d99" target="_blank" rel="noopener">FDA 工艺验证的一般原则和方法</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=ed41b3910ae75b922f4895909c187c5b" target="_blank" rel="noopener">已上市化学药品生产工艺变更</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=e6b4e1c81b78607501d7e00532f5f993" target="_blank" rel="noopener">已上市中药生产工艺变更</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=45895c7b3a1c4ac932882559c7003885" target="_blank" rel="noopener">生物制品生产工艺过程变更管理</a> ·
+    <a href="https://www.cde.org.cn/main/news/viewInfoCommon/8a1c258dea8798a6c6d6c1e0a14d1c1f" target="_blank" rel="noopener">化学药品注射剂灭菌和无菌工艺指导原则</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=933746f656d1d50d11d63e4d4141cb75" target="_blank" rel="noopener">无菌工艺模拟试验指南(无菌制剂)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">治疗用重组蛋白病毒清除工艺平台验证</a>
   </div>
   </section>
 
@@ -646,13 +755,79 @@ Q12 提供药品生命周期内变更管理的通用技术文件和监管工具�
       </article></div>
   </section>
   <section class="cat" id="cat-8">
-    <h2>工艺验证与持续工艺确认 <span class="cnt">1</span></h2>
+    <h2>工艺开发与验证·工艺变更·连续制造 <span class="cnt">12</span></h2>
     <div class="grid">
       <article class="doc">
         <div class="doc-h"><h3>关于发布《工艺验证检查指南》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
         <div class="meta">国家药监局食品药品审核查验中心 · 2025-04-07　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16373.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
         <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布工艺验证检查指南的通告.md</div>
         <div class="sum">为加强药品商业规模工艺验证的质量管理,指导药品检查员开展工艺验证现场检查工作,核查中心组织制定了《工艺验证检查指南》。经国家药品监督管理局同意,现予发布。特此通告。附件:[![](/cfdi/resource/ueditorP/themes/default/exts/pdf.svg)工艺验证检查指南…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q8(R2)：药物研发 (Pharmaceutical Development)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ICH · 2009-08-01（中国2020-01-21适用）　<a class="src" href="https://database.ich.org/sites/default/files/Q8%28R2%29%20Guideline.pdf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q8-R2药物研发.md</div>
+        <div class="sum">阐述药物研发的系统方法，提出"传统方法"与"加强方法（质量源于设计 QbD）"，强调对产品关键质量属性(CQA)与关键工艺参数(CPP)的理解及设计空间(Design Space)。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>工艺验证的一般原则和方法</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">美国 FDA / 药审中心译 · 2008-11　<a class="src" href="https://www.cde.org.cn/zdyz/guideGwView/a6216af73bbd6dc05243645036115d99" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/国外指导原则参考/工艺验证的一般原则和方法.md</div>
+        <div class="sum">FDA 工艺验证总则，确立工艺验证三阶段（工艺设计—工艺确认—持续工艺确认），强调基于科学认知与风险、贯穿产品全生命周期的验证理念。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>已上市化学药品生产工艺变更研究技术指导原则</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2017-08-21　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=ed41b3910ae75b922f4895909c187c5b" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/已上市化学药品生产工艺变更研究技术指导原则.md</div>
+        <div class="sum">指导申请人对已上市化学药拟变更生产工艺开展研究，按变更程度（重大/中等/微小）提出相应研究验证要求与申报路径。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>已上市中药生产工艺变更研究技术指导原则</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2017-09-11　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=e6b4e1c81b78607501d7e00532f5f993" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/已上市中药生产工艺变更研究技术指导原则.md</div>
+        <div class="sum">对已上市中药拟变更生产工艺的研究要求，补充完善《已上市中药变更研究技术指导原则（一）》，关注工艺变更对物质基础与质量一致性的影响。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>生物制品生产工艺过程变更管理技术指导原则</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2005-10-14　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=45895c7b3a1c4ac932882559c7003885" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/生物制品生产工艺过程变更管理技术指导原则.md</div>
+        <div class="sum">规范生物制品生产工艺过程（发酵/细胞培养、纯化、制剂、灌装等）变更的分类、可比性研究与申报管理，强调工艺变更对安全性/有效性的风险评估。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>无菌工艺模拟试验指南(无菌制剂)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2018-09-11　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=933746f656d1d50d11d63e4d4141cb75" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/无菌工艺模拟试验指南(无菌制剂).md</div>
+        <div class="sum">规定无菌制剂无菌工艺模拟试验（培养基灌装）的方案设计、最差条件、批次/装量、结果判定与再验证要求，证明无菌生产工艺的保障能力。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>无菌工艺模拟试验指南(无菌原料药)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2018-09-11　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=a6e6467ce7928e555a9d3eb9ba87ceb0" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/无菌工艺模拟试验指南(无菌原料药).md</div>
+        <div class="sum">针对无菌原料药的无菌工艺模拟试验要求，涵盖无菌结晶/干燥/粉碎/包装等工序的模拟验证与污染风险控制。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化学药品注射剂灭菌和无菌工艺研究及验证指导原则（试行）</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药品监督管理局药品审评中心（CDE） · 2020-12-30　<a class="src" href="https://www.cde.org.cn/main/news/viewInfoCommon/8a1c258dea8798a6c6d6c1e0a14d1c1f" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品注射剂灭菌和无菌工艺研究及验证指导原则试行.md</div>
+        <div class="sum">规范化学药品注射剂灭菌和无菌工艺的研究与验证，明确灭菌工艺选择原则（优先终端灭菌）、无菌工艺模拟与验证要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>中药复方制剂生产工艺研究技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2020-11-27　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=96b9ef7484064e3de32b93cf004e7ca7" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/中药复方制剂生产工艺研究技术指导原则(试行).md</div>
+        <div class="sum">针对中药复方制剂提取、分离、浓缩、干燥、成型等工艺研究，强调工艺参数与成分转移率/质量属性的关联研究与工艺验证。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>中药工艺相关问题的处理原则</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2008-06-12　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=4b49e3142441860ac6a48c888a54712a" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/中药工艺相关问题的处理原则.md</div>
+        <div class="sum">对中药工艺研究中的共性问题（如提取溶剂、工艺路线、制成总量、含研粉/鲜膏等）提出处理原则，指导中药工艺合理性与一致性评价。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>治疗用重组蛋白产品临床试验申请病毒清除工艺平台验证技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2024-01-16　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/治疗用重组蛋白产品临床试验申请病毒清除工艺平台验证技术指导原则(试行).md</div>
+        <div class="sum">针对治疗用重组蛋白产品，规范临床试验申请阶段病毒清除工艺平台验证的策略、模型病毒选择、减病毒因子计算与可比性论证。</div>
       </article></div>
   </section>
   <section class="cat" id="cat-9">
