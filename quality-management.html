@@ -45,11 +45,11 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
 <header><div class="wrap">
   <a class="back" href="index.html">← 返回法规问答首页</a>
   <h1>药品研发生产 · 质量管理知识库</h1>
-  <p>汇总药品研发与生产全链条质量管理权威文献 71 篇 · 覆盖 GMP / GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回</p>
+  <p>汇总药品研发与生产全链条质量管理权威文献 83 篇 · 覆盖 GMP / GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回 / 物料管理（原辅料·药包材·起始物料）</p>
 </div></header>
 <div class="bar"><div class="wrap">
   <input id="q" placeholder="搜索标题 / 发布机构 / 文号 / 关键词（如：无菌、共线、方法学、Q9、数据完整性）"/>
-  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (71)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺验证与持续工艺确认 (1)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button></div>
+  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (83)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺验证与持续工艺确认 (1)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button><button class="chip" data-cat="11">物料管理·原辅料·药包材·起始物料 (12)</button></div>
 </div></div>
 <main id="main">
 <section class="qm-cases" id="qm-cases">
@@ -113,6 +113,105 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
     renderQMCases('all');
   </script>
 </section>
+
+  <section class="qm-mat" id="qm-mat">
+  <style>
+    .qm-mat{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#f3fff7);border:1px solid #cfe9da;border-radius:14px}
+    .qm-mat-h{font-size:19px;margin:0 0 4px;color:#0b6b3a}
+    .qm-mat-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-mat-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.6}
+    .qm-mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;margin-top:8px}
+    .qm-mat-card{border:1px solid #e0ecf4;border-radius:10px;padding:11px 12px;background:#fcfffd}
+    .qm-mat-card h4{margin:0 0 6px;font-size:14px;color:#0b3d91}
+    .qm-mat-card h4 .qm-tag2{font-size:11.5px;color:#6b7280;font-weight:400;margin-left:6px}
+    .qm-mat-card ul{margin:0;padding-left:20px;font-size:12.5px;color:#33414f;line-height:1.7}
+    .qm-ref{margin-top:14px;padding:11px 13px;background:#eef6ff;border-left:3px solid #1769e0;border-radius:6px;font-size:12.5px;color:#33414f}
+    .qm-ref b{color:#15315c}
+    .qm-ref a{color:#1769e0;text-decoration:none}
+  </style>
+  <h2 class="qm-mat-h">📦 药品研发过程中的物料要求<span class="cnt">11 个主题 · 权威依据见文末</span></h2>
+  <p class="qm-mat-sub">物料（原料/起始物料、药用辅料、直接接触药品的包装材料与容器、中间体、试剂与标准品等）是产品质量的源头，须贯穿<strong>研发—临床—商业化</strong>全生命周期。研发阶段可比商业化适当简化，但必须满足「质量、安全及功能满足药品预定用途」（关联审评总体要求），并实现可追溯。以下按主题梳理核心要求，可作为研发质量体系文件（SOP/管理规程）的起草要点与迎检自查清单。</p>
+  <div class="qm-mat-grid">
+    <div class="qm-mat-card"><h4>① 总体框架与研发阶段特殊性<span class="qm-tag2">物料管理总纲</span></h4><ul>
+      <li>建立研发物料台账与物料代码/批号体系，实现物料→产品、产品→物料的正/反向可追溯</li>
+      <li>参照 GMP 原则建立接收、标识、储存、取样、检验、放行与不合格处置基本程序（EMA：研究性药物 IMP 应依据 GMP 原则生产）</li>
+      <li>研发阶段控制可分级简化（I 期从简、II/III 期趋严），但关键物料须有质量文件支撑</li>
+      <li>参照《2023年版GMP指南-物料系统》建立采购、接收、储存、取样、放行与供应链管理</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>② 起始物料与原料药<span class="qm-tag2">ICH Q11 / Q7</span></h4><ul>
+      <li>起始物料(Starting Material)选择须有合理性与可追溯性论证，是工艺验证、杂质研究与注册的起点（ICH Q11 原则）</li>
+      <li>原料药按 ICH Q7 管理：物料控制(S.2.3)、关键步骤与中间体控制、工艺验证、质量标准(S.4)、对照标准品、容器密封、稳定性</li>
+      <li>原料药与制剂关联审评：登记人平台登记，制剂获批即视同关联原料药通过审评，标识"A"（2019年第56号）</li>
+      <li>起始物料/原料药的供应商或工艺变更须按变更管理（ICH Q12）评估对质量影响</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>③ 药用辅料<span class="qm-tag2">关联审评 / 2025 辅料附录</span></h4><ul>
+      <li>辅料须符合药用要求并满足制剂预定用途；与制剂关联审评，登记状态"A/I"（2019年第56号），长期使用且安全认可者可免登记</li>
+      <li>辅料生产企业自2026-01-01执行《GMP(2010)药用辅料附录》（2025年第1号），建立质量体系、按登记信息生产、每批检验放行、严格变更管理（原2006年辅料GMP通知同时废止）</li>
+      <li>MAH 须与主要辅料供应商签质量协议、开展供应商审核（含现场）、入厂检验，必要时基于风险增加检验项目</li>
+      <li>新型辅料、动物/人来源辅料须额外安全性评估（EMA IMPD P.4.5）</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>④ 直接接触药品的包装材料/容器<span class="qm-tag2">2025 药包材附录</span></h4><ul>
+      <li>药包材与制剂关联审评（2019年第56号）；《GMP(2010)药包材附录》（2025年第1号，2026-01-01施行）规范生产企业质量体系、变更与放行</li>
+      <li>开展包装系统相容性研究（浸出/迁移）与容器密封完整性(CCI)验证，防止泄漏、污染或浸出</li>
+      <li>药包材变更须重新验证并评估注册影响；MAH 加强供应商审核与入厂检验</li>
+      <li>包装操作纳入 SOP 与批记录控制，运输验证确认保护能力</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑤ 物料质量标准与检验<span class="qm-tag2">质量标准 / 留样 / OOS</span></h4><ul>
+      <li>为每类物料建立经批准的质量标准（鉴别、含量/纯度、杂质、微生物、理化等），标准制定须有依据（Q6 / EMA IMPD S.4.5）</li>
+      <li>标准品/对照品受控管理并溯源至国家标准或经标定；试剂、培养基、溶剂受控</li>
+      <li>按批准方法取样与检验，方法经验证/确认；留样管理支持稳定性与调查</li>
+      <li>检验异常按 OOS/OOT 程序调查，区分实验室偏差与生产偏差，结论决定放行或拒收</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑥ 供应商管理与质量协议<span class="qm-tag2">审计 / 合格名录</span></h4><ul>
+      <li>建立合格供应商名录并按风险分级（关键/一般）；对关键原辅料/药包材供应商开展质量审计（现场或书面）（2025年第1号 五）</li>
+      <li>签订质量协议，明确标准、检验责任、变更通知义务与投诉/召回配合</li>
+      <li>新增/更换主要辅料、药包材供应商须按药品变更管理要求办理（2025年第1号 七）</li>
+      <li>定期再审计与绩效（质量、交付、偏差）监测，更新台账</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑦ 物料接收·储存·标识·放行<span class="qm-tag2">防混淆 / 待验</span></h4><ul>
+      <li>接收核对订单/合格证/运输条件，记录批号、数量、供应商，异常（破损、温湿度超标）按偏差处理</li>
+      <li>待验/合格/不合格三态分区与色标管理，防止混淆误用；合格后方可发放使用</li>
+      <li>按物料性质（温湿度、光照、防潮、防爆、隔离）储存，先进先出/近效期先出，建立复验期管理</li>
+      <li>质量部门审核检验结果与偏差后放行；未放行物料隔离存放</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑧ 不合格物料与偏差/OOS、物料平衡<span class="qm-tag2">处置 / 平衡</span></h4><ul>
+      <li>不合格物料清晰标识、隔离、专区存放，按程序评审（退货/销毁/降级）并留痕</li>
+      <li>物料相关偏差（误用、混淆、检验不合格、储存异常）启动偏差调查，必要时隔离相关批次并评估影响</li>
+      <li>开展物料平衡核算，收率异常/超限触发调查，防止物料流失与混淆</li>
+      <li>处置与调查结果纳入趋势分析与 CAPA</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑨ 临床研究性药物(IMP)的物料控制<span class="qm-tag2">临床试验用药品附录</span></h4><ul>
+      <li>IMP 遵循《GMP(2010)临床试验用药品附录》（2022年第43号）及配套问答；物料控制参照 EMA 质量文件（IMPD S.2.3 物料控制、P.4 辅料控制）</li>
+      <li>IMP 所用原料、辅料、对照品须有适当质量文件，质量匹配临床分期与风险（I 期从简，II/III 期趋严）</li>
+      <li>对照药/安慰剂、复溶稀释用溶剂、辅助性药品均须受控并记录</li>
+      <li>临床试验用药的物料变更须评估对受试者安全与数据可靠性的影响</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑩ 中药/生物制品/CGT 等专项物料<span class="qm-tag2">专项要求</span></h4><ul>
+      <li>中药：药材基原鉴定、农残/重金属/黄曲霉毒素控制、产地追溯（2025年第79号《中药生产监督管理专门规定》）；饮片按批管理、规范炮制</li>
+      <li>生物制品：细胞库/菌毒种(MCB/WCB、种子批)全面检定与限定代次；培养基、血浆等原材料筛查与溯源（生物制品附录）</li>
+      <li>CGT：载体构建/库管理，控制复制型病毒与载体拷贝数（细胞治疗产品生产检查指南 2025）</li>
+      <li>放射性药品：物料辐射安全与活度溯源（放射性药品管理办法）</li>
+    </ul></div>
+    <div class="qm-mat-card"><h4>⑪ 物料变更与稳定性/留样<span class="qm-tag2">变更 / 稳定性</span></h4><ul>
+      <li>物料（供应商、规格、工艺、产地）变更纳入变更管理，评估对 CQA 影响，必要时开展可比性/稳定性研究，按分级报批/备案/年报（2025年第1号 / ICH Q12）</li>
+      <li>稳定性样品与留样物料按方案管理，支持有效期、储运条件与变更可比性评估</li>
+      <li>OOT 按偏差/OOS 调查，趋势用于有效期与标准维护</li>
+      <li>变更与稳定性数据纳入年度回顾与管理评审</li>
+    </ul></div>
+  </div>
+  <div class="qm-ref">
+    <b>📚 核心法规与指南依据：</b>
+    <a href="https://www.cfdi.org.cn/cfdi/resource/news/16275.html" target="_blank" rel="noopener">国家药监局2025年第1号公告(药用辅料/药包材附录)</a> ·
+    <a href="https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20190716174501955.html" target="_blank" rel="noopener">2019年第56号公告(原辅包关联审评)</a> ·
+    <a href="https://database.ich.org/sites/default/files/Q11_Guideline.pdf" target="_blank" rel="noopener">ICH Q11 原料药开发和生产</a> ·
+    <a href="https://www.cfdi.org.cn/cfdi/resource/news/12845.html" target="_blank" rel="noopener">ICH Q7 原料药GMP指南(转化)</a> ·
+    <a href="https://www.cfdi.org.cn/cfdi/resource/news/14654.html" target="_blank" rel="noopener">GMP(2010)临床试验用药品附录(2022年第43号)</a> ·
+    <a href="https://www.cfdi.org.cn/cfdi/resource/news/16497.html" target="_blank" rel="noopener">中药生产监督管理专门规定(2025年第79号)</a> ·
+    <a href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">细胞治疗产品生产检查指南(2025)</a> ·
+    <a href="https://www.cde.org.cn/zdyz/guideGwView/bf8092a1d031bf17fd3c9719d3394b26" target="_blank" rel="noopener">EMA 临床研究性药物化学与质量文件指南</a> ·
+    2023年版GMP指南-物料系统(NMPA)
+  </div>
+  </section>
 
   <section class="cat" id="cat-0">
     <h2>GMP·体系与品种附录（含2023版GMP指南、生产检查指南） <span class="cnt">23</span></h2>
@@ -593,6 +692,83 @@ Q12 提供药品生命周期内变更管理的通用技术文件和监管工具�
         <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布疫苗上市许可持有人质量年度报告撰写要求(试行)的通告.md</div>
         <div class="sum">根据《中华人民共和国疫苗管理法》,在国家药品监督管理局的指导下,核查中心组织制定了《疫苗上市许可持有人质量年度报告撰写要求(试行)》,经国家药品监督管理局审核批准,现予以发布。质量年度报告报送具体要求另行通知。特此通告。![](/cfdi/resource/ueditor/dialogs/attac…</div>
       </article></div>
+  </section>
+  <section class="cat" id="cat-11">
+    <h2>物料管理·原辅料·药包材·起始物料·供应商 <span class="cnt">12</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-物料系统</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">NMPA · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-物料系统-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列：物料系统部分，涵盖物料采购、接收、储存、取样、放行和供应链管理等GMP要求，是研发与商业化物料管理的核心参考。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药品生产质量管理规范(2010年修订)》药用辅料附录、药包材附录的公告(2025年第1号)</h3><span class="badge" data-st="现行有效（2026-01-01 施行）">现行有效（2026-01-01 施行）</span></div>
+        <div class="meta">国家药监局 · 2025年第1号 · 2025-01-03　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16275.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md</div>
+        <div class="sum">发布药用辅料附录、药包材附录，自2026-01-01施行，规范药用辅料、药包材生产企业质量体系、变更与放行；原2006年辅料GMP通知同时废止，MAH须加强供应商审核与入厂检验。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于进一步完善药品关联审评审批和监管工作有关事宜的公告(2019年第56号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2019年第56号 · 2019-07-16　<a class="src" href="https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20190716174501955.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/关于进一步完善药品关联审评审批和监管工作有关事宜的公告.md</div>
+        <div class="sum">确立原料药、药用辅料、药包材（原辅包）与制剂关联审评审批制度，引入登记平台"A/I"标识，明确MAH对原辅包供应商审计的主体责任。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q11 原料药开发和生产（化学实体与生物技术/生物实体药物）</h3><span class="badge" data-st="现行有效（中国已适用）">现行有效（中国已适用）</span></div>
+        <div class="meta">ICH / 国家药监局 · 2020-01-21 转化　<a class="src" href="https://database.ich.org/sites/default/files/Q11_Guideline.pdf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q11原料药开发和生产.md</div>
+        <div class="sum">规定化学实体与生物技术/生物实体原料药的开发、工艺描述、工艺验证、物料控制、杂质控制与生命周期管理，含起始物料选择原则。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于公开征求ICH《Q7:原料药的药品生产质量管理规范指南》中文翻译稿意见的通知</h3><span class="badge" data-st="现行有效（已转化）">现行有效（已转化）</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2020-12-03　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/12845.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/关于公开征求ICHQ7原料药的药品生产质量管理规范指南中文翻译稿意见的通知.md</div>
+        <div class="sum">推动ICH《Q7:原料药的药品生产质量管理规范指南》在我国转化实施，规范原料药生产的物料控制、关键步骤与中间体控制、工艺验证等。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药品生产质量管理规范(2010年修订)》临床试验用药品附录的公告(2022年第43号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2022年第43号 · 2022-05-27　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14654.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md</div>
+        <div class="sum">发布《临床试验用药品（试行）》附录，自2022-07-01施行，规范临床试验用药品（IMP）生产质量管理，含原料、辅料、对照品的物料控制要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《药品生产质量管理规范》临床试验用药品附录相关问答</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2022-05-27　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14655.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药品生产质量管理规范临床试验用药品附录相关问答.md</div>
+        <div class="sum">对临床试验用药品附录的官方解读，涵盖物料、对照药、批记录、放行等实操问题，是研发阶段IMP物料管理的操作指引。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布中药生产监督管理专门规定的公告(2025年第79号)</h3><span class="badge" data-st="现行有效（2026-03-01 施行）">现行有效（2026-03-01 施行）</span></div>
+        <div class="meta">国家药监局 · 2025年第79号 · 2025-09-09　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16497.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布中药生产监督管理专门规定的公告(2025年第79号).md</div>
+        <div class="sum">全面规范中药生产监督管理，强调药材基原鉴定、农残/重金属控制、产地追溯与饮片按批管理，对中药研发物料提出明确要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局综合司公开征求《药包材生产质量管理规范(征求意见稿)》意见</h3><span class="badge" data-st="征求意见">征求意见</span></div>
+        <div class="meta">国家药监局 · 2022-06-07　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14679.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局综合司公开征求药包材生产质量管理规范(征求意见稿)意见.md</div>
+        <div class="sum">起草《药包材生产质量管理规范》并向社会征求意见，指导药包材生产企业规范生产、MAH履行供应商审核职责；已于2025年第1号公告转化为正式附录。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布《细胞治疗产品生产检查指南》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2025-01-13　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布细胞治疗产品生产检查指南的通告.md</div>
+        <div class="sum">指导细胞治疗产品（CGT）生产检查，涵盖载体构建/库管理、复制型病毒控制、原材料（细胞、质粒、培养基）管控等专项物料要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于临床研究中研究性药物的化学和药品质量文件要求的指南（EMA）</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">EMA · 2016-04　<a class="src" href="https://www.cde.org.cn/zdyz/guideGwView/bf8092a1d031bf17fd3c9719d3394b26" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/国外指导原则参考/关于临床研究中研究性药物的化学和药品质量文件要求的指南.md</div>
+        <div class="sum">EMA 指南，明确 IMPD 质量部分对原料药物料控制(S.2.3)、辅料控制(P.4)、容器密封系统、对照品与稳定性的分阶段要求（I/II/III期由简到严）。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于印发《药用辅料生产质量管理规范》的通知（国食药监安〔2006〕120号）</h3><span class="badge" data-st="已废止">已废止</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2006-03-23　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/3840.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/关于印发药用辅料生产质量管理规范的通知.md</div>
+        <div class="sum">原2006年药用辅料GMP通知，自2026-01-01起被《GMP(2010)药用辅料附录》（2025年第1号公告）替代而废止，作为辅料监管演进的历史参考。</div>
+      </article>
+    </div>
   </section>
 <div class="empty" id="empty" style="display:none">未找到匹配的文档。</div>
 </main>
