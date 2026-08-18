@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>药品研发生产 · 质量管理知识库</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--bd:#e3e8ef;--tx:#1f2a37;--mut:#6b7280;--acc:#1769e0;--acc2:#0e9f6e;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.6}
+header{background:linear-gradient(120deg,#0b3d91,#1769e0);color:#fff;padding:28px 20px 22px}
+header .wrap{max-width:1180px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:24px}
+header p{margin:0;opacity:.92;font-size:14px}
+header a.back{color:#cfe0ff;text-decoration:none;font-size:13px}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--bd);padding:12px 20px}
+.bar .wrap{max-width:1180px;margin:0 auto;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+input#q{flex:1;min-width:220px;padding:9px 12px;border:1px solid var(--bd);border-radius:8px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--bd);background:#fff;color:var(--tx);padding:5px 10px;border-radius:16px;font-size:12.5px;cursor:pointer}
+.chip.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.cat{margin:22px 0}
+.cat h2{font-size:18px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 12px}
+.cat h2 .cnt{color:var(--mut);font-size:13px;font-weight:400;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.doc{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px 14px;transition:box-shadow .15s}
+.doc:hover{box-shadow:0 4px 14px rgba(20,40,80,.1)}
+.doc-h{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.doc h3{margin:0;font-size:14.5px;line-height:1.4}
+.badge{flex:0 0 auto;font-size:11px;padding:2px 7px;border-radius:10px;white-space:nowrap;background:#eef2f7;color:var(--mut)}
+.badge[data-st*="现行有效"]{background:#e6f6ee;color:#0e7a4e}
+.badge[data-st*="尚未生效"],.badge[data-st*="起施行"]{background:#fff4e0;color:#a86a00}
+.badge[data-st*="征求意见"]{background:#e7f0ff;color:#1e5ec8}
+.badge[data-st*="已废止"]{background:#fdeaea;color:#b42318}
+.meta{font-size:12px;color:var(--mut);margin:6px 0 2px}
+.src{color:var(--acc);text-decoration:none}
+.path{font-size:11px;color:#9aa4b2;word-break:break-all;margin-top:3px}
+.sum{font-size:12px;color:#566;margin-top:5px}
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+.empty{text-align:center;color:var(--mut);padding:40px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="index.html">← 返回法规问答首页</a>
+  <h1>药品研发生产 · 质量管理知识库</h1>
+  <p>汇总药品研发与生产全链条质量管理权威文献 71 篇 · 覆盖 GMP / GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回</p>
+</div></header>
+<div class="bar"><div class="wrap">
+  <input id="q" placeholder="搜索标题 / 发布机构 / 文号 / 关键词（如：无菌、共线、方法学、Q9、数据完整性）"/>
+  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (71)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺验证与持续工艺确认 (1)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button></div>
+</div></div>
+<main id="main">
+  <section class="cat" id="cat-0">
+    <h2>GMP·体系与品种附录（含2023版GMP指南、生产检查指南） <span class="cnt">23</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布《细胞治疗产品生产检查指南》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2025-01-13　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布细胞治疗产品生产检查指南的通告.md</div>
+        <div class="sum">为指导检查员开展细胞治疗产品生产环节检查工作,进一步加强细胞治疗产品生产质量管理,国家药监局核查中心组织制定了《细胞治疗产品生产检查指南》,经国家药品监督管理局同意,现予发布,请各级药品检查机构参照执行。特此通告。附件:[![](/cfdi/resource/ueditorP/themes/defa…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药品生产质量管理规范(2010年修订)》药用辅料附录、药包材附录的公告(2025年第1号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2025年第1号 · 2025-01-03　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16275.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md</div>
+        <div class="sum">为贯彻落实《中华人民共和国药品管理法》《中华人民共和国药品管理法实施条例》《药品注册管理办法》《药品生产监督管理办法》等有关规定,监督指导药用辅料、药包材生产企业规范生产,国家药监局根据《药品生产质量管理规范(2010年修订)》第三百一十条规定,组织制定了药用辅料附录、药包材附录,作为《药品生产质量…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药品监督管理局特殊药品检查中心关于发布《麻醉药品精神药品和药品类易制毒化学品生产安全管理指南(试行)》《放射性药品生产检查指南(试行)》的通告</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药品监督管理局 · 2024-12-17　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16222.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/国家药品监督管理局特殊药品检查中心关于发布麻醉药品精神药品和药品类易制毒化学品生产安全管理指南(试行)放射性药品生产检查指南(试行)的通告.md</div>
+        <div class="sum">为加强对麻醉药品、精神药品、药品类易制毒化学品和放射性药品的监督检查,根据《中华人民共和国药品管理法》《麻醉药品和精神药品管理条例》《药品类易制毒化学品管理办法》《麻醉药品和精神药品生产管理办法(试行)》《放射性药品管理办法》等法律法规和规范性文件,在国家药品监督管理局食品药品审核查验中心的帮助支持…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《药品生产质量管理规范(2010年修订)》血液制品附录(修订稿)政策解读</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 国办发〔2021〕16号 · 2024-06-12　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15967.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药品生产质量管理规范(2010年修订)血液制品附录(修订稿)政策解读.md</div>
+        <div class="sum">一、《药品生产质量管理规范(2010年修订)》血液制品附录(修订稿,以下简称血液制品附录)起草的背景和目的是什么?**答:为深入贯彻落实习近平总书记关于药品安全“四个最严”的要求,按照《国务院办公厅关于全面加强药品监管能力建设的实施意见》(国办发〔2021〕16号),以及《药品监管网络安全与信息化建…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布药品生产质量管理规范(2010年修订)血液制品附录修订稿的公告 (2024年第70号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2024年第70号 · 2024-06-12　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15970.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)血液制品附录修订稿的公告(2024年第70号).md</div>
+        <div class="sum">《中华人民共和国药品管理法》实施后,国家药品监督管理局根据《药品生产质量管理规范(2010年修订)》第三百一十条规定,对《血液制品》附录进行了修订,现作为《药品生产质量管理规范(2010年修订)》的配套文件予以发布,自发布之日起实施。其中,对于附录第25条和35条,企业信息化建设工作需要一定周期,应…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-原料药</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">NMPA · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-原料药-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列：原料药部分，涵盖化学合成、发酵、提取等原料药生产的GMP要求，参照ICH Q7。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-无菌制剂（上册）</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">NMPA · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-无菌制剂（上册）-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列：无菌制剂上册，涵盖无菌药品生产的污染控制策略（CCS）、灭菌工艺、无菌工艺模拟等核心GMP要求。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-质量管理体系</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">NMPA · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-质量管理体系-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列：质量管理体系部分，涵盖药品质量管理体系建设、质量风险管理、偏差管理、CAPA、变更控制等GMP要求。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-无菌制剂（下册）</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">NMPA · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-无菌制剂（下册）-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列：无菌制剂下册，涵盖无菌药品生产的环境监测、隔离技术、一次性使用系统等进阶GMP要求。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-物料系统</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">NMPA · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-物料系统-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列：物料系统部分，涵盖物料采购、接收、储存、取样、放行和供应链管理等GMP要求。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>WHO 无菌药品生产 GMP</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">WHO（世界卫生组织） · 2022-10-31（TRS 1044 Annex 2）　<a class="src" href="https://www.who.int/teams/health-product-and-policy-standards/standards-and-specifications/norms-and-standards-for-pharmaceuticals/guidelines/production" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/WHO_指导原则/WHO-无菌药品生产GMP.md</div>
+        <div class="sum">WHO 无菌药品生产 GMP（TRS 1044 Annex 2，2022 年 10 月发布）与欧盟/PIC/S 无菌附录（Annex 1，2022 修订）高度一致，
+强调污染控制策略（CCS）、质量风险管理、屏障技术与无菌工艺。本库同时收录中国 GMP 无菌药品附录及 EU/PIC/S Annex …</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药品生产质量管理规范(2010年修订)》 临床试验用药品附录的公告(2022年 第43号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2022年第43号 · 2022-05-27　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14654.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md</div>
+        <div class="sum">根据《药品生产质量管理规范(2010年修订)》第三百一十条规定,现发布《临床试验用药品(试行)》附录,作为《药品生产质量管理规范(2010年修订)》配套文件,自2022年7月1日起施行。特此公告。附件:![](/cfdi/resource/ueditor/dialogs/attachment/fil…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《药品生产质量管理规范》临床试验用药品附录相关问答</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2022-05-27　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14655.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药品生产质量管理规范临床试验用药品附录相关问答.md</div>
+        <div class="sum">2022年5月27日,国家药品监督管理局发布《药品生产质量管理规范》临床试验用药品附录,并将于2022年7月1日起施行。为配合做好该附录的解读,核查中心编写了《药品生产质量管理规范》临床试验用药品附录相关问答,经国家药品监督管理局同意,现予发布。附件:![](/cfdi/resource/uedit…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药品生产质量管理规范(2010年修订)》血液制品附录修订稿的公告 (2020年第77号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2020年第77号 · 2020-07-03　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/12462.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)血液制品附录修订稿的公告(2020年第77号).md</div>
+        <div class="sum">《中华人民共和国药品管理法》实施后,国家药品监督管理局按照《药品生产质量管理规范(2010年修订)》第三百一十条规定,对《血液制品》附录进行了修订,现作为《药品生产质量管理规范(2010年修订)》配套文件予以发布。本附录自2020年10月1日起施行。特此公告。附件:![](/cfdi/resourc…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药品生产质量管理规范(2010年修订)》生物制品附录修订稿的公告 (2020年第58号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2020年第58号 · 2020-04-27　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/12268.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md</div>
+        <div class="sum">《中华人民共和国药品管理法》和《中华人民共和国疫苗管理法》实施后,国家药品监督管理局按照《药品生产质量管理规范(2010年修订)》第三百一十条规定,对《生物制品》附录进行了修订,现作为《药品生产质量管理规范(2010年修订)》配套文件予以发布。本附录自2020年7月1日起施行。其中,对于附录第59条…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>总局关于发布《药品生产质量管理规范(2010年修订)》生化药品附录的公告(2017年 第29号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2017年第29号 · 2017-03-17　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/8692.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/总局关于发布药品生产质量管理规范(2010年修订)生化药品附录的公告(2017年第29号).md</div>
+        <div class="sum">根据《药品生产质量管理规范(2010年修订)》第三百一十条规定,现发布生化药品附录,作为《药品生产质量管理规范(2010年修订)》配套文件,自2017年9月1日起施行。特此公告。附件:![](/cfdi/resource/ueditor/dialogs/attachment/fileTypeImag…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布《药品生产质量管理规范(2010年修订)》无菌药品等5个附录的公告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2011年第16号 · 2011-02-24　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/关于发布药品生产质量管理规范(2010年修订)无菌药品等5个附录的公告.md</div>
+        <div class="sum">国家食品药品监督管理局****公告**2011年第16号xml:namespaceprefix=ons=&#x27;urn:schemas-microsoft-com:office:office&#x27;/关于发布《药品生产质量管理规范(2010年修订)》无菌药品等5个附录的公告有关管理事宜的公告根据卫生部令第79号…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>药品生产质量管理规范</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家市场监督管理总局 · 2011-01-17　<a class="src" href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药品生产质量管理规范.md</div>
+        <div class="sum">药品生产质量管理规范(2011年1月17日卫生部令第79号公布自2011年3月1日起施行)第一章总则第一条为规范药品生产质量管理,根据《中华人民共和国药品管理法》、《中华人民共和国药品管理法实施条例》,制定本规范。第二条企业应当建立药品质量管理体系。该体系应当涵盖影响药品质量的所有因素,包括确保药品…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>血液制品管理条例</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2002-12-04　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/2083.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：02_行政法规/血液制品管理条例.md</div>
+        <div class="sum">第一章总则第一条为了加强血液制品管理,预防和控制经血液途径传播的疾病,保证血液制品的质量,根据药品管理法和传染病防治法,制定本条例。第二条本条例适用于在中华人民共和国境内从事原料血浆的采集、供应以及血液制品的生产、经营活动。第三条国务院卫生行政部门对全国的原料血浆的采集、供应和血液制品的生产、经营活…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>药品生产质量管理规范 附 录</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2002-12-04　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/2079.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药品生产质量管理规范附录.md</div>
+        <div class="sum">一、总则1.本附录为国家药品监督管理局发布的《药品生产质量管理规范》(1998年修订)对无菌药品、非无菌药品、原料药、生物制品、放射性药品、中药制剂等生产和质量管理特殊要求的补充规定。2.药品生产洁净室(区)的空气洁净度划分为四个级别:洁净室(区)空气洁净度级别表\_\_\_\_\_\_\_\_\_…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于实施《药品生产质量管理规范》有关规定的通知</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 1999-08-24　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/2544.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/关于实施药品生产质量管理规范有关规定的通知.md</div>
+        <div class="sum">xml:namespaceprefix=ons=&#x27;urn:schemas-microsoft-com:office:office&#x27;/各省、自治区、直辖市药品监督管理局或卫生厅(局)、医药管理部门:为促进我国制药工业的发展,提高药品质量,保障人民用药安全有效,国家药品监督管理局总结了我国十几年来推行药…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《药品生产质量管理规范》(1998年修订)附录</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 1999-06-19　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/2076.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药品生产质量管理规范(1998年修订)附录.md</div>
+        <div class="sum">药品生产质量管理规范(1998年修订)附录xml:namespaceprefix=ons=&#x27;urn:schemas-microsoft-com:office:office&#x27;/一、总则1.本附录为国家药品监督管理局发布的《药品生产质量管理规范》(1998年修订)对无菌药品、非无菌药品、原料药、生物制品…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>放射性药品管理办法</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家市场监督管理总局 · 1989-01-13　<a class="src" href="https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20250416155943156.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/放射性药品管理办法.md</div>
+        <div class="sum">放射性药品管理办法(1989年1月13日中华人民共和国国务院令第25号发布根据2011年1月8日《国务院关于废止和修改部分行政法规的决定》第一次修订根据2017年3月1日《国务院关于修改和废止部分行政法规的决定》第二次修订根据2022年3月29日《国务院关于修改和废止部分行政法规的决定》第三次修订根…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-1">
+    <h2>GLP·非临床研究质量管理 <span class="cnt">5</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布《关于药物非临床研究质量管理规范认证申请和检查相关问题的解答》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2025-09-01　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16484.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/关于发布关于药物非临床研究质量管理规范认证申请和检查相关问题的解答的通告.md</div>
+        <div class="sum">为进一步指导GLP机构规范开展GLP认证申请,核查中心针对认证申请受理、资料审查和现场检查中存在的一些常见的共性问题,对原《关于药物非临床研究质量管理规范认证申请和检查相关问题的解答》(以下简称《解答》)进行了修订(见附件),经国家药品监督管理局同意,现予发布。同时原《解答》废止,特此通告。附件:[…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药品监督管理局食品药品审核查验中心 关于发布《药物非临床研究质量管理规范检查要点和判定原则》的通告 (2023年 第7号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药品监督管理局 · 2023年第7号 · 2023-06-28　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15495.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/国家药品监督管理局食品药品审核查验中心关于发布药物非临床研究质量管理规范检查要点和判定原则的通告(2023年第7号).md</div>
+        <div class="sum">按照《药物非临床研究质量管理规范认证管理办法》(2023年第15号)规定,国家药品监督管理局食品药品审核查验中心组织制定了《药物非临床研究质量管理规范检查要点和判定原则》(见附件),经国家药品监督管理局同意,现予发布,自2023年7月1日起施行。特此通告。附件:![](/cfdi/resource/…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药品监督管理局食品药品审核查验中心 关于发布《药物非临床研究质量管理规范认证申请资料要求》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药品监督管理局 · 2023-04-24　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15312.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药品监督管理局食品药品审核查验中心关于发布药物非临床研究质量管理规范认证申请资料要求的通告.md</div>
+        <div class="sum">按照《药物非临床研究质量管理规范认证管理办法》规定,为明确药物非临床研究质量管理规范认证申请资料要求,国家药品监督管理局食品药品审核查验中心组织制定了《药物非临床研究质量管理规范认证申请资料要求》(见附件),经国家药品监督管理局同意,现予发布,自2023年7月1日起施行。特此通告。附件:![](/c…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于发布《药物非临床研究质量管理规范认证管理办法》的公告 (2023年第15号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2023年第15号 · 2023-01-20　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15108.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局关于发布药物非临床研究质量管理规范认证管理办法的公告(2023年第15号).md</div>
+        <div class="sum">为进一步规范药物非临床研究质量管理规范认证和监督管理工作,国家药品监督管理局组织修订了《药物非临床研究质量管理规范认证管理办法》,现予发布。自2023年7月1日起施行。特此公告。附件:![](https://www.nmpa.gov.cn/directory/web/fileTypeImages/i…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>总局关于药物非临床研究质量管理规范认证和药物临床试验机构资格认定施行电子申请受理的公告(2016年第110号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2016年第110号 · 2016-05-27　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/7538.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/总局关于药物非临床研究质量管理规范认证和药物临床试验机构资格认定施行电子申请受理的公告(2016年第110号).md</div>
+        <div class="sum">为推进食品药品行政受理改革工作,提高受理质量和服务效率,国家食品药品监督管理总局对药物非临床研究质量管理规范认证和药物临床试验机构资格认定施行电子申请受理。自公告发布之日起,申请机构可在国家食品药品监督管理总局网站的“网上办事”栏目,点击“药物非临床研究质量管理规范认证电子申请”或“药物临床试验机构…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-2">
+    <h2>GCP·临床试验质量管理（含2026修订与ICH E6(R3)） <span class="cnt">6</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>药物临床试验质量管理规范（2026年修订）</h3><span class="badge" data-st="现行有效（2026-09-01 起施行）">现行有效（2026-09-01 起施行）</span></div>
+        <div class="meta">国家药监局 国家卫生健康委 国家中医药局 国家疾控局 · 2026年第50号公告 附件1 · 2026-06-08　<a class="src" href="https://www.nmpa.gov.cn/directory/web/nmpa/images/1780901652137067855.doc" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药物临床试验质量管理规范(2026年修订).md</div>
+        <div class="sum">&gt;**说明**：本版由2026年第50号公告发布，自2026年9月1日起施行；《关于发布药物临床试验质量管理规范的公告》（2020年第57号）同时废止。---第一章总则第一条为保证药物临床试验过程规范，保护试验参与者的权益和安全，确保数据和结果科学、真实、可靠，根据《中华人民共和国药品管理法》《中华…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局 国家卫生健康委 国家中医药局 国家疾控局关于发布药物临床试验质量管理规范的公告(2026年第50号 )</h3><span class="badge" data-st="现行有效（尚未生效）">现行有效（尚未生效）</span></div>
+        <div class="meta">国家药监局 国家卫生健康委 国家中医药局 国家疾控局 · 2026年第50号 · 2026-06-08　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16770.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/国家药监局国家卫生健康委国家中医药局国家疾控局关于发布药物临床试验质量管理规范的公告(2026年第50号).md</div>
+        <div class="sum">为优化药物临床试验质量管理,进一步培育规范高效的临床研发生态,支持生物医药研发创新,国家药品监督管理局会同国家卫生健康委员会、国家中医药管理局和国家疾病预防控制局修订了《药物临床试验质量管理规范》,现予发布,自2026年9月1日起施行。国家药监局国家卫生健康委《关于发布药物临床试验质量管理规范的公告…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《药物临床试验质量管理规范（2026年修订）》问答文件</h3><span class="badge" data-st="现行有效（配套解读）">现行有效（配套解读）</span></div>
+        <div class="meta">国家药监局 国家卫生健康委 国家中医药局 国家疾控局 · 2026年第50号公告 附件2 · 2026-06-08　<a class="src" href="https://www.nmpa.gov.cn/directory/web/nmpa/images/1780898194549063282.doc" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/药物临床试验质量管理规范(2026年修订)问答文件.md</div>
+        <div class="sum">&gt;**说明**：2026年第50号公告附件2，为GCP2026修订版的官方问答解读。---一、修订《药物临床试验质量管理规范》的背景？药物临床试验是药物研发的关键环节。党中央、国务院高度重视生物医药产业发展，在国家政策支持和行业共同努力推动下，“十四五”期间，我国临床研发体系加速发展，深度嵌入全球研…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于适用《E6(R3):药物临床试验质量管理规范技术指导原则》国际人用药品注册技术协调会指导原则的公告(2025年第125号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2025年第125号 · 2025-12-26　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16633.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/国家药监局关于适用E6(R3)药物临床试验质量管理规范技术指导原则国际人用药品注册技术协调会指导原则的公告(2025年第125号).md</div>
+        <div class="sum">为持续推动药品注册技术标准与国际接轨,经研究,国家药品监督管理局决定适用《E6(R3):药物临床试验质量管理规范技术指导原则》国际人用药品注册技术协调会指导原则(以下简称E6(R3)指导原则)。现就有关事项公告如下:一、自2026年3月31日后实施的药物临床试验,均适用E6(R3)指导原则。二、相关…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH E6(R3)：药物临床试验质量管理规范（GCP）技术指导原则</h3><span class="badge" data-st="现行有效（中国已适用）">现行有效（中国已适用）</span></div>
+        <div class="meta">国家药监局（NMPA）；原国际组织为 ICH · 2025-12-22　<a class="src" href="https://www.gov.cn/zhengce/zhengceku/202512/content_7052725.htm" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-E6-R3药物临床试验质量管理规范.md</div>
+        <div class="sum">国家药监局于 2025-12-22 发布《关于适用〈E6(R3)：药物临床试验质量管理规范技术指导原则〉国际人用药品注册技术协调会指导原则的公告》（2025年第125号），
+明确自 2026年3月31日之后实施的药物临床试验均适用 E6(R3)。该指导原则于 2025年1月由 ICH 正式发布，核心…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH E6(R2) 药物临床试验质量管理规范</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ICH / 国家药监局 · 2016 转化　<a class="src" href="https://www.ich.org/page/efficacy-guidelines" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-E6-R2-GCP.md</div>
+        <div class="sum">国际多中心临床试验 GCP 标准，中国已转化实施（新版 2026 GCP 同步衔接）。…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-3">
+    <h2>ICH·质量指导原则（Q系列，含连续制造） <span class="cnt">9</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q8、Q9 和 Q10 问答（R5）</h3><span class="badge" data-st="现行有效（中国已适用）">现行有效（中国已适用）</span></div>
+        <div class="meta">国家药监局（NMPA） · 2026-01-14　<a class="src" href="https://yjj.sh.gov.cn/qtgzwj/20260119/0a792c0d05ff48b985d96587dde73157.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q8Q9Q10问答R5.md</div>
+        <div class="sum">国家药监局《关于适用〈Q8、Q9和Q10问答(R5)〉国际人用药品注册技术协调会指导原则的公告》（2026年第9号），
+明确自 2026年1月14日起开始的相关研究均适用该问答文件。问答涉及《Q8(R2)：药品研发》《Q9(R1)：质量风险管理》《Q10：药品质量体系》三个指导原则，
+澄清质量源于设…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q9(R1)：质量风险管理</h3><span class="badge" data-st="现行有效（中国已适用）">现行有效（中国已适用）</span></div>
+        <div class="meta">国家药监局（NMPA） · 2023-09-05　<a class="src" href="https://www.ccfdie.org/cn/yjxx/yphzp/webinfo/2023/09/1694531406521563.htm" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q9-R1质量风险管理.md</div>
+        <div class="sum">国家药监局《关于适用〈Q9(R1)：质量风险管理〉国际人用药品注册技术协调会指导原则的公告》（2023年第114号），
+明确自 2024年3月4日后，上市许可持有人开展的质量风险管理活动均适用 Q9(R1)。Q9(R1) 为质量风险管理提供全面、系统的框架与方法，
+与中国 GMP、ICH Q10 药…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q12：药品生命周期管理的技术和监管考虑</h3><span class="badge" data-st="现行有效（中国已适用，过渡期内）">现行有效（中国已适用，过渡期内）</span></div>
+        <div class="meta">国家药监局（NMPA） · 2023-09-05　<a class="src" href="https://www.cde.org.cn/ichWeb/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q12药品生命周期管理.md</div>
+        <div class="sum">国家药监局于 2023年9月发布公告，与 Q9(R1)、S12 同期决定适用 ICH Q12。
+Q12 提供药品生命周期内变更管理的通用技术文件和监管工具（如既定条件 EC、变更管理协议 CMA、上市后变更管理方案 PACMP），
+旨在提高变更效率与可预测性。自 2023年8月25日起 24 个月为…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化药口服固体制剂连续制造技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2023-03-21　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=926b36be7e4a00b4d4a279b8d2977dcc" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化药口服固体制剂连续制造技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布---化药口服固体制剂连续制造技术指导原则（试行）2023年3月目录一、概述..............................................................................…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q13 原料药和制剂的连续制造</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ICH（国际人用药品注册技术协调会）；中国转化：国家药品监督管理局 · 2022-11-16　<a class="src" href="https://database.ich.org/sites/default/files/ICH_Q13_Guideline_Step4_2023_0713.pdf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q13连续制造.md</div>
+        <div class="sum">连续制造：为原料药和制剂连续制造模式的开发、实施、运行与生命周期管理提供科学监管考虑，澄清连续制造概念与控制策略。正文采用 CDE 组织翻译的《Q13：原料药和制剂的连续制造》中文版。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q11 原料药开发和生产（化学实体与生物技术/生物实体药物）</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ICH（国际人用药品注册技术协调会）；中国转化：国家药品监督管理局 · 2012-05-01　<a class="src" href="https://database.ich.org/sites/default/files/Q11_Guideline.pdf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q11原料药开发和生产.md</div>
+        <div class="sum">原料药开发生产：规定化学实体与生物技术/生物实体药物原料药的开发、工艺描述、工艺验证、物料控制、杂质控制与生命周期管理。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q4B 附录4C(R1) 非无菌产品的微生物检查：原料药及其制剂的判定标准（Acceptance Criteria）</h3><span class="badge" data-st="现行有效（ICH Q4B Annex 4C(R1) Step 5）">现行有效（ICH Q4B Annex 4C(R1) Step 5）</span></div>
+        <div class="meta">ICH（Q4B 专家工作组 EWG） · 2008-11-12　<a class="src" href="https://db.ouryao.com/ich/content.php?lang=cn&amp;id=20" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q4B-Annex4C-R1微生物判定标准.md</div>
+        <div class="sum">本附录是 Q4B 对药典附录非无菌产品的微生物检查：原料药及其制剂的判定标准协调后的成果。在 ICH 各区域内，该药典文本为非强制标准，仅提供参考。本文件由药典协调组（PDG）提出。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q10 药品质量体系</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ICH（国际人用药品注册技术协调会）；中国转化：国家药品监督管理局 · 2008-06-04　<a class="src" href="https://database.ich.org/sites/default/files/Q10_Guideline.pdf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q10药品质量体系.md</div>
+        <div class="sum">药品质量体系：在GMP基础上建立PQS，涵盖工艺性能与产品质量监测、CAPA、变更管理、管理回顾四大要素，衔接Q8/Q9与体系生命周期。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ICH Q7 原料药的药品生产质量管理规范指南</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ICH（国际人用药品注册技术协调会）；中国转化：国家药品监督管理局 · 2000-11-10　<a class="src" href="https://database.ich.org/sites/default/files/Q7_Guideline.pdf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/ICH-Q7原料药GMP.md</div>
+        <div class="sum">原料药GMP：规定原料药生产、包装、贮存的质量管理基本要求，涵盖厂房设备、物料、生产、验证、变更、不合格品处理与投诉。…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-4">
+    <h2>质量研究（CMC）：稳定性·方法学·杂质·晶型·相容性 <span class="cnt">12</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>化学仿制药药学研究重大缺陷情形</h3><span class="badge" data-st="现行有效（自发布之日起施行）">现行有效（自发布之日起施行）</span></div>
+        <div class="meta">国家药品监督管理局药品审评中心（CDE） · 2026-05-20　<a class="src" href="https://www.cde.org.cn/main/news/viewInfoCommon/4b9bc30439f2c64fa87ec503210d3c75" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学仿制药药学研究重大缺陷情形.md</div>
+        <div class="sum">CDE 明确化学仿制药药学研究重大缺陷清单，新增 3 类一票否决情形，存在重大缺陷者不再补充资料、直接不予批准。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化学药品创新药晶型研究技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2026-01-28　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=dd3928d6e93d670346806484c25d6b9c" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品创新药晶型研究技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布---化学药品创新药晶型研究技术指导原则（试行）国家药品监督管理局药品审评中心2026年1月目录一、概述................................................................…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化学药品注射剂配伍稳定性药学研究技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2024-06-12　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=7b860bc7a49e596eb49cfcc04e6b7d38" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品注射剂配伍稳定性药学研究技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布---化学药品注射剂配伍稳定性药学研究技术指导原则（试行）2024年6月目录一、概述............................................1二、总体考虑.......................…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>中药制剂特征图谱研究技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2024-02-27　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=7805f716a341e19be75bc6b3d920b951" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/中药制剂特征图谱研究技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：中药-**专业分类**：药学-**版本状态**：颁布---1中药制剂特征图谱研究技术指导原则（试行）一、概述中药制剂特征图谱系指中药制剂样品经适当处理后，采用适宜的分析方法，研究建立的能够反映多组份信息并体现其质量特征的图谱。中药制剂特征图谱对于识别中药制剂关键质量属性，研究量质传递，…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>中药制剂稳定性研究技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2024-02-27　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=e9f9dc16c487e217df4739e2c5ee83ea" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/中药制剂稳定性研究技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：中药-**专业分类**：药学-**版本状态**：颁布---1中药制剂稳定性研究技术指导原则（试行）一、概述稳定性研究是评价药品质量的重要内容。中药制剂稳定性研究是通过考察中药制剂的物理、化学及生物学特性在不同环境条件下（如温度、湿度、光照等）随时间变化的情况，以认识和预测中药制剂的质量…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化学药品创新药III期临床试验前会议药学共性问题及相关技术要求(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2023-03-24　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=e140a09e1d4f2486f757774d9bc84666" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品创新药III期临床试验前会议药学共性问题及相关技术要求(试行).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布---《化学药品创新药Ⅲ期临床试验前会议药学共性问题及相关技术要求(试行)》2023年3月目录一、前言.........................................1二、总体考虑.................…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化学药品创新药上市申请前会议药学共性问题及相关技术要求</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2021-11-26　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=5212ad80cf1ed762e587e399c0243426" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品创新药上市申请前会议药学共性问题及相关技术要求.md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布---i目录一、前言...................................................................................1二、总体考虑................…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>境外已上市境内未上市化学药品药学研究与评价技术要求(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2021-03-08　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=4832fe1bef75686610c58cc092e0f911" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/境外已上市境内未上市化学药品药学研究与评价技术要求(试行).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布-**关键词**：《药品注册管理办法》配套指导原则---—1—一、背景境外已上市化学药品的仿制或进口，是解决我国患者对临床需求领域药品可获得性和可及性的重要手段。为加快境外已上市境内未上市仿制药品和原研药品研发上市进程，加强科学监管…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《化学药品创新药I期临床试验申请药学共性问题相关技术要求》和《化学药品I期临床试验申请药学研究信息汇总表(修订版)》</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2020-11-23　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=ac801b39cce0fe7ee7b29cdc39cdff9a" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品创新药I期临床试验申请药学共性问题相关技术要求和化学药品I期临床试验申请药学研究信息汇总表(修订版).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>生物制品稳定性研究技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2015-04-15　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=f1589779e6723f65431662d0a4dea9d6" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/生物制品稳定性研究技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：生物制品-**专业分类**：药学-**版本状态**：颁布…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>化学药物（原料药和制剂）稳定性研究技术指导原则（修订）</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家食品药品监督管理总局 · 2015-02-05　<a class="src" href="https://www.nmpa.gov.cn/directory/web/nmpa/xxgk/ggtg/ypggtg/ypqtggtg/20150205120001100.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药物原料药和制剂稳定性研究技术指导原则修订.md</div>
+        <div class="sum">规范化学药物（原料药和制剂）稳定性研究，明确影响因素试验、加速试验、长期试验的设计与要求，为处方、工艺、包装、贮藏条件和有效期/复检期确定提供支持性信息。…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>中药、天然药物稳定性研究技术指导原则</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2006-12-30　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=a941d23017df025ec84043d9784e9baf" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/中药天然药物稳定性研究技术指导原则.md</div>
+        <div class="sum">适用范围**：中药-**专业分类**：药学-**版本状态**：颁布---中药、天然药物稳定性研究技术指导原则目录一、概述··················································1二、稳定性研究实验设计····························…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-5">
+    <h2>数据完整性与计算机化系统 <span class="cnt">5</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>《血液制品生产检验电子化记录技术指南(试行)》政策解读</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2024-06-12　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15969.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/血液制品生产检验电子化记录技术指南(试行)政策解读.md</div>
+        <div class="sum">一、《血液制品生产检验电子化记录技术指南(试行)》(以下简称《电子化记录技术指南》)是在什么背景下制定的?**答:为推进血液制品智慧监管,促进血液制品生产转型升级,对切实保障血液制品安全、有效、质量可控有重要作用。近期,国家药监局修订发布《药品生产质量管理规范(2010年修订)》血液制品附录,增加了…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药品监督管理局信息中心 食品药品审核查验中心 关于公开发布《血液制品生产检验电子化记录技术指南(试行)》的通告 (2024年第1号)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药品监督管理局 · 2024年第1号 · 2024-06-11　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15966.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/国家药品监督管理局信息中心食品药品审核查验中心关于公开发布血液制品生产检验电子化记录技术指南(试行)的通告(2024年第1号).md</div>
+        <div class="sum">为加强对血液制品生产企业管理,指导血液制品生产企业采用信息化手段如实记录生产、检验数据,并对关键生产、检验环节进行可视化监控,确保生产、检验全过程符合要求,国家药品监督管理局信息中心、食品药品审核查验中心共同组织起草了《血液制品生产检验电子化记录技术指南(试行)》(见附件),经国家药品监督管理局审查…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>ISPE GAMP 5（第二版）：基于风险的合规 GxP 计算机化系统方法</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">ISPE（国际制药工程协会） · 2022-07　<a class="src" href="https://ispe.org/index.php/node/228708" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ISPE_指导原则/ISPE-GAMP5第二版.md</div>
+        <div class="sum">ISPE GAMP® 5 第二版于 2022年7月发布（404页），是 GxP 计算机化系统验证（CSV）的全球公认基准。
+第二版在保持核心框架（生命周期、质量风险管理、供应商参与）基础上，新增批判性思维、敏捷开发、AI/ML、区块链、云/SaaS 等附录，
+并强化数据完整性与 CSA（Comput…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药品监督管理局信息中心 食品药品审核查验中心 关于发布《疫苗生产检验电子化记录技术指南(试行)》的通告 (2022年第1号)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药品监督管理局 · 2022年第1号 · 2022-06-23　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14696.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/国家药品监督管理局信息中心食品药品审核查验中心关于发布疫苗生产检验电子化记录技术指南(试行)的通告(2022年第1号).md</div>
+        <div class="sum">为贯彻落实《中华人民共和国疫苗管理法》《国家药监局关于发布〈药品生产质量管理规范(2010年修订)〉生物制品附录修订稿的公告》(2020年第58号)等有关要求,国家药监局信息中心、食品药品审核查验中心共同组织起草了《疫苗生产检验电子化记录技术指南(试行)》(见附件),经国家药监局审查同意,现予发布,…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药品监督管理局信息中心 食品药品审核查验中心 公开征求《疫苗生产检验电子化记录技术指南(征求意见稿)》意见</h3><span class="badge" data-st="征求意见（已截止）">征求意见（已截止）</span></div>
+        <div class="meta">国家药品监督管理局 · 2020年第58号 · 2022-04-02　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/14482.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/国家药品监督管理局信息中心食品药品审核查验中心公开征求疫苗生产检验电子化记录技术指南(征求意见稿)意见.md</div>
+        <div class="sum">为贯彻落实《中华人民共和国疫苗管理法》《国家药监局关于发布〈药品生产质量管理规范(2010年修订)〉生物制品附录修订稿的公告(2020年第58号)》等有关要求,国家药品监督管理局信息中心、食品药品审核查验中心共同组织起草了《疫苗生产检验电子化记录技术指南(征求意见稿)》,现向社会公开征求意见。请将意…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-6">
+    <h2>质量风险管理与共线生产 <span class="cnt">2</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>《Q9(R1):质量风险管理》国际人用药品注册技术协调会指导原则</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023年第114号 · 2023-09-11　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15588.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/ICH_转化/Q9(R1)质量风险管理国际人用药品注册技术协调会指导原则.md</div>
+        <div class="sum">按照《国家药监局关于适用&lt;Q9(R1):质量风险管理&gt;国际人用药品注册技术协调会指导原则的公告》(2023年第114号)要求,现将《Q9(R1):质量风险管理》的中文译稿予以发布。附件:1.![](/cfdi/resource/ueditor/dialogs/attachment/fileTypeI…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布《药品共线生产质量风险管理指南》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-03-06　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/15186.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布药品共线生产质量风险管理指南的通告.md</div>
+        <div class="sum">为指导和规范药品共线生产管理,最大程度降低共线生产产品间的污染、交叉污染,保证药品安全、有效和质量可控,确保患者用药安全,核查中心组织制定了《药品共线生产质量风险管理指南》。经国家药品监督管理局同意,现予发布。特此通告。附件:![](/cfdi/resource/ueditor/dialogs/at…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-7">
+    <h2>偏差·变更·CAPA（含上市后药学变更） <span class="cnt">3</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>化学药品批准后药学变更管理方案技术指导原则(试行)</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2025-10-28　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=472d0e8d3b41dc48b9631f435e185344" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/化学药品批准后药学变更管理方案技术指导原则(试行).md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布---化学药品批准后药学变更管理方案技术指导原则（试行）国家药品监督管理局药品审评中心2025年10月目录一、概述...........................................................…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>《已上市化学药品药学变更研究技术指导原则(试行)》原料药变更的问答</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局药品审评中心 · 2024-06-13　<a class="src" href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=d4e8219657a7e39f6c3155d0631750d8" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/已上市化学药品药学变更研究技术指导原则(试行)原料药变更的问答.md</div>
+        <div class="sum">适用范围**：化学药-**专业分类**：药学-**版本状态**：颁布-**关键词**：变更相关指导原则---《已上市化学药品药学变更研究技术指导原则（试行）》原料药变更的问答2024年6月1一、概述《药品上市后变更管理办法（试行）》要求原料药变更实施前，原料药登记人应当将有关情况及时通知相关制剂持有…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>已上市化学药品药学变更研究技术指导原则（试行）</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药品监督管理局药品审评中心（CDE） · 2021-02-18　<a class="src" href="https://www.cde.org.cn/main/news/viewInfoCommon/4ec3dca752a82347bdf24ad3d3e85113" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CDE_指导原则/已上市化学药品药学变更研究技术指导原则试行.md</div>
+        <div class="sum">适用于已上市化学原料药和化学制剂的上市后药学变更研究，按风险将变更分为重大、中等、微小三类，并细化各类变更情形的研究验证要求，是药品全生命周期管理的重要配套文件。…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-8">
+    <h2>工艺验证与持续工艺确认 <span class="cnt">1</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布《工艺验证检查指南》的通告</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2025-04-07　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/16373.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布工艺验证检查指南的通告.md</div>
+        <div class="sum">为加强药品商业规模工艺验证的质量管理,指导药品检查员开展工艺验证现场检查工作,核查中心组织制定了《工艺验证检查指南》。经国家药品监督管理局同意,现予发布。特此通告。附件:[![](/cfdi/resource/ueditorP/themes/default/exts/pdf.svg)工艺验证检查指南…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-9">
+    <h2>供应商管理与质量审计（受托/委托/境外检查） <span class="cnt">3</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局关于加强药品受托生产监督管理工作的公告(2025年第134号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 2025年第134号 · 2026-01-06　<a class="src" href="https://www.nmpa.gov.cn/../../xxgk/fgwj/xzhgfxwj/20260106115318178.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：07_规范性文件/生产质量/国家药监局关于加强药品受托生产监督管理工作的公告(2025年第134号).md</div>
+        <div class="sum">发布时间:20260106…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>国家药监局综合司关于印发药品上市许可持有人委托生产现场检查指南的通知</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局 · 药监综药管〔2023〕81号 · 2023-10-24　<a class="src" href="https://www.nmpa.gov.cn/../xxgk/fgwj/gzwj/gzwjyp/20231024161543188.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/国家药监局综合司关于印发药品上市许可持有人委托生产现场检查指南的通知.md</div>
+        <div class="sum">发布时间:20231024…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布药品医疗器械境外检查管理规定的公告(2018年第101号)</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2018年第101号 · 2019-01-02　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/11136.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/关于发布药品医疗器械境外检查管理规定的公告(2018年第101号).md</div>
+        <div class="sum">为规范药品医疗器械境外检查工作,保证进口药品医疗器械质量,国家药品监督管理局制定了《药品医疗器械境外检查管理规定》,现予发布,自发布之日起施行。特此公告。附件:![](/cfdi/resource/ueditor/dialogs/attachment/fileTypeImages/icon_doc.…</div>
+      </article></div>
+  </section>
+  <section class="cat" id="cat-10">
+    <h2>放行·批签发·年度回顾·质量量度 <span class="cnt">2</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>生物制品批签发管理办法</h3><span class="badge" data-st="现行有效">现行有效</span></div>
+        <div class="meta">国家市场监督管理总局 · 2020-12-11　<a class="src" href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_44550c0842eb4e848ec197cd5fb5f49a.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：03_部门规章/生物制品批签发管理办法.md</div>
+        <div class="sum">生物制品批签发管理办法(2020年12月11日国家市场监督管理总局令第33号公布自2021年3月1日起施行)第一章总则第一条为了加强生物制品监督管理,规范生物制品批签发行为,保证生物制品安全、有效,根据《中华人民共和国药品管理法》(以下简称《药品管理法》)、《中华人民共和国疫苗管理法》(以下简称《疫…</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>关于发布疫苗上市许可持有人质量年度报告撰写要求(试行)的通告</h3><span class="badge" data-st="现行有效（试行）">现行有效（试行）</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2020-11-11　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/12783.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/CFDI_检查指南/关于发布疫苗上市许可持有人质量年度报告撰写要求(试行)的通告.md</div>
+        <div class="sum">根据《中华人民共和国疫苗管理法》,在国家药品监督管理局的指导下,核查中心组织制定了《疫苗上市许可持有人质量年度报告撰写要求(试行)》,经国家药品监督管理局审核批准,现予以发布。质量年度报告报送具体要求另行通知。特此通告。![](/cfdi/resource/ueditor/dialogs/attac…</div>
+      </article></div>
+  </section>
+<div class="empty" id="empty" style="display:none">未找到匹配的文档。</div>
+</main>
+<footer>
+  来源均为官方权威机构：国家药监局(NMPA)、药品审评中心(CDE)、食品药品审核查验中心(CFDI)、国家卫健委、ICH、WHO 等。
+  技术指导原则(含 ICH 转化)为<strong>推荐性</strong>文件，除非被规章/公告强制引用；标注「征求意见」者尚未生效，仅供趋势参考。
+  本地路径指向知识库对应 Markdown 原文。本页由每日维护任务自动聚合生成。
+</footer>
+<script>
+const Q=document.getElementById('q'),CH=document.getElementById('chips'),MAIN=document.getElementById('main'),EMPTY=document.getElementById('empty');
+let curCat='all';
+function norm(s){return (s||'').toLowerCase();}
+function apply(){
+  const kw=norm(Q.value.trim());
+  let shown=0;
+  document.querySelectorAll('.cat').forEach(sec=>{
+    let s=0;
+    sec.querySelectorAll('.doc').forEach(d=>{
+      const hay=norm(d.innerText);
+      const okC = curCat==='all' || sec.id==='cat-'+curCat;
+      const okK = !kw || hay.includes(kw);
+      const vis = okC && okK;
+      d.style.display = vis?'':'none';
+      if(vis) s++;
+    });
+    sec.style.display = (curCat==='all'||sec.id==='cat-'+curCat) && s>0 ? '' : 'none';
+    shown+=s;
+  });
+  EMPTY.style.display = shown?'none':'block';
+}
+Q.addEventListener('input',apply);
+CH.addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b)return;
+  curCat=b.dataset.cat;
+  CH.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); apply();
+});
+</script>
+</body></html>
