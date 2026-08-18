@@ -443,6 +443,132 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
   </div>
   </section>
 
+  <style>
+    .qm-cqa{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#fff8f0);border:1px solid #f3dcc0;border-radius:14px}
+    .qm-cqa-h{font-size:19px;margin:0 0 4px;color:#8a5a00}
+    .qm-cqa-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-cqa-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.65}
+    .qm-cqa-subh{font-size:16px;margin:18px 0 8px;color:#8a5a00;border-left:4px solid #d98a00;padding-left:10px}
+    .qm-cqa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;margin-top:8px}
+    .qm-cqa-card{border:1px solid #f0e2cc;border-radius:10px;padding:11px 12px;background:#fffdf8}
+    .qm-cqa-card h4{margin:0 0 6px;font-size:14px;color:#0b3d91}
+    .qm-cqa-card h4 .qm-c2{font-size:11.5px;color:#6b7280;font-weight:400;margin-left:6px}
+    .qm-cqa-card ul{margin:0;padding-left:20px;font-size:12.5px;color:#33414f;line-height:1.7}
+    .qm-cqa-ref{margin-top:14px;padding:11px 13px;background:#fdf2e2;border-left:3px solid #d98a00;border-radius:6px;font-size:12.5px;color:#33414f}
+    .qm-cqa-ref b{color:#8a5a00}
+    .qm-cqa-ref a{color:#b06a00;text-decoration:none}
+  </style>
+  <section class="qm-cqa" id="qm-cqa">
+    <h2 class="qm-cqa-h">🎯 各类药品类型的关键质量属性(CQA) · 关键质量参数的摸索<span class="cnt">6 类药品 · CQA 摸索方法论</span></h2>
+    <p class="qm-cqa-sub">关键质量属性(CQA, Critical Quality Attribute)是"对产品安全性、有效性或质量可控性有直接或间接影响的物理、化学、生物或微生物性质/特征"，须落在适当限度、范围或分布内（ICH Q8(R2)）。与上一节"关键工艺参数(CPP)的摸索"互为表里：<strong>CQA 是"要控制什么质量"，CPP 是"靠什么工艺去控制"</strong>。CQA 的识别同样贯穿各类药品、且依赖一套共性方法论——「定义 QTPP 自上而下推导 → 文献与先验知识 → 风险评估排序 → 实验表征确证 → 建立 CQA–CPP 关联 → 持续确认再优化」。以下内容可作为研发/质量体系（质量研究方案、方法学验证、质量标准、CQA 论证与申报 CMC）的起草要点与迎检自查清单。</p>
+
+    <h3 class="qm-cqa-subh">一、各类药品类型的关键质量属性(CQA)</h3>
+    <div class="qm-cqa-grid">
+      <div class="qm-cqa-card"><h4>① 化学药（化药）CQA<span class="qm-c2">化学药</span></h4><ul>
+        <li>性状/鉴别、含量（效价）、含量均匀度</li>
+        <li>有关物质（降解/工艺杂质，ICH Q3A/B）、残留溶剂(Q3C)、元素杂质(Q3D)、致突变杂质(M7)</li>
+        <li>晶型/多晶型、粒度分布（影响溶出与生物利用度，关联 BE）</li>
+        <li>溶出度/释放度（口服固体制剂关键 CQA）</li>
+        <li>注射剂：无菌、细菌内毒素、不溶性微粒、可见异物、pH、渗透压</li>
+        <li>特殊制剂：透皮（经皮渗透量）、吸入（递送剂量/微细粒子剂量）、缓控释（释放度）</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>② 中药 / 天然药物 CQA<span class="qm-c2">中药</span></h4><ul>
+        <li>浸出物/提取物得率、水分、总灰分</li>
+        <li>指标成分含量（含量测定）、浸出物</li>
+        <li>特征/指纹图谱（整体质量表征）、一测多评</li>
+        <li>安全性 CQA：农残、重金属及有害元素、真菌毒素</li>
+        <li>量质传递关键属性（药材→饮片→中间体→制剂的物质转移与收率）</li>
+        <li>古代经典名方：与"物质基准/基准样品"的一致性</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>③ 生物制品 / 重组蛋白 / 单抗 CQA<span class="qm-c2">生物制品</span></h4><ul>
+        <li>含量/蛋白浓度、纯度（聚集体、片段、HCP、残留 DNA）</li>
+        <li>电荷异质性（电荷变异体、脱酰胺/氧化）、糖基化（N-/O-糖谱）</li>
+        <li>效价/生物学活性(potency)、构象与高级结构</li>
+        <li>宿主细胞蛋白(HCP)、宿主细胞 DNA、Protein A 残留</li>
+        <li>病毒安全性（清除验证，见重组蛋白病毒清除平台验证）</li>
+        <li>外观、可见异物、不溶性微粒、无菌、细菌内毒素</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>④ 细胞与基因治疗(CGT) CQA<span class="qm-c2">CGT</span></h4><ul>
+        <li>细胞活率、纯度、表型/标志物表达</li>
+        <li>转导/转染效率、载体拷贝数(VCN)、CAR 阳性率</li>
+        <li>效力(potency，体外/体内活性)——核心 CQA</li>
+        <li>无菌、支原体、复制型病毒(RCL/RCR)</li>
+        <li>基因组整合位点、脱靶（基因编辑产品）</li>
+        <li>产品均一性、鉴别（供者/载体特异性）</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>⑤ 无菌制剂 CQA<span class="qm-c2">无菌</span></h4><ul>
+        <li>无菌（无菌保障水平 SAL）、细菌内毒素</li>
+        <li>不溶性微粒、可见异物</li>
+        <li>装量/含量均匀度、pH、渗透压摩尔浓度</li>
+        <li>容器密封完整性(CCI，容器密闭完整性)</li>
+        <li>复溶时间/性状（冻干制剂）、水分（冻干残水）</li>
+        <li>与无菌工艺/CCS 强相关的关键属性须在工艺中受控</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>⑥ 原料药(API) CQA<span class="qm-c2">原料药</span></h4><ul>
+        <li>性状、鉴别、有关物质(ICH Q3A)、残留溶剂(Q3C)</li>
+        <li>晶型/多晶型、粒度（影响溶解性、工艺与 BE）</li>
+        <li>手性杂质（对映异构体）、元素杂质(Q3D)、致突变杂质(M7)</li>
+        <li>含量/纯度、水分、炽灼残渣</li>
+        <li>微生物限度（非无菌 API）</li>
+        <li>杂质谱与起始物料质量控制（ICH Q11）</li>
+      </ul></div>
+    </div>
+
+    <h3 class="qm-cqa-subh">二、关键质量属性(CQA)的摸索与确定方法</h3>
+    <div class="qm-cqa-grid">
+      <div class="qm-cqa-card"><h4>① 从预期用途定义 QTPP（自上而下）<span class="qm-c2">QTPP</span></h4><ul>
+        <li>ICH Q8：先明确<strong>目标产品质量概况(QTPP)</strong>，再由 QTPP 推导潜在 CQA</li>
+        <li>结合临床定位、给药途径、患者人群，判断哪些属性真正"关键"</li>
+        <li>CQA 须落在适当限度/范围/分布内，方保证预期质量</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>② 文献与先验知识收集<span class="qm-c2">先验</span></h4><ul>
+        <li>同类已上市产品 CQA 清单、药典标准、监管技术要求（各药学评价指导原则）</li>
+        <li>既有稳定性/降解途径数据、强制降解研究文献</li>
+        <li>原料/辅料/药包材已知风险属性（关联审评与相容性数据）</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>③ 风险评估初步排序<span class="qm-c2">风险排序</span></h4><ul>
+        <li>ICH Q9 风险管理：FMEA/初步危害分析，区分"关键"与"非关键"</li>
+        <li>优先聚焦对安全性/有效性真正关键的 CQA</li>
+        <li>明确各 CQA 可接受范围(spec)的来源与依据</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>④ 实验研究与表征（自下而上确证）<span class="qm-c2">表征</span></h4><ul>
+        <li>强制降解/应激研究（光、热、湿、酸/碱、氧化）识别敏感属性</li>
+        <li>结构确证（光谱/NMR/MS、XRD、热分析）、理化表征</li>
+        <li>方法学验证（专属性、准确度、精密度、耐用性）</li>
+        <li>多批次中试/商业批数据分析，确认批间一致性</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>⑤ 建立 CQA–CPP 关联（与工艺联动）<span class="qm-c2">关联</span></h4><ul>
+        <li>通过 DoE/工艺表征证明哪些 CPP 显著影响 CQA</li>
+        <li>形成<strong>控制策略</strong>：检验/中控/工艺监控的组合控制</li>
+        <li>明确每个 CQA 的控制方式与可接受标准依据（CQA 与 CPP 闭环）</li>
+      </ul></div>
+      <div class="qm-cqa-card"><h4>⑥ 持续确认与再探索（闭环）<span class="qm-c2">闭环</span></h4><ul>
+        <li>商业化数据/年度质量回顾(APR)持续验证 CQA 设置合理性</li>
+        <li>工艺变更/场地转移后做可比性研究，必要修订 CQA 或范围</li>
+        <li>关键 CQA 与可接受范围应在申报资料/CMC 中充分论证（监管沟通）</li>
+      </ul></div>
+    </div>
+
+    <div class="qm-cqa-ref">
+      <b>核心权威依据：</b>
+      <a href="https://database.ich.org/sites/default/files/Q8%28R2%29%20Guideline.pdf" target="_blank" rel="noopener">ICH Q8(R2)药物研发（CQA 定义/QTPP/设计空间）</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q9%20Guideline.pdf" target="_blank" rel="noopener">ICH Q9 质量风险管理</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q11%20Guideline.pdf" target="_blank" rel="noopener">ICH Q11 原料药开发和生产</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/eda07852d89f6fa7a6da7db6577d5695" target="_blank" rel="noopener">中药新药质量研究技术指导原则(2021)</a> ·
+      <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=8c89f1e7bbee6a7cf2ed0102bea1b871" target="_blank" rel="noopener">中药口服制剂生产过程质量控制研究(2024)</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/" target="_blank" rel="noopener">化学合成多肽药物药学研究(2023)</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/" target="_blank" rel="noopener">免疫细胞治疗产品药学研究与评价</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/" target="_blank" rel="noopener">体内/体外基因治疗产品药学研究与评价</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/" target="_blank" rel="noopener">人源干细胞产品药学研究与评价</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/" target="_blank" rel="noopener">低分子量肝素类仿制药药学研究与评价</a> ·
+      <a href="https://www.cde.org.cn/main/news/viewInfoCommon/" target="_blank" rel="noopener">化学药品注射剂(特殊注射剂)一致性评价技术要求</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q3A%20R2%20Guideline.pdf" target="_blank" rel="noopener">ICH Q3A/B 杂质</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q3C%20Guideline.pdf" target="_blank" rel="noopener">Q3C 残留溶剂</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q3D%20Guideline.pdf" target="_blank" rel="noopener">Q3D 元素杂质</a> ·
+      <a href="https://database.ich.org/sites/default/files/M7%20R2%20Guideline.pdf" target="_blank" rel="noopener">M7 致突变杂质</a>
+    </div>
+  </section>
+
   <section class="cat" id="cat-0">
     <h2>GMP·体系与品种附录（含2023版GMP指南、生产检查指南） <span class="cnt">23</span></h2>
     <div class="grid">
