@@ -52,6 +52,68 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
   <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (71)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺验证与持续工艺确认 (1)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button></div>
 </div></div>
 <main id="main">
+<section class="qm-cases" id="qm-cases">
+  <style>
+    .qm-cases{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#f3f7ff);border:1px solid #d7e3f4;border-radius:14px}
+    .qm-cases-h{font-size:19px;margin:0 0 4px;color:#0b3d91}
+    .qm-cases-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-cases-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.6}
+    .qm-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .qm-chip{border:1px solid #cdd9ea;background:#fff;color:#1f2a37;padding:6px 13px;border-radius:18px;font-size:13px;cursor:pointer}
+    .qm-chip.active{background:#0b3d91;color:#fff;border-color:#0b3d91}
+    .qm-theme{margin:16px 0;background:#fff;border:1px solid #e3e8ef;border-radius:12px;overflow:hidden}
+    .qm-theme-h{background:#eef3fb;padding:10px 14px;font-size:15.5px;font-weight:600;color:#15315c;border-left:4px solid #1769e0}
+    .qm-theme-h .qm-cat{font-size:12px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-sol{padding:10px 14px 4px}
+    .qm-sol h4{margin:0 0 6px;font-size:13.5px;color:#0e7a4e}
+    .qm-sol ul{margin:0;padding-left:20px;font-size:13px;color:#33414f;line-height:1.7}
+    .qm-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:11px;padding:12px 14px 16px}
+    .qm-case{border:1px solid #e6ebf2;border-radius:10px;padding:11px 12px;background:#fcfdff}
+    .qm-case-h{font-size:13.5px;font-weight:600;color:#1f2a37}
+    .qm-case-loc{font-weight:400;font-size:12px;color:#6b7280;margin-left:6px}
+    .qm-tags{margin:6px 0 4px}
+    .qm-tag{display:inline-block;background:#fdeef0;color:#b42318;border:1px solid #f6d3d8;font-size:11px;padding:1px 7px;border-radius:10px;margin:2px 3px 0 0}
+    .qm-meas{font-size:12.5px;color:#33414f;background:#eef7f1;border-left:3px solid #0e9f6e;padding:5px 8px;border-radius:6px;margin:6px 0}
+    .qm-meas b{color:#0e7a4e}
+    .qm-sum{font-size:12px;color:#566;margin:5px 0}
+    .qm-src{font-size:12px;color:#1769e0;text-decoration:none}
+  </style>
+  <h2 class="qm-cases-h">📌 典型案例与解决措施<span class="cnt">9 个真实飞检案例 · 5 类主题</span></h2>
+  <p class="qm-cases-sub">案例均来源于国家药监局及省级药监局公开的飞行检查 / 监督检查通报（2017–2026）。每条案例附<strong>官方处理措施</strong>，并给出对应质量管理主题的<strong>解决措施 / 整改要点</strong>（基于 GMP 与飞检整改实践）。可作为质量体系自检与迎检的参考样板。</p>
+  <div class="qm-chips" id="qmCaseChips"><button class="qm-chip active" data-qmk="all">全部（9）</button><button class="qm-chip" data-qmk="di">数据可靠性（DI）（2）</button><button class="qm-chip" data-qmk="tcm">中药饮片专项（2）</button><button class="qm-chip" data-qmk="mah">委托生产 / MAH 责任（2）</button><button class="qm-chip" data-qmk="qc">质量控制与检验（2）</button><button class="qm-chip" data-qmk="prod">生产管理 / 物料 / 厂房设施（1）</button></div>
+  <div id="qmCaseWrap"></div>
+  <script>
+    const QM_CASES = [{"key": "di", "name": "数据可靠性（DI）", "cat": "数据完整性与计算机化系统", "sol": ["立即启动数据治理专项：全面梳理生产/检验/物料/设备记录，识别删除、篡改、覆盖、无审计追踪等缺口", "建立并验证计算机化系统权限、审计追踪、时序逻辑、备份与灾难恢复（遵循 ALCOA+ 原则）", "开展数据完整性自查并追责，对违规人员再培训与岗位调整，重建质量文化", "召回受数据可靠性影响的产品并评估患者风险，必要时立案调查", "整改完成后申请 GMP 证书发回前，接受省局/国家局现场复查确认"], "cases": [{"company": "云南金七制药有限公司、湖南百草制药有限公司、亳州市京皖中药饮片厂", "prov": "全国", "year": "2018", "level": "国家局", "title": "国家药品监督管理局关于云南金七制药等8家企业严重违反GMP的通告", "defects": ["生产管理", "数据可靠性", "物料管理", "质量控制/检验"], "measure": "收回涉事企业GMP证书；移交省级局依法立案调查", "status": "收回GMP证书并立案", "url": "https://health.china.com.cn/2018-04/13/content_40290370.htm", "summary": "经跟踪检查，8家企业严重违反药品GMP：擅自改变已批准处方与关键工艺参数、批生产记录不真实、质量控制系统不能有效运行、非法外购中药提取物生产、物料管理混乱等。"}, {"company": "四川高原明珠制药有限公司", "prov": "四川", "year": "2017", "level": "国家局", "title": "对四川高原明珠制药有限公司跟踪检查通报", "defects": ["数据可靠性", "生产管理", "物料管理", "厂房与设施"], "measure": "收回药品GMP证书；监督召回相关产品；对违法违规行为立案调查", "status": "收回GMP证书并立案", "url": "https://static.nfapp.southcn.com/content/201706/12/c478605.html", "summary": "存在记录造假、删除修改数据、擅自将复方板蓝根颗粒批量由5万袋变更为48万袋且未做变更控制与工艺验证、防鼠防虫措施不当、物料与清场不规范等5方面问题。"}]}, {"key": "tcm", "name": "中药饮片专项", "cat": "GMP·品种附录（中药饮片）", "sol": ["严控药材/饮片来源：供应商审计、批次溯源、农残/重金属/黄曲霉毒素检验", "规范炮制工艺与参数记录，严格按法定标准与工艺规程生产", "强化仓储养护（温湿度、虫霉防控）与器具清洁，建立标本与留样管理", "对不符合项限期整改，整改验收前不得恢复生产，必要时收回/发回 GMP 证书"], "cases": [{"company": "济南润正中药材有限公司", "prov": "山东", "year": "2017", "level": "省级", "title": "对济南润正中药材有限公司飞行检查通报", "defects": ["中药饮片专项", "生产管理", "物料管理", "质量控制/检验"], "measure": "收回药品GMP证书；责成市局依法查处", "status": "收回GMP证书", "url": "https://policy.ynby.cn/zc/article/detail/772406", "summary": "涉嫌违法经营具有批准文号的药品、超范围生产中药饮片且部分未经备案、部分批次中药饮片无生产/检验记录、关键岗位人员离职、生产管理混乱、检验能力不足、仓储未在库物料隔离。"}, {"company": "平邑多尔药业有限公司", "prov": "山东", "year": "2017", "level": "省级", "title": "对平邑多尔药业有限公司飞行检查的通报", "defects": ["中药饮片专项", "物料管理", "机构与人员"], "measure": "收回药品GMP证书；责成市局依法查处", "status": "收回GMP证书", "url": "https://policy.ynby.cn/zc/article/detail/772408", "summary": "与河北企业共用人员与检验中心、检验人员在岗仅1名、丹参原药材未按批管理、未按工艺规程生产仅简单拣选、新建冷库未确认、供应商管理混乱。"}]}, {"key": "mah", "name": "委托生产 / MAH 责任", "cat": "供应商管理与质量审计 / GMP", "sol": ["落实上市许可持有人(MAH)主体责任：对受托方开展系统审计与持续监督，签订质量协议明确双方责任", "建立委托生产全过程质量管控（工艺、检验、放行、变更、偏差均受控）", "开展工艺转移/共线风险评估，确认受托方具备相应生产条件与质量能力", "发现风险立即暂停相关产品产销，启动调查与 CAPA，并纳入年度回顾与监管报告"], "cases": [{"company": "广州合和医药有限公司、成都天台山制药股份有限公司（受托方）", "prov": "广东", "year": "2026", "level": "省级", "title": "广东省药品监督管理局关于药品委托生产监督检查情况的通告（2026年第28号）", "defects": ["委托生产", "生产管理", "质量控制/检验"], "measure": "责令暂停相关风险产品的生产与销售，采取风险控制措施", "status": "不符合要求（25家符合，1家不符）", "url": "http://mpa.gd.gov.cn/zwgk/xkxxgk/yaopin/scxk/content/post_4900025.html", "summary": "2026年对省内26家药品上市许可持有人及受托生产企业开展委托生产监督检查，25家符合要求；广州合和医药有限公司因存在不符合药品GMP的情形被判定为不符合要求，监管部门责令暂停相关风险产品生产与销售。"}, {"company": "四川海梦智森生物制药有限公司、太极集团四川太极制药有限公司", "prov": "四川", "year": "2025", "level": "省级", "title": "四川省药品生产监督检查结果通告（间苯三酚注射液不符合要求）", "defects": ["生产管理", "委托生产", "质量控制/检验"], "measure": "暂停太极制药间苯三酚注射液生产；暂停海梦智森上市销售", "status": "暂停生产/销售", "url": "https://www.toutiao.com/article/7483350033186816538/", "summary": "持有人未对受托生产企业生产过程有效监控，受托企业部分批次关键生产过程出现偏差且未按规范开展偏差处理，综合评定不符合GMP要求。"}]}, {"key": "qc", "name": "质量控制与检验", "cat": "质量研究（CMC）/ QC", "sol": ["复核检验方法验证/确认状态，确保方法适用、人员持证、仪器在校准效期", "规范 OOS/OOT 调查流程，杜绝“不调查即复测合格放行”", "加强标准品/对照品、试剂、培养基管理，检验记录可追溯、原始数据完整", "对不合格产品评估召回并追溯已放行批次"], "cases": [{"company": "浙江国光生物制药有限公司、宁波寿全斋中药饮片有限公司、杭州国光药业股份有限公司", "prov": "浙江", "year": "2018", "level": "省级", "title": "浙江省药品生产企业飞行检查情况通报（2018年第一期）", "defects": ["质量控制/检验", "物料管理", "生产管理", "机构与人员"], "measure": "省局发改正/警告通知书；收回/发回中药饮片GMP证书；市局跟踪", "status": "整改跟踪", "url": "https://www.nmpa.gov.cn/directory/web/nmpa/xxgk/ggtg/ypggtg/ypgmprzh/ypgmprzhgg/ypgmpshj/20181022000001554.html", "summary": "2018年3—8月对7家药品生产企业飞检：检验人员培训不到位、偏差未采取预防措施、共线风险评估不充分、留样真实性问题、原药材长霉、检验记录不可追溯、供应商审计过期等。"}, {"company": "广州巨虹药业有限公司", "prov": "广东", "year": "2017", "level": "省级", "title": "广东省药品生产安全监管飞行检查通报（广州巨虹药业）", "defects": ["质量控制/检验", "生产管理", "物料管理"], "measure": "收回《药品GMP证书》（GD20150438）；约谈；召回；两年内二次收回", "status": "收回GMP证书", "url": "https://finance.ifeng.com/c/7rW0amg5r0e", "summary": "2016年生产多批次感冒清片和感冒清片浸膏粉重点核查发现严重缺陷3项、主要缺陷2项、一般缺陷2项，不符合药品GMP要求，曾于2017年7月11日收回GMP证书。"}]}, {"key": "prod", "name": "生产管理 / 物料 / 厂房设施", "cat": "GMP·体系与品种附录", "sol": ["完善生产操作规程(SOP)与批记录，确保按注册工艺与 GMP 组织生产", "物料管理：供应商审计、入库检验、合格供应商清单、标识与先进先出", "厂房设施：洁净区压差/温湿度监测、设备确认与维护、防止交叉污染", "机构与人员：关键岗位资质与培训、质量受权人独立履职", "缺陷分级整改，重大缺陷整改验收前暂停相关生产，必要时收回 GMP 证书"], "cases": [{"company": "江苏七0七天然制药有限公司", "prov": "江苏", "year": "2018", "level": "国家局", "title": "对江苏七0七天然制药有限公司跟踪检查通报", "defects": ["物料管理", "生产管理", "厂房与设施"], "measure": "责成江苏省局收回相关药品GMP证书并进一步调查", "status": "收回GMP证书", "url": "https://wap.cqn.com.cn/ms/content/2018-12/05/content_6542428.htm", "summary": "物料管理不规范、生产操作发生混批（金胆片糖衣片混入）、冷库面积不足致中间产品超温存放、中间站物料标识不全等，沉香化气丸生产质量管理不符合药品GMP。"}]}];
+    function escQ(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+    function renderQMCases(filter){
+      const wrap=document.getElementById('qmCaseWrap');
+      const list = filter==='all' ? QM_CASES : QM_CASES.filter(t=>t.key===filter);
+      wrap.innerHTML = list.map(t=>{
+        const sol = t.sol.map(s=>'<li>'+escQ(s)+'</li>').join('');
+        const cards = t.cases.map(c=>{
+          const tags=(c.defects||[]).map(d=>'<span class="qm-tag">'+escQ(d)+'</span>').join('');
+          const src=c.url?'<a class="qm-src" href="'+escQ(c.url)+'" target="_blank" rel="noopener">通报原文 ↗</a>':'';
+          return '<article class="qm-case"><div class="qm-case-h">'+escQ(c.company)+
+            '<span class="qm-case-loc">'+escQ(c.prov)+' '+escQ(c.year)+' · '+escQ(c.level)+'</span></div>'+
+            '<div class="qm-tags">'+tags+'</div>'+
+            '<div class="qm-meas"><b>官方处理措施：</b>'+escQ(c.measure)+'</div>'+
+            '<div class="qm-sum">'+escQ(c.summary)+'</div>'+src+'</article>';
+        }).join('');
+        return '<div class="qm-theme"><div class="qm-theme-h">'+escQ(t.name)+
+          '<span class="qm-cat">对应：'+escQ(t.cat)+'</span></div>'+
+          '<div class="qm-sol"><h4>🛠 解决措施 / 整改要点</h4><ul>'+sol+'</ul></div>'+
+          '<div class="qm-cards">'+cards+'</div></div>';
+      }).join('');
+    }
+    document.getElementById('qmCaseChips').addEventListener('click',e=>{
+      const b=e.target.closest('.qm-chip'); if(!b)return;
+      document.querySelectorAll('#qmCaseChips .qm-chip').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); renderQMCases(b.dataset.qmk);
+    });
+    renderQMCases('all');
+  </script>
+</section>
+
   <section class="cat" id="cat-0">
     <h2>GMP·体系与品种附录（含2023版GMP指南、生产检查指南） <span class="cnt">23</span></h2>
     <div class="grid">

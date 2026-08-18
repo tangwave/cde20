@@ -82,6 +82,7 @@
         <div class="fc-card-types">${types}${defects}</div>
         <div class="fc-card-companies">🏭 ${comps}${compMore}</div>
         <div class="fc-card-sum">${esc((it.summary || '').slice(0, 120))}${(it.summary || '').length > 120 ? '…' : ''}</div>
+        ${it.measures ? `<div class="fc-card-meas" style="margin-top:7px;font-size:12px;color:#0e7a4e;background:#eef7f1;border-left:3px solid #0e9f6e;padding:4px 8px;border-radius:6px"><b>处理措施：</b>${esc(it.measures)}</div>` : ''}
       </div>`;
     }).join('') + '</div>';
   }
