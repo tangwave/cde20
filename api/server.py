@@ -97,6 +97,9 @@ LLM_PRESETS_DEFAULT = [
         "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
         "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
+        "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 轻量（2026-08-19 实测重新回到免费档）
+        "z-ai/glm-5.2:free",                                # 真免费，智谱 GLM 5.2 开放权重（2026-08-19 实测重新回到免费档）
+        "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档，支持图文）
      ],
      "default_model": "openai/gpt-oss-20b:free"},
     {"id": "chatanywhere", "name": "ChatAnywhere（GitHub 免费 Key · GPT/DeepSeek 免费额度）",
@@ -212,9 +215,18 @@ def _load_presets():
             ids = {p["id"] for p in out}
             added = False
             for d in LLM_PRESETS_DEFAULT:
-                if d["id"] not in ids:
+                existing = next((p for p in out if p["id"] == d["id"]), None)
+                if existing is None:
                     out.append(dict(d))
                     added = True
+                else:
+                    # 合并默认项里「既有服务商内新增的模型」（如 OpenRouter 免费模型扩容），
+                    # 不覆盖用户对已有模型的自定义编辑，但确保新模型对老用户立即可见。
+                    emodels = set(existing.get("models") or [])
+                    missing = [m for m in (d.get("models") or []) if m not in emodels]
+                    if missing:
+                        existing["models"] = list(emodels) + missing
+                        added = True
             if added:
                 try:
                     with open(LLM_PRESETS_FILE, "w", encoding="utf-8") as f:

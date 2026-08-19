@@ -64,8 +64,8 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-18 实测真免费（共 **15** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
-> ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除；`liquid/lfm-2.5-2.6b:free` 与 `z-ai/glm-5.2:free` 已于 2026-08-18 从免费档移除（glm-5.2 转为付费），本项目默认模型保持 `openai/gpt-oss-20b:free`。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-19 实测真免费（共 **18** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
+> ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除；`liquid/lfm-2.5-2.6b:free` 与 `z-ai/glm-5.2:free` 曾在 2026-08-18 短暂退出免费档，2026-08-19 实测重新回到免费档（pricing 双 0），已重新纳入；音频类 `google/lyria-3-*` 虽 pricing 双 0 但为音乐生成模型（非对话 LLM），未纳入。本项目默认模型保持 `openai/gpt-oss-20b:free`。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
@@ -84,6 +84,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | `poolside/laguna-s-2.1:free` | 代码 / 推理向 | 代码示例、技术文档生成 | 偏代码 |
 | `poolside/laguna-xs-2.1:free` | 超轻量代码模型 | 代码补全 / 低延迟 | 体量更小 |
 | `cohere/north-mini-code:free` | 代码生成模型 | 代码片段生成 | 偏代码 |
+| `liquid/lfm-2.5-2.6b:free` | LiquidAI LFM2.5 2.6B 轻量模型 | 低延迟、轻量问答 | 2026-08-19 重新回到免费档 |
+| `z-ai/glm-5.2:free` | 智谱 GLM 5.2 开放权重 | 中文法规问答、通用 | 2026-08-19 重新回到免费档 |
+| `openrouter/free` | OpenRouter 免费模型路由器 | 自动分发到免费档（支持图文输入） | 免指定具体模型 |
 
 切换方式（任选其一）：
 1. **网页内**：设置 → 服务商选 `OpenRouter` → 模型下拉里直接选；
