@@ -45,11 +45,11 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
 <header><div class="wrap">
   <a class="back" href="index.html">← 返回法规问答首页</a>
   <h1>药品研发生产 · 质量管理知识库</h1>
-  <p>汇总药品研发与生产全链条质量管理权威文献 94 篇 · 覆盖 GMP / GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺开发与验证 / 工艺变更 / 连续制造 / 供应商审计 / 放行回顾 / 投诉召回 / 物料管理（原辅料·药包材·起始物料）</p>
+  <p>汇总药品研发与生产全链条质量管理权威文献 102 篇 · 覆盖 GMP / GMP指南（全体系与分品种·2023版）/ GLP / GCP / ICH 质量指导原则(Q) / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺开发与验证 / 工艺变更 / 连续制造 / 供应商审计 / 放行回顾 / 投诉召回 / 物料管理（原辅料·药包材·起始物料）</p>
 </div></header>
 <div class="bar"><div class="wrap">
   <input id="q" placeholder="搜索标题 / 发布机构 / 文号 / 关键词（如：无菌、共线、方法学、Q9、数据完整性）"/>
-  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (94)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺开发与验证·工艺变更·连续制造 (12)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button><button class="chip" data-cat="11">物料管理·原辅料·药包材·起始物料 (12)</button></div>
+  <div class="chips" id="chips"><button class="chip active" data-cat="all">全部 (102)</button><button class="chip" data-cat="0">GMP·体系与品种附录 (23)</button><button class="chip" data-cat="1">GLP·非临床研究质量管理 (5)</button><button class="chip" data-cat="2">GCP·临床试验质量管理 (6)</button><button class="chip" data-cat="3">ICH·质量指导原则 (9)</button><button class="chip" data-cat="4">质量研究 (12)</button><button class="chip" data-cat="5">数据完整性与计算机化系统 (5)</button><button class="chip" data-cat="6">质量风险管理与共线生产 (2)</button><button class="chip" data-cat="7">偏差·变更·CAPA (3)</button><button class="chip" data-cat="8">工艺开发与验证·工艺变更·连续制造 (12)</button><button class="chip" data-cat="9">供应商管理与质量审计 (3)</button><button class="chip" data-cat="10">放行·批签发·年度回顾·质量量度 (2)</button><button class="chip" data-cat="11">物料管理·原辅料·药包材·起始物料 (12)</button><button class="chip" data-cat="12">GMP指南·全体系与分品种（2023版）(8)</button></div>
 </div></div>
 <main id="main">
 <section class="qm-cases" id="qm-cases">
@@ -566,6 +566,160 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
       <a href="https://database.ich.org/sites/default/files/Q3C%20Guideline.pdf" target="_blank" rel="noopener">Q3C 残留溶剂</a> ·
       <a href="https://database.ich.org/sites/default/files/Q3D%20Guideline.pdf" target="_blank" rel="noopener">Q3D 元素杂质</a> ·
       <a href="https://database.ich.org/sites/default/files/M7%20R2%20Guideline.pdf" target="_blank" rel="noopener">M7 致突变杂质</a>
+    </div>
+  </section>
+
+  <style>
+    .qm-gmp{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#eef4ff);border:1px solid #c7d6f0;border-radius:14px}
+    .qm-gmp-h{font-size:19px;margin:0 0 4px;color:#1f3a8a}
+    .qm-gmp-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+    .qm-gmp-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.65}
+    .qm-gmp-subh{font-size:16px;margin:18px 0 8px;color:#1f3a8a;border-left:4px solid #2f6fe0;padding-left:10px}
+    .qm-gmp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;margin-top:8px}
+    .qm-gmp-card{border:1px solid #d7e2f5;border-radius:10px;padding:11px 12px;background:#fbfdff}
+    .qm-gmp-card h4{margin:0 0 6px;font-size:14px;color:#0b3d91}
+    .qm-gmp-card h4 .qm-g2{font-size:11.5px;color:#6b7280;font-weight:400;margin-left:6px}
+    .qm-gmp-card ul{margin:0;padding-left:20px;font-size:12.5px;color:#33414f;line-height:1.7}
+    .qm-gmp-ref{margin-top:14px;padding:11px 13px;background:#e7f0ff;border-left:3px solid #2f6fe0;border-radius:6px;font-size:12.5px;color:#33414f}
+    .qm-gmp-ref b{color:#1f3a8a}
+    .qm-gmp-ref a{color:#2f6fe0;text-decoration:none}
+  </style>
+  <section class="qm-gmp" id="qm-gmp">
+    <h2 class="qm-gmp-h">📘 药品GMP指南·全体系与分品种（2023版第2版）<span class="cnt">通用体系 12 项 · 分品种 7 类</span></h2>
+    <p class="qm-gmp-sub">《药品GMP指南（2023年版，第2版）》由国家药监局核查中心组织编写，是《药品生产质量管理规范（2010年修订）》的权威实施指导，按<strong>通用体系 + 分品种</strong>组织。通用体系适用于<strong>所有药品类型</strong>；分品种册针对无菌制剂、原料药、口服固体制剂等专项要求（中药、生物制品、血液制品、临床试验用药品等亦在 GMP 附录/专门规定中单列）。以下内容按"通用体系—分品种"梳理 GMP 核心要求，可作为质量体系文件（SOP、管理规程、验证方案、自检清单）与迎检准备的起草要点。所有要点均锚定 2023版GMP指南各分册及对应 GMP 附录/部门规章。</p>
+
+    <h3 class="qm-gmp-subh">A. 通用体系（适用于所有药品类型）</h3>
+    <div class="qm-gmp-grid">
+      <div class="qm-gmp-card"><h4>① 药品质量管理体系(PQS)<span class="qm-g2">质量体系</span></h4><ul>
+        <li>企业应当建立覆盖影响质量所有要素的<strong>药品质量管理体系(PQS)</strong></li>
+        <li>三支柱：质量保证(QA) / 生产管理 / 质量控制(QC)；贯穿质量源于设计理念</li>
+        <li>质量方针与目标、管理职责与授权、质量手册、文件系统</li>
+        <li>内部审核（自检）、管理评审、持续改进机制</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>② 质量风险管理(QRM)<span class="qm-g2">ICH Q9</span></h4><ul>
+        <li>基于科学性与保护患者，贯穿产品全生命周期</li>
+        <li>常用工具：FMEA、故障树(FTA)、HAZOP、初步危害分析、因果图</li>
+        <li>风险评估—控制—沟通—回顾 闭环；前瞻性与回顾性并重</li>
+        <li>无菌、共线、变更、偏差等高风险操作须有正式风险评估</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>③ 厂房设施与设备<span class="qm-g2">厂房设备</span></h4><ul>
+        <li>生产区/仓储区/质量控制区/辅助区 合理布局，防交叉污染</li>
+        <li>洁净区分级(D/C/B/A)与监测；HVAC 压差/换气次数/温湿度</li>
+        <li>水系统：纯化水/注射用水(WFI) 制备与分配、定期监测</li>
+        <li>设备确认 DQ/IQ/OQ/PQ；预防性维护与校准（计量溯源）</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>④ 物料系统<span class="qm-g2">物料</span></h4><ul>
+        <li>采购/接收/储存/取样/放行/发放 全流程控制</li>
+        <li>待验/合格/不合格 三状态标识与物理隔离；不合格物料封存</li>
+        <li>供应链管理、原辅包关联审评；物料平衡与收率</li>
+        <li>仓储条件（温湿度、避光、高危/特殊物料专储）</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑤ 质量控制实验室(QC)<span class="qm-g2">QC</span></h4><ul>
+        <li>实验室质量管理体系、人员资质、设施与环境</li>
+        <li>取样管理（取样计划/代表性）；物料与产品检验</li>
+        <li>OOS/OOT 调查流程（复测规则、根本原因、偏差联动）</li>
+        <li>标准品/对照品、试剂试药、微生物检测、数据完整性</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑥ 生产管理<span class="qm-g2">生产</span></h4><ul>
+        <li>工艺规程与批生产记录(BPR)；按注册工艺生产</li>
+        <li>防止污染、交叉污染、混淆、差错（清场、标识，分隔）</li>
+        <li>中间控制(IPC)、批次划分、批混合、返工/重新加工</li>
+        <li>无菌/特殊制剂的特殊生产控制（见 B 分品种）</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑦ 确认与验证<span class="qm-g2">验证</span></h4><ul>
+        <li>验证总计划(VMP)；厂房/设施/设备确认；清洁验证</li>
+        <li>工艺验证三阶段（工艺设计/工艺确认/持续工艺确认）</li>
+        <li>分析方法验证；运输确认；再验证/定期回顾</li>
+        <li>计算机化系统验证（见 ⑧）</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑧ 计算机化系统<span class="qm-g2">CSV</span></h4><ul>
+        <li>验证涵盖应用程序与基础架构；全生命周期管理</li>
+        <li>电子记录/电子签名合规；账号权限分级</li>
+        <li>审计追踪完整、不被覆盖；数据生命周期与备份</li>
+        <li>与数据管理/数据完整性衔接</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑨ 偏差·CAPA·变更控制<span class="qm-g2">偏差/CAPA/变更</span></h4><ul>
+        <li>偏差分类（重大/主要/次要）与时限调查、即时措施</li>
+        <li>CAPA：根本原因分析(5Why/鱼骨图)、有效性确认</li>
+        <li>变更分级（重大/中等/微小）；重大变更须批准+验证+稳定性</li>
+        <li>偏差/变更/OOS 相互关联，纳入趋势分析</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑩ 质量回顾（年度回顾 APR）<span class="qm-g2">质量回顾</span></h4><ul>
+        <li>按品种/年度开展，趋势分析关键质量指标</li>
+        <li>涵盖：批次合格率、偏差/CAPA/变更、OOS、稳定性、供应商、投诉</li>
+        <li>识别改进机会，推动 CAPA 与变更</li>
+        <li>满足法规要求的回顾内容与时限</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑪ 供应商的审计与评估<span class="qm-g2">供应商</span></h4><ul>
+        <li>供应商确认（资质、质量协议、现场审计）</li>
+        <li>原辅包/关键物料供应商定期评估与再审计</li>
+        <li>关联审评下辅料/药包材供应商的延伸审计</li>
+        <li>合格供应商名录动态管理</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑫ 委托生产·MAH·发运与召回<span class="qm-g2">MAH/召回</span></h4><ul>
+        <li>药品上市许可持有人(MAH) 主体责任（对全生命周期负责）</li>
+        <li>委托生产/检验：质量协议、现场监督、文件审核</li>
+        <li>产品发运与运输条件；批记录审核与放行</li>
+        <li>召回（一/二/三级）、不良反应监测、上市后风险管理</li>
+      </ul></div>
+    </div>
+
+    <h3 class="qm-gmp-subh">B. 分品种 GMP 要点（对所有类型药品）</h3>
+    <div class="qm-gmp-grid">
+      <div class="qm-gmp-card"><h4>① 无菌制剂（上册）<span class="qm-g2">无菌上</span></h4><ul>
+        <li>污染控制策略(CCS)：综合措施降低微生物/微粒/热原污染</li>
+        <li>洁净室分级(A/B/C/D)与动态监测；人员更衣与干预控制</li>
+        <li>灭菌工艺：湿热/干热/辐射/气体灭菌 的验证与控制</li>
+        <li>无菌工艺模拟（培养基灌装）；除菌过滤验证</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>② 无菌制剂（下册）<span class="qm-g2">无菌下</span></h4><ul>
+        <li>环境监测：浮游菌/沉降菌/表面/人员手套 监测方案</li>
+        <li>隔离器/限制进出隔离系统(RABS)；气流可视化(SMIF)</li>
+        <li>一次性使用系统(SUS)：组件确认、提取物/浸出物</li>
+        <li>无菌原料药的特殊污染控制</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>③ 原料药(API)<span class="qm-g2">原料药/ICH Q7</span></h4><ul>
+        <li>化学合成/发酵/提取 三类路线的 GMP（参照 ICH Q7）</li>
+        <li>杂质谱与起始物料控制；关键工艺步骤</li>
+        <li>回收溶媒/母液使用、返工规定</li>
+        <li>无菌原料药按无菌要求；高活/高敏原料药防护</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>④ 口服固体制剂与非无菌吸入制剂<span class="qm-g2">口服固体</span></h4><ul>
+        <li>片剂/胶囊/颗粒：制粒(湿/干/直压)、压片、包衣</li>
+        <li>含量均匀度、溶出度 为关键质量属性</li>
+        <li>缓释/控释（骨架/膜控）：释药机理与体内外相关性</li>
+        <li>非无菌吸入制剂：干粉吸入/雾化，递送剂量均一性</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑤ 中药<span class="qm-g2">中药GMP</span></h4><ul>
+        <li>中药生产专门规定(2025年第79号) 与中药饮片/中成药 GMP</li>
+        <li>前处理→提取→纯化→浓缩→干燥→制剂 全程控制</li>
+        <li>药材基原/产地/炮制；量质传递与中间体控制</li>
+        <li>毒性成分/农残/重金属/真菌毒素 安全性控制</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑥ 生物制品<span class="qm-g2">生物制品GMP</span></h4><ul>
+        <li>生物制品生产质量管理（附录）；上游细胞培养/发酵 + 下游纯化</li>
+        <li>种子批/细胞库 建立与检定；批间一致性</li>
+        <li>病毒清除/灭活验证；污染控制（微生物/支原体/外源病毒）</li>
+        <li>细胞治疗产品：密闭无菌工艺、载体生产检查（见生产检查指南）</li>
+      </ul></div>
+      <div class="qm-gmp-card"><h4>⑦ 血液制品 / 临床试验用药品<span class="qm-g2">血液/IMP</span></h4><ul>
+        <li>血液制品：血浆筛查、分离纯化、病毒灭活(如S/D、纳滤)、批签发</li>
+        <li>临床试验用药品(IMP)附录：与商业化不同的"有限但适当"质量体系</li>
+        <li>IMP 特殊放行、盲法/随机、对照品；稳定性支持临床使用期</li>
+        <li>GMP指南亦含 计算机化系统/数据管理/质量风险管理 等分册（与 A 通用体系衔接）</li>
+      </ul></div>
+    </div>
+
+    <div class="qm-gmp-ref">
+      <b>核心权威依据：</b>
+      <a href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">《药品GMP指南（2023年版）》发布（国家药监局核查中心）</a> ·
+      <a href="https://www.cfdi.org.cn/cfdi/resource/news/16275.html" target="_blank" rel="noopener">2025年第1号公告（药用辅料/药包材附录）</a> ·
+      <a href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">细胞治疗产品生产检查指南(2025)</a> ·
+      <a href="https://www.cfdi.org.cn/cfdi/resource/news/16373.html" target="_blank" rel="noopener">工艺验证检查指南(2025)</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q7%20Guideline.pdf" target="_blank" rel="noopener">ICH Q7 原料药GMP</a> ·
+      <a href="https://database.ich.org/sites/default/files/Q9%20Guideline.pdf" target="_blank" rel="noopener">ICH Q9 质量风险管理</a> ·
+      <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=8c89f1e7bbee6a7cf2ed0102bea1b871" target="_blank" rel="noopener">中药口服制剂生产过程质量控制研究(2024)</a> ·
+      <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=45895c7b3a1c4ac932882559c7003885" target="_blank" rel="noopener">生物制品生产工艺过程变更管理</a>
     </div>
   </section>
 
@@ -1189,6 +1343,60 @@ Q12 提供药品生命周期内变更管理的通用技术文件和监管工具�
         <div class="meta">国家药监局食品药品审核查验中心 · 2006-03-23　<a class="src" href="https://www.cfdi.org.cn/cfdi/resource/news/3840.html" target="_blank" rel="noopener">官方来源 ↗</a></div>
         <div class="path">本地：03_部门规章/关于印发药用辅料生产质量管理规范的通知.md</div>
         <div class="sum">原2006年药用辅料GMP通知，自2026-01-01起被《GMP(2010)药用辅料附录》（2025年第1号公告）替代而废止，作为辅料监管演进的历史参考。</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cat" id="cat-12">
+    <h2>GMP指南·全体系与分品种（2023版第2版） <span class="cnt">8</span></h2>
+    <div class="grid">
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-质量管理体系</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-质量管理体系-含书签、可搜索复制.md</div>
+        <div class="sum">GMP指南系列·质量管理体系分册，涵盖药品质量管理体系建设、质量风险管理、偏差管理、CAPA、变更控制等GMP要求，是适用于所有药品类型的通用体系总纲。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-厂房设施与设备</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-厂房设施与设备-含书签、可搜索复制.md</div>
+        <div class="sum">涵盖药品生产厂房设计、洁净区分级、暖通空调（HVAC）、水系统、设备确认（DQ/IQ/OQ/PQ）与预防性维护、校准等GMP要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-物料系统</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-物料系统-含书签、可搜索复制.md</div>
+        <div class="sum">涵盖物料采购、接收、储存、取样、放行和供应链管理等GMP要求，与"物料管理"知识板块相互支撑。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-质量控制实验室</h3><span class="badge" data-st="现行">现行</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-质量控制实验室.md</div>
+        <div class="sum">涵盖实验室质量管理体系、人员管理、设施设备、取样管理、物料和产品检验、OOS/OOT调查、微生物检测、数据完整性等核心内容。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-无菌制剂（上册）</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-无菌制剂（上册）-含书签、可搜索复制.md</div>
+        <div class="sum">无菌制剂上册，涵盖无菌药品生产的污染控制策略（CCS）、洁净室分级与监测、灭菌工艺、无菌工艺模拟（培养基灌装）等核心GMP要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-无菌制剂（下册）</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-无菌制剂（下册）-含书签、可搜索复制.md</div>
+        <div class="sum">无菌制剂下册，涵盖无菌药品生产的环境监测、隔离技术（隔离器/RABS）、一次性使用系统（SUS）等进阶GMP要求。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-原料药</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-原料药-含书签、可搜索复制.md</div>
+        <div class="sum">涵盖化学合成、发酵、提取等原料药生产的GMP要求，参照 ICH Q7；含杂质谱、起始物料、回收溶媒/母液、无菌原料药等。</div>
+      </article>
+      <article class="doc">
+        <div class="doc-h"><h3>2023年版GMP指南-口服固体制剂</h3><span class="badge" data-st="有效">有效</span></div>
+        <div class="meta">国家药监局食品药品审核查验中心 · 2023-05-08　<a class="src" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">官方来源 ↗</a></div>
+        <div class="path">本地：04_技术指导原则/NMPA_指导原则/2023年版GMP指南-口服固体制剂-含书签、可搜索复制.md</div>
+        <div class="sum">涵盖片剂、胶囊、颗粒剂等固体制剂，以及缓释/控释制剂、非无菌吸入制剂的GMP生产质量管理要求。</div>
       </article>
     </div>
   </section>
