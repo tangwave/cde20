@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>生物制品 · 病毒清除策略 | 药品GMP指南</title>
+<style>
+:root{--bg:#f6f4fb;--card:#fff;--bd:#e6e0f0;--tx:#1f2a37;--mut:#6b7280;--acc:#7c3aed;--acc2:#5b21b6;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.62}
+header{background:linear-gradient(120deg,#5b21b6,#7c3aed);color:#fff;padding:26px 20px 20px}
+header .wrap{max-width:1180px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:23px}
+header p{margin:0;opacity:.93;font-size:13.5px}
+header a.back{color:#e6dcfb;text-decoration:none;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.intro{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--acc);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:#334}
+.intro b{color:var(--acc2)}
+section{margin:22px 0}
+section h2{font-size:18px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 12px}
+section h2 .cnt{color:var(--mut);font-size:13px;font-weight:400;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.card h3{margin:0 0 7px;font-size:14.5px;color:var(--acc2)}
+.card .no{display:inline-block;background:var(--acc);color:#fff;font-size:11px;border-radius:8px;padding:1px 8px;margin-right:6px}
+.card ul{margin:0;padding-left:18px;font-size:12.5px;color:#3a4654}
+.card ul li{margin:3px 0}
+.card .ref{margin-top:8px;font-size:11.5px;color:var(--mut)}
+.card .ref a{color:var(--acc);text-decoration:none}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:12.5px;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--bd);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#efe9fb;color:var(--acc2);font-weight:600}
+td a{color:var(--acc);text-decoration:none}
+td a:hover{text-decoration:underline}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:#f1ecfb;color:var(--acc2);white-space:nowrap}
+.refs{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+.refs h3{margin:0 0 8px;font-size:14px;color:var(--acc2)}
+.refs li{font-size:12.5px;margin:4px 0;color:#3a4654}
+.refs a{color:var(--acc);text-decoration:none}
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+.note{font-size:11.5px;color:var(--mut);margin-top:6px}
+.lrv{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 16px;font-size:12.5px;color:#3a4654;margin-top:12px}
+.lrv b{color:var(--acc2)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="quality-management.html">← 返回「质量管理知识库」</a>
+  <h1>🧬 生物制品 · 病毒清除策略</h1>
+  <p>依据：《治疗用重组蛋白产品临床试验申请病毒清除工艺平台验证技术指导原则(试行)》(2024) ·《药品生产质量管理规范(2010年修订)》生物制品附录(2020年第58号) ·《生物制品生产工艺过程变更管理技术指导原则》 · ICH Q5A</p>
+</div></header>
+
+<main>
+<div class="intro">
+  <b>病毒清除(病毒去除 + 病毒灭活)</b>是生物制品(重组蛋白、单抗、疫苗、细胞/基因治疗产品)工艺中的关键安全性控制。策略原则：<strong>不同机制的多步清除叠加</strong>，使整体对数下降因子(LRV, log reduction value)总和足以将病毒风险降至可接受水平。2024年 CDE 平台验证指导原则允许同类产品共用已验证的"平台工艺"，大幅减少重复验证。本清单拆解病毒清除策略并对照 GMP 附录/指导原则条款。
+</div>
+
+<section>
+  <h2>一、病毒清除策略落地清单 <span class="cnt">8 项</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">1</span>病毒风险分类</h3>
+      <ul>
+        <li>内源病毒：源自细胞基质(如 CHO 内源逆转录病毒样颗粒)</li>
+        <li>外源病毒：生产/物料引入(牛血清、胰酶、操作人员)</li>
+        <li>非内非外(NON)：工艺添加物潜在携带</li>
+        <li>明确"已知/未知、特异性/非特异性"清除需求</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">CDE 病毒清除平台验证(2024)</a></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">2</span>清除步骤设计(灭活+去除)</h3>
+      <ul>
+        <li>至少组合"不同机制"的步骤，避免单一机制失效</li>
+        <li>典型组合：低 pH 孵育(灭活) + 层析(去除) + 纳滤(去除)</li>
+        <li>步骤须分布于工艺不同位置，覆盖上下游</li>
+        <li>优先选择稳健、可线性放大的单元操作</li>
+      </ul>
+      <div class="ref">依据：CDE 平台验证(2024) · ICH Q5A</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">3</span>灭活步骤</h3>
+      <ul>
+        <li>低 pH 孵育(pH 3.5–4.0，特定时长)</li>
+        <li>加热(如 60℃ 10h 病毒灭活)</li>
+        <li>S/D 法(去氧胆酸盐/吐温，包膜病毒)</li>
+        <li>有机溶剂/辐照(依产品特性)</li>
+        <li>灭活条件须验证对产品质量(效价/聚集体)影响可接受</li>
+      </ul>
+      <div class="ref">依据：CDE 平台验证 · 生物制品附录 病毒安全</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">4</span>去除步骤</h3>
+      <ul>
+        <li>层析：亲和/离子交换/疏水，按大小/电荷/亲和去除</li>
+        <li>病毒过滤(纳滤，20–50 nm)：去除广谱病毒</li>
+        <li>超滤/透析/沉淀：依分子量截留</li>
+        <li>去除步骤须关注载量、流速对 LRV 的影响</li>
+      </ul>
+      <div class="ref">依据：CDE 平台验证 · ICH Q5A</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">5</span>平台验证与模型病毒</h3>
+      <ul>
+        <li>平台工艺：同类分子共用验证数据，减重复</li>
+        <li>模型病毒覆盖：特异(相关)+ 指示(目标机制)</li>
+        <li>含脂包膜/非脂包膜、大小/抗性差异组合</li>
+        <li>难培养病毒可用替代模型并论证</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">CDE 平台验证(2024)</a></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">6</span>整体 LRV 累加与最差条件</h3>
+      <ul>
+        <li>各步 LRV 相加得整体对数下降因子</li>
+        <li>采用"最差条件"验证(最低 LRV 边界)</li>
+        <li>目标：针对相关病毒达 ≥ 某一 LRV(如 ≥ 4–6 log/步，整体更高)</li>
+        <li>未知病毒以"总体安全因子"概念论证</li>
+      </ul>
+      <div class="ref">依据：CDE 平台验证 · ICH Q5A</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">7</span>工艺稳健性与比例因子</h3>
+      <ul>
+        <li>缩小模型验证须可代表商业化规模</li>
+        <li>比例因子(scale-down)论证线性放大可行性</li>
+        <li>载量/接触时间/流速偏差纳入稳健性</li>
+        <li>连续批次趋势确认工艺持续有效</li>
+      </ul>
+      <div class="ref">依据：CDE 平台验证 · 工艺验证检查指南</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">8</span>变更管理与可比性</h3>
+      <ul>
+        <li>病毒灭活方法变更 = 重大变更(I类)，须验证</li>
+        <li>细胞库/培养基/层析介质变更评估病毒安全</li>
+        <li>可比性研究 + 连续3批质量分析</li>
+        <li>必要时补充临床试验数据</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/12268.html" target="_blank" rel="noopener">生物制品附录(2020)</a> · 变更指导原则</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="lrv">
+  <b>📐 LRV 计算示例（示意，非真实数据）：</b> 低 pH 孵育 LRV 4.5 + 蛋白 A 层析 LRV 3.0 + 阴离子交换 LRV 4.0 + 病毒过滤 LRV 6.5 = 整体 <b>≥ 18 log</b>。验证时每步取最差条件测得的最低 LRV 累加，确保对"相关病毒"与"未知病毒总体安全因子"均充分。
+</div>
+
+<section>
+  <h2>二、GMP 附录 / 指导原则条款对照表</h2>
+  <table>
+    <thead><tr><th style="width:30%">落地要点</th><th style="width:34%">对应条款</th><th style="width:36%">官方来源</th></tr></thead>
+    <tbody>
+      <tr><td>生物制品病毒安全性总体要求</td><td><span class="tag">生物制品附录(2020)</span> 病毒安全/细胞库</td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/12268.html" target="_blank" rel="noopener">GMP生物制品附录修订稿(2020年第58号)·CFDI</a></td></tr>
+      <tr><td>病毒清除平台验证(临床申请)</td><td><span class="tag">CDE 指导原则(试行,2024)</span></td><td><a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">治疗用重组蛋白病毒清除平台验证·CDE</a></td></tr>
+      <tr><td>病毒灭活方法变更(重大/I类)</td><td><span class="tag">生物制品变更指导原则</span></td><td><a href="quality-management.html" target="_blank" rel="noopener">生物制品生产工艺过程变更管理(本地)</a></td></tr>
+      <tr><td>细胞库/种子批管理</td><td><span class="tag">生物制品附录</span> 细胞库/种子批</td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/12268.html" target="_blank" rel="noopener">GMP生物制品附录(2020)·CFDI</a></td></tr>
+      <tr><td>细胞治疗产品生产(病毒安全)</td><td><span class="tag">细胞治疗检查指南(2025)</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">细胞治疗产品生产检查指南·CFDI</a></td></tr>
+      <tr><td>重组DNA制品质量控制(病毒/宿主细胞)</td><td><span class="tag">CDE 指导原则</span></td><td><a href="quality-management.html" target="_blank" rel="noopener">人用重组DNA制品质量控制(本地)</a></td></tr>
+      <tr><td>病毒清除国际框架</td><td><span class="tag">ICH Q5A</span> 病毒安全性</td><td>ICH Q5A(R1) 外来病毒安全性评价(国外参考)</td></tr>
+      <tr><td>工艺验证生命周期</td><td><span class="tag">工艺验证检查指南</span></td><td><a href="quality-management.html" target="_blank" rel="noopener">质量管理知识库·工艺验证</a></td></tr>
+    </tbody>
+  </table>
+  <p class="note">注：ICH Q5A 为国际通用病毒安全性评价框架；我国 CDE 2024年《治疗用重组蛋白产品临床试验申请病毒清除工艺平台验证技术指导原则(试行)》已与之接轨并引入"平台验证"概念。细胞治疗产品另见 2025年《细胞治疗产品生产检查指南》(CFDI 16292)。</p>
+</section>
+
+<section class="refs">
+  <h3>📚 权威来源</h3>
+  <ul>
+    <li>《治疗用重组蛋白产品临床试验申请病毒清除工艺平台验证技术指导原则(试行)》(2024-01-16) — <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=1422a9312068b0a805460017b0bc03a3" target="_blank" rel="noopener">CDE</a></li>
+    <li>《药品生产质量管理规范(2010年修订)》生物制品附录修订稿(2020年第58号) — <a href="https://www.cfdi.org.cn/cfdi/resource/news/12268.html" target="_blank" rel="noopener">CFDI 12268</a></li>
+    <li>《生物制品生产工艺过程变更管理技术指导原则》— 病毒灭活方法变更属 I 类重大变更</li>
+    <li>《细胞治疗产品生产检查指南》(2025-01-13) — <a href="https://www.cfdi.org.cn/cfdi/resource/news/16292.html" target="_blank" rel="noopener">CFDI 16292</a></li>
+    <li>《人用重组DNA制品质量控制技术指导原则》《人用单克隆抗体质量控制技术指导原则》— CDE</li>
+    <li>ICH Q5A(R1) 来源于人或动物细胞系的生物技术产品的病毒安全性评价(国外参考)</li>
+  </ul>
+</section>
+</main>
+<footer>
+  本页为「药品研发生产 · 质量管理知识库」专题页，内容据国家药监局/核查中心公开权威文件整理，供学习参考，不作为合规判定依据。
+</footer>
+</body>
+</html>

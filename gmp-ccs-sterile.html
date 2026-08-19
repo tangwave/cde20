@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>无菌制剂 · 污染控制策略(CCS)落地清单 | 药品GMP指南</title>
+<style>
+:root{--bg:#f4f8f7;--card:#fff;--bd:#e0e9e6;--tx:#1f2a37;--mut:#6b7280;--acc:#0e8a6e;--acc2:#0b6e5a;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.62}
+header{background:linear-gradient(120deg,#0a6e5e,#0e9f6e);color:#fff;padding:26px 20px 20px}
+header .wrap{max-width:1180px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:23px}
+header p{margin:0;opacity:.93;font-size:13.5px}
+header a.back{color:#d6f5ec;text-decoration:none;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.intro{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--acc);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:#334}
+.intro b{color:var(--acc2)}
+section{margin:22px 0}
+section h2{font-size:18px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 12px}
+section h2 .cnt{color:var(--mut);font-size:13px;font-weight:400;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.card h3{margin:0 0 7px;font-size:14.5px;color:var(--acc2)}
+.card .no{display:inline-block;background:var(--acc);color:#fff;font-size:11px;border-radius:8px;padding:1px 8px;margin-right:6px}
+.card ul{margin:0;padding-left:18px;font-size:12.5px;color:#3a4654}
+.card ul li{margin:3px 0}
+.card .ref{margin-top:8px;font-size:11.5px;color:var(--mut)}
+.card .ref a{color:var(--acc);text-decoration:none}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:12.5px;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--bd);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#e9f5f0;color:var(--acc2);font-weight:600}
+td a{color:var(--acc);text-decoration:none}
+td a:hover{text-decoration:underline}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:#eef7f3;color:var(--acc2);white-space:nowrap}
+.refs{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+.refs h3{margin:0 0 8px;font-size:14px;color:var(--acc2)}
+.refs li{font-size:12.5px;margin:4px 0;color:#3a4654}
+.refs a{color:var(--acc);text-decoration:none}
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+.note{font-size:11.5px;color:var(--mut);margin-top:6px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="quality-management.html">← 返回「质量管理知识库」</a>
+  <h1>🔬 无菌制剂 · 污染控制策略(CCS)落地清单</h1>
+  <p>依据：2023版《药品GMP指南·无菌制剂（上/下册）》·《药品生产质量管理规范(2010年修订)》无菌药品附录 · ICH Q9 质量风险管理</p>
+</div></header>
+
+<main>
+<div class="intro">
+  <b>污染控制策略(Contamination Control Strategy, CCS)</b> 是 EU GMP 附录1(2022) 与 2023版《无菌制剂》指南的核心概念：以科学和风险为基础，对微生物、热原/细菌内毒素和微粒污染的潜在来源进行系统性识别与控制的整体性策略，并<strong>文件化、可论证、定期回顾</strong>。本清单按"设施—人员—工艺—物料—监测—改进"六个维度拆解落地动作，并与 GMP 附录/指南条款做超链接对照。
+</div>
+
+<section>
+  <h2>一、CCS 落地清单 <span class="cnt">12 项</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">1</span>CCS 总览与文件化</h3>
+      <ul>
+        <li>建立书面 CCS 文件，明确污染控制要素、职责与回顾机制</li>
+        <li>覆盖微生物 / 热原(内毒素) / 微粒 三类污染</li>
+        <li>纳入质量风险管理(ICH Q9)输出，随工艺知识更新定期审核</li>
+        <li>最终灭菌 vs 无菌生产工艺的 CCS 应分别论证</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录</a> · 2023指南 2.1.2</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">2</span>厂房设施与洁净分级</h3>
+      <ul>
+        <li>A/B/C/D 四级洁净区，A级为单向流(0.36–0.54 m/s)</li>
+        <li>核心灌装/分装/加塞在 A级；背景 B/A级</li>
+        <li>气流可视化研究(SMIF/RABS 气流模型)确认单向流</li>
+        <li>相邻级别间保持合理压差梯度(通常≥10 Pa)</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录 第三条/第九条</a></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">3</span>空调净化(HVAC)与压差</h3>
+      <ul>
+        <li>压差梯度连续监测、报警与记录</li>
+        <li>换气次数、恢复时间验证(开门/人员干扰后)</li>
+        <li>高效过滤器(HEPA)检漏(完整性测试)定期执行</li>
+        <li>温湿度、微生物负荷纳入趋势分析</li>
+      </ul>
+      <div class="ref">依据：无菌药品附录 第九条/第十条 · 指南 3.2.4 公用系统</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">4</span>人员更衣·行为与监测</h3>
+      <ul>
+        <li>洁净区人数严加控制，仅批准人员进入</li>
+        <li>无菌更衣确认(A 级资质) + 更衣后表面监测</li>
+        <li>行为规范培训(动作幅度、交谈、接触)</li>
+        <li>人员表面(手套/连体服)微生物监测纳入趋势</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录 第三十八条</a> · 指南 4章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">5</span>无菌工艺模拟(培养基灌装)</h3>
+      <ul>
+        <li>每个灌装线/每班次每 6 个月至少一次</li>
+        <li>覆盖最差条件(最长时限、最多干预、最大批量)</li>
+        <li>干预清单(加料、调整、异常处理)文件化并演练</li>
+        <li>阳性结果启动偏差调查与 CCP 评估</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录 第十七条</a> · 指南 12章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">6</span>环境监测(EM)方案</h3>
+      <ul>
+        <li>浮游菌/沉降菌/表面/人员/压差/温湿度 全要素</li>
+        <li>基于风险(CCS)确定采样点、频率与警戒/纠偏限</li>
+        <li>动态+静态监测，A级浮游菌连续监测优先</li>
+        <li>超趋势(OOT)/超标(OOS)调查与 CAPA</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录 第四十八条</a> · 指南 14章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">7</span>屏障技术(隔离器/RABS)</h3>
+      <ul>
+        <li>隔离器(O/RABS)降低人员暴露与开口操作</li>
+        <li>手套完整性测试、传递舱(VHP)灭菌验证</li>
+        <li>在线环境监测(IEM)集成</li>
+        <li>新风/排风与负压逻辑符合产品特性</li>
+      </ul>
+      <div class="ref">依据：指南 17章 屏障技术 · 无菌药品附录 第十三条</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">8</span>一次性使用技术 / 免洗物料</h3>
+      <ul>
+        <li>一次性袋/管路/过滤器的供应商确认与相容性</li>
+        <li>免洗物料(WFI 淋洗/辐照)接收标准与完整性</li>
+        <li>浸出物/可提取物(Leachables/Extractables)评估</li>
+        <li>变更纳入变更控制，禁止未评估替换</li>
+      </ul>
+      <div class="ref">依据：指南 新技·一次性使用技术 · 附录 物料条款</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">9</span>物料无菌处理</h3>
+      <ul>
+        <li>除菌过滤：0.22 µm 两级过滤 + 细菌挑战验证</li>
+        <li>容器/胶塞：干热除热原(≥250℃ F0)或湿热灭菌</li>
+        <li>药液微生物/内毒素水平监控(配制阶段)</li>
+        <li>物料向洁净区转移：传递窗/VHP 灭菌、表面消毒</li>
+      </ul>
+      <div class="ref">依据：无菌药品附录 第十五条 · 指南 5/6章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">10</span>清洁与消毒体系</h3>
+      <ul>
+        <li>消毒剂功效测试(含抑菌圈/悬浮法)确认</li>
+        <li>轮换使用(防耐药)、使用有效期(挑战效期)</li>
+        <li>清洁消毒 SOP 与频次、最差表面覆盖</li>
+        <li>环境菌库鉴定，指导消毒剂选择</li>
+      </ul>
+      <div class="ref">依据：指南 13章 清洁和消毒 · 无菌药品附录 第十三条</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">11</span>容器密封完整性(CCI)</h3>
+      <ul>
+        <li>轧盖在 A级背景；密封完整性验证(CCIT)</li>
+        <li>方法：真空衰减法/染料浸入/微生物挑战</li>
+        <li>灯检、可见异物、外观缺陷检查</li>
+        <li>稳定性期间 CCI 持续确认</li>
+      </ul>
+      <div class="ref">依据：指南 11.1 密封性 · 无菌药品附录 第十三条</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">12</span>污染调查与持续改进</h3>
+      <ul>
+        <li>环境监测 OOS/OOT 偏差调查(含菌鉴定溯源)</li>
+        <li>培养基灌装失败的根因分析与再验证</li>
+        <li>年度质量回顾(APR)评审 CCS 有效性</li>
+        <li>变更/新技术引入触发 CCS 再评估</li>
+      </ul>
+      <div class="ref">依据：无菌药品附录 第四十八条 · 指南 1.1 全生命周期回顾</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>二、GMP 附录 / 指南条款对照表</h2>
+  <table>
+    <thead><tr><th style="width:30%">落地要点</th><th style="width:34%">对应条款</th><th style="width:36%">官方来源</th></tr></thead>
+    <tbody>
+      <tr><td>CCS 文件化与全生命周期回顾</td><td><span class="tag">指南 2.1.2</span> 污染控制策略</td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">GMP无菌药品附录(2011年第16号)·CFDI</a></td></tr>
+      <tr><td>洁净级别 A/B/C/D 划分</td><td><span class="tag">无菌药品附录 第三条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第三条</a></td></tr>
+      <tr><td>悬浮粒子动态限度(A级)</td><td><span class="tag">无菌药品附录 第九条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第九条</a></td></tr>
+      <tr><td>微生物监测动态标准</td><td><span class="tag">无菌药品附录 第十条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第十条</a></td></tr>
+      <tr><td>无菌生产操作环境</td><td><span class="tag">无菌药品附录 第十三/十四条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第十三/十四条</a></td></tr>
+      <tr><td>灭菌方法验证</td><td><span class="tag">无菌药品附录 第十五条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第十五条</a></td></tr>
+      <tr><td>无菌工艺模拟(每班每半年)</td><td><span class="tag">无菌药品附录 第十七条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第十七条</a></td></tr>
+      <tr><td>人员数量/更衣/培训</td><td><span class="tag">无菌药品附录 第三十八条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第三十八条</a></td></tr>
+      <tr><td>环境监测(EM)</td><td><span class="tag">无菌药品附录 第四十八条</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌药品附录·第四十八条</a></td></tr>
+      <tr><td>屏障技术(隔离器/RABS)</td><td><span class="tag">指南 17章</span> 屏障技术</td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌制剂(下册)·CFDI</a></td></tr>
+      <tr><td>容器密封完整性(CCI)</td><td><span class="tag">指南 11.1</span> 密封性验证</td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">无菌制剂(上册)·CFDI</a></td></tr>
+      <tr><td>质量风险管理支撑</td><td><span class="tag">ICH Q9</span> 质量风险管理</td><td><a href="quality-management.html" target="_blank" rel="noopener">质量管理知识库·ICH 质量指导原则</a></td></tr>
+    </tbody>
+  </table>
+  <p class="note">注：EU GMP 附录1《无菌药品生产》(2022年8月颁布) 首次将 CCS 列为强制性要求；我国 2023版《无菌制剂》指南已全面对接。条款号以《药品生产质量管理规范(2010年修订)》无菌药品附录(2011年第16号公告)为准，点击跳转至 CFDI 原文。</p>
+</section>
+
+<section class="refs">
+  <h3>📚 权威来源</h3>
+  <ul>
+    <li>《药品生产质量管理规范(2010年修订)》无菌药品等5个附录的公告(2011年第16号) — <a href="https://www.cfdi.org.cn/cfdi/resource/news/5346.html" target="_blank" rel="noopener">CFDI 5346</a></li>
+    <li>2023版《药品GMP指南·无菌制剂（上册）》— 污染控制策略(2.1.2)、清洁消毒(13)、环境监测(14)、无菌工艺模拟(12)、CCI(11.1)</li>
+    <li>2023版《药品GMP指南·无菌制剂（下册）》— 屏障技术(17)、隔离器/RABS、一次性使用技术</li>
+    <li>《无菌工艺模拟试验指南(无菌制剂)》《化学药品注射剂灭菌和无菌工艺研究及验证指导原则(试行)》《化学药品注射剂包装系统密封性研究技术指南(试行)》— CFDI/CDE</li>
+    <li>ICH Q9 质量风险管理（CCS 的方法学基础）</li>
+  </ul>
+</section>
+</main>
+<footer>
+  本页为「药品研发生产 · 质量管理知识库」专题页，内容据国家药监局/核查中心公开权威文件整理，供学习参考，不作为合规判定依据。
+</footer>
+</body>
+</html>

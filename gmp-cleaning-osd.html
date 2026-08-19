@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>口服固体制剂 · 清洁验证与交叉污染控制 | 药品GMP指南</title>
+<style>
+:root{--bg:#fbf7f1;--card:#fff;--bd:#ece2d6;--tx:#1f2a37;--mut:#6b7280;--acc:#c2620a;--acc2:#9a4a08;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.62}
+header{background:linear-gradient(120deg,#a8541a,#d97706);color:#fff;padding:26px 20px 20px}
+header .wrap{max-width:1180px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:23px}
+header p{margin:0;opacity:.93;font-size:13.5px}
+header a.back{color:#fde6d2;text-decoration:none;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.intro{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--acc);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:#334}
+.intro b{color:var(--acc2)}
+section{margin:22px 0}
+section h2{font-size:18px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 12px}
+section h2 .cnt{color:var(--mut);font-size:13px;font-weight:400;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.card h3{margin:0 0 7px;font-size:14.5px;color:var(--acc2)}
+.card .no{display:inline-block;background:var(--acc);color:#fff;font-size:11px;border-radius:8px;padding:1px 8px;margin-right:6px}
+.card ul{margin:0;padding-left:18px;font-size:12.5px;color:#3a4654}
+.card ul li{margin:3px 0}
+.card .ref{margin-top:8px;font-size:11.5px;color:var(--mut)}
+.card .ref a{color:var(--acc);text-decoration:none}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:12.5px;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--bd);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#fbeede;color:var(--acc2);font-weight:600}
+td a{color:var(--acc);text-decoration:none}
+td a:hover{text-decoration:underline}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:#fdf1e3;color:var(--acc2);white-space:nowrap}
+.refs{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+.refs h3{margin:0 0 8px;font-size:14px;color:var(--acc2)}
+.refs li{font-size:12.5px;margin:4px 0;color:#3a4654}
+.refs a{color:var(--acc);text-decoration:none}
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+.note{font-size:11.5px;color:var(--mut);margin-top:6px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="quality-management.html">← 返回「质量管理知识库」</a>
+  <h1>🧹 口服固体制剂 · 清洁验证与交叉污染控制</h1>
+  <p>依据：2023版《药品GMP指南·口服固体制剂与非无菌吸入制剂》·《药品共线生产质量风险管理指南》(2023) ·《清洁验证技术指南(征求意见稿)》(2024) · GMP(2010) 第四十六条</p>
+</div></header>
+
+<main>
+<div class="intro">
+  <b>清洁验证</b>与<b>交叉污染控制</b>是口服固体制剂共线生产质量风险的两大支柱。2023版《口服固体制剂》指南大幅改写"确认与验证"章(7.2 清洁验证)，并引入<b>健康暴露限度(HBEL/PDE)</b>理念。本清单按"验证实施—限度计算—取样—变更"与"专用/阶段性/密闭/粉尘"两条主线拆解落地动作，并与 GMP 正文/附录/指南条款做超链接对照。
+</div>
+
+<section>
+  <h2>一、清洁验证落地清单 <span class="cnt">8 项</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">1</span>共线生产风险评估与 HBEL</h3>
+      <ul>
+        <li>前瞻性识别共线产品的危害源与交叉污染路径</li>
+        <li>建立基于健康的暴露限度(HBEL)：PDE/ADI 优先于 10ppm 传统限度</li>
+        <li>高活性/高致敏成分须评估是否需专用设施</li>
+        <li>风险等级不可通过"评估"规避法规强制专用情形</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/15186.html" target="_blank" rel="noopener">共线生产指南</a> · 指南 2章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">2</span>残留限度计算</h3>
+      <ul>
+        <li>三种方法取最严格：① 10 ppm ② 日剂量 1/1000 ③ PDE(基于健康的限度)</li>
+        <li>标记物选择：活性最高、最难清洁、毒性最大成分</li>
+        <li>多产品共线取"最坏情况"累积残留</li>
+        <li>清洁剂残留、降解产物一并评估</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/16001.html" target="_blank" rel="noopener">清洁验证技术指南(征求意见稿)</a></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">3</span>最难清洁产品 / 最差条件</h3>
+      <ul>
+        <li>确定"最难清洁产品"(溶解性/附着性/毒性)</li>
+        <li>最差条件：最长批间隔时间、最大批量、最少清洗体积</li>
+        <li>代表性设备/最难接触表面纳入验证</li>
+        <li>分组策略：同组产品可用一个代表验证，需论证</li>
+      </ul>
+      <div class="ref">依据：清洁验证技术指南 · 指南 7.2</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">4</span>取样方法(淋洗 + 擦拭 + 目视)</h3>
+      <ul>
+        <li>擦拭样(swab)：直接接触产品表面，回收率验证≥50%</li>
+        <li>淋洗样：难以擦拭的管路/密闭系统</li>
+        <li>目视检查：无可见残留，作为最低可接受标准</li>
+        <li>取样点图与取样方法学验证(回收率/精密度)</li>
+      </ul>
+      <div class="ref">依据：清洁验证技术指南 · 确认与验证附录</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">5</span>清洁剂与微生物负荷</h3>
+      <ul>
+        <li>清洁剂选择(兼容/易冲洗/低残留)</li>
+        <li>清洁剂残留限度与检测方法</li>
+        <li>非无菌制剂关注微生物负荷与细菌内毒素(必要时)</li>
+        <li>清洁后保存期限(待清洁/已清洁)验证</li>
+      </ul>
+      <div class="ref">依据：指南 7.2 清洁验证 · 4.1.3 设备清洁</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">6</span>分析方法验证</h3>
+      <ul>
+        <li>专属、灵敏(可达限度 1/10 的检出能力)</li>
+        <li>线性、准确度、精密度、耐用性</li>
+        <li>擦拭回收率校正计算真实残留</li>
+        <li>对照品/标准品管理合规</li>
+      </ul>
+      <div class="ref">依据：清洁验证技术指南 · GMP 质量控制</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">7</span>验证批次与持续确认</h3>
+      <ul>
+        <li>通常连续 3 批成功确认清洁方法</li>
+        <li>纳入日常监测/按期再验证</li>
+        <li>年度质量回顾(APR)趋势分析</li>
+        <li>验证状态维护：周期性评价或持续确认</li>
+      </ul>
+      <div class="ref">依据：指南 7.2.6 验证维护 · 确认与验证附录</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">8</span>清洁验证生命周期与变更</h3>
+      <ul>
+        <li>清洁验证全生命周期：设计—确认—持续</li>
+        <li>产品/工艺/设备/清洁剂变更触发再验证</li>
+        <li>阶段性生产结束清场作为验证一部分</li>
+        <li>变更纳入变更控制，禁止未评估替换</li>
+      </ul>
+      <div class="ref">依据：清洁验证技术指南 · 指南 7.2</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>二、交叉污染控制落地清单 <span class="cnt">6 项</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">1</span>法规强制专用设施情形</h3>
+      <ul>
+        <li>高致敏性药品(如青霉素类)须专用设施</li>
+        <li>生产 β-内酰胺类、某些激素/细胞毒性/高活性化学药须专用或特殊隔离</li>
+        <li>生物制品、血液制品按附录要求独立/专用</li>
+        <li>法规强制专用者，不得将共线作为风险接受结果</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">GMP(2010) 第四十六条</a></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">2</span>阶段性生产安排</h3>
+      <ul>
+        <li>相似/相近产品安排共线，降低交叉污染频率</li>
+        <li>按适应证或活性成分分组，批次间彻底清场</li>
+        <li>阶段性生产结束做清洁验证与放行</li>
+        <li>阶段性 vs 连续生产在 SOP 中明确</li>
+      </ul>
+      <div class="ref">依据：<a href="https://www.cfdi.org.cn/cfdi/resource/news/15186.html" target="_blank" rel="noopener">共线生产指南</a> · 指南 2章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">3</span>密闭 / 隔离 / 粉尘控制</h3>
+      <ul>
+        <li>优先密闭、管道化输送，减少人员暴露</li>
+        <li>高危险/高活性成分在隔离装置(手套箱)操作</li>
+        <li>粉尘控制：局部负压、除尘、密闭加料</li>
+        <li>产尘操作间保持相对负压</li>
+      </ul>
+      <div class="ref">依据：指南 2章 共线/粉尘 · 共线生产指南</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">4</span>气流 / 缓冲 / 专用工作服</h3>
+      <ul>
+        <li>不同产品操作间设独立人流物流、缓冲间</li>
+        <li>气流控制设施防止粉尘跨区扩散</li>
+        <li>更换该区域专用工作服</li>
+        <li>公共走道进出设置有效措施降低携带风险</li>
+      </ul>
+      <div class="ref">依据：指南 2章 · GMP(2010) 厂房设施</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">5</span>5S 与清场管理</h3>
+      <ul>
+        <li>整理/整顿/清扫/标准化/持续性(5S)</li>
+        <li>生产区域门禁，专人管理物料与中间体</li>
+        <li>明确标识(用途+状态)，防差错混淆</li>
+        <li>工序衔接及时，防止滞留导致差错</li>
+      </ul>
+      <div class="ref">依据：指南 2章 质量风险管理 · 8.4 人员/清场</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">6</span>计算机化物料管理</h3>
+      <ul>
+        <li>扫码核对物料状态/批号/称量/投料</li>
+        <li>按批准工艺规程自动选控合适物料</li>
+        <li>降低传统人工方式的混淆/差错</li>
+        <li>数据可靠性(ALCOA+)保障</li>
+      </ul>
+      <div class="ref">依据：指南 2章 物料混淆 · 计算机化系统附录</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>三、GMP 正文 / 附录 / 指南条款对照表</h2>
+  <table>
+    <thead><tr><th style="width:30%">落地要点</th><th style="width:34%">对应条款</th><th style="width:36%">官方来源</th></tr></thead>
+    <tbody>
+      <tr><td>专用设施/独立厂房(强制情形)</td><td><span class="tag">GMP(2010) 第四十六条</span></td><td><a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">药品生产质量管理规范(2010)·SAMR</a></td></tr>
+      <tr><td>共线生产风险识别与 HBEL</td><td><span class="tag">共线生产指南</span> 全文</td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/15186.html" target="_blank" rel="noopener">药品共线生产质量风险管理指南(2023)·CFDI</a></td></tr>
+      <tr><td>残留限度(10ppm/1/1000/PDE)</td><td><span class="tag">清洁验证技术指南</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/16001.html" target="_blank" rel="noopener">清洁验证技术指南(征求意见稿,2024)·CFDI</a></td></tr>
+      <tr><td>确认与验证(含清洁验证)</td><td><span class="tag">确认与验证附录</span>(2015年第54号)</td><td><a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">GMP(2010) 及配套附录·SAMR</a></td></tr>
+      <tr><td>清洁验证实施(7.2)</td><td><span class="tag">指南 7.2</span> 清洁验证</td><td><a href="quality-management.html" target="_blank" rel="noopener">2023 GMP指南·口服固体制剂(本地)</a></td></tr>
+      <tr><td>设备清洁(4.1.3)</td><td><span class="tag">指南 4.1.3</span> 设备清洁</td><td><a href="quality-management.html" target="_blank" rel="noopener">2023 GMP指南·口服固体制剂(本地)</a></td></tr>
+      <tr><td>计算机化系统支撑</td><td><span class="tag">计算机化系统附录</span>(2015年第54号)</td><td><a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">GMP(2010) 及配套附录·SAMR</a></td></tr>
+      <tr><td>数据可靠性(ALCOA+)</td><td><span class="tag">数据管理规范</span></td><td><a href="quality-management.html" target="_blank" rel="noopener">质量管理知识库·数据完整性</a></td></tr>
+    </tbody>
+  </table>
+  <p class="note">注：2023版《口服固体制剂》指南已对接 EU 2018"基于健康的暴露限度(HBEL)"问答，强调所有药品均须建立 HBEL；"10 ppm / 日剂量 1/1000"传统限度仅在无法获得 PDE 时作为保守替代。《清洁验证技术指南》目前为征求意见稿(2024-07-18 截止)，正式稿发布后以其为准。</p>
+</section>
+
+<section class="refs">
+  <h3>📚 权威来源</h3>
+  <ul>
+    <li>《药品生产质量管理规范(2010年修订)》及共线相关条款(第四十六条) — <a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">SAMR</a></li>
+    <li>《药品共线生产质量风险管理指南》(2023-03-06) — <a href="https://www.cfdi.org.cn/cfdi/resource/news/15186.html" target="_blank" rel="noopener">CFDI 15186</a></li>
+    <li>《清洁验证技术指南(征求意见稿)》(2024-07-04) — <a href="https://www.cfdi.org.cn/cfdi/resource/news/16001.html" target="_blank" rel="noopener">CFDI 16001</a></li>
+    <li>2023版《药品GMP指南·口服固体制剂与非无菌吸入制剂》— 确认与验证(7.2 清洁验证)、共线生产(2章)、设备清洁(4.1.3)</li>
+    <li>GMP(2010) 确认与验证 / 计算机化系统 两个附录(总局 2015年第54号公告)</li>
+  </ul>
+</section>
+</main>
+<footer>
+  本页为「药品研发生产 · 质量管理知识库」专题页，内容据国家药监局/核查中心公开权威文件整理，供学习参考，不作为合规判定依据。
+</footer>
+</body>
+</html>
