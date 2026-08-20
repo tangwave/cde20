@@ -712,6 +712,7 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
     </div>
 
     <div class="qm-gmp-ref">
+      <a href="#qm-gmp23" style="display:inline-block;margin-bottom:9px;font-size:13px;color:#1f3a8a;font-weight:700;text-decoration:none">🧭 按品种 × 工艺 / 质量 / 厂房设施 控制维度展开对照（2023版GMP指南要求与术语）→</a><br>
       <b>核心权威依据：</b>
       <a href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener">《药品GMP指南（2023年版）》发布（国家药监局核查中心）</a> ·
       <a href="https://www.cfdi.org.cn/cfdi/resource/news/16275.html" target="_blank" rel="noopener">2025年第1号公告（药用辅料/药包材附录）</a> ·
@@ -722,6 +723,216 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
       <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=8c89f1e7bbee6a7cf2ed0102bea1b871" target="_blank" rel="noopener">中药口服制剂生产过程质量控制研究(2024)</a> ·
       <a href="https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=45895c7b3a1c4ac932882559c7003885" target="_blank" rel="noopener">生物制品生产工艺过程变更管理</a>
     </div>
+  </section>
+
+  <section class="qm-gmp23" id="qm-gmp23">
+    <style>
+      .qm-gmp23{margin:26px 0;padding:18px 18px 22px;background:linear-gradient(180deg,#fff,#f1f5ff);border:1px solid #c7d6f0;border-radius:14px}
+      .qm-gmp23-h{font-size:19px;margin:0 0 4px;color:#1f3a8a}
+      .qm-gmp23-h .cnt{font-size:13px;color:#6b7280;font-weight:400;margin-left:8px}
+      .qm-gmp23-sub{margin:0 0 12px;font-size:13px;color:#566;line-height:1.65}
+      .qm-gmp23-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+      .qm-gmp23-tab{border:1px solid #cdd9ea;background:#fff;color:#1f2a37;padding:7px 14px;border-radius:18px;font-size:13px;cursor:pointer;font-weight:500}
+      .qm-gmp23-tab.active{background:#1f3a8a;color:#fff;border-color:#1f3a8a}
+      .qm-gmp23-vol{font-size:13px;color:#6b7280;margin:8px 0 12px;padding:6px 10px;background:#eef3fb;border-left:3px solid #2f6fe0;border-radius:6px}
+      .qm-gmp23-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+      .qm-gmp23-col{background:#fff;border:1px solid #e3e8ef;border-radius:12px;padding:12px 13px}
+      .qm-gmp23-col h4{margin:0 0 10px;font-size:15px;color:#0b3d91;border-left:4px solid #2f6fe0;padding-left:9px}
+      .qm-gmp23-col:nth-child(2) h4{border-left-color:#0e9f6e}
+      .qm-gmp23-col:nth-child(3) h4{border-left-color:#d97706}
+      .qm-gmp23-item{margin:0 0 11px;padding-bottom:9px;border-bottom:1px dashed #e9eef5}
+      .qm-gmp23-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+      .qm-gmp23-req{font-size:13px;color:#2a3543;line-height:1.62}
+      .qm-gmp23-meta{margin-top:5px;font-size:11.5px;color:#6b7280;line-height:1.5}
+      .qm-gmp23-term{color:#0e698a;text-decoration:none;font-weight:600}
+      .qm-gmp23-term:hover{text-decoration:underline}
+    </style>
+    <h2 class="qm-gmp23-h">🧭 2023版GMP指南 · 按品种 × 控制维度对照<span class="cnt">8 品种 × 工艺 / 质量 / 厂房设施</span></h2>
+    <p class="qm-gmp23-sub">将《药品GMP指南（2023年版）》8 大分册及 GMP 附录的<b>要求与术语</b>，落到各药品类型的 <b>工艺控制</b> / <b>质量控制</b> / <b>厂房设施控制</b> 三条主线，便于起草 SOP、验证方案与迎检清单。每条标注对应指南分册/附录与关键术语（术语可点击跳转至术语知识网络）。</p>
+    <div class="qm-gmp23-tabs" id="gmp23Tabs"></div>
+    <div class="qm-gmp23-vol" id="gmp23Vol"></div>
+    <div class="qm-gmp23-grid" id="gmp23Grid"></div>
+    <script>
+      const GMP23 = {
+        wuxian:{name:'无菌制剂', vol:'无菌药品（上/下册） · 通用体系（厂房设备/QC/验证/物料）',
+          gongyi:[
+            {req:'无菌工艺选择：能最终灭菌的优先采用最终灭菌；不能的采用无菌工艺（除菌过滤/无菌灌装），并构建污染控制策略(CCS)贯穿工艺设计', term:'污染控制策略(CCS)', ref:'无菌上·污染控制策略'},
+            {req:'灭菌工艺验证：湿热/干热/辐射/气体灭菌须确认 SAL 达 10⁻⁶，建立灭菌柜负载图谱与常规监测', term:'灭菌保证水平(SAL)', ref:'无菌上·灭菌工艺'},
+            {req:'无菌工艺模拟（培养基灌装）：覆盖所有无菌操作干预，频次与可接受标准按风险制定，干预须记录与评估', term:'无菌工艺模拟', ref:'无菌下·无菌工艺模拟'},
+            {req:'除菌过滤验证：过滤器完整性(起泡点/扩散流)、兼容性、细菌截留试验；过滤后药液立即无菌灌装', term:'除菌过滤', ref:'无菌上·除菌过滤'}
+          ],
+          zhiliang:[
+            {req:'无菌检查、细菌内毒素/热原、不溶性微粒与可见异物为关键质量属性(CQA)，按风险管理制定取样与检验', term:'关键质量属性(CQA)', ref:'无菌上·质量控制'},
+            {req:'环境监测(EM)：浮游菌/沉降菌/表面接触/人员手套的主动+被动监测方案，数据趋势用于 CCS 回顾', term:'环境监测(EM)', ref:'无菌下·环境监测'},
+            {req:'容器密封完整性(CCI)：通过色水/真空衰减/微生物挑战等方法验证，防止无菌破坏', term:'容器密封完整性(CCI)', ref:'无菌上·包装'},
+            {req:'A/B 级无菌取样须在单向流保护下进行，防止取样过程引入污染', term:'取样', ref:'取样附录'}
+          ],
+          changfang:[
+            {req:'洁净区分级 A/B/C/D，动态监测悬浮粒子与微生物；关键操作在 A 级（单向流）保护下', term:'洁净区分级', ref:'无菌上·厂房'},
+            {req:'隔离器/限制进出隔离系统(RABS)与气流可视化(SMIF)降低人为干预污染', term:'隔离器(RABS)', ref:'无菌下·隔离技术'},
+            {req:'HVAC 压差梯度、换气次数、温湿度受控；人物流分明、压差梯度监控并报警', term:'压差梯度', ref:'厂房设备·HVAC'},
+            {req:'水系统（注射用水 WFI/纯蒸汽）按质量风险控制取样，循环管路防止滞留与微生物滋生', term:'注射用水(WFI)', ref:'厂房设备·水系统'}
+          ]},
+        koufu:{name:'口服固体制剂', vol:'口服固体制剂 · 通用体系（厂房设备/QC/验证/物料）',
+          gongyi:[
+            {req:'制粒（湿法/干法/直压）、压片、包衣：识别关键工艺参数(CPP)并设定可接受范围', term:'关键工艺参数(CPP)', ref:'口服固体·生产工艺'},
+            {req:'混合均匀度/含量均匀度验证：确认批内均一性，多取样点统计接受', term:'含量均匀度', ref:'口服固体·混合'},
+            {req:'缓释/控释制剂：控制释药机理（骨架/膜控），建立体外-体内相关性(IVIVC)', term:'体外-体内相关性(IVIVC)', ref:'口服固体·缓控释'},
+            {req:'可选连续制造：实时释放(RTRt)与集成 PAT，按 ICH Q13 实施', term:'连续制造', ref:'ICH Q13'}
+          ],
+          zhiliang:[
+            {req:'溶出度/释放度为关键质量属性(CQA)，建立区分力溶出方法与可接受标准', term:'溶出度', ref:'口服固体·质量控制'},
+            {req:'含量、有关物质、微生物限度按注册标准检验；降解产物按 ICH Q3B 限度', term:'有关物质', ref:'ICH Q3B'},
+            {req:'稳定性考察（长期/加速）支持有效期/复检期，参照 ICH Q1A', term:'稳定性', ref:'ICH Q1A'},
+            {req:'微生物限度与水分控制，防止口服固体制剂储存期间降解或污染', term:'微生物限度', ref:'QC·微生物'}
+          ],
+          changfang:[
+            {req:'产尘工序（粉碎/制粒/压片）设除尘与负压，粉尘不直接排放至一般区', term:'粉尘控制', ref:'口服固体·厂房'},
+            {req:'共线生产评估与清洁验证：计算残留限度（10 ppm / 日剂量 1/1000），防止交叉污染', term:'清洁验证', ref:'清洁验证技术指南'},
+            {req:'干燥/包衣等使用有机溶剂区域按防爆与通风要求设计', term:'防爆', ref:'厂房设备·安全'},
+            {req:'称量/配料专区与防尘，防止高活性/高致敏成分交叉污染', term:'交叉污染', ref:'共线生产指南'}
+          ]},
+        yuanliao:{name:'原料药(API)', vol:'原料药(API) · ICH Q7 · 通用体系',
+          gongyi:[
+            {req:'化学合成/发酵/提取三类路线均须 GMP；明确起始物料与关键工艺步骤', term:'起始物料', ref:'原料药·生产'},
+            {req:'杂质谱控制：有机杂质(ICH Q3A)、残留溶剂(ICH Q3C)、元素杂质(ICH Q3D)', term:'杂质谱', ref:'ICH Q3A'},
+            {req:'回收溶剂/母液使用、返工须有规程与验证，不影响质量', term:'返工', ref:'原料药·返工'},
+            {req:'工艺验证三阶段（工艺设计/工艺确认/持续工艺确认）', term:'工艺验证', ref:'确认与验证'}
+          ],
+          zhiliang:[
+            {req:'鉴别、含量、杂质、残留溶剂、晶型/粒度控制；结构确证与对照品标定', term:'晶型', ref:'原料药·质量控制'},
+            {req:'微生物限度/内毒素（非无菌 API）按风险监控', term:'微生物限度', ref:'QC·微生物'},
+            {req:'标准品/对照品管理与标定，支持检验准确性', term:'对照品', ref:'QC·标准品'},
+            {req:'残留溶剂按 ICH Q3C 限度分类（一类禁用/二类限度/三类低毒）', term:'残留溶剂', ref:'ICH Q3C'}
+          ],
+          changfang:[
+            {req:'高活/高敏/细胞毒性 API 设专用设施或密闭隔离，防止交叉污染', term:'专用设施', ref:'原料药·厂房'},
+            {req:'易燃溶剂区域防爆、通风与静电防护', term:'防爆', ref:'厂房设备·安全'},
+            {req:'无菌原料药按无菌药品要求设计厂房与工艺', term:'无菌原料药', ref:'无菌上·厂房'},
+            {req:'发酵/提取原料药须防止外源微生物与交叉污染，设备清洁验证', term:'清洁验证', ref:'原料药·厂房'}
+          ]},
+        shengwu:{name:'生物制品', vol:'生物制品(GMP附录) · 通用体系',
+          gongyi:[
+            {req:'上游细胞培养/发酵 + 下游纯化全过程控制；建立种子批/细胞库并定期检定', term:'种子批/细胞库', ref:'生物制品·生产'},
+            {req:'病毒清除/灭活验证：采用多步正交工艺，累计对数下降值(LRV)证明安全性', term:'病毒清除', ref:'ICH Q5A'},
+            {req:'层析/超滤/纳滤/病毒过滤等单元操作参数(PAT)受控', term:'关键工艺参数(CPP)', ref:'生物制品·下游'},
+            {req:'灌流/连续培养等先进工艺按风险验证与监控', term:'连续培养', ref:'生物制品·工艺'}
+          ],
+          zhiliang:[
+            {req:'效价/活性、纯度、鉴别、工艺/产品相关杂质、糖基化为关键质量属性(CQA)', term:'关键质量属性(CQA)', ref:'生物制品·质量控制'},
+            {req:'外源因子（病毒/支原体/细菌/真菌）检测贯穿生产与放行', term:'外源因子', ref:'生物制品·检定'},
+            {req:'细胞库检定与批放行：按注册标准全项检验 + 稳定性', term:'批放行', ref:'生物制品·放行'},
+            {req:'工艺相关杂质（宿主细胞蛋白/DNA/诱导剂残留）限度控制', term:'工艺相关杂质', ref:'生物制品·质量控制'}
+          ],
+          changfang:[
+            {req:'洁净区分级 + 生物安全（灭活/防护）设计，人物流与污物流分隔', term:'生物安全', ref:'生物制品·厂房'},
+            {req:'一次性系统(SUS)使用须确认相容性与完整性，评估提取物/浸出物', term:'一次性系统(SUS)', ref:'无菌下·SUS'},
+            {req:'种子库/细胞库独立储存与权限管理，防止混淆与污染', term:'细胞库储存', ref:'生物制品·厂房'},
+            {req:'病毒灭活/培养区与其它产品分隔，防止外源因子交叉污染', term:'交叉污染', ref:'生物制品·厂房'}
+          ]},
+        zhongyao:{name:'中药', vol:'中药生产专门规定(2025第79号) · 中药GMP',
+          gongyi:[
+            {req:'前处理→提取→纯化→浓缩→干燥→制剂全程控制，重视量质传递与中间体控制', term:'量质传递', ref:'中药·生产工艺'},
+            {req:'炮制须依法度：净制/切制/炮炙参数记录，毒性饮片单独管理', term:'炮制', ref:'中药·炮制'},
+            {req:'提取工艺参数（温度/时间/溶媒倍数/次数）纳入工艺规程与验证', term:'关键工艺参数(CPP)', ref:'中药·提取'},
+            {req:'挥发油提取、浸膏收率标准化，建立物料平衡', term:'物料平衡', ref:'中药·生产'}
+          ],
+          zhiliang:[
+            {req:'药材基原/产地溯源、农药残留/重金属/真菌毒素安全性控制', term:'农药残留', ref:'中药·质量控制'},
+            {req:'含量测定 + 指纹图谱/特征图谱 鉴别与一致性评价', term:'指纹图谱', ref:'中药·质量控制'},
+            {req:'毒性成分限量按药典与注册标准严格检验', term:'毒性成分', ref:'中药·安全性'},
+            {req:'中间体（浸膏/提取物）质量属性控制，承接量质传递', term:'中间体控制', ref:'中药·质量控制'}
+          ],
+          changfang:[
+            {req:'前处理/提取车间防虫霉、通风除尘，与一般制剂区有效分隔', term:'交叉污染', ref:'中药·厂房'},
+            {req:'毒性药材/饮片设专用设施或专区，标识与清场严格', term:'专用设施', ref:'中药·厂房'},
+            {req:'炮制区与制剂区物理分隔，防止饮片与成药混淆', term:'混淆', ref:'中药·厂房'},
+            {req:'提取与浓缩区防爆、通风与溶剂回收安全', term:'防爆', ref:'厂房设备·安全'}
+          ]},
+        xuezhi:{name:'血液制品', vol:'血液制品(2024第70号) · 生物制品参考',
+          gongyi:[
+            {req:'血浆筛查（ELISA/核酸检测）合格后方可投料，检疫期/留样管理', term:'血浆筛查', ref:'血液制品·血浆'},
+            {req:'分离纯化（低温乙醇/层析）+ 病毒灭活（S/D、纳滤、干热）多步保障', term:'病毒灭活', ref:'血液制品·生产'},
+            {req:'合并血浆投料与批管理，批间一致性与追溯', term:'批管理', ref:'血液制品·生产'},
+            {req:'工艺验证与病毒清除验证（LRV）支持安全性', term:'病毒清除', ref:'血液制品·验证'}
+          ],
+          zhiliang:[
+            {req:'原液/半成品/成品全项检定：效价、纯度、杂质、病毒安全性', term:'关键质量属性(CQA)', ref:'血液制品·质量控制'},
+            {req:'批签发：成品须经指定机构批签发合格后方可上市', term:'批签发', ref:'血液制品·批签发'},
+            {req:'血浆检疫期与留样、稳定性考察', term:'稳定性', ref:'血液制品·稳定性'},
+            {req:'合并血浆的可追溯性与批间一致性评价', term:'可追溯性', ref:'血液制品·质量控制'}
+          ],
+          changfang:[
+            {req:'血浆储存冷链（−20℃以下）、血浆袋隔离与防交叉', term:'冷链', ref:'血液制品·厂房'},
+            {req:'不同血液制品专用或分隔生产，病毒灭活专区', term:'专用设施', ref:'血液制品·厂房'},
+            {req:'洁净区 + 生物安全防护设计', term:'生物安全', ref:'血液制品·厂房'},
+            {req:'采血/分离/灭活区域人流物流分隔，防止血浆混淆', term:'混淆', ref:'血液制品·厂房'}
+          ]},
+        xibao:{name:'细胞治疗', vol:'细胞治疗产品生产检查指南(2025) · 生物制品/无菌',
+          gongyi:[
+            {req:'密闭无菌工艺：手动/自动操作、转导/转染均在密闭或隔离保护下进行', term:'密闭系统', ref:'细胞治疗·工艺'},
+            {req:'自体 vs 异体工艺差异控制；个体化生产防止患者间混淆', term:'自体/异体', ref:'细胞治疗·工艺'},
+            {req:'过程控制：细胞活率/纯度/扩增倍数/转导效率等中间控制', term:'关键工艺参数(CPP)', ref:'细胞治疗·过程控制'},
+            {req:'基因修饰（载体生产）工序按无菌与密闭要求管控', term:'载体生产', ref:'细胞治疗·工艺'}
+          ],
+          zhiliang:[
+            {req:'放行检验：细胞鉴别、活力、纯度、无菌、支原体、CAR 表达等', term:'关键质量属性(CQA)', ref:'细胞治疗·质量控制'},
+            {req:'患者-产品可追溯性：供体/患者与终产品一一对应', term:'可追溯性', ref:'细胞治疗·追溯'},
+            {req:'短货架期稳定性/效期与运输时限验证', term:'稳定性', ref:'细胞治疗·稳定性'},
+            {req:'无菌、支原体、外源因子放行前全项检测', term:'无菌检查', ref:'细胞治疗·质量控制'}
+          ],
+          changfang:[
+            {req:'洁净区 + 隔离/密闭操作，防止交叉污染与人员暴露', term:'隔离器(RABS)', ref:'细胞治疗·厂房'},
+            {req:'基因修饰病毒（阳性）与细胞产品（阴性）区分隔生产', term:'交叉污染', ref:'细胞治疗·厂房'},
+            {req:'冷链储存与运输（液氮/超低温），温控监控', term:'冷链', ref:'细胞治疗·储运'},
+            {req:'阳性/阴性物料与废弃物分流，防止污染扩散', term:'生物安全', ref:'细胞治疗·厂房'}
+          ]},
+        imp:{name:'临床试验用药品(IMP)', vol:'临床试验用药品(IMP)附录 · GCP',
+          gongyi:[
+            {req:'"有限但适当"质量体系：工艺可较商业化灵活，但须防混淆与污染', term:'临床试验用药品(IMP)', ref:'IMP附录'},
+            {req:'盲法/随机生产、包装与编盲；对照品/安慰剂管理', term:'盲法', ref:'IMP附录·盲法'},
+            {req:'试验期间工艺变更须评估对受试者风险与数据完整性', term:'变更控制', ref:'IMP·变更'},
+            {req:'对照品/安慰剂制备与稳定性支持盲法使用', term:'对照品', ref:'IMP·对照品'}
+          ],
+          zhiliang:[
+            {req:'特殊放行：由授权人按试验方案放行，质量标准可不同于商业化', term:'放行', ref:'IMP附录·放行'},
+            {req:'稳定性考察支持临床使用期（常短于商业化有效期）', term:'稳定性', ref:'ICH Q1A'},
+            {req:'留样与追溯，支持试验产品召回与核查', term:'留样', ref:'IMP·留样'},
+            {req:'检验方法确认支持试验用产品放行', term:'方法确认', ref:'IMP·质量控制'}
+          ],
+          changfang:[
+            {req:'可借用商业化设施但须物理/逻辑分隔防混淆', term:'混淆', ref:'IMP附录·厂房'},
+            {req:'盲态储存与分发，防止破盲', term:'盲法', ref:'IMP附录·储运'},
+            {req:'温控储存与运输（常需冷链），偏差按 GCP 报告', term:'冷链', ref:'IMP·储运'},
+            {req:'试验用药品专区储存，与商业化产品明确标识分隔', term:'专用设施', ref:'IMP附录·厂房'}
+          ]}
+      };
+      const GMP23_ORDER = ['wuxian','koufu','yuanliao','shengwu','zhongyao','xuezhi','xibao','imp'];
+      const GMP23_DIMS = [['gongyi','🔧 工艺控制'],['zhiliang','🔬 质量控制'],['changfang','🏭 厂房设施控制']];
+      function esc23(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+      function renderGMP23(type){
+        const d = GMP23[type];
+        document.getElementById('gmp23Vol').textContent = '对应指南分册 / 附录：' + d.vol;
+        document.getElementById('gmp23Grid').innerHTML = GMP23_DIMS.map(([k,label])=>{
+          const items = d[k].map(it=>{
+            const term = it.term ? '<a class="qm-gmp23-term" href="gmp-glossary-network.html">'+esc23(it.term)+'</a>' : '';
+            const ref = it.ref ? '<span style="color:#94a3b8">｜ 指南：'+esc23(it.ref)+'</span>' : '';
+            return '<div class="qm-gmp23-item"><div class="qm-gmp23-req"><b>'+esc23(it.req)+'</b></div>'+
+                   '<div class="qm-gmp23-meta">'+term+(term&&ref?' ':'')+ref+'</div></div>';
+          }).join('');
+          return '<div class="qm-gmp23-col"><h4>'+label+'</h4>'+items+'</div>';
+        }).join('');
+      }
+      const gmp23Tabs = document.getElementById('gmp23Tabs');
+      GMP23_ORDER.forEach((t,i)=>{
+        const b=document.createElement('button');
+        b.className='qm-gmp23-tab'+(i===0?' active':'');
+        b.textContent=GMP23[t].name;
+        b.onclick=()=>{document.querySelectorAll('#gmp23Tabs .qm-gmp23-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderGMP23(t);};
+        gmp23Tabs.appendChild(b);
+      });
+      renderGMP23('wuxian');
+    </script>
   </section>
 
   <section class="cat" id="cat-0">
