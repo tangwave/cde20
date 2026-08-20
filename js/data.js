@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-08-19",
-    "totalDocs": 2204,
+    "lastUpdated": "2026-08-20",
+    "totalDocs": 2205,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -15326,7 +15326,8 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
-                  }]
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -15434,7 +15435,8 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
-                  }]
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -15572,7 +15574,8 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
-                  }]
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -16677,7 +16680,8 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
-                  }]
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -20288,6 +20292,11 @@ const KB_DATA = {
                   }
                 ],
                 "regulations": [
+                  {
+                    "title": "国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定（征求意见稿）",
+                    "path": "03_部门规章/国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售使用管理规定征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260820180509158.html"
+                  },
                   {
                     "title": "药品上市后变更管理办法（试行）",
                     "path": "03_部门规章/变更管理办法.pdf",
