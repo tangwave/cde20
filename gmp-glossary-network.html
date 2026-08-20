@@ -93,7 +93,7 @@
 <body>
 <header>
   <h1>📖 药品质量管理术语知识网络</h1>
-  <p>对质量管理网页（物料 / 工艺 / 关键工艺参数CPP / 关键质量属性CQA / GMP指南 / 典型案例 / 三大GMP专页）中出现的全部核心术语，提供权威详细解释，并以知识网络呈现术语之间的归属、支撑与关联关系。点击网络节点或下方词条卡片可查看详情；关系边表示术语间的逻辑关联。<b style="color:#fde68a">29 个 ICH 指导原则 / GMP 附录条目已深化为「定义 + 条款对照 + 示例」</b>（ICH Q8/Q9/Q11/Q12/Q13、Q3A/B/C、M7、Q3D，以及无菌/原料药/生物/血液/中药/计算机化系统/确认与验证/物料/QC实验室/生产管理等 GMP 附录均逐条对照）；下方<b style="color:#fde68a">「分品种子图」</b>可按药品类型聚类，并进一步拆为<b style="color:#fde68a">「工艺 / 质量」二级子网</b>。</p>
+  <p>对质量管理网页（物料 / 工艺 / 关键工艺参数CPP / 关键质量属性CQA / GMP指南 / 典型案例 / 三大GMP专页）中出现的全部核心术语，提供权威详细解释，并以知识网络呈现术语之间的归属、支撑与关联关系。点击网络节点或下方词条卡片可查看详情；关系边表示术语间的逻辑关联。<b style="color:#fde68a">35 个 ICH 指导原则 / GMP 附录条目已深化为「定义 + 条款对照 + 示例」</b>（ICH Q8/Q9/Q11/Q12/Q13、Q1A、Q3A/B/C、M7、Q3D，以及无菌/原料药/生物/血液/中药/放射性药品/中药饮片/医用氧/制药用水/计算机化系统/确认与验证/物料/取样/QC实验室/生产管理等 GMP 附录均逐条对照）；下方<b style="color:#fde68a">「分品种子图」</b>可按药品类型聚类，并进一步拆为<b style="color:#fde68a">「工艺 / 质量」二级子网</b>与<b style="color:#fde68a">「厂房/设备/人员/监测」三级细拆</b>。</p>
 </header>
 
 <div class="wrap">
@@ -116,7 +116,7 @@
 
   <div class="layout" style="margin-top:14px">
     <div class="panel">
-      <h2>🕸 知识网络 <small id="sg-hint">拖拽节点 · 悬停高亮邻居 · 点击查看详情（31 个 ICH/GMP 深化条目含条款对照）</small></h2>
+      <h2>🕸 知识网络 <small id="sg-hint">拖拽节点 · 悬停高亮邻居 · 点击查看详情（35 个 ICH/GMP 深化条目含条款对照）</small></h2>
       <div class="net-box">
         <svg id="net" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet">
           <g id="edges"></g>
@@ -294,7 +294,13 @@ const TERMS = [
   {id:"kzcl",t:"控制策略",e:"Control Strategy",c:"proc",d:"Control Strategy，ICH Q8/Q10提出的、源于对产品与工艺理解、基于CQA–CPP关联的、确保工艺维持受控状态的一组有计划控制（如物料标准、工艺参数控制、中控、放行检验、监测）。是QbD的落地输出。",r:["cqa","cpp","qbd","gongybf","pqs","cpv"]},
   {id:"sus",t:"一次性系统",e:"SUS",c:"spec",d:"Single-Use System，生物制品等生产中使用的、免清洗灭菌的一次性组件（袋、管路、滤芯、生物反应器），降低交叉污染风险、缩短换批时间并减轻清洁验证负担，须在CCS与污染控制中评估其相容性与完整性。",r:["glsx","shengwu","ccs","qingjie","chundu"]},
   {id:"q1a",t:"ICH Q1A 稳定性研究",e:"Q1A",c:"cqa",d:"新原料药和制剂的稳定性研究指导原则，规定批次选择、放置条件（长期/加速/中间）、检测频率与限度，以确立有效期（货架期）与储存条件；与Q1B（气候带）、Q5C（生物制品稳定性）衔接。",r:["ich","apr","zhiliang"]},
-  {id:"quyang",t:"GMP附录·取样",e:"Sampling",c:"mat",d:"规定物料、中间产品与成品的取样操作规程，包括取样方案、取样人员资质、取样工具与环境、代表性样品、留样与防止污染；是物料接收检验与质量控制的前置环节，须保证样品代表性与可追溯。",r:["wuliao","jieshou","zhiliang","liuyang","fangxing"]}
+  {id:"quyang",t:"GMP附录·取样",e:"Sampling",c:"mat",d:"规定物料、中间产品与成品的取样操作规程，包括取样方案、取样人员资质、取样工具与环境、代表性样品、留样与防止污染；是物料接收检验与质量控制的前置环节，须保证样品代表性与可追溯。",r:["wuliao","jieshou","zhiliang","liuyang","fangxing"]},
+
+  // ===== 补充：其余 GMP 附录（放射性/中药饮片/医用氧/制药用水） =====
+  {id:"radio",t:"放射性药品",e:"Radiopharmaceuticals",c:"type",d:"含放射性核素、用于诊断或治疗的药品，须符合GMP附录《放射性药品》特殊要求：辐射防护、短效期、专用生产与灭菌、活度与核素纯度控制，并满足放射性物质运输安全规定。",r:["gmp","nmpa","shengchan","zhiliang"]},
+  {id:"ypian",t:"中药饮片",e:"Herbal Pieces",c:"type",d:"药材经净制、切制、炮炙等炮制加工后、可直接用于中医临床或制剂生产的药品。GMP附录《中药饮片》要求炮制依法度、毒性饮片专用设施、仓储防虫霉与批记录可追溯。",r:["tcm","gmp","nmpa","shengchan"]},
+  {id:"oxygen",t:"医用氧",e:"Medical Oxygen",c:"type",d:"用于临床医疗的氧（包括液态氧），须符合GMP附录《医用氧》要求：空气压缩分离制得、无油洁净、纯度≥99.5%，并对水分、CO₂、CO 与微生物进行控制。",r:["gmp","shengchan","zhiliang","yaobc"]},
+  {id:"pwater",t:"制药用水",e:"Pharma Water",c:"sys",d:"药品生产与设备清洗用水，按用途分饮用水、纯化水、注射用水（WFI）与纯蒸汽。须控制微生物/内毒素、TOC/电导率，WFI 通常 80℃以上循环或 4℃以下储存，是无菌与生物制品厂房设施的核心系统。",r:["gmp","ccs","shebei","wuxian","shengwu","yaobc"]}
 ];
 
 /* ============== 深化条目：定义 + 条款对照 + 示例（ICH 指导原则 / GMP 附录） ============== */
@@ -654,6 +660,54 @@ const DEEP = {
       "原料到货100件：按√100=10件取样，每件取代表性部位，分检验样与留样。",
       "无菌原辅料：在B/A级背景无菌取样，防止微生物污染并立即密封。"
     ]
+  },
+  "radio":{
+    clauses:[
+      {src:"GMP附录·放射性药品",art:"1. 特殊要求",txt:"须符合辐射防护与放射性废物处理规定；短半衰期产品须严格效期与配送时限管理。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·放射性药品",art:"2. 生产",txt:"专用设施、辐射安全屏蔽与监测；生产/分装/灭菌须防止交叉污染与人员照射。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·放射性药品",art:"3. 质量控制",txt:"放射性核素纯度、放射化学纯度、活度测定；无菌/细菌内毒素按剂型控制。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·放射性药品",art:"4. 运输",txt:"按放射性物质运输安全规范包装与标识，防止辐射泄漏与公众照射。",url:"https://www.nmpa.gov.cn/"}
+    ],
+    examples:[
+      "⁹⁹ᵐTc 标记药盒：淋洗、标记、质控在屏蔽热室内完成，活度与放化纯度即时测定。",
+      "¹³¹I 胶囊：专用分装线 + 铅屏蔽，配送时限依半衰期严格控制。"
+    ]
+  },
+  "ypian":{
+    clauses:[
+      {src:"GMP附录·中药饮片",art:"1–2. 净制与切制",txt:"净制除去非药用部位，切制规格符合药典；设备清洁防混杂，毒性饮片单独管理。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·中药饮片",art:"3. 炮炙",txt:"炒/炙/煅/蒸等炮炙参数（温度/时间/辅料）记录，毒性饮片炮制须专用设施。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·中药饮片",art:"4. 仓储",txt:"防虫霉、温湿度控制、分类分区；毒性饮片专区标识与追溯。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·中药饮片",art:"5. 批记录",txt:"批生产记录完整可追溯，体现净制-切制-炮炙全过程与物料平衡。",url:"https://www.nmpa.gov.cn/"}
+    ],
+    examples:[
+      "制首乌：黑豆汁炙，温度/时间受控，毒性成分（蒽醌）降至限度内。",
+      "毒性饮片（附子）：专用炮制线与更衣，批记录独立归档防混淆。"
+    ]
+  },
+  "oxygen":{
+    clauses:[
+      {src:"GMP附录·医用氧",art:"1. 生产",txt:"以空气为原料经压缩、分离、纯化制得，压缩机无油、管路不污染，过程防止水分/CO₂ 引入。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·医用氧",art:"2. 质量控制",txt:"氧纯度≥99.5%，水分、CO₂、CO 与气态酸/碱、臭氧按标准控制；微生物限度视用途。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·医用氧",art:"3. 充装与储存",txt:"充装前钢瓶处理、充装量核定；储存防静电、防油，标签与追溯。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP附录·医用氧",art:"4. 安全",txt:"助燃性气体，储存与使用须防火、通风与静电防护。",url:"https://www.nmpa.gov.cn/"}
+    ],
+    examples:[
+      "医用氧生产：无油空压机 + 分子筛制氧，纯度在线监测≥99.5%。",
+      "钢瓶充装：前处理除油除水，充装量按温度校正，标签含批号。"
+    ]
+  },
+  "pwater":{
+    clauses:[
+      {src:"GMP(2010)·制药用水",art:"1. 分类",txt:"分饮用水、纯化水、注射用水（WFI）与纯蒸汽；用途与制备工艺须匹配产品质量风险。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"GMP(2010)·制药用水",art:"2. 制备与储存",txt:"WFI 宜 80℃以上循环或 4℃以下储存；管路坡度/流速防滞留与生物膜滋生。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"GMP(2010)·制药用水",art:"3. 微生物/内毒素",txt:"按用途控制微生物限度与细菌内毒素（WFI 须无菌、内毒素达标）。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"GMP(2010)·制药用水",art:"4. 取样与监测",txt:"使用点取样计划、TOC/电导率/微生物监控，趋势纳入年度回顾。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"}
+    ],
+    examples:[
+      "无菌制剂 WFI：多效蒸馏制备，80℃以上循环，使用点 TOC/微生物月度监测。",
+      "生物制品纯化水：RO+EDI 制备，按用途分级监控电导率与内毒素。"
+    ]
   }
 };
 
@@ -934,7 +988,7 @@ function renderSubBar(ptId){
 }
 function updateSGHint(){
   const hint=document.getElementById("sg-hint");
-  if(!curSG){hint.textContent="拖拽节点 · 悬停高亮邻居 · 点击查看详情（31 个 ICH/GMP 深化条目含条款对照）";return;}
+  if(!curSG){hint.textContent="拖拽节点 · 悬停高亮邻居 · 点击查看详情（35 个 ICH/GMP 深化条目含条款对照）";return;}
   let subTxt="";
   if(curFine) subTxt=" · "+curFine;
   else if(curSub) subTxt = curSub==="proc"?" · 工艺子网":" · 质量子网";
