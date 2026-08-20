@@ -27,6 +27,21 @@
         padding:6px 13px;font-size:12.5px;cursor:pointer;transition:.15s}
   .chip:hover{border-color:var(--proc);color:var(--proc)}
   .chip.active{background:var(--proc);color:#fff;border-color:var(--proc)}
+  /* 分品种子图栏 */
+  .subgraph-bar{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 2px}
+  .sg-btn{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;transition:.15s}
+  .sg-btn:hover{border-color:var(--proc);color:var(--proc)}
+  .sg-btn.active{background:var(--proc);color:#fff;border-color:var(--proc)}
+  /* 深化条目：条款对照 + 示例 */
+  .clause-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+  .clause-tbl th,.clause-tbl td{border:1px solid var(--line);padding:7px 9px;vertical-align:top;text-align:left}
+  .clause-tbl th{background:#f3effe;color:#6d28d9;font-weight:600}
+  .clause-tbl a{color:var(--proc);text-decoration:none}
+  .clause-tbl a:hover{text-decoration:underline}
+  .deep-clause{max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:8px;margin-top:2px}
+  .ex-list{margin:4px 0 2px;padding-left:20px;font-size:13px;color:#334}
+  .ex-list li{margin:5px 0}
+  .pt-badge{display:inline-block;font-size:11px;color:#fff;background:#0d9488;padding:1px 9px;border-radius:12px;margin-left:6px}
   .layout{display:grid;grid-template-columns:1.35fr .95fr;gap:16px;margin-top:12px}
   @media(max-width:980px){.layout{grid-template-columns:1fr}}
   .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
@@ -78,7 +93,7 @@
 <body>
 <header>
   <h1>📖 药品质量管理术语知识网络</h1>
-  <p>对质量管理网页（物料 / 工艺 / 关键工艺参数CPP / 关键质量属性CQA / GMP指南 / 典型案例 / 三大GMP专页）中出现的全部核心术语，提供权威详细解释，并以知识网络呈现术语之间的归属、支撑与关联关系。点击网络节点或下方词条卡片可查看详情；关系边表示术语间的逻辑关联。</p>
+  <p>对质量管理网页（物料 / 工艺 / 关键工艺参数CPP / 关键质量属性CQA / GMP指南 / 典型案例 / 三大GMP专页）中出现的全部核心术语，提供权威详细解释，并以知识网络呈现术语之间的归属、支撑与关联关系。点击网络节点或下方词条卡片可查看详情；关系边表示术语间的逻辑关联。<b style="color:#fde68a">15 个 ICH 指导原则 / GMP 附录条目已深化为「定义 + 条款对照 + 示例」</b>（如 ICH Q9/Q11/Q13/M7/Q3D、无菌药品附录、生物制品附录、共线/清洁验证等）；下方<b style="color:#fde68a">「分品种子图」</b>可将网络按药品类型聚为独立子图。</p>
 </header>
 
 <div class="wrap">
@@ -96,9 +111,11 @@
   </div>
   <div class="chips" id="chips"></div>
 
+  <div class="subgraph-bar" id="sgbar"></div>
+
   <div class="layout" style="margin-top:14px">
     <div class="panel">
-      <h2>🕸 知识网络 <small>拖拽节点 · 悬停高亮邻居 · 点击查看详情</small></h2>
+      <h2>🕸 知识网络 <small id="sg-hint">拖拽节点 · 悬停高亮邻居 · 点击查看详情（ICH/GMP 深化条目含条款对照）</small></h2>
       <div class="net-box">
         <svg id="net" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet">
           <g id="edges"></g>
@@ -275,6 +292,189 @@ const TERMS = [
   {id:"sus",t:"一次性系统",e:"SUS",c:"spec",d:"Single-Use System，生物制品等生产中使用的、免清洗灭菌的一次性组件（袋、管路、滤芯、生物反应器），降低交叉污染风险、缩短换批时间并减轻清洁验证负担，须在CCS与污染控制中评估其相容性与完整性。",r:["glsx","shengwu","ccs","qingjie","chundu"]}
 ];
 
+/* ============== 深化条目：定义 + 条款对照 + 示例（ICH 指导原则 / GMP 附录） ============== */
+const DEEP = {
+  "q9":{
+    clauses:[
+      {src:"ICH Q9(R1)",art:"2. 质量风险管理的原则",txt:"应以科学知识和工艺经验为基础，最终保护患者；执行水平须与风险等级相称，并将管理整合到质量管理体系。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q9(R1)",art:"3. 质量风险管理流程",txt:"风险评估（识别/分析/评价）—风险控制—风险沟通—风险审核，形成四步闭环，支持决策。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q9(R1)",art:"附录I/II 常用工具",txt:"FMEA、HACCP、故障树分析(FTA)、鱼骨图、风险排序与过滤(PR&F)、预先危险分析(PHA)。",url:"https://www.cde.org.cn/"}
+    ],
+    examples:[
+      "无菌制剂 CCS：以 FMEA 识别人员/环境/物料/设备污染源，按严重度(R)×发生概率(P)×可检测性(D)排序，确定环境监测与干预重点。",
+      "共线生产：用 HACCP 识别高活性成分交叉污染关键控制点(CCP)，制定专用/密闭/清洁措施并纳入质量协议。"
+    ]
+  },
+  "pqs":{
+    clauses:[
+      {src:"ICH Q10",art:"2. 药品质量体系(PQS)",txt:"贯穿产品生命周期，含四大要素：工艺性能与产品质量监控、CAPA、变更管理、管理评审与持续改进。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q10",art:"3. 生命周期各阶段",txt:"研发、技术转移、商业生产、产品终止各阶段均须 PQS 支撑，并与 ICH Q8/Q9 衔接。",url:"https://www.cde.org.cn/"},
+      {src:"GMP(2010)",art:"质量管理部门职责",txt:"企业须设独立质量管理部门，履行审核放行、偏差处理、变更控制、供应商审计、投诉与召回等职责。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"}
+    ],
+    examples:[
+      "年度质量回顾(APR)作为 PQS 的回顾要素，每年汇总偏差/OOS/变更/稳定性趋势，识别改进机会并触发 CAPA。",
+      "偏差→CAPA→变更控制闭环：根本原因分析(RCA)后更新 SOP，并纳入管理评审量化指标。"
+    ]
+  },
+  "q11":{
+    clauses:[
+      {src:"ICH Q11",art:"5. 起始物料",txt:"应选择在工艺中较早引入、具既定结构、商业可得者；其选择须论证对杂质谱与工艺理解的影响，下游步骤须足以清除其杂质。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q11",art:"6. 工艺开发与控制策略",txt:"基于科学理解与风险评估建立控制策略，区分关键/非关键步骤，鼓励采用 QbD 方法。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q11 Q&A",art:"附录 常见问题",txt:"问答澄清起始物料论证、杂质去向、生命周期方法、生物技术药物开发等实务问题。",url:"https://www.cde.org.cn/"}
+    ],
+    examples:[
+      "某合成 API 选择中间体 B 为起始物料，论证其具商业来源且后续 3 步足以清除基因毒性杂质，获 CDE 认可。",
+      "生物来源 API 依 Q11 生物技术部分，建立细胞库/病毒安全性控制策略与杂质谱监控。"
+    ]
+  },
+  "q13":{
+    clauses:[
+      {src:"ICH Q13",art:"3. 连续制造的定义与模型",txt:"原料连续输入、产品连续输出的生产方式，含纯连续、半连续、混合(连续+批)多种模型。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q13",art:"4. 控制策略",txt:"强调实时过程分析技术(PAT)、实时放行(RTRT)、物料可追溯性与稳态/动态控制的整合。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q13",art:"5. 工艺验证与监管",txt:"采用增强方法（增强工艺设计+持续工艺确认），批次定义可灵活按时间间隔或产出量划分。",url:"https://www.cde.org.cn/"}
+    ],
+    examples:[
+      "连续直接压片线：近红外(NIR)在线监测含量均匀度，结合模型实时反馈调整，实现实时放行(RTRT)。",
+      "连续制造主批记录按时间窗定义批，配套物料质量追溯与异常自动剔除逻辑。"
+    ]
+  },
+  "m7":{
+    clauses:[
+      {src:"ICH M7(R2)",art:"5. 风险分类(1–5类)",txt:"1类已知致突变致癌物按 AI 控制；2类按 TTC；3类含警示结构但无致突变数据须研究；4类关注但无致突变；5类低风险。",url:"https://www.cde.org.cn/"},
+      {src:"ICH M7(R2)",art:"6. 可接受摄入",txt:"1类按可接受摄入(AI)限度；2/3类按毒理学关注阈值(TTC，1.5 µg/天)；终生暴露适用，短期暴露可用更高限度。",url:"https://www.cde.org.cn/"},
+      {src:"ICH M7(R2)",art:"7. 控制策略",txt:"基于构效关系(SAR)预测警示结构，优先采用工艺控制+终产品检测组合，减少动物试验。",url:"https://www.cde.org.cn/"}
+    ],
+    examples:[
+      "亚硝胺类(NDMA)：按 1 类，依终生 AI（如 96 ng/天）控制，原料药与制剂均需评估来源与去向。",
+      "中间体含警示结构(如卤代烷)：经 Ames 试验确认阴性后归 4 类，仅工艺控制、无需终产品限度。"
+    ]
+  },
+  "q3d":{
+    clauses:[
+      {src:"ICH Q3D(R2)",art:"3. 风险评估",txt:"按给药途径(口服/注射/吸入/透皮)评估元素杂质来源(工艺添加、设备、环境、包材)，绘制元素谱。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q3D(R2)",art:"4. 控制阈值(PDE)",txt:"给出各元素按途径的 PDE；1/2/3 类，关注类(1类)须评估，2/3类超 PDE 须控制。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q3D(R2)",art:"5. 控制策略",txt:"优先工艺控制，必要时加内控标准；包材可提取物/浸出物评估纳入元素杂质管理。",url:"https://www.cde.org.cn/"}
+    ],
+    examples:[
+      "注射剂催化剂钯(Pd)残留：依 Q3D 注射 PDE(10 µg/天)计算限度，靠工艺除钯步骤控制。",
+      "玻璃包材元素浸出：考察硼/铝/砷等，依 Q3D 评估可提取物与浸出物风险并设限度。"
+    ]
+  },
+  "wuxian":{
+    clauses:[
+      {src:"GMP无菌药品附录",art:"第三条 洁净级别",txt:"A/B/C/D 四级，A级为 0.36–0.54 m/s 单向流；核心灌装/分装/加塞在 A级，背景 B级。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"GMP无菌药品附录",art:"第十七条 无菌工艺模拟",txt:"培养基灌装每班次每 6 个月至少一次，覆盖最差条件(最长时限、最多干预、最大批量)。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"GMP无菌药品附录",art:"第四十八条 环境监测",txt:"动态监测浮游菌/沉降菌/表面/人员，设警戒限与纠偏限，OOS/OOT 须调查。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"EU GMP 附录1(2022)",art:"CCS 强制要求",txt:"首次将污染控制策略(CCS)列为强制性整体策略，我国 2023版《无菌制剂》指南已全面对接。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"}
+    ],
+    examples:[
+      "注射剂灌装：A级单向流下无菌灌装，背景 B级，RABS 隔离，每批动态 EM 监测浮游菌。",
+      "冻干粉针：轧盖在 A级，CCI 真空衰减法验证，灯检剔除可见异物(xiaoshou)与不溶性微粒(bukejian)。"
+    ]
+  },
+  "ccs":{
+    clauses:[
+      {src:"2023无菌制剂指南",art:"2.1.2 污染控制策略",txt:"以科学风险为基础，对微生物/热原(内毒素)/微粒污染来源系统识别控制，文件化并定期回顾。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"EU GMP 附录1(2022)",art:"CCS 范围",txt:"覆盖厂房/设备/人员/工艺/物料/环境/监测七要素，确保污染持续受控。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"GMP无菌药品附录",art:"第三十八条 人员",txt:"洁净区人数严控，无菌更衣确认 + 表面监测，作为 CCS 的人员要素。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"}
+    ],
+    examples:[
+      "CCS 文件化：将 HVAC 压差报警、人员监测、EM 超标调查、培养基灌装再验证统一纳入年度回顾。",
+      "隔离器(RABS)手套完整性测试与传递舱 VHP 灭菌验证，作为 CCS 屏障要素的证据链。"
+    ]
+  },
+  "qingjie":{
+    clauses:[
+      {src:"清洁验证技术指南(征,2024)",art:"残留限度",txt:"三种方法取最严：10ppm、日剂量 1/1000、PDE(基于健康限度)；HBEL/PDE 优先于传统限度。",url:"https://www.cfdi.org.cn/cfdi/resource/news/16001.html"},
+      {src:"共线生产指南(2023)",art:"风险评估",txt:"前瞻性识别共线危害与交叉污染路径，建立 HBEL，高活性/高致敏须评估是否专用设施。",url:"https://www.cfdi.org.cn/cfdi/resource/news/15186.html"},
+      {src:"确认与验证附录(2015第54号)",art:"清洁验证",txt:"证明清洁程序去除前批残留/清洁剂/微生物，最差条件与最难清洁部位须验证。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"}
+    ],
+    examples:[
+      "多产品共线：以 PDE 计算某高活性成分残留限度(如 2 µg/日)，擦拭取样回收率验证≥50%。",
+      "连续 3 批清洁验证成功纳入 APR 趋势；设备/清洁剂变更触发再验证。"
+    ]
+  },
+  "gongxian":{
+    clauses:[
+      {src:"GMP(2010)",art:"第四十六条",txt:"高致敏性药品(青霉素类)须专用设施；β-内酰胺类/激素/细胞毒性/高活性化学药须专用或特殊隔离。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"共线生产指南(2023)",art:"专用/密闭/阶段性",txt:"按风险选择专用设施、阶段性生产、密闭/粉尘控制、气流缓冲等措施，法规强制专用者不得以共线规避。",url:"https://www.cfdi.org.cn/cfdi/resource/news/15186.html"},
+      {src:"2023口服固体指南",art:"2章 共线/粉尘",txt:"产尘操作间相对负压、局部除尘、专用工作服，计算机化扫码防混淆。",url:"quality-management.html"}
+    ],
+    examples:[
+      "青霉素类：独立厂房 + 专用空调 + 专用设备，严禁与其他产品共线。",
+      "高活性肿瘤药：隔离器(手套箱)密闭操作 + 负压，减少人员暴露与粉尘扩散。"
+    ]
+  },
+  "shengwu":{
+    clauses:[
+      {src:"生物制品附录(2020第58号)",art:"通则",txt:"生物制品生产须建立细胞库/种子批、全程无菌、病毒安全性控制；分装/冻干在 B/A 级。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"生物制品附录",art:"病毒安全性",txt:"来源于细胞的制品须评估潜在病毒污染并实施灭活/去除(见 ICH Q5A)。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"生物制品附录",art:"工艺验证与质控",txt:"关注效价(potency)/纯度(purity)/电荷异质性，批记录与偏差管理严格。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"}
+    ],
+    examples:[
+      "单抗：CHO-K1 细胞库建库+鉴定，上游培养 pH/DO 为 CPP，下游层析病毒灭活/去除 LRV 验证。",
+      "疫苗：原液无菌过滤+分装 B/A 级，批签发前资料审核 + 必要检验。"
+    ]
+  },
+  "virus":{
+    clauses:[
+      {src:"ICH Q5A(R1)",art:"病毒安全性评估",txt:"对来源于细胞的生物制品评估潜在病毒(内源/外源/非特异)，制定清除策略（灭活+去除）。",url:"https://www.cde.org.cn/"},
+      {src:"CDE 病毒清除平台验证(2024)",art:"平台验证",txt:"同类产品/工艺可基于既往数据跨产品验证，降低重复研究负担。",url:"https://www.cde.org.cn/main/guide"},
+      {src:"2023生物/无菌指南",art:"病毒灭活/去除步骤",txt:"低 pH、S/D 化学灭活、纳滤/层析去除等多步骤累加 LRV。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"}
+    ],
+    examples:[
+      "单抗纯化：低 pH 病毒灭活(LRV≥4) + 20 nm 病毒过滤(LRV≥5) + 层析去除，整体 LRV≥15。",
+      "平台验证：同 CHO 平台多产品共用病毒清除数据，仅补充产品特异性验证。"
+    ]
+  },
+  "xuezhipin":{
+    clauses:[
+      {src:"血液制品附录(2024第70号)",art:"血浆筛查",txt:"原料血浆须检测 HBV/HCV/HIV 等，合格方可投料；电子化记录全过程监管。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"血液制品附录",art:"病毒灭活/去除",txt:"采用两种不同原理的病毒灭活/去除工艺（如 S/D 法 + 干热/纳米过滤）。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"},
+      {src:"批签发",art:"上市前批签发",txt:"血液制品上市前须批签发，审核生产与检验资料、必要时检验。",url:"https://www.cfdi.org.cn/cfdi/resource/news/5346.html"}
+    ],
+    examples:[
+      "人血白蛋白：低温乙醇法分离 + 巴氏灭活，每批批签发。",
+      "静注人免疫球蛋白：S/D 病毒灭活 + 低 pH 孵化，双重病毒清除。"
+    ]
+  },
+  "tcm":{
+    clauses:[
+      {src:"中药生产监督管理规定(2025第79号)",art:"全过程质量",txt:"强调中药材基原/产地/采收、前处理、提取纯化全过程质量控制与量质传递。",url:"https://www.nmpa.gov.cn/"},
+      {src:"2023 GMP指南·中药",art:"工艺与中试",txt:"关注量质传递、中试放大、生产过程质量控制；指纹图谱(ronghe)评价一致性。",url:"quality-management.html"},
+      {src:"GMP(2010)",art:"中药制剂",txt:"中药提取需专用或有效分隔，防止污染与交叉污染；饮片炮制合规。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"}
+    ],
+    examples:[
+      "复方中药提取：以指纹图谱(相似度≥0.9)监控批次间一致性，关键成分转移率控制。",
+      "中药注射剂：原料药材基原鉴定+中间体质控+无菌保障，严于口服制剂。"
+    ]
+  },
+  "imp":{
+    clauses:[
+      {src:"临床试验用药品附录(2022第43号)",art:"有限但适当的质量体系",txt:"建立区别于商业化 GMP、但能防止混淆/污染、保护受试者的质量体系。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GCP(2020)/ICH E6",art:"受试者保护",txt:"IMP 生产须保障受试者安全与数据可靠，标签含临床方案信息。",url:"https://www.nmpa.gov.cn/"},
+      {src:"GMP(2010)",art:"防止混淆污染",txt:"IMP 仍须防混淆差错污染，批次可追溯，偏差及时记录。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"}
+    ],
+    examples:[
+      "Ⅰ期临床试验用片剂：在专用小线生产，标签含盲法/随机信息，留样至试验结束。",
+      "试验用单抗：超低温储存与运输温湿度监控，偏差按 GCP 报告。"
+    ]
+  }
+};
+
+/* ============== 分品种子图聚类 ============== */
+const HUBS = new Set(["gmp","cqa","cpp","qrm","pqs","ich","qbd","q9","q11"]);
+const CLUSTERS = {
+  wuxian:{label:"无菌制剂", members:["wuxian","ccs","hjjk","wugongymn","glsx","xcl","xiaoshou","bukejian","sus"]},
+  kfzt:{label:"口服固体制剂", members:["kfzt","rongjie","qingjie","gongxian","cleaning","hbel","pde"]},
+  shengwu:{label:"生物制品", members:["shengwu","virus","lrv","mxbd","ptyz","xiaodu","chundu","q5a","xibao","yuanliaoyz","sus"]},
+  tcm:{label:"中药", members:["tcm","ronghe","zhongshi","zhiliang"]},
+  yuanliao:{label:"原料药", members:["yuanliao","yuanliao2","q7","q11","qishi","jingxing","youguan"]},
+  xuezhipin:{label:"血液制品", members:["xuezhipin","pillzh","virus"]},
+  xibao:{label:"细胞治疗", members:["xibao","shengwu","sus"]},
+  imp:{label:"临床试验用药品", members:["imp","gcp"]}
+};
+
 /* ============== 构建网络 ============== */
 const byId = {}; TERMS.forEach(t=>byId[t.id]=t);
 // 边（去重、双向）
@@ -291,7 +491,7 @@ const nodes = TERMS.map((t,i)=>{
   return {id:t.id,term:t.t,cat:t.c,
     x:W/2+Math.cos(ang)*230+ (Math.random()*30-15),
     y:H/2+Math.sin(ang)*180+ (Math.random()*30-15),
-    vx:0,vy:0,fx:null,fy:null};
+    vx:0,vy:0,fx:null,fy:null,vis:true};
 });
 const nodeMap={}; nodes.forEach(n=>nodeMap[n.id]=n);
 
@@ -319,27 +519,29 @@ const nodeEls=nodes.map(n=>{
 /* 力导向模拟 */
 let alpha=1;
 function tick(){
-  // 斥力
-  for(let i=0;i<nodes.length;i++){
-    const a=nodes[i];
-    for(let j=i+1;j<nodes.length;j++){
-      const b=nodes[j];
+  const V=nodes.filter(n=>n.vis);
+  // 斥力（仅可见节点）
+  for(let i=0;i<V.length;i++){
+    const a=V[i];
+    for(let j=i+1;j<V.length;j++){
+      const b=V[j];
       let dx=a.x-b.x, dy=a.y-b.y; let d2=dx*dx+dy*dy; if(d2<0.01)d2=0.01;
       const d=Math.sqrt(d2); const f= 1600/d2;
       const fx=dx/d*f, fy=dy/d*f;
       a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
     }
   }
-  // 弹簧（边）
+  // 弹簧（边，仅两端均可见）
   edges.forEach(([a,b])=>{
+    if(!nodeMap[a].vis||!nodeMap[b].vis)return;
     const na=nodeMap[a], nb=nodeMap[b];
     let dx=nb.x-na.x, dy=nb.y-na.y; const d=Math.sqrt(dx*dx+dy*dy)||1;
     const rest=95; const f=(d-rest)*0.012;
     const fx=dx/d*f, fy=dy/d*f;
     na.vx+=fx; na.vy+=fy; nb.vx-=fx; nb.vy-=fy;
   });
-  // 向心力 + 阻尼
-  nodes.forEach(n=>{
+  // 向心力 + 阻尼（仅可见）
+  V.forEach(n=>{
     if(n.fx!=null){n.x=n.fx;n.y=n.fy;n.vx=0;n.vy=0;return;}
     n.vx += (W/2-n.x)*0.0016; n.vy += (H/2-n.y)*0.0016;
     n.vx*=0.86; n.vy*=0.86;
@@ -347,10 +549,10 @@ function tick(){
     n.x=Math.max(24,Math.min(W-24,n.x)); n.y=Math.max(20,Math.min(H-20,n.y));
   });
   alpha*=0.992;
-  // 更新位置
-  nodeEls.forEach(ne=>{ne.g.setAttribute("transform",`translate(${ne.n.x},${ne.n.y})`);});
+  // 更新位置（仅可见节点）
+  nodeEls.forEach(ne=>{ if(ne.n.vis) ne.g.setAttribute("transform",`translate(${ne.n.x},${ne.n.y})`); });
   edgeEls.forEach((l,k)=>{const [a,b]=edges[k]; const na=nodeMap[a],nb=nodeMap[b];
-    l.setAttribute("x1",na.x);l.setAttribute("y1",na.y);l.setAttribute("x2",nb.x);l.setAttribute("y2",nb.y);});
+    if(na.vis&&nb.vis){ l.setAttribute("x1",na.x);l.setAttribute("y1",na.y);l.setAttribute("x2",nb.x);l.setAttribute("y2",nb.y);} });
   if(alpha>0.02) requestAnimationFrame(tick);
 }
 function reheat(a){alpha=Math.max(alpha,a||0.8); if(alpha>0.02&&!running){running=true;requestAnimationFrame(tick);} }
@@ -380,11 +582,23 @@ function showDetail(id){
   const color=CATS[t.c].color;
   const rels=(t.r||[]).filter(rid=>byId[rid]).map(rid=>
     `<span class="rel-tag" data-go="${rid}">${byId[rid].t} <small style="color:#94a3b8">${byId[rid].e}</small></span>`).join("");
+  const dd=DEEP[id];
+  let deepHtml="";
+  if(dd){
+    const cls=(dd.clauses||[]).map(c=>`<tr><td style="white-space:nowrap;vertical-align:top"><b>${c.src}</b><br><span style="color:#64748b;font-size:11.5px">${c.art}</span></td><td>${c.txt}</td><td style="white-space:nowrap;text-align:center"><a href="${c.url}" target="_blank" rel="noopener">原文↗</a></td></tr>`).join("");
+    const ex=(dd.examples||[]).map(e=>`<li>${e}</li>`).join("");
+    deepHtml=`
+    <div class="rel-title">📑 条款对照（定义 + 法规附录 / 指导原则）</div>
+    <div class="deep-clause"><table class="clause-tbl"><thead><tr><th style="width:25%">文件 / 条款</th><th style="width:61%">要点</th><th style="width:14%">来源</th></tr></thead><tbody>${cls}</tbody></table></div>
+    <div class="rel-title">💡 典型示例</div>
+    <ul class="ex-list">${ex}</ul>`;
+  }
   document.getElementById("detail-body").innerHTML=`
     <span class="dt-cat" style="background:${color}">${CATS[t.c].name}</span>
     <h3>${t.t}</h3>
     <div class="en">${t.e}</div>
     <div class="def">${t.d}</div>
+    ${deepHtml}
     <div class="rel-title">🔗 关联术语（${ (t.r||[]).filter(r=>byId[r]).length }）</div>
     <div class="rel-list">${rels||"<span style='color:#94a3b8'>无</span>"}</div>`;
   document.getElementById("detail-hint").textContent=t.t;
@@ -439,6 +653,36 @@ function setCat(k){curCat=k;document.querySelectorAll("#chips .chip").forEach((c
 document.getElementById("search").addEventListener("input",e=>buildDict(curCat,e.target.value.trim()));
 document.getElementById("reset").onclick=()=>{nodes.forEach((n,i)=>{const ang=(i/nodes.length)*Math.PI*2;n.x=W/2+Math.cos(ang)*230;n.y=H/2+Math.sin(ang)*180;n.vx=0;n.vy=0;n.fx=null;n.fy=null;});reheat(1);};
 document.getElementById("center").onclick=()=>{nodes.forEach(n=>{n.fx=null;n.fy=null;});reheat(1);};
+
+/* ============== 分品种子图 ============== */
+function applyView(ptId){
+  let nodeSet=null;
+  if(ptId){
+    nodeSet=new Set(CLUSTERS[ptId].members);
+    CLUSTERS[ptId].members.forEach(id=>{(byId[id].r||[]).forEach(rid=>{ if(byId[rid]&&HUBS.has(rid)) nodeSet.add(rid); });});
+  }
+  nodes.forEach(n=>{ n.vis = nodeSet? nodeSet.has(n.id):true; });
+  nodeEls.forEach(ne=>{ ne.g.style.display = ne.n.vis? "" : "none"; });
+  const visEdges = edges.map(([a,b],k)=>({k,a,b,vis: nodeSet? (nodeSet.has(a)&&nodeSet.has(b)) : true}));
+  visEdges.forEach(e=>{ edgeEls[e.k].style.display = e.vis? "" : "none"; });
+  const V=nodes.filter(n=>n.vis);
+  V.forEach((n,i)=>{ const ang=(i/V.length)*Math.PI*2;
+    n.x=W/2+Math.cos(ang)*210; n.y=H/2+Math.sin(ang)*165; n.vx=0;n.vy=0;n.fx=null;n.fy=null; });
+  reheat(1);
+}
+const sgbar=document.getElementById("sgbar");
+const sgAll=document.createElement("button"); sgAll.className="sg-btn active"; sgAll.textContent="🌐 总网络"; sgAll.onclick=()=>setSG(null); sgbar.appendChild(sgAll);
+Object.entries(CLUSTERS).forEach(([k,v])=>{
+  const b=document.createElement("button"); b.className="sg-btn"; b.textContent=v.label; b.onclick=()=>setSG(k); sgbar.appendChild(b);
+});
+let curSG=null;
+function setSG(k){
+  curSG=k;
+  document.querySelectorAll("#sgbar .sg-btn").forEach((b,i)=>b.classList.toggle("active",(k===null&&i===0)||b.textContent===CLUSTERS[k]?.label));
+  applyView(k);
+  const hint=document.getElementById("sg-hint");
+  hint.textContent = k? `当前子图：${CLUSTERS[k].label} 及其关联（共 ${nodes.filter(n=>n.vis).length} 个术语）` : "拖拽节点 · 悬停高亮邻居 · 点击查看详情（ICH/GMP 深化条目含条款对照）";
+}
 
 /* 图例 */
 const legend=document.getElementById("legend");
