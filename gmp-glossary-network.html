@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>药品质量管理术语知识网络</title>
+<style>
+  :root{
+    --bg:#f7f9fc; --card:#fff; --ink:#1f2937; --muted:#64748b; --line:#e5e9f0;
+    --sys:#2563eb; --risk:#d97706; --mat:#0891b2; --proc:#7c3aed; --cqa:#db2777;
+    --data:#059669; --dc:#dc2626; --rel:#ca8a04; --type:#4f46e5; --spec:#0d9488;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:linear-gradient(135deg,#1e3a8a,#0e7490);color:#fff;padding:28px 22px 22px}
+  header h1{margin:0 0 6px;font-size:25px;letter-spacing:.5px}
+  header p{margin:0;opacity:.92;font-size:14px;max-width:980px}
+  .wrap{max-width:1280px;margin:0 auto;padding:18px 16px 60px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:13px}
+  .stat b{color:var(--proc);font-size:18px;margin-right:4px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 10px}
+  .search{flex:1;min-width:220px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fff}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:20px;
+        padding:6px 13px;font-size:12.5px;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--proc);color:var(--proc)}
+  .chip.active{background:var(--proc);color:#fff;border-color:var(--proc)}
+  .layout{display:grid;grid-template-columns:1.35fr .95fr;gap:16px;margin-top:12px}
+  @media(max-width:980px){.layout{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .panel h2{margin:0;padding:13px 16px;font-size:15px;border-bottom:1px solid var(--line);
+           background:#fbfcfe;display:flex;justify-content:space-between;align-items:center}
+  .panel h2 small{font-weight:400;color:var(--muted);font-size:12px}
+  .net-box{position:relative;height:600px;background:radial-gradient(circle at 50% 40%,#fbfdff,#eef3fa)}
+  svg{width:100%;height:100%;display:block;cursor:grab}
+  svg:active{cursor:grabbing}
+  .node circle{cursor:pointer;transition:opacity .15s,stroke-width .15s}
+  .node text{pointer-events:none;font-size:11px;fill:#334155;paint-order:stroke;stroke:#fff;stroke-width:3px}
+  .edge{stroke:#cbd5e1;stroke-width:1.2px;opacity:.55}
+  .edge.hot{stroke:var(--proc);stroke-width:2.4px;opacity:1}
+  .node.dim{opacity:.18}
+  .node.hot circle{stroke:#111;stroke-width:3px}
+  .legend{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);
+          border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:11.5px;max-width:210px}
+  .legend .row{display:flex;align-items:center;gap:6px;margin:2px 0}
+  .legend .dot{width:10px;height:10px;border-radius:50%}
+  .btn{font-size:12px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 10px;cursor:pointer;color:var(--muted)}
+  .btn:hover{border-color:var(--proc);color:var(--proc)}
+  /* detail */
+  #detail .body{padding:16px 18px;max-height:560px;overflow:auto}
+  .dt-cat{display:inline-block;font-size:11.5px;color:#fff;padding:3px 10px;border-radius:14px;margin-bottom:8px}
+  #detail h3{margin:2px 0 4px;font-size:19px}
+  #detail .en{color:var(--muted);font-size:13px;margin-bottom:10px}
+  #detail .def{font-size:14px;background:#f8fafc;border-left:3px solid var(--proc);padding:11px 13px;border-radius:0 8px 8px 0;margin-bottom:14px}
+  #detail .rel-title{font-size:13px;font-weight:600;margin:6px 0 8px;color:var(--muted)}
+  .rel-list{display:flex;flex-wrap:wrap;gap:7px}
+  .rel-tag{font-size:12.5px;border:1px solid var(--line);border-radius:18px;padding:5px 12px;cursor:pointer;background:#fff;transition:.15s}
+  .rel-tag:hover{border-color:var(--proc);color:var(--proc);background:#faf5ff}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+  /* dictionary grid */
+  .dict{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;padding:14px}
+  .term{border:1px solid var(--line);border-radius:12px;padding:12px 13px;cursor:pointer;background:#fff;transition:.15s;position:relative}
+  .term:hover{box-shadow:0 4px 16px rgba(30,58,138,.1);border-color:var(--proc);transform:translateY(-2px)}
+  .term .bar{position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:3px}
+  .term h4{margin:0 0 3px;font-size:15px;padding-left:8px}
+  .term .en{font-size:11.5px;color:var(--muted);padding-left:8px;margin-bottom:6px}
+  .term .snip{font-size:12.5px;color:#475569;padding-left:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .term .cnt{font-size:11px;color:var(--proc);padding-left:8px;margin-top:6px}
+  .sec-title{margin:26px 4px 4px;font-size:17px;border-left:5px solid var(--proc);padding-left:10px}
+  .sec-sub{margin:0 4px 10px;color:var(--muted);font-size:13px}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:24px;border-top:1px solid var(--line);margin-top:30px}
+  a.back{color:var(--proc);text-decoration:none;font-size:13px}
+  .countbar{font-size:12.5px;color:var(--muted);margin:4px 4px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 药品质量管理术语知识网络</h1>
+  <p>对质量管理网页（物料 / 工艺 / 关键工艺参数CPP / 关键质量属性CQA / GMP指南 / 典型案例 / 三大GMP专页）中出现的全部核心术语，提供权威详细解释，并以知识网络呈现术语之间的归属、支撑与关联关系。点击网络节点或下方词条卡片可查看详情；关系边表示术语间的逻辑关联。</p>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><b id="st-terms">0</b>核心术语</div>
+    <div class="stat"><b id="st-edges">0</b>关联关系</div>
+    <div class="stat"><b id="st-cats">10</b>知识域</div>
+    <div class="stat"><b>10</b>分类颜色</div>
+  </div>
+
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="🔍 搜索术语 / 英文缩写 / 关键词（如 GMP、CPP、CCS、病毒清除）">
+    <button class="btn" id="reset">重置布局</button>
+    <button class="btn" id="center">回到中心</button>
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div class="layout" style="margin-top:14px">
+    <div class="panel">
+      <h2>🕸 知识网络 <small>拖拽节点 · 悬停高亮邻居 · 点击查看详情</small></h2>
+      <div class="net-box">
+        <svg id="net" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet">
+          <g id="edges"></g>
+          <g id="nodes"></g>
+        </svg>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+    <div class="panel" id="detail">
+      <h2>📝 术语详情 <small id="detail-hint">点击任意节点或词条</small></h2>
+      <div class="body" id="detail-body"><div class="empty">从左侧网络或下方词典中选择一个术语，这里会显示其详细解释与关联关系。</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title">📚 术语词典（按知识域）</div>
+  <div class="sec-sub">每个词条均可点击，与网络图联动高亮其关联术语。</div>
+  <div class="countbar" id="dict-count"></div>
+  <div id="dict"></div>
+
+  <footer>
+    术语定义依据《药品生产质量管理规范（2010年修订）》及配套附录、ICH Q/R 系列指导原则、2023版GMP指南、NMPA/CDE/CFDI 发布的官方文件整理，供学习与检索参考。<br>
+    关联网络基于术语间的逻辑归属与支撑关系构建，非官方分类。返回 <a class="back" href="quality-management.html">质量管理枢纽页 ↗</a>
+  </footer>
+</div>
+
+<script>
+/* ============== 术语数据（id / 中文术语 / 英文缩写 / 分类 / 详细解释 / 关联id） ============== */
+const CATS = {
+  sys:{name:"体系与机构",color:"#2563eb"},
+  risk:{name:"质量风险",color:"#d97706"},
+  mat:{name:"物料",color:"#0891b2"},
+  proc:{name:"工艺与验证",color:"#7c3aed"},
+  cqa:{name:"质量属性",color:"#db2777"},
+  data:{name:"数据与计算机化",color:"#059669"},
+  dc:{name:"偏差·变更·CAPA",color:"#dc2626"},
+  rel:{name:"放行与回顾",color:"#ca8a04"},
+  type:{name:"分品种",color:"#4f46e5"},
+  spec:{name:"专项专页",color:"#0d9488"}
+};
+
+const TERMS = [
+  // ===== 体系与机构 =====
+  {id:"gmp",t:"药品生产质量管理规范",e:"GMP",c:"sys",d:"Good Manufacturing Practice，药品生产和质量管理的基本准则。旨在最大限度降低生产过程中的污染、交叉污染以及混淆、差错等风险，确保持续稳定地生产出符合预定用途和注册要求的药品。2010年修订版为现行核心版本，配套无菌药品、原料药、生物制品、血液制品、中药、临床试验用药品等十余个附录。",r:["pqs","glp","gcp","mau","nmpa","cfdi","imp","wuxian","yuanliao","kfzt","shengwu","xuezhipin","ccs"]},
+  {id:"glp",t:"药物非临床研究质量管理规范",e:"GLP",c:"sys",d:"Good Laboratory Practice，为保证药物非临床安全性评价研究质量，对研究机构组织管理、人员、设施、仪器、标准操作规程（SOP）和资料档案进行的规范化要求。覆盖安全性评价机构认证、供试品检测、年度报告等。",r:["gmp","nmpa","cfdi"]},
+  {id:"gcp",t:"药物临床试验质量管理规范",e:"GCP",c:"sys",d:"Good Clinical Practice，对临床试验全过程（方案设计、组织实施、监查、稽查、记录、分析、报告）的标准规定，保障受试者权益与安全、保证数据真实可靠。现行依据ICH E6(R3)及2026年修订版公告。",r:["gmp","ich","imp","nmpa"]},
+  {id:"gdp",t:"药品经营质量管理规范",e:"GSP",c:"sys",d:"Good Supply Practice，药品在流通环节（购进、储存、销售、运输）的质量管理规范，与GMP共同保障药品全生命周期质量。",r:["gmp","mau"]},
+  {id:"pqs",t:"药品质量管理体系",e:"PQS / ICH Q10",c:"sys",d:"Pharmaceutical Quality System，ICH Q10提出的贯穿产品生命周期的集成化质量管理体系，包含四大要素：工艺性能与产品质量监控系统、纠正与预防措施（CAPA）系统、变更管理系统、工艺与产品质量回顾与管理评审。是GMP的顶层框架。",r:["gmp","capa","biangeng","apr","cpv","qrm"]},
+  {id:"ich",t:"国际人用药品注册技术协调会",e:"ICH",c:"sys",d:"International Council for Harmonisation，制定药品注册技术指导原则的国际组织，分Q（质量）、S（安全）、E（有效）、M（多学科）四大系列。中国2017年成为管理委员会成员，Q系列为核心质量指导原则（Q1稳定性、Q2分析方法、Q3杂质、Q4药典、Q5生物、Q6标准、Q7原料药、Q8研发、Q9风险、Q10体系、Q11原料药开发、Q12生命周期、Q13连续制造、Q14分析方法开发）。",r:["gmp","gcp","qbd","q9","q11","q13","q3a","q3c","q3d","m7","q5a"]},
+  {id:"nmpa",t:"国家药品监督管理局",e:"NMPA",c:"sys",d:"中国国家药品监督管理部门，负责药品、医疗器械、化妆品的注册、生产、经营、使用环节监管与GMP认证/检查。",r:["gmp","cde","cfdi","mau","guanlian"]},
+  {id:"cde",t:"药品审评中心",e:"CDE",c:"sys",d:"药品注册技术审评机构，负责化学药、中药、生物制品等注册申请的技术审评，发布各类药学技术指导原则。",r:["nmpa","q11","q13","q3a","q3d","m7","guanlian","virus"]},
+  {id:"cfdi",t:"食品药品审核查验中心",e:"CFDI",c:"sys",d:"负责GMP符合性检查、注册核查、飞行检查、境外检查的技术机构，发布各类检查指南（共线生产、工艺验证、细胞治疗、清洁验证等）。",r:["nmpa","gmp","ccs","cleaning","gongxian","virus","wuxian"]},
+  {id:"mau",t:"药品上市许可持有人",e:"MAH",c:"sys",d:"Marketing Authorization Holder，取得药品注册证书的企业或研制机构，对药品全生命周期（研制、生产、经营、使用）质量与风险承担主体责任，可自行生产也可委托生产/经营，须签订质量协议。",r:["gmp","weituo","zhiliangxy","gys","fayun","apr","gdp"]},
+  {id:"weituo",t:"委托生产",e:"Contract Manufacturing",c:"sys",d:"持有人委托符合条件的企业生产药品。受托方须具备相应GMP条件，持有人承担主体责任，双方须签质量协议并明确质量责任、变更沟通与召回义务。",r:["mau","zhiliangxy","gmp"]},
+  {id:"zhiliangxy",t:"质量协议",e:"Quality Agreement",c:"sys",d:"持有人与受托生产企业/关键物料供应商就质量责任、技术标准、变更控制、偏差处理、投诉召回、信息沟通等达成的书面协议，是委托生产与供应链管理的基础文件。",r:["mau","weituo","gys"]},
+
+  // ===== 质量风险 =====
+  {id:"qrm",t:"质量风险管理",e:"QRM / ICH Q9",c:"risk",d:"Quality Risk Management，ICH Q9定义的、对药品质量风险进行评估、控制、沟通、审核的系统化过程。贯穿物料、工艺、设备、共线、变更等各环节，是QbD与PQS的基础思维。",r:["q9","gmp","pqs","fmea","yugu","gongxian","cpp","cqa"]},
+  {id:"q9",t:"ICH Q9 质量风险管理",e:"Q9(R1)",c:"risk",d:"提供质量风险管理的原则与常用工具（FMEA、HACCP、故障树分析、鱼骨图、流程图、风险矩阵等），并明确管理流程：风险评估—风险控制—风险沟通—风险审核。",r:["ich","qrm","fmea","yugu"]},
+  {id:"fmea",t:"失效模式与效应分析",e:"FMEA",c:"risk",d:"Failure Mode and Effects Analysis，识别潜在失效模式、原因与后果，并以严重度/发生概率/可检测性（RPN）排序风险的工具，常用于工艺、设备与共线风险评估。",r:["qrm","q9","yugu","gongxian"]},
+  {id:"yugu",t:"鱼骨图（因果图）",e:"Ishikawa",c:"risk",d:"以人、机、料、法、环、测（5M1E）为维度分析质量问题潜在原因的工具，常与FMEA配合用于偏差调查与风险评估。",r:["q9","fmea","piancha"]},
+  {id:"hbel",t:"健康暴露限度",e:"HBEL",c:"risk",d:"Health-Based Exposure Limit，基于毒性数据（如PDE）推导的、用于共线生产交叉污染控制的 allowable 暴露限度。现行国际（EU 2018问答）优先采用HBEL/PDE方法，取代传统10ppm、1/1000日剂量等经验限度。",r:["pde","gongxian","cleaning","qingjie"]},
+  {id:"pde",t:"每日允许暴露量",e:"PDE",c:"risk",d:"Permitted Daily Exposure，基于无可见有害作用水平（NOAEL）等毒理数据、经种属/个体差异校正系数计算的、终生每日摄入不产生可察觉风险的剂量，是HBEL的计算基础，用于残留限度与共线评估。",r:["hbel","q3d","gongxian","cleaning"]},
+
+  // ===== 物料 =====
+  {id:"wuliao",t:"物料",e:"Material",c:"mat",d:"GMP中泛指原料、辅料、包装材料等药品生产的物质基础，须建立接收、储存、标识、取样检验、放行、发放与使用的全过程控制，防止混淆、差错与污染。",r:["gmp","yaofl","yaobc","wuliaobz","dailing","wuliaoph","liuyang","gys","jieshou"]},
+  {id:"qishi",t:"起始物料",e:"Starting Material",c:"mat",d:"原料药（API）合成路线起点的重要原料。其选择须基于对工艺理解与杂质谱控制（ICH Q11），通常具有既定化学结构、商业可得、在工艺早期引入，且下游步骤足以清除其杂质。",r:["q11","yuanliao","youguan","impurity"]},
+  {id:"yuanliao",t:"原料药",e:"API",c:"mat",d:"Active Pharmaceutical Ingredient，用于药品制造的、具有药理活性的物质。其生产须符合ICH Q7，关注晶型、粒度、有关物质、手性杂质、元素/致突变杂质与稳定性。",r:["q7","qishi","jingxing","youguan","q3a","q3d","m7","wuliao","shengwu"]},
+  {id:"yaofl",t:"药用辅料",e:"Excipient",c:"mat",d:"药物制剂中除活性成分以外、在安全性方面已合理评估并包含在制剂中的物质。实行关联审评审批（2019年56号公告），2025年第1号公告发布辅料附录，强调功能性、安全性与质量一致性。",r:["guanlian","wuliao","yaobc","nmpa"]},
+  {id:"yaobc",t:"药包材",e:"Packaging Material",c:"mat",d:"直接接触药品的包装材料与容器。须符合适用性并与药品相容（相容性研究），2025年第1号公告发布药包材附录；无菌制剂须关注容器密封完整性（CCI）。",r:["guanlian","yaofl","xcl","wuliao","nmpa"]},
+  {id:"guanlian",t:"关联审评审批",e:"Linked Review",c:"mat",d:"原料药、药用辅料、药包材在制剂注册申请时与制剂关联申报审评，不再单独发放批准文号（2019年第56号公告）。制剂持有人对整体质量负责，供应商须登记并动态维护。",r:["yaofl","yaobc","nmpa","cde","mau"]},
+  {id:"wuliaobz",t:"物料质量标准",e:"Material Spec",c:"mat",d:"规定物料鉴别、含量、杂质、微生物等控制项目的文件，须经质量部门批准，作为接收检验与放行的依据；变更须走变更控制。",r:["wuliao","jieshou","fangxing","biangeng"]},
+  {id:"gys",t:"供应商管理",e:"Supplier Management",c:"mat",d:"对物料供应商的审计、评估、批准与持续监控，含质量协议、现场审计、质量档案与定期回顾，是物料风险控制的第一道关口。",r:["wuliao","zhiliangxy","mau","fangxing","audit"]},
+  {id:"dailing",t:"待验",e:"Quarantine",c:"mat",d:"物料或产品处于等待检验结果以决定是否放行的隔离状态，须物理/电子标识并存放于待验区，防止误用。",r:["wuliao","jieshou","fangxing"]},
+  {id:"wuliaoph",t:"物料平衡",e:"Material Balance",c:"mat",d:"理论产量与实际产量在规定限度内的比较，用于发现潜在混淆、丢失或差错，是生产过程监控与偏差预警的重要手段。",r:["wuliao","piancha","shengchan"]},
+  {id:"liuyang",t:"留样",e:"Retention Sample",c:"mat",d:"按规定条件与期限保存的、用于追溯与必要时复检的样品，原料、中间体、成品均须留样管理。",r:["wuliao","fangxing"]},
+
+  // ===== 工艺与验证 =====
+  {id:"gongyi",t:"工艺",e:"Process",c:"proc",d:"将物料转化为符合预定用途药品的操作过程与参数集合，是产品质量形成的核心。须以工艺规程固定，并通过工艺验证确认其可靠性。",r:["cpp","gongygz","bpr","gongyzy","cpv","qbd","iqoqpq"]},
+  {id:"cpp",t:"关键工艺参数",e:"CPP",c:"proc",d:"Critical Process Parameter，其变动对关键质量属性（CQA）有潜在影响、须控制在适当范围的工艺参数。通过风险评估与工艺表征确定（ICH Q8），并在工艺规程与监控中重点管控。",r:["cqa","qbd","gongybf","shejikj","doe","gongyzy","cpv"]},
+  {id:"qbd",t:"质量源于设计",e:"QbD / ICH Q8",c:"proc",d:"Quality by Design，ICH Q8理念：在科学理解与质量风险管理基础上，从研发阶段即系统设计产品质量（而非仅靠终端检验），确立CQA、CPP、设计空间与控制策略。",r:["ich","cqa","cpp","shejikj","gongyka","qrm"]},
+  {id:"shejikj",t:"设计空间",e:"Design Space",c:"proc",d:"经证明能保证质量的物料属性与工艺参数的多维组合与交互作用范围（ICH Q8）。在设计空间内操作不视为变更；超出则需走变更控制。",r:["qbd","cpp","cqa","biangeng"]},
+  {id:"gongyka",t:"工艺开发",e:"Process Development",c:"proc",d:"从实验室到商业规模的工艺研究与优化，通过DoE与中试确立CQA、CPP、设计空间与控制策略，是QbD的落地过程。",r:["qbd","cpp","cqa","zhongshi","doe","gongybf"]},
+  {id:"doe",t:"实验设计",e:"DoE",c:"proc",d:"Design of Experiments，以多因素、多水平系统化安排实验，识别CQA与CPP间交互作用、确立设计空间与参数范围的统计方法，避免单纯单因素试验的局限。",r:["gongyka","cpp","cqa","zhongshi","gongybf"]},
+  {id:"gongybf",t:"工艺表征",e:"Process Characterization",c:"proc",d:"在代表性/最差条件下开展实验，量化CQA–CPP关联、确定关键参数及其可接受范围（PAR）或设计空间的活动，是工艺验证的前提。",r:["cpp","cqa","doe","gongyzy","shejikj"]},
+  {id:"gongyzy",t:"工艺验证",e:"Process Validation",c:"proc",d:"证明工艺在预定参数下能持续可靠地生产出符合标准产品的活动。FDA/国际通行三阶段：工艺设计—工艺确认（IQ/OQ/PQ）—持续工艺确认（CPV）。",r:["iqoqpq","cpv","cpp","gongyi","gongybf","pq","zhongshi"]},
+  {id:"iqoqpq",t:"安装/运行/性能确认",e:"IQ/OQ/PQ",c:"proc",d:"设备/系统确认三阶段：安装确认（IQ，符合设计与采购要求）、运行确认（OQ，在预期操作范围内运行）、性能确认（PQ，在商业化条件下持续产出合格产品）。",r:["gongyzy","cpv","shebei","pq"]},
+  {id:"pq",t:"性能确认",e:"PQ",c:"proc",d:"Performance Qualification，确认与商业化生产相同条件下、由训练有素人员使用既定方法能持续生产出符合标准的产品，是工艺验证第三阶段的商业化确认。",r:["iqoqpq","gongyzy","cpv"]},
+  {id:"cpv",t:"持续工艺确认",e:"CPV",c:"proc",d:"Continued Process Verification，工艺验证第三阶段，在商业生产中持续收集与分析工艺数据与质量属性，证明工艺维持在受控状态，是PQS的监控组成。",r:["gongyzy","pq","iqoqpq","cqa","apr","pqs"]},
+  {id:"gongygz",t:"工艺规程",e:"Master Formula",c:"proc",d:"经批准的标准文件，规定生产工艺、关键参数、控制要求与操作顺序，是生产操作与批生产记录编制的依据。",r:["gongyi","bpr","cpp"]},
+  {id:"bpr",t:"批生产记录",e:"BPR",c:"proc",d:"Batch Production Record，记录每批产品生产的全部操作与结果的文件，须及时、真实、完整地填写，是数据完整性与批放行的核心依据。",r:["gongyi","gongygz","shujuwc","fangxing"]},
+  {id:"gongyzy2",t:"工艺转移",e:"Tech Transfer",c:"proc",d:"将工艺从一个场地/场地规模转移至另一场地，须进行对比研究、风险评估与验证，确保接收方均能稳定重现产品质量。",r:["gongyka","gongyzy","biangeng","kbyx"]},
+  {id:"biangeng",t:"工艺变更",e:"Process Change",c:"proc",d:"生产工艺（路线、参数、规模、场地、设备）的改变，按风险分级（重大/中等/微小）开展可比性研究与验证，重大变更须经批准。",r:["kbyx","biangengkz","pqs","shejikj","gongyzy2"]},
+  {id:"q13",t:"连续制造",e:"Continuous Mfg / ICH Q13",c:"proc",d:"原料连续输入、产品连续输出的生产方式（ICH Q13），对比传统批生产具有实时过程控制、减小在制品库存、快速响应等优势，须配套实时放行（RTRT）与模型。",r:["ich","gongyi","gongyzy","cpv"]},
+  {id:"zhongshi",t:"中试放大",e:"Pilot Scale",c:"proc",d:"从小试到商业规模的过渡研究，考察放大效应（传热/传质/混合），确立可转移的工艺参数；中药申报临床须提供≥1批稳定中试数据。",r:["gongyka","gongyzy","doe","cpp","tcm"]},
+
+  // ===== 质量属性 =====
+  {id:"cqa",t:"关键质量属性",e:"CQA",c:"cqa",d:"Critical Quality Attribute，产品物理、化学、生物或微生物性质，应在适当限度/范围/分布内以保证预期质量（ICH Q8）。由QTPP自上而下推导、经风险评估与实验确证，是控制策略的核心对象。",r:["qtpp","cpp","qbd","gongybf","kzcl","youguan","rongji","yuansu","m7","jingxing","rongjie","ronghe","xiaodu","xiaoshou","xcl","bukejian"]},
+  {id:"qtpp",t:"目标产品质量概况",e:"QTPP",c:"cqa",d:"Quality Target Product Profile，基于预期用途与质量需求定义产品关键质量特性的前瞻性概要，是CQA推导的起点（ICH Q8），涵盖剂型、给药途径、规格、稳定性与安全性预期。",r:["cqa","qbd","kzcl"]},
+  {id:"youguan",t:"有关物质",e:"Related Substances / Q3A·Q3B",c:"cqa",d:"药品中存在的、非预期的结构与活性成分不同的微量杂质。ICH Q3A（原料药）/Q3B（制剂）规定鉴定限度与质控限度，关注降解产物与工艺杂质。",r:["cqa","q3a","q3b","yuanliao","impurity","m7"]},
+  {id:"q3a",t:"ICH Q3A 新原料药杂质",e:"Q3A(R2)",c:"cqa",d:"规定新原料药中有机杂质的报告、鉴定与质控限度，以及降解产物控制原则。",r:["ich","youguan","yuanliao","impurity"]},
+  {id:"q3b",t:"ICH Q3B 新药制剂杂质",e:"Q3B(R2)",c:"cqa",d:"规定新药制剂中降解产物与工艺杂质的限度与鉴定阈值，与Q3A衔接。",r:["ich","youguan","impurity"]},
+  {id:"rongji",t:"残留溶剂",e:"Residual Solvents / Q3C",c:"cqa",d:"原料药/制剂中残留的有机溶剂（ICH Q3C分类：一类应避免、二类限度控制、三类低毒）。限度基于每日允许暴露量（PDE）设定。",r:["cqa","q3c","pde","yuanliao"]},
+  {id:"q3c",t:"ICH Q3C 残留溶剂",e:"Q3C(R9)",c:"cqa",d:"按健康风险对残留溶剂分类（一类禁用/限用、二类限度控制、三类低毒）并给出可接受浓度的指导原则。",r:["ich","rongji","pde"]},
+  {id:"yuansu",t:"元素杂质",e:"Elemental Impurities / Q3D",c:"cqa",d:"药品中存在的金属元素杂质（ICH Q3D），按口服/注射/吸入等给药途径以PDE控制，关注催化剂与环境引入物。",r:["cqa","q3d","pde","yuanliao"]},
+  {id:"q3d",t:"ICH Q3D 元素杂质",e:"Q3D(R2)",c:"cqa",d:"规定原料药与制剂中元素杂质的评估与控制策略，按给药途径给出各类元素的PDE。",r:["ich","yuansu","pde"]},
+  {id:"m7",t:"致突变杂质",e:"Mutagenic Impurities / ICH M7",c:"cqa",d:"具致突变性、可能致癌的杂质（ICH M7），按风险分级控制：已知致突变致癌物按可接受摄入（AI）控制，其余按阈值（TTC）管理，并关注警示结构。",r:["cqa","youguan","impurity","qrm"]},
+  {id:"jingxing",t:"晶型",e:"Polymorph",c:"cqa",d:"药物多晶型（同一分子不同晶体排列），影响溶解度、生物利用度与工艺行为。须控制优势晶型与粒度分布，避免转晶导致质量波动。",r:["cqa","yuanliao","rongjie","gongyi"]},
+  {id:"rongjie",t:"溶出度",e:"Dissolution",c:"cqa",d:"固体制剂在规定条件下从剂型中释放活性成分的速度与程度，是口服制剂关键CQA，常作为体内生物等效性的体外替代指标。",r:["cqa","kfzt","jingxing"]},
+  {id:"ronghe",t:"指纹图谱",e:"Fingerprint",c:"cqa",d:"中药等复杂体系的特征色谱/光谱图，以整体特征评价质量一致性，是中药CQA的重要表征手段。",r:["cqa","tcm","zhiliang"]},
+  {id:"xiaodu",t:"效价",e:"Potency",c:"cqa",d:"生物制品/抗生素等以生物学方法测定的、反映产品特定生理活性的指标，是生物制品核心CQA。",r:["cqa","shengwu","chundu"]},
+  {id:"chundu",t:"纯度",e:"Purity",c:"cqa",d:"生物制品中目标产物的含量，关注聚集体、宿主细胞蛋白（HCP）、残留DNA等工艺相关杂质。",r:["cqa","shengwu","xiaodu","virus"]},
+  {id:"xcl",t:"容器密封完整性",e:"CCI",c:"cqa",d:"Container Closure Integrity，包装系统防止微生物侵入与内容物泄漏的能力，是无菌制剂关键CQA，须通过密封完整性试验（如染色、真空泄漏、氦质谱）验证。",r:["cqa","yaobc","wuxian","ccs"]},
+  {id:"xiaoshou",t:"可见异物",e:"Visible Particles",c:"cqa",d:"注射剂等目视可见的外来物质或容器缺陷，须通过灯检或在线检测控制，属无菌/非无菌注射剂关键CQA。",r:["cqa","wuxian","bukejian"]},
+  {id:"bukejian",t:"不溶性微粒",e:"Subvisible/Insoluble Particles",c:"cqa",d:"注射剂中不溶性的外来颗粒，须以光阻法/显微计数法控制限度，反映生产洁净与包装完整性。",r:["cqa","xiaoshou","wuxian"]},
+
+  // ===== 数据与计算机化 =====
+  {id:"shujuwc",t:"数据完整性",e:"Data Integrity",c:"data",d:"数据在整个生命周期内的全面性、一致性与可信性，遵循ALCOA+原则（可归因、清晰、同步、原始、准确，外加完整、一致、持久、可用）。是GMP合规与审计的核心。",r:["alcoa","jsjxt","sjzj","gmp","bpr"]},
+  {id:"alcoa",t:"ALCOA+ 原则",e:"ALCOA+",c:"data",d:"数据完整性的国际公认基本原则：Attributable（可归因）、Legible（清晰）、Contemporaneous（同步）、Original（原始）、Accurate（准确），扩展 +Complete/Consistent/Enduring/Available（完整/一致/持久/可用）。",r:["shujuwc","jsjxt"]},
+  {id:"jsjxt",t:"计算机化系统",e:"Computerized System",c:"data",d:"GMP中由计算机硬件/软件、网络与人员组成的、用于生产质量活动的系统（如LIMS、SCADA、MES），须验证、权限管理与审计追踪，是数据完整性的承载基础。",r:["shujuwc","alcoa","sjzj","gmp","gongyzy"]},
+  {id:"sjzj",t:"审计追踪",e:"Audit Trail",c:"data",d:"计算机化系统自动记录的操作日志，可追溯数据的创建、修改、删除与时间/人员，是数据完整性与防篡改的核心机制，须定期审核。",r:["jsjxt","shujuwc","alcoa"]},
+
+  // ===== 偏差·变更·CAPA =====
+  {id:"piancha",t:"偏差",e:"Deviation",c:"dc",d:"偏离已批准标准/程序的情况，须记录、评估（对产品质量/注册/合规的影响）、调查与处理，重大偏差须报告监管。",r:["oos","oot","capa","yugu","gmp","wuliaoph"]},
+  {id:"oos",t:"检验结果超标",e:"OOS",c:"dc",d:"Out of Specification，超出既定可接受标准的检验结果，须立即启动调查，先排查实验室原因（复测、仪器、操作）再延伸至生产/取样/储存原因。",r:["piancha","oot","capa","fangxing"]},
+  {id:"oot",t:"检验结果超趋势",e:"OOT",c:"dc",d:"Out of Trend，检验结果在限度内但偏离历史趋势，提示潜在工艺漂移或系统变化，须评估是否预警。",r:["oos","piancha","capa","cpv"]},
+  {id:"capa",t:"纠正与预防措施",e:"CAPA",c:"dc",d:"Corrective and Preventive Actions，为消除已发生或潜在不符合原因而采取的措施，是PQS核心要素，须根本原因分析、有效性确认与闭环。",r:["pqs","piancha","biangengkz","oos","oot"]},
+  {id:"biangengkz",t:"变更控制",e:"Change Control",c:"dc",d:"对影响产品质量的变更（工艺、设备、物料、场地、标准）进行系统化管理：申请—评估—批准—实施—验证—关闭，重大变更须监管批准。",r:["biangeng","capa","pqs","wuliaobz","shejikj"]},
+  {id:"kbyx",t:"可比性研究",e:"Comparability",c:"dc",d:"工艺/场地/规模变更前后产品质量、安全性与有效性的对比研究，证明变更不降低质量、可不额外开展临床，是变更分级与免临床的依据。",r:["biangeng","gongyzy2","cqa","pqs"]},
+
+  // ===== 放行与回顾 =====
+  {id:"fangxing",t:"批放行",e:"Batch Release",c:"rel",d:"质量受权人基于完整生产记录、检验结果与偏差/CAPA处理情况，批准每批产品上市放行的活动，是质量责任的最后关口。",r:["bpr","piancha","oos","gmp","pzqf","pillzh"]},
+  {id:"pzqf",t:"质量受权人",e:"QP",c:"rel",d:"Qualified Person，具备资质、独立行使产品放行职责的人员，对每批产品是否符合GMP与注册要求作出放行裁决。",r:["fangxing","gmp","mau"]},
+  {id:"pillzh",t:"批签发",e:"Lot Release",c:"rel",d:"对疫苗、血液制品等高风险生物制品，在上市前由指定机构对其生产与检验资料审核、必要时检验后发放销售证明的制度。",r:["fangxing","shengwu","xuezhipin","gmp"]},
+  {id:"apr",t:"年度质量回顾",e:"APR",c:"rel",d:"Annual Product Review，每年对产品报告期内质量（批次、偏差、变更、OOS、稳定性、投诉、召回等）的系统回顾，识别趋势与改进机会，是PQS的回顾要素。",r:["pqs","cpv","piancha","biangeng","tousu","zhiliangld"]},
+  {id:"tousu",t:"投诉与召回",e:"Complaint & Recall",c:"rel",d:"对产品投诉的调查处理与必要时启动召回，是上市后质量反馈与风险控制的闭环环节，须记录并纳入年度回顾。",r:["apr","mau","fayun","piancha"]},
+  {id:"zhiliangld",t:"质量量度",e:"Quality Metrics",c:"rel",d:"以量化指标（批次合格率、偏差数、OOS率、CAPA及时率等）衡量质量管理体系绩效的工具，支撑管理评审与持续改进。",r:["apr","pqs","zhiliang"]},
+
+  // ===== 分品种 =====
+  {id:"wuxian",t:"无菌制剂",e:"Sterile Products",c:"type",d:"须保证无菌、无热原的制剂（注射剂、滴眼剂等），GMP附录无菌药品为核心，2023指南强化污染控制策略（CCS）、无菌工艺模拟、环境监测与隔离技术。",r:["ccs","wugongymn","hjjk","glsx","xcl","xiaoshou","bukejian","gmp"]},
+  {id:"ccs",t:"污染控制策略",e:"CCS",c:"spec",d:"Contamination Control Strategy，2023版无菌制剂指南系统提出的、基于风险的文件化措施集合（厂房/设备/人员/工艺/物料/环境/监测），将微生物、微粒与热原污染风险降至适当水平并确保持续受控。",r:["wuxian","hjjk","wugongymn","glsx","xcl","qingjie","cfdi"]},
+  {id:"hjjk",t:"环境监测",e:"EM",c:"spec",d:"对洁净区/无菌生产环境的悬浮粒子与微生物（浮游菌、沉降菌、表面/人员微生物）的持续监测，是CCS的重要组成与无菌保障的证据来源。",r:["ccs","wuxian","glsx"]},
+  {id:"wugongymn",t:"无菌工艺模拟",e:"Media Fill",c:"spec",d:"以培养基替代产品的「培养基灌装」试验，在最差条件下验证无菌工艺的无菌保障能力，须规定批次、干预与可接受标准。",r:["ccs","wuxian","hjjk"]},
+  {id:"glsx",t:"隔离器 / RABS",e:"Isolator/RABS",c:"spec",d:"限制进入屏障系统（RABS）与隔离器（Isolator）技术，提供无菌生产与操作的保护屏障，降低人员干预带来的污染风险。",r:["ccs","wuxian","hjjk","sus"]},
+  {id:"yuanliao2",t:"原料药（分品种）",e:"API (by type)",c:"type",d:"原料药生产须符合ICH Q7，分合成、发酵、提取路线，关注晶型粒度、杂质谱与起始物料（ICH Q11）；与制剂质量直接关联。",r:["yuanliao","q7","q11","jingxing","youguan","yuanliaoyz"]},
+  {id:"q7",t:"ICH Q7 原料药GMP",e:"Q7",c:"type",d:"原料药的药品生产质量管理规范指南，覆盖厂房、生产、工艺控制、物料、质量、验证等，适用于化学合成与发酵/提取原料药。",r:["ich","yuanliao","yuanliaoyz"]},
+  {id:"yuanliaoyz",t:"原料药（中药/生物来源）",e:"API botanical/bio",c:"type",d:"来源于植物提取或生物技术/生物实体的原料药，其开发生产适用ICH Q11（生物技术/生物实体药物），关注生物来源一致性与病毒安全。",r:["yuanliao2","q11","shengwu","virus"]},
+  {id:"kfzt",t:"口服固体制剂",e:"OSD",c:"type",d:"片剂、胶囊、颗粒等口服固体制剂，须控制制粒-压片-包衣工艺、溶出度与含量均匀度；其清洁验证与交叉污染控制是共线生产重点。",r:["rongjie","qingjie","gongxian","cleaning","gmp"]},
+  {id:"tcm",t:"中药 / 天然药物",e:"TCM",c:"type",d:"中药生产强调前处理—提取—纯化—浓缩—干燥—成型，关注量质传递、中试放大与生产过程质量控制；2025年第79号公告发布中药生产监督管理专门规定。",r:"zhongshi,ronghe,zhiliang,gmp,nmpa".split(",")},
+  {id:"shengwu",t:"生物制品",e:"Biologics",c:"type",d:"以生物技术制备的制品（重组蛋白、单抗、疫苗等），须建立细胞库/种子批、控制病毒安全、关注纯度/效价/电荷异质性；附录2020年第58号修订。",r:["xiaodu","chundu","virus","q5a","pillzh","yuanliaoyz","xibao"]},
+  {id:"virus",t:"病毒清除",e:"Viral Clearance",c:"spec",d:"生物制品生产中通过灭活与去除步骤降低潜在病毒污染风险的策略（ICH Q5A），以各步骤对数下降值（LRV）累加评估整体清除能力。",r:["shengwu","q5a","lrv","mxbd","ptyz","chundu","cde"]},
+  {id:"lrv",t:"对数下降值",e:"LRV",c:"spec",d:"Log Reduction Value，病毒清除步骤使病毒滴度降低的对数值（如LRV≥4表示下降1万倍），各步骤LRV累加评估整体病毒清除能力。",r:["virus","mxbd","ptyz"]},
+  {id:"mxbd",t:"模型病毒",e:"Model Viruses",c:"spec",d:"用于病毒清除研究的代表性病毒（相关病毒/模型病毒/指示病毒），覆盖不同理化与抗性特征，以充分证明清除工艺的广谱能力。",r:["virus","lrv","ptyz"]},
+  {id:"ptyz",t:"平台验证",e:"Platform Validation",c:"spec",d:"基于同类产品/工艺既往数据，对病毒清除等工艺进行跨产品的验证策略，降低重复研究负担（重组蛋白病毒清除平台验证指导原则2024）。",r:["virus","lrv","mxbd","cde"]},
+  {id:"xibao",t:"细胞治疗产品",e:"Cell Therapy",c:"type",d:"CGT类活细胞产品，须采用密闭无菌工艺进行细胞扩增/基因转导，关注载体滴度、转导效率与脱靶；检查依据细胞治疗产品生产检查指南。",r:["shengwu","cfdi","gmp"]},
+  {id:"xuezhipin",t:"血液制品",e:"Blood Products",c:"type",d:"以血浆为原料的制品，须血浆筛查、病毒灭活/去除与批签发；附录2024年第70号修订，强调电子化记录与全过程监管。",r:["pillzh","virus","gmp","nmpa"]},
+  {id:"imp",t:"临床试验用药品",e:"IMP",c:"type",d:"用于临床试验的药品，须建立「有限但适当」的质量体系（2022年第43号附录），强调受试者保护与数据可靠，区别于商业化GMP但须防混淆污染。",r:["gcp","gmp","nmpa","cfdi"]},
+
+  // ===== 专项 / 交叉 =====
+  {id:"qingjie",t:"清洁验证",e:"Cleaning Validation",c:"spec",d:"证明清洁程序能有效去除前批产品残留、清洁剂与微生物，使交叉污染风险受控的活动；以HBEL/PDE或10ppm等传统限度设定可接受残留，须关注最难清洁部位与最差条件。",r:["gongxian","hbel","pde","kfzt","ccs","cfdi"]},
+  {id:"gongxian",t:"交叉污染",e:"Cross-contamination",c:"spec",d:"不同物料/产品间的相互污染，通过专用设施、阶段性生产、密闭与粉尘控制、清洁验证与共线生产风险评估进行控制。",r:["qingjie","hbel","kfzt","gmp","fmea"]},
+  {id:"cleaning",t:"清洁验证技术指南",e:"Cleaning Guideline",c:"spec",d:"CFDI发布的清洁验证技术指南（征求意见稿），细化残留限度计算、取样策略、分析方法与最差条件选择，是口服固体制剂清洁验证的实操依据。",r:["qingjie","gongxian","kfzt","cfdi"]},
+  {id:"shebei",t:"厂房设施与设备",e:"Facilities & Equipment",c:"sys",d:"GMP的核心硬件基础，涵盖洁净厂房分级、HVAC、水系统、设备确认（IQ/OQ/PQ）与维护，须与产品风险相匹配。",r:["gmp","iqoqpq","wuxian","ccs","qingjie"]},
+  {id:"shengchan",t:"生产管理",e:"Production",c:"sys",d:"涵盖生产操作、批次管理、物料发放、过程控制与清场，强调防止混淆差错污染，是GMP现场执行主体。",r:["gmp","gongyi","bpr","wuliaoph","qingjie"]},
+  {id:"zhiliang",t:"质量控制实验室",e:"QC Lab",c:"sys",d:"负责物料与产品检验的部门，须建立质量标准、方法学验证、取样与OOS管理，是批放行与质量判定的技术支撑。",r:["gmp","fangxing","wuliaobz","oos","ronghe"]},
+  {id:"audit",t:"质量审计",e:"Audit",c:"sys",d:"对供应商、受托方与自身的系统化检查，分供应商审计、内部审计与监管检查，是PQS与供应商管理的重要手段。",r:["gys","mau","pqs","weituo"]},
+  {id:"fayun",t:"发运与召回",e:"Distribution & Recall",c:"sys",d:"药品发运须防止运输污染混淆，召回是发现重大质量风险时收回已上市产品的应急机制，持有人负主体责任。",r:["mau","tousu","gmp","shebei"]},
+  {id:"impurity",t:"杂质",e:"Impurity",c:"cqa",d:"药品中存在的非预期物质，分有机杂质（有关物质）、残留溶剂、元素杂质与致突变杂质，由Q3系列与M7分别控制。",r:["youguan","rongji","yuansu","m7","q3a","q3b"]},
+
+  // ===== 补充术语（补全关联关系） =====
+  {id:"jieshou",t:"物料接收与取样检验",e:"Receipt & Sampling",c:"mat",d:"物料到货后的接收核对（品名、批号、数量、包装、合格证）、待验隔离与按质量标准取样检验，合格后方可放行使用，是防止不合格物料流入生产的第一道关口。",r:["wuliao","dailing","wuliaobz","fangxing","zhiliang","gys"]},
+  {id:"q11",t:"ICH Q11 原料药开发和生产",e:"Q11",c:"proc",d:"规定原料药（化学实体与生物技术/生物实体药物）的开发与生产原则，明确起始物料的选择与论证、工艺开发、杂质控制、工艺验证与生命周期管理，是原料药质量研究的核心指导原则。",r:["ich","qishi","yuanliao","yuanliao2","yuanliaoyz","cpp","gongyka"]},
+  {id:"q5a",t:"ICH Q5A 病毒安全性",e:"Q5A",c:"sys",d:"生物技术产品病毒安全性指导原则，规定来源于细胞（含重组DNA、杂交瘤、转基因动物/植物）产品的潜在病毒污染风险评估与清除策略（灭活+去除），是生物制品病毒清除研究的上位依据。",r:["ich","shengwu","virus","yuanliaoyz","chundu","ptyz"]},
+  {id:"kzcl",t:"控制策略",e:"Control Strategy",c:"proc",d:"Control Strategy，ICH Q8/Q10提出的、源于对产品与工艺理解、基于CQA–CPP关联的、确保工艺维持受控状态的一组有计划控制（如物料标准、工艺参数控制、中控、放行检验、监测）。是QbD的落地输出。",r:["cqa","cpp","qbd","gongybf","pqs","cpv"]},
+  {id:"sus",t:"一次性系统",e:"SUS",c:"spec",d:"Single-Use System，生物制品等生产中使用的、免清洗灭菌的一次性组件（袋、管路、滤芯、生物反应器），降低交叉污染风险、缩短换批时间并减轻清洁验证负担，须在CCS与污染控制中评估其相容性与完整性。",r:["glsx","shengwu","ccs","qingjie","chundu"]}
+];
+
+/* ============== 构建网络 ============== */
+const byId = {}; TERMS.forEach(t=>byId[t.id]=t);
+// 边（去重、双向）
+const edgeSet = new Set(); const edges=[];
+TERMS.forEach(t=>{(t.r||[]).forEach(rid=>{
+  if(!byId[rid])return;
+  const key=[t.id,rid].sort().join("|");
+  if(!edgeSet.has(key)){edgeSet.add(key);edges.push([t.id,rid]);}
+});});
+
+const W=960,H=600;
+const nodes = TERMS.map((t,i)=>{
+  const ang = (i/TERMS.length)*Math.PI*2;
+  return {id:t.id,term:t.t,cat:t.c,
+    x:W/2+Math.cos(ang)*230+ (Math.random()*30-15),
+    y:H/2+Math.sin(ang)*180+ (Math.random()*30-15),
+    vx:0,vy:0,fx:null,fy:null};
+});
+const nodeMap={}; nodes.forEach(n=>nodeMap[n.id]=n);
+
+// SVG 渲染
+const svg=document.getElementById("net");
+const gE=document.getElementById("edges"), gN=document.getElementById("nodes");
+const edgeEls=edges.map(([a,b])=>{
+  const l=document.createElementNS("http://www.w3.org/2000/svg","line");
+  l.setAttribute("class","edge"); l.dataset.a=a; l.dataset.b=b;
+  gE.appendChild(l); return l;
+});
+const nodeEls=nodes.map(n=>{
+  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.setAttribute("class","node"); g.dataset.id=n.id;
+  const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  const r = 7 + (byId[n.id].t.length>8?2:0);
+  c.setAttribute("r",r); c.setAttribute("fill",CATS[n.cat].color);
+  const tx=document.createElementNS("http://www.w3.org/2000/svg","text");
+  tx.setAttribute("text-anchor","middle"); tx.setAttribute("dy","-"+ (r+4));
+  tx.textContent=byId[n.id].t.length>9?byId[n.id].t.slice(0,9)+"…":byId[n.id].t;
+  g.appendChild(c); g.appendChild(tx);
+  gN.appendChild(g); return {g,n,c,tx};
+});
+
+/* 力导向模拟 */
+let alpha=1;
+function tick(){
+  // 斥力
+  for(let i=0;i<nodes.length;i++){
+    const a=nodes[i];
+    for(let j=i+1;j<nodes.length;j++){
+      const b=nodes[j];
+      let dx=a.x-b.x, dy=a.y-b.y; let d2=dx*dx+dy*dy; if(d2<0.01)d2=0.01;
+      const d=Math.sqrt(d2); const f= 1600/d2;
+      const fx=dx/d*f, fy=dy/d*f;
+      a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
+    }
+  }
+  // 弹簧（边）
+  edges.forEach(([a,b])=>{
+    const na=nodeMap[a], nb=nodeMap[b];
+    let dx=nb.x-na.x, dy=nb.y-na.y; const d=Math.sqrt(dx*dx+dy*dy)||1;
+    const rest=95; const f=(d-rest)*0.012;
+    const fx=dx/d*f, fy=dy/d*f;
+    na.vx+=fx; na.vy+=fy; nb.vx-=fx; nb.vy-=fy;
+  });
+  // 向心力 + 阻尼
+  nodes.forEach(n=>{
+    if(n.fx!=null){n.x=n.fx;n.y=n.fy;n.vx=0;n.vy=0;return;}
+    n.vx += (W/2-n.x)*0.0016; n.vy += (H/2-n.y)*0.0016;
+    n.vx*=0.86; n.vy*=0.86;
+    n.x+=n.vx*alpha; n.y+=n.vy*alpha;
+    n.x=Math.max(24,Math.min(W-24,n.x)); n.y=Math.max(20,Math.min(H-20,n.y));
+  });
+  alpha*=0.992;
+  // 更新位置
+  nodeEls.forEach(ne=>{ne.g.setAttribute("transform",`translate(${ne.n.x},${ne.n.y})`);});
+  edgeEls.forEach((l,k)=>{const [a,b]=edges[k]; const na=nodeMap[a],nb=nodeMap[b];
+    l.setAttribute("x1",na.x);l.setAttribute("y1",na.y);l.setAttribute("x2",nb.x);l.setAttribute("y2",nb.y);});
+  if(alpha>0.02) requestAnimationFrame(tick);
+}
+function reheat(a){alpha=Math.max(alpha,a||0.8); if(alpha>0.02&&!running){running=true;requestAnimationFrame(tick);} }
+let running=false;
+// 初始跑若干帧后降速
+running=true; requestAnimationFrame(tick);
+
+/* 交互：高亮与详情 */
+let selected=null;
+function neighbors(id){const s=new Set();edges.forEach(([a,b])=>{if(a===id)s.add(b);if(b===id)s.add(a);});return s;}
+function highlight(id){
+  const nb=neighbors(id);
+  nodeEls.forEach(ne=>{
+    if(!id){ne.g.classList.remove("dim","hot");return;}
+    if(ne.n.id===id)ne.g.classList.add("hot"),ne.g.classList.remove("dim");
+    else if(nb.has(ne.n.id))ne.g.classList.remove("dim","hot");
+    else ne.g.classList.add("dim");
+  });
+  edgeEls.forEach(l=>{
+    if(!id){l.classList.remove("hot");return;}
+    l.classList.toggle("hot", l.dataset.a===id||l.dataset.b===id);
+  });
+}
+function showDetail(id){
+  const t=byId[id]; if(!t)return;
+  selected=id; highlight(id);
+  const color=CATS[t.c].color;
+  const rels=(t.r||[]).filter(rid=>byId[rid]).map(rid=>
+    `<span class="rel-tag" data-go="${rid}">${byId[rid].t} <small style="color:#94a3b8">${byId[rid].e}</small></span>`).join("");
+  document.getElementById("detail-body").innerHTML=`
+    <span class="dt-cat" style="background:${color}">${CATS[t.c].name}</span>
+    <h3>${t.t}</h3>
+    <div class="en">${t.e}</div>
+    <div class="def">${t.d}</div>
+    <div class="rel-title">🔗 关联术语（${ (t.r||[]).filter(r=>byId[r]).length }）</div>
+    <div class="rel-list">${rels||"<span style='color:#94a3b8'>无</span>"}</div>`;
+  document.getElementById("detail-hint").textContent=t.t;
+  document.querySelectorAll(".rel-tag").forEach(el=>el.onclick=()=>showDetail(el.dataset.go));
+  document.getElementById("detail").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+nodeEls.forEach(ne=>{
+  ne.g.addEventListener("click",e=>{e.stopPropagation();showDetail(ne.n.id);});
+  ne.g.addEventListener("mouseenter",()=>{if(!selected)highlight(ne.n.id);});
+  ne.g.addEventListener("mouseleave",()=>{if(!selected)highlight(null);});
+});
+svg.addEventListener("click",()=>{selected=null;highlight(null);document.getElementById("detail-hint").textContent="点击任意节点或词条";document.getElementById("detail-body").innerHTML='<div class="empty">从左侧网络或下方词典中选择一个术语，这里会显示其详细解释与关联关系。</div>';});
+// 拖拽
+nodeEls.forEach(ne=>{
+  ne.g.addEventListener("mousedown",e=>{e.stopPropagation();
+    const pt=svgPoint(e); ne.n.fx=pt.x; ne.n.fy=pt.y;
+    const mv=ev=>{const p=svgPoint(ev);ne.n.fx=p.x;ne.n.fy=p.y;};
+    const up=()=>{ne.n.fx=null;ne.n.fy=null;document.removeEventListener("mousemove",mv);document.removeEventListener("mouseup",up);reheat(0.5);};
+    document.addEventListener("mousemove",mv);document.addEventListener("mouseup",up);
+  });
+});
+function svgPoint(e){const r=svg.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*W, y:(e.clientY-r.top)/r.height*H};}
+
+/* 词典 */
+function buildDict(filterCat,query){
+  const dict=document.getElementById("dict"); dict.innerHTML="";
+  let list=TERMS.filter(t=>!filterCat||t.c===filterCat);
+  if(query){const q=query.toLowerCase();
+    list=list.filter(t=>(t.t+t.e+t.d+(t.r||[]).map(r=>byId[r]?byId[r].t:"").join("")).toLowerCase().includes(q));}
+  document.getElementById("dict-count").textContent=`当前显示 ${list.length} / 共 ${TERMS.length} 个术语`;
+  if(!list.length){dict.innerHTML='<div class="empty">未找到匹配的术语。</div>';return;}
+  list.forEach(t=>{
+    const card=document.createElement("div");card.className="term";card.dataset.id=t.id;
+    const color=CATS[t.c].color;
+    card.innerHTML=`<div class="bar" style="background:${color}"></div>
+      <h4>${t.t}</h4><div class="en">${t.e} · ${CATS[t.c].name}</div>
+      <div class="snip">${t.d}</div>
+      <div class="cnt">▸ ${ (t.r||[]).filter(r=>byId[r]).length } 个关联</div>`;
+    card.onclick=()=>{showDetail(t.id);nodeMap[t.id]&&reheat(0.6);};
+    dict.appendChild(card);
+  });
+}
+/* 分类筛选 chips */
+const chipsBox=document.getElementById("chips");
+const allChip=document.createElement("button");allChip.className="chip active";allChip.textContent="全部";allChip.onclick=()=>setCat(null);chipsBox.appendChild(allChip);
+Object.entries(CATS).forEach(([k,v])=>{
+  const c=document.createElement("button");c.className="chip";c.textContent=v.name;
+  c.onclick=()=>setCat(k);chipsBox.appendChild(c);
+});
+let curCat=null;
+function setCat(k){curCat=k;document.querySelectorAll("#chips .chip").forEach((c,i)=>c.classList.toggle("active",(k===null&&i===0)||c.textContent===CATS[k]?.name));buildDict(curCat,document.getElementById("search").value.trim());}
+document.getElementById("search").addEventListener("input",e=>buildDict(curCat,e.target.value.trim()));
+document.getElementById("reset").onclick=()=>{nodes.forEach((n,i)=>{const ang=(i/nodes.length)*Math.PI*2;n.x=W/2+Math.cos(ang)*230;n.y=H/2+Math.sin(ang)*180;n.vx=0;n.vy=0;n.fx=null;n.fy=null;});reheat(1);};
+document.getElementById("center").onclick=()=>{nodes.forEach(n=>{n.fx=null;n.fy=null;});reheat(1);};
+
+/* 图例 */
+const legend=document.getElementById("legend");
+legend.innerHTML="<div style='font-weight:600;margin-bottom:4px'>知识域颜色</div>"+
+  Object.values(CATS).map(v=>`<div class="row"><span class="dot" style="background:${v.color}"></span>${v.name}</div>`).join("");
+
+/* 统计 */
+document.getElementById("st-terms").textContent=TERMS.length;
+document.getElementById("st-edges").textContent=edges.length;
+
+buildDict(null,"");
+</script>
+</body>
+</html>
