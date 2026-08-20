@@ -116,7 +116,7 @@
 
   <div class="layout" style="margin-top:14px">
     <div class="panel">
-      <h2>🕸 知识网络 <small id="sg-hint">拖拽节点 · 悬停高亮邻居 · 点击查看详情（ICH/GMP 深化条目含条款对照）</small></h2>
+      <h2>🕸 知识网络 <small id="sg-hint">拖拽节点 · 悬停高亮邻居 · 点击查看详情（31 个 ICH/GMP 深化条目含条款对照）</small></h2>
       <div class="net-box">
         <svg id="net" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet">
           <g id="edges"></g>
@@ -164,7 +164,7 @@ const TERMS = [
   {id:"gcp",t:"药物临床试验质量管理规范",e:"GCP",c:"sys",d:"Good Clinical Practice，对临床试验全过程（方案设计、组织实施、监查、稽查、记录、分析、报告）的标准规定，保障受试者权益与安全、保证数据真实可靠。现行依据ICH E6(R3)及2026年修订版公告。",r:["gmp","ich","imp","nmpa"]},
   {id:"gdp",t:"药品经营质量管理规范",e:"GSP",c:"sys",d:"Good Supply Practice，药品在流通环节（购进、储存、销售、运输）的质量管理规范，与GMP共同保障药品全生命周期质量。",r:["gmp","mau"]},
   {id:"pqs",t:"药品质量管理体系",e:"PQS / ICH Q10",c:"sys",d:"Pharmaceutical Quality System，ICH Q10提出的贯穿产品生命周期的集成化质量管理体系，包含四大要素：工艺性能与产品质量监控系统、纠正与预防措施（CAPA）系统、变更管理系统、工艺与产品质量回顾与管理评审。是GMP的顶层框架。",r:["gmp","capa","biangeng","apr","cpv","qrm"]},
-  {id:"ich",t:"国际人用药品注册技术协调会",e:"ICH",c:"sys",d:"International Council for Harmonisation，制定药品注册技术指导原则的国际组织，分Q（质量）、S（安全）、E（有效）、M（多学科）四大系列。中国2017年成为管理委员会成员，Q系列为核心质量指导原则（Q1稳定性、Q2分析方法、Q3杂质、Q4药典、Q5生物、Q6标准、Q7原料药、Q8研发、Q9风险、Q10体系、Q11原料药开发、Q12生命周期、Q13连续制造、Q14分析方法开发）。",r:["gmp","gcp","qbd","q8","q9","q11","q12","q13","q3a","q3c","q3d","m7","q5a"]},
+  {id:"ich",t:"国际人用药品注册技术协调会",e:"ICH",c:"sys",d:"International Council for Harmonisation，制定药品注册技术指导原则的国际组织，分Q（质量）、S（安全）、E（有效）、M（多学科）四大系列。中国2017年成为管理委员会成员，Q系列为核心质量指导原则（Q1稳定性、Q2分析方法、Q3杂质、Q4药典、Q5生物、Q6标准、Q7原料药、Q8研发、Q9风险、Q10体系、Q11原料药开发、Q12生命周期、Q13连续制造、Q14分析方法开发）。",r:["gmp","gcp","qbd","q8","q9","q11","q12","q13","q3a","q3c","q3d","m7","q5a","q1a"]},
   {id:"q8",t:"ICH Q8 药物研发",e:"Q8",c:"proc",d:"药物研发指导原则，提出传统研发与增强方法(QbD)两条路径，强调在科学理解与质量风险管理基础上、从研发阶段即系统设计产品与工艺；定义设计空间、控制策略与实时放行(RTRT)等核心概念，是 ICH Q9/Q10/Q11/Q12/Q13 的上游基石。",r:["ich","qbd","cqa","cpp","qrm"]},
   {id:"q12",t:"ICH Q12 药品生命周期管理",e:"Q12",c:"proc",d:"药品生命周期管理的指导原则，建立一致的上市后变更管理框架，引入既定条件(EC)与上市后变更管理方案(PACMP)等工具，使已批准的变更可在预设路径下高效执行、减少重复申报，支撑产品全生命周期持续革新。",r:["ich","biangeng","biangengkz","pqs","qrm","kbyx"]},
   {id:"nmpa",t:"国家药品监督管理局",e:"NMPA",c:"sys",d:"中国国家药品监督管理部门，负责药品、医疗器械、化妆品的注册、生产、经营、使用环节监管与GMP认证/检查。",r:["gmp","cde","cfdi","mau","guanlian"]},
@@ -183,7 +183,7 @@ const TERMS = [
   {id:"pde",t:"每日允许暴露量",e:"PDE",c:"risk",d:"Permitted Daily Exposure，基于无可见有害作用水平（NOAEL）等毒理数据、经种属/个体差异校正系数计算的、终生每日摄入不产生可察觉风险的剂量，是HBEL的计算基础，用于残留限度与共线评估。",r:["hbel","q3d","gongxian","cleaning"]},
 
   // ===== 物料 =====
-  {id:"wuliao",t:"物料",e:"Material",c:"mat",d:"GMP中泛指原料、辅料、包装材料等药品生产的物质基础，须建立接收、储存、标识、取样检验、放行、发放与使用的全过程控制，防止混淆、差错与污染。",r:["gmp","yaofl","yaobc","wuliaobz","dailing","wuliaoph","liuyang","gys","jieshou"]},
+  {id:"wuliao",t:"物料",e:"Material",c:"mat",d:"GMP中泛指原料、辅料、包装材料等药品生产的物质基础，须建立接收、储存、标识、取样检验、放行、发放与使用的全过程控制，防止混淆、差错与污染。",r:["gmp","yaofl","yaobc","wuliaobz","dailing","wuliaoph","liuyang","gys","jieshou","quyang"]},
   {id:"qishi",t:"起始物料",e:"Starting Material",c:"mat",d:"原料药（API）合成路线起点的重要原料。其选择须基于对工艺理解与杂质谱控制（ICH Q11），通常具有既定化学结构、商业可得、在工艺早期引入，且下游步骤足以清除其杂质。",r:["q11","yuanliao","youguan","impurity"]},
   {id:"yuanliao",t:"原料药",e:"API",c:"mat",d:"Active Pharmaceutical Ingredient，用于药品制造的、具有药理活性的物质。其生产须符合ICH Q7，关注晶型、粒度、有关物质、手性杂质、元素/致突变杂质与稳定性。",r:["q7","qishi","jingxing","youguan","q3a","q3d","m7","wuliao","shengwu"]},
   {id:"yaofl",t:"药用辅料",e:"Excipient",c:"mat",d:"药物制剂中除活性成分以外、在安全性方面已合理评估并包含在制剂中的物质。实行关联审评审批（2019年56号公告），2025年第1号公告发布辅料附录，强调功能性、安全性与质量一致性。",r:["guanlian","wuliao","yaobc","nmpa"]},
@@ -282,17 +282,19 @@ const TERMS = [
   {id:"cleaning",t:"清洁验证技术指南",e:"Cleaning Guideline",c:"spec",d:"CFDI发布的清洁验证技术指南（征求意见稿），细化残留限度计算、取样策略、分析方法与最差条件选择，是口服固体制剂清洁验证的实操依据。",r:["qingjie","gongxian","kfzt","cfdi"]},
   {id:"shebei",t:"厂房设施与设备",e:"Facilities & Equipment",c:"sys",d:"GMP的核心硬件基础，涵盖洁净厂房分级、HVAC、水系统、设备确认（IQ/OQ/PQ）与维护，须与产品风险相匹配。",r:["gmp","iqoqpq","wuxian","ccs","qingjie"]},
   {id:"shengchan",t:"生产管理",e:"Production",c:"sys",d:"涵盖生产操作、批次管理、物料发放、过程控制与清场，强调防止混淆差错污染，是GMP现场执行主体。",r:["gmp","gongyi","bpr","wuliaoph","qingjie"]},
-  {id:"zhiliang",t:"质量控制实验室",e:"QC Lab",c:"sys",d:"负责物料与产品检验的部门，须建立质量标准、方法学验证、取样与OOS管理，是批放行与质量判定的技术支撑。",r:["gmp","fangxing","wuliaobz","oos","ronghe"]},
+  {id:"zhiliang",t:"质量控制实验室",e:"QC Lab",c:"sys",d:"负责物料与产品检验的部门，须建立质量标准、方法学验证、取样与OOS管理，是批放行与质量判定的技术支撑。",r:["gmp","fangxing","wuliaobz","oos","ronghe","quyang"]},
   {id:"audit",t:"质量审计",e:"Audit",c:"sys",d:"对供应商、受托方与自身的系统化检查，分供应商审计、内部审计与监管检查，是PQS与供应商管理的重要手段。",r:["gys","mau","pqs","weituo"]},
   {id:"fayun",t:"发运与召回",e:"Distribution & Recall",c:"sys",d:"药品发运须防止运输污染混淆，召回是发现重大质量风险时收回已上市产品的应急机制，持有人负主体责任。",r:["mau","tousu","gmp","shebei"]},
   {id:"impurity",t:"杂质",e:"Impurity",c:"cqa",d:"药品中存在的非预期物质，分有机杂质（有关物质）、残留溶剂、元素杂质与致突变杂质，由Q3系列与M7分别控制。",r:["youguan","rongji","yuansu","m7","q3a","q3b"]},
 
   // ===== 补充术语（补全关联关系） =====
-  {id:"jieshou",t:"物料接收与取样检验",e:"Receipt & Sampling",c:"mat",d:"物料到货后的接收核对（品名、批号、数量、包装、合格证）、待验隔离与按质量标准取样检验，合格后方可放行使用，是防止不合格物料流入生产的第一道关口。",r:["wuliao","dailing","wuliaobz","fangxing","zhiliang","gys"]},
+  {id:"jieshou",t:"物料接收与取样检验",e:"Receipt & Sampling",c:"mat",d:"物料到货后的接收核对（品名、批号、数量、包装、合格证）、待验隔离与按质量标准取样检验，合格后方可放行使用，是防止不合格物料流入生产的第一道关口。",r:["wuliao","dailing","wuliaobz","fangxing","zhiliang","gys","quyang"]},
   {id:"q11",t:"ICH Q11 原料药开发和生产",e:"Q11",c:"proc",d:"规定原料药（化学实体与生物技术/生物实体药物）的开发与生产原则，明确起始物料的选择与论证、工艺开发、杂质控制、工艺验证与生命周期管理，是原料药质量研究的核心指导原则。",r:["ich","qishi","yuanliao","yuanliao2","yuanliaoyz","cpp","gongyka"]},
   {id:"q5a",t:"ICH Q5A 病毒安全性",e:"Q5A",c:"sys",d:"生物技术产品病毒安全性指导原则，规定来源于细胞（含重组DNA、杂交瘤、转基因动物/植物）产品的潜在病毒污染风险评估与清除策略（灭活+去除），是生物制品病毒清除研究的上位依据。",r:["ich","shengwu","virus","yuanliaoyz","chundu","ptyz"]},
   {id:"kzcl",t:"控制策略",e:"Control Strategy",c:"proc",d:"Control Strategy，ICH Q8/Q10提出的、源于对产品与工艺理解、基于CQA–CPP关联的、确保工艺维持受控状态的一组有计划控制（如物料标准、工艺参数控制、中控、放行检验、监测）。是QbD的落地输出。",r:["cqa","cpp","qbd","gongybf","pqs","cpv"]},
-  {id:"sus",t:"一次性系统",e:"SUS",c:"spec",d:"Single-Use System，生物制品等生产中使用的、免清洗灭菌的一次性组件（袋、管路、滤芯、生物反应器），降低交叉污染风险、缩短换批时间并减轻清洁验证负担，须在CCS与污染控制中评估其相容性与完整性。",r:["glsx","shengwu","ccs","qingjie","chundu"]}
+  {id:"sus",t:"一次性系统",e:"SUS",c:"spec",d:"Single-Use System，生物制品等生产中使用的、免清洗灭菌的一次性组件（袋、管路、滤芯、生物反应器），降低交叉污染风险、缩短换批时间并减轻清洁验证负担，须在CCS与污染控制中评估其相容性与完整性。",r:["glsx","shengwu","ccs","qingjie","chundu"]},
+  {id:"q1a",t:"ICH Q1A 稳定性研究",e:"Q1A",c:"cqa",d:"新原料药和制剂的稳定性研究指导原则，规定批次选择、放置条件（长期/加速/中间）、检测频率与限度，以确立有效期（货架期）与储存条件；与Q1B（气候带）、Q5C（生物制品稳定性）衔接。",r:["ich","apr","zhiliang"]},
+  {id:"quyang",t:"GMP附录·取样",e:"Sampling",c:"mat",d:"规定物料、中间产品与成品的取样操作规程，包括取样方案、取样人员资质、取样工具与环境、代表性样品、留样与防止污染；是物料接收检验与质量控制的前置环节，须保证样品代表性与可追溯。",r:["wuliao","jieshou","zhiliang","liuyang","fangxing"]}
 ];
 
 /* ============== 深化条目：定义 + 条款对照 + 示例（ICH 指导原则 / GMP 附录） ============== */
@@ -628,6 +630,30 @@ const DEEP = {
       "青霉素类：独立厂房设施，严禁与其他产品共线生产。",
       "质量受权人：每批审核 BPR+检验结果+偏差/CAPA 后作出放行裁决。"
     ]
+  },
+  "q1a":{
+    clauses:[
+      {src:"ICH Q1A(R2)",art:"2. 批次选择",txt:"原料药/制剂至少采用中试规模的代表性批次（通常3批），制剂可用不同批号原料药；样品须按拟定包装贮存。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q1A(R2)",art:"3. 放置条件",txt:"长期（气候带II：25°C/60%RH）、加速（40°C/75%RH）、中间（30°C/65%RH）条件与对应时限，明确温湿度容差。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q1A(R2)",art:"4. 检测频率与限度",txt:"长期/加速按 0/3/6/9/12/18/24…月设检测点；限度依据注册标准，降解产物趋势须评估。",url:"https://www.cde.org.cn/"},
+      {src:"ICH Q1A(R2)",art:"5. 结果评价与有效期",txt:"以 95% 置信度下 90% 单侧置信限不低于标准，确立货架期（有效期）；支持外推须有充分数据。",url:"https://www.cde.org.cn/"}
+    ],
+    examples:[
+      "口服固体制剂：3批中试产品加速6月+长期24月，依 Q1A 90%置信限法确立有效期24个月。",
+      "原料药：气候带II长期条件考察晶型/有关物质/水分趋势，支持复检期与储存条件。"
+    ]
+  },
+  "quyang":{
+    clauses:[
+      {src:"GMP附录·取样",art:"2. 原则",txt:"取样须保证样品代表性、不被污染、可追溯；取样前核对物料状态与标识，防止混淆。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"GMP附录·取样",art:"3. 取样方案",txt:"按总件数开平方根确定取样件数，规定取样部位、量与频次；均质/非均质分别处理。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"GMP附录·取样",art:"4. 取样操作",txt:"取样工具/容器清洁，无菌取样在洁净区进行，防止交叉污染；人员经培训并控制着装。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"},
+      {src:"GMP附录·取样",art:"5. 留样与封存",txt:"留样量满足全检+必要复检，密封标识、与检验样分开管理，按效期保存。",url:"https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html"}
+    ],
+    examples:[
+      "原料到货100件：按√100=10件取样，每件取代表性部位，分检验样与留样。",
+      "无菌原辅料：在B/A级背景无菌取样，防止微生物污染并立即密封。"
+    ]
   }
 };
 
@@ -654,6 +680,24 @@ const SUBNET = {
   xuezhipin:{proc:["xuezhipin","virus"], qual:["pillzh"]},
   xibao:{proc:["xibao","shengwu","sus"], qual:[]},
   imp:{proc:["imp","gcp"], qual:[]}
+};
+
+/* ============== 分品种二级子网·细拆维度（将「工艺子网」进一步拆为 厂房/设备/人员/监测 等） ============== */
+const FINE = {
+  wuxian:{
+    "厂房/设施":["ccs","glsx","sus"],
+    "人员/操作":["wuxian"],
+    "监测/评价":["hjjk","wugongymn"]
+  },
+  kfzt:{
+    "厂房/设备":["kfzt","gongxian"],
+    "清洁/共线":["qingjie","cleaning"]
+  },
+  shengwu:{
+    "细胞/培养":["shengwu","xibao","yuanliaoyz"],
+    "病毒清除":["virus","lrv","mxbd","ptyz","q5a"],
+    "设备":["sus"]
+  }
 };
 
 /* ============== 构建网络 ============== */
@@ -836,11 +880,14 @@ document.getElementById("reset").onclick=()=>{nodes.forEach((n,i)=>{const ang=(i
 document.getElementById("center").onclick=()=>{nodes.forEach(n=>{n.fx=null;n.fy=null;});reheat(1);};
 
 /* ============== 分品种子图（含二级子网） ============== */
-function applyView(ptId, sub){
+function applyView(ptId, sub, fine){
   let nodeSet=null;
   if(ptId){
     let srcMembers;
-    if(sub && SUBNET[ptId] && SUBNET[ptId][sub]){
+    if(fine && FINE[ptId] && FINE[ptId][fine]){
+      nodeSet=new Set(FINE[ptId][fine]);
+      srcMembers=FINE[ptId][fine];
+    } else if(sub && SUBNET[ptId] && SUBNET[ptId][sub]){
       nodeSet=new Set(SUBNET[ptId][sub]);
       srcMembers=SUBNET[ptId][sub];
     } else {
@@ -863,28 +910,34 @@ const sgAll=document.createElement("button"); sgAll.className="sg-btn active"; s
 Object.entries(CLUSTERS).forEach(([k,v])=>{
   const b=document.createElement("button"); b.className="sg-btn"; b.textContent=v.label; b.onclick=()=>setSG(k); sgbar.appendChild(b);
 });
-let curSG=null, curSub=null;
+let curSG=null, curSub=null, curFine=null;
 function setSG(k){
-  curSG=k; curSub=null;
+  curSG=k; curSub=null; curFine=null;
   document.querySelectorAll("#sgbar .sg-btn").forEach((b,i)=>b.classList.toggle("active",(k===null&&i===0)||b.textContent===CLUSTERS[k]?.label));
   const subbar=document.getElementById("subbar");
   if(k){ renderSubBar(k); subbar.style.display="flex"; }
   else subbar.style.display="none";
-  applyView(k,null);
+  applyView(k,null,null);
   updateSGHint();
 }
 function renderSubBar(ptId){
   const subbar=document.getElementById("subbar"); subbar.innerHTML="";
   const lab=document.createElement("span"); lab.style.cssText="font-size:12px;color:#64748b;align-self:center;margin-right:2px"; lab.textContent="二级子网："; subbar.appendChild(lab);
-  const mk=(label,sub)=>{const b=document.createElement("button");b.className="sg-btn"+(sub===null?" active":"");b.textContent=label;b.onclick=()=>{curSub=sub;document.querySelectorAll("#subbar .sg-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");applyView(ptId,sub);updateSGHint();};subbar.appendChild(b);};
-  mk("全部子图",null);
-  mk("🔧 工艺子网","proc");
-  if(SUBNET[ptId]&&SUBNET[ptId].qual.length) mk("🔬 质量子网","qual");
+  const mk=(label,sub,fine,active)=>{const b=document.createElement("button");b.className="sg-btn"+(active?" active":"");b.textContent=label;b.onclick=()=>{curSub=sub;curFine=fine;document.querySelectorAll("#subbar .sg-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");applyView(ptId,sub,fine);updateSGHint();};subbar.appendChild(b);};
+  mk("全部子图",null,null,curSub===null&&curFine===null);
+  mk("🔧 工艺子网","proc",null,curSub==="proc");
+  if(SUBNET[ptId]&&SUBNET[ptId].qual.length) mk("🔬 质量子网","qual",null,curSub==="qual");
+  if(FINE[ptId]){
+    const flab=document.createElement("span"); flab.style.cssText="font-size:12px;color:#0d9488;align-self:center;margin:0 2px 0 10px;font-weight:600"; flab.textContent="▸ 细拆维度："; subbar.appendChild(flab);
+    Object.keys(FINE[ptId]).forEach(dim=>{ mk(dim,null,dim,curFine===dim); });
+  }
 }
 function updateSGHint(){
   const hint=document.getElementById("sg-hint");
-  if(!curSG){hint.textContent="拖拽节点 · 悬停高亮邻居 · 点击查看详情（ICH/GMP 深化条目含条款对照）";return;}
-  const subTxt = curSub? (curSub==="proc"?" · 工艺子网":" · 质量子网") : "";
+  if(!curSG){hint.textContent="拖拽节点 · 悬停高亮邻居 · 点击查看详情（31 个 ICH/GMP 深化条目含条款对照）";return;}
+  let subTxt="";
+  if(curFine) subTxt=" · "+curFine;
+  else if(curSub) subTxt = curSub==="proc"?" · 工艺子网":" · 质量子网";
   hint.textContent=`当前：${CLUSTERS[curSG].label}${subTxt} · 共 ${nodes.filter(n=>n.vis).length} 个术语`;
 }
 
