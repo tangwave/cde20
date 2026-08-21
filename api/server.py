@@ -82,26 +82,20 @@ LLM_PRESETS_DEFAULT = [
     {"id": "openrouter", "name": "OpenRouter（免费模型聚合 · 无需付费 Key）",
      "base_url": "https://openrouter.ai/api/v1",
      "models": [
-        "google/gemma-4-31b-it:free",                       # 真免费，Gemma 4 31B 通用强模型
-        "google/gemma-4-26b-a4b-it:free",                   # 真免费，Gemma 4 26B A4B
+        "nvidia/nemotron-3-ultra-550b-a55b:free",           # 真免费，Nemotron 3 Ultra 550B 超大模型（中文药学质量最佳，默认）
         "nvidia/nemotron-3-super-120b-a12b:free",           # 真免费，Nemotron 3 Super 120B 强模型
-        "nvidia/nemotron-3-ultra-550b-a55b:free",           # 真免费，Nemotron 3 Ultra 550B 超大模型
         "nvidia/nemotron-3-nano-30b-a3b:free",              # 真免费，Nemotron 3 Nano 30B A3B
         "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", # 真免费，Nemotron 3 Nano Omni 多模态推理
         "nvidia/nemotron-3.5-lightning:free",               # 真免费，Nemotron 3.5 极速
         "nvidia/nemotron-3.5-content-safety:free",          # 真免费，Nemotron 3.5 内容安全
-        "nvidia/nemotron-nano-12b-v2-vl:free",              # 真免费，支持视觉(vision)
         "nvidia/nemotron-nano-9b-v2:free",                   # 真免费，Nemotron Nano 9B
-        "openai/gpt-oss-20b:free",                          # 真免费，OpenAI 开放权重 20B
+        "openai/gpt-oss-20b:free",                          # 真免费，OpenAI 开放权重 20B（快速稳定）
         "dots-studio/dots-3-note-preview:free",             # 真免费，Dots 3 Note 预览（长上下文/笔记场景）
-        "poolside/laguna-s-2.1:free",                       # 真免费，代码/推理小模型
-        "poolside/laguna-xs-2.1:free",                      # 真免费，超轻量代码模型
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
-        "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 轻量（2026-08-19 实测重新回到免费档）
-        "z-ai/glm-5.2:free",                                # 真免费，智谱 GLM 5.2 开放权重（2026-08-19 实测重新回到免费档）
-        "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档，支持图文）
+        "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 轻量
+        "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档）
      ],
-     "default_model": "openai/gpt-oss-20b:free"},
+     "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free"},
     {"id": "chatanywhere", "name": "ChatAnywhere（GitHub 免费 Key · GPT/DeepSeek 免费额度）",
      "base_url": "https://api.chatanywhere.tech/v1",
      "models": [

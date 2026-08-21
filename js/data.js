@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-08-20",
-    "totalDocs": 2205,
+    "lastUpdated": "2026-08-21",
+    "totalDocs": 2206,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -5454,6 +5454,11 @@ const KB_DATA = {
                   }
                 ],
                 "regulations": [
+                  {
+                    "title": "镥[177Lu]奥索度曲肽注射液仿制药药学研究技术要求（征求意见稿）（CDE，2026-08-21）",
+                    "path": "04_技术指导原则/CDE_指导原则/镥177Lu奥索度曲肽注射液仿制药药学研究技术要求征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/ab4715b7be387ad790d662258fc3e1f9"
+                  },
                   {
                     "title": "放射性药品管理办法（国务院令第25号，2024年修订）",
                     "path": "02_行政法规/放射性药品管理办法.pdf",

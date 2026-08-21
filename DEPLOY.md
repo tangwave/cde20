@@ -9,7 +9,7 @@
 
 1. **代码已经在 GitHub 上**：`tangwave/cde20`，分支 `master`。Render 只支持 GitHub / GitLab / Bitbucket，**不支持 Gitee**，所以走 GitHub 这路（Gitee 是国内的镜像仓，可不用管）。
 2. **法规库随代码一起进了仓库**：`kb.sqlite`（约 243MB）已 gzip 后按 40MB 切成 4 个分卷 `00_索引/kb.sqlite.gz.00~.03`（约 138MB）入库。构建时 `scripts/download_kb.sh` 会**自动合并解压还原成 `kb.sqlite`**，你**不需要**提供任何下载直链。
-3. **大模型后端默认已配好 OpenRouter 免费模型**：`openai/gpt-oss-20b:free`（标准 OpenAI 兼容接口，无需付费 Key；2026-08 起 `inclusionai/ling-3.0-tiny:free` 已退出免费档，故切换默认）。网页内也可一键切换到 ChatAnywhere（GitHub 免费 Key）/ 智谱 GLM（glm-4.7-flash 永久免费）/ 通义千问 / Kimi / 火山方舟 / 腾讯混元 / 百度千帆 / 硅基流动 / DeepSeek（V3-Lite 永久免费）/ Google Gemini / Groq / Mistral AI（实验计划免费）/ Ollama（本地）等内置服务商（见第三、四节及下方对照表）。
+3. **大模型后端默认已配好 OpenRouter 免费模型**：`nvidia/nemotron-3-ultra-550b-a55b:free`（标准 OpenAI 兼容接口，无需付费 Key；2026-08-21 实测从 18 个 :free 中剔除 6 个地区/提供方受限模型，保留 12 个已验证可用，默认改为 Nemotron 3 Ultra 550B）。网页内也可一键切换到 ChatAnywhere（GitHub 免费 Key）/ 智谱 GLM（glm-4.7-flash 永久免费）/ 通义千问 / Kimi / 火山方舟 / 腾讯混元 / 百度千帆 / 硅基流动 / DeepSeek（V3-Lite 永久免费）/ Google Gemini / Groq / Mistral AI（实验计划免费）/ Ollama（本地）等内置服务商（见第三、四节及下方对照表）。
 
 ---
 
@@ -36,7 +36,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | `LLM_API_KEY` | 空（待填） | ✅ **必填**，把第 1 步的 OpenRouter key 粘进去 |
 | `LLM_PROVIDER` | `openai` | 已填好，别改 |
 | `LLM_BASE_URL` | `https://openrouter.ai/api/v1` | 已填好，别改 |
-| `LLM_MODEL` | `openai/gpt-oss-20b:free` | 已填好，别改 |
+| `LLM_MODEL` | `nvidia/nemotron-3-ultra-550b-a55b:free` | 已填好，别改 |
 | `QA_DEFAULT_MODE` | `local` | 已填好，别改 |
 | `KB_SQLITE_URL` | 空 | **留空不用管**（法规库分卷随代码自动还原） |
 | `PORT` / `PYTHON_VERSION` | `（自动）` / `3.11` | 自动，别改 |
@@ -59,40 +59,34 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 - 本项目最早试过 **Cline 的 `deepseek-v4-flash`**（`https://api.cline.bot/api/v1`），但实测返回
   `403: deepseek/deepseek-v4-flash is only available via Cline product surfaces` ——
   该模型被限制在 **Cline 自家产品（VS Code 插件）里调用**，不能当通用接口给第三方应用用，所以走不通。
-- **OpenRouter** 是标准 OpenAI 兼容网关，是本项目免费模型的汇聚入口（默认 `openai/gpt-oss-20b:free`，无需付费 Key；免费目录随官方调整，以 openrouter.ai 实时列表为准）。
+- **OpenRouter** 是标准 OpenAI 兼容网关，是本项目免费模型的汇聚入口（默认 `nvidia/nemotron-3-ultra-550b-a55b:free`，无需付费 Key；免费目录随官方调整，以 openrouter.ai 实时列表为准）。
 - 也试过原生 **DeepSeek `/responses` 联网检索**：它走 DeepSeek 私有接口、且**不回吐可展示的来源链接**，对「法规问答需展示权威出处」是硬伤，故未作为默认。
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-19 实测真免费（共 **18** 个，均 `:free` 后缀且 prompt / completion 价格均为 0）。
-> ⚠️ 注意：`inclusionai/ling-3.0-tiny:free` 已于 2026-08 从 OpenRouter 免费档移除；`liquid/lfm-2.5-2.6b:free` 与 `z-ai/glm-5.2:free` 曾在 2026-08-18 短暂退出免费档，2026-08-19 实测重新回到免费档（pricing 双 0），已重新纳入；音频类 `google/lyria-3-*` 虽 pricing 双 0 但为音乐生成模型（非对话 LLM），未纳入。本项目默认模型保持 `openai/gpt-oss-20b:free`。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-21 实测真免费（共 **12** 个，均 `:free` 后缀且 prompt / completion 价格均为 0），均已通过连通性与中文药学问答实测。
+> ⚠️ 注意：2026-08-21 实测剔除 6 个不可用的 `:free` 模型——`google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`z-ai/glm-5.2:free` 因地区限制返回 Provider returned error；`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free` 提供方错误；`nvidia/nemotron-nano-12b-v2-vl:free` 调用超时/空响应。当前保留 12 个已验证可用模型，默认模型改为 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学问答质量最佳）。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
-| **`openai/gpt-oss-20b:free`**（默认） | OpenAI 开放权重 20B 通用模型 | **默认推荐**：常规法规问答、长文摘要 | 通用能力强、稳定 |
-| `dots-studio/dots-3-note-preview:free` | Dots 3 Note 预览（长上下文） | 笔记 / 长文摘要、法规要点梳理 | 长上下文 |
-| `google/gemma-4-31b-it:free` | Gemma 4 31B 通用强模型 | 法规问答、中文理解 | 综合均衡 |
-| `google/gemma-4-26b-a4b-it:free` | Gemma 4 26B（A4B 激活） | 长文处理、摘要 | 高效 |
+| **`nvidia/nemotron-3-ultra-550b-a55b:free`**（默认） | Nemotron 3 Ultra 550B 超大模型 | **默认推荐**：高难任务、最强能力（中文药学质量最佳） | 体量最大 |
 | `nvidia/nemotron-3-super-120b-a12b:free` | Nemotron 3 Super 120B 强模型 | 复杂推理、深度问答 | 大体量 |
-| `nvidia/nemotron-3-ultra-550b-a55b:free` | Nemotron 3 Ultra 550B 超大模型 | 高难任务、最强能力 | 体量最大 |
+| `openai/gpt-oss-20b:free` | OpenAI 开放权重 20B 通用模型 | 常规法规问答、长文摘要（快速稳定，备选推荐） | 通用能力强、稳定 |
+| `dots-studio/dots-3-note-preview:free` | Dots 3 Note 预览（长上下文） | 笔记 / 长文摘要、法规要点梳理 | 长上下文 |
 | `nvidia/nemotron-3-nano-30b-a3b:free` | Nemotron 3 Nano 30B（A3B 激活） | 均衡、低延迟 | 高效 |
 | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free` | Nemotron 3 Nano Omni 多模态推理 | 推理 + 多模态 | 推理向 |
 | `nvidia/nemotron-3.5-lightning:free` | Nemotron 3.5 极速 | 低延迟问答 | 速度快 |
 | `nvidia/nemotron-3.5-content-safety:free` | Nemotron 3.5 内容安全 | 安全过滤场景 | 专项 |
-| `nvidia/nemotron-nano-12b-v2-vl:free` | Nemotron Nano 12B（视觉） | 图文多模态 | 支持视觉 |
 | `nvidia/nemotron-nano-9b-v2:free` | Nemotron Nano 9B | 轻量通用 | 小模型 |
-| `poolside/laguna-s-2.1:free` | 代码 / 推理向 | 代码示例、技术文档生成 | 偏代码 |
-| `poolside/laguna-xs-2.1:free` | 超轻量代码模型 | 代码补全 / 低延迟 | 体量更小 |
 | `cohere/north-mini-code:free` | 代码生成模型 | 代码片段生成 | 偏代码 |
-| `liquid/lfm-2.5-2.6b:free` | LiquidAI LFM2.5 2.6B 轻量模型 | 低延迟、轻量问答 | 2026-08-19 重新回到免费档 |
-| `z-ai/glm-5.2:free` | 智谱 GLM 5.2 开放权重 | 中文法规问答、通用 | 2026-08-19 重新回到免费档 |
+| `liquid/lfm-2.5-2.6b:free` | LiquidAI LFM2.5 2.6B 轻量模型 | 低延迟、轻量问答 | 轻量 |
 | `openrouter/free` | OpenRouter 免费模型路由器 | 自动分发到免费档（支持图文输入） | 免指定具体模型 |
 
 切换方式（任选其一）：
 1. **网页内**：设置 → 服务商选 `OpenRouter` → 模型下拉里直接选；
 2. **环境变量 / render.yaml**：把 `LLM_MODEL` 改成上表任一 ID 即可，其余（`LLM_PROVIDER=openai`、`LLM_BASE_URL`）不变。
 
-> 💡 本项目是「药品法规问答」，默认 `openai/gpt-oss-20b:free` 最稳；Nemotron 3 系列适合复杂/深度问答，Gemma 4 适合中文，其余偏代码。
+> 💡 本项目是「药品法规问答」，默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳、稳定）；`openai/gpt-oss-20b:free` 为快速稳定的备选；Nemotron 3 系列其余型号适合复杂/深度问答，Cohere/Liquid 偏代码与轻量场景。
 
 ### 全部 17 家内置服务商对照（base_url + 免费模型）
 
@@ -102,7 +96,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 | # | 服务商 | `base_url`（已内置） | 免费模型（**加粗=默认**） | 免费形态 | 备注 |
 |---|--------|----------------------|---------------------------|----------|------|
-| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`openai/gpt-oss-20b:free`**(默认)、`google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`nvidia/nemotron-3-super-120b-a12b:free`、`nvidia/nemotron-3-ultra-550b-a55b:free`、`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`、`nvidia/nemotron-3.5-lightning:free`、`nvidia/nemotron-3.5-content-safety:free`、`nvidia/nemotron-nano-12b-v2-vl:free`(视觉)、`nvidia/nemotron-nano-9b-v2:free`、`liquid/lfm-2.5-2.6b:free`、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free`、`cohere/north-mini-code:free`（共 15 个） | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0）；2026-08-14 更新：移除已下架 ling-3.0-tiny，新增 Nemotron 3 系列 / LFM2.5 共 7 个真免费模型 |
+| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`nvidia/nemotron-3-ultra-550b-a55b:free`**(默认)、`nvidia/nemotron-3-super-120b-a12b:free`、`openai/gpt-oss-20b:free`、`dots-studio/dots-3-note-preview:free`、`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`、`nvidia/nemotron-3.5-lightning:free`、`nvidia/nemotron-3.5-content-safety:free`、`nvidia/nemotron-nano-9b-v2:free`、`cohere/north-mini-code:free`、`liquid/lfm-2.5-2.6b:free`、`openrouter/free`（共 12 个，均 :free） | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0）；2026-08-21 实测剔除 6 个地区/提供方受限模型（Gemma 4 系列、GLM 5.2、Poolside、Nemotron Nano 12B 视觉），保留 12 个已验证可用 |
 | 2 | ChatAnywhere | `https://api.chatanywhere.tech/v1` | **`gpt-4o-mini`**、`gpt-3.5-turbo`、`gpt-4.1-mini`、`gpt-5-mini`、`gpt-5-nano`、`deepseek-r1` | GitHub 免费 Key·每日额度 | 绑定 GitHub 领 Key；gpt-4o-mini/3.5/4.1-mini/5-mini/5-nano 各 100 次/天，deepseek-r1 30 次/天，gpt-5/4.1 仅 5 次/天；国内 `api.chatanywhere.tech`，国外 `api.chatanywhere.org` |
 | 3 | 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | **`glm-4.7-flash`**（永久免费）、`glm-4-flash`（永久免费）、`glm-5.1` | glm-4.7/4-flash 永久免费 | 新用户赠 2000 万 token |
 | 4 | 通义千问 Qwen | `https://dashscope.aliyuncs.com/compatible-mode/v1` | **`qwen-plus`**（每日 100 万免费）、`qwen-turbo`（永久免费）、`qwen-long`、`qwen2.5-72b-instruct` | qwen-turbo 永久免费 | 阿里云百炼 |
@@ -130,7 +124,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 ```
 LLM_PROVIDER=openai                  # 务必是 openai，不是 deepseek！
 LLM_BASE_URL=https://openrouter.ai/api/v1
-LLM_MODEL=openai/gpt-oss-20b:free
+LLM_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
 LLM_API_KEY=sk-or-v1-xxxxxxxx        # 在 Render 控制台填，sync:false
 ```
 > ⚠️ **`LLM_PROVIDER` 必须保持 `openai`**。本项目的代码里，只有 `provider=deepseek` 且模型含 `v4` 才会走 DeepSeek 私有的 `/responses` 路径；OpenRouter 是通用 `/chat/completions`，设成 `deepseek` 会误走私有接口而报错。
@@ -146,7 +140,7 @@ LLM_API_KEY=sk-or-v1-xxxxxxxx        # 在 Render 控制台填，sync:false
 |------|------------------|------|
 | `LLM_PROVIDER` | `openai` | LLM 接入方式；OpenRouter/通用代理用 `openai` |
 | `LLM_BASE_URL` | `https://openrouter.ai/api/v1` | OpenAI 兼容基址（不含 `/chat/completions`） |
-| `LLM_MODEL` | `openai/gpt-oss-20b:free` | 模型名 |
+| `LLM_MODEL` | `nvidia/nemotron-3-ultra-550b-a55b:free` | 模型名 |
 | `LLM_API_KEY` | （空，控制台填） | API Key，`sync:false` 不进仓库 |
 | `LLM_TIMEOUT` | `120` | 请求超时（秒） |
 | `QA_DEFAULT_MODE` | `local` | 初始默认问答模式：`local`=法规库RAG / `web`=内置联网 / `hybrid`=本地+联网深度融合 |
