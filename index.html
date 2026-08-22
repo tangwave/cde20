@@ -70,6 +70,10 @@
           <span>🏭</span>
           <span>生产工艺·分类</span>
         </button>
+        <button class="topbar-btn" data-portal="mindmap" title="药品注册与质量管理思维导图：32 个药品子类的分类、术语、全生命周期与申报资料要求">
+          <span>🧠</span>
+          <span>思维导图</span>
+        </button>
         <button class="topbar-btn" data-portal="flightchecks" title="药品飞行检查通报：国家局+重点省份药品生产飞检，可按省份/年份/药品类型/缺陷类型筛选并与药品分类关联">
           <span>✈️</span>
           <span>飞行检查</span>
@@ -122,7 +126,7 @@
   <aside id="regulationPanel" class="regulation-panel">
     <div class="regulation-panel-header">
       <span class="regulation-panel-title">📎 法规快速链接</span>
-      <button id="regulationPanelClose" class="regulation-panel-close" title="关闭">×</button>
+      <button id="regulationPanelClose" class="regulation-panel-close" title="关闭" aria-label="关闭法规快速链接面板">×</button>
     </div>
     <div id="regulationPanelBody" class="regulation-panel-body"></div>
   </aside>
@@ -132,7 +136,7 @@
     <div class="reg-lib-sidebar">
       <div class="reg-lib-sidebar-head">
         <span class="reg-lib-title">📖 法规原文库</span>
-        <button id="regLibClose" class="reg-lib-close" title="关闭">×</button>
+        <button id="regLibClose" class="reg-lib-close" title="关闭" aria-label="关闭法规原文库">×</button>
       </div>
       <div id="regCatFilters" class="reg-cat-filters"></div>
       <input type="text" id="regSearchInput" class="reg-search-input"
@@ -155,7 +159,7 @@
         <div class="qa9-head-right">
           <button id="qa9ModelBtn" class="qa9-head-btn" title="模型设置（API Key / 自定义）">⚙️ 设置</button>
           <button id="qa9Clear" class="qa9-head-btn">清空对话</button>
-          <button id="qa9Close" class="qa9-head-btn qa9-close" title="关闭">×</button>
+          <button id="qa9Close" class="qa9-head-btn qa9-close" title="关闭" aria-label="关闭智能问答">×</button>
         </div>
       </div>
 
@@ -193,7 +197,7 @@
     <div class="qa9-modal-box">
       <div class="qa9-modal-head">
         <span>⚙️ AI 模型设置</span>
-        <button id="qa9ModelClose" class="qa9-close" title="关闭">×</button>
+        <button id="qa9ModelClose" class="qa9-close" title="关闭" aria-label="关闭模型设置">×</button>
       </div>
       <div class="qa9-modal-body">
         <p class="qa9-modal-tip">已内置 17 家免费/低成本服务商，选服务商 + 粘贴 Key 即用；各服务商 Key 独立保存、不重复填写。下方可直接切换内置模型，或点「+ 新增」自定义（任意 OpenAI 兼容）。</p>
@@ -314,5 +318,7 @@
   <script src="js/manufacture-kb.js?v=20260813d"></script>
   <script src="js/manufacture-detail.js?v=20260816a"></script>
   <script src="js/flight-checks.js?v=20260816a"></script>
+  <script src="js/mindmap-results.js?v=20260821a"></script>
+  <script src="js/mindmap-portal.js?v=20260821a"></script>
 </body>
 </html>

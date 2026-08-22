@@ -336,3 +336,36 @@
 .req-qm-block { margin-top: 16px; border: 1px solid #bfe3c8; border-left: 4px solid #2e9e57; border-radius: 12px; background: #f3fbf5; padding: 12px 15px; }
 .req-qm-head { font-size: 13px; font-weight: 800; color: #1f7a44; margin-bottom: 8px; }
 .req-qm-block .req-block { margin-top: 8px; }
+
+/* ===================== 思维导图门户 ===================== */
+.mindmap-portal { padding: 16px; }
+.mindmap-portal-header { margin-bottom: 20px; }
+.mindmap-portal-header h2 { font-size: 20px; color: #1a237e; margin: 0 0 8px; }
+.mindmap-portal-desc { font-size: 13px; color: #546e7a; line-height: 1.6; margin: 0; }
+.mindmap-portal-summary { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; padding: 12px 16px; background: #f5f7fa; border-radius: 8px; }
+.summary-item { font-size: 13px; color: #374151; }
+.summary-item strong { color: #1a237e; }
+.summary-item.total { font-weight: 700; color: #d32f2f; }
+.mindmap-group { margin-bottom: 24px; }
+.mindmap-group-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fafbfc; border-radius: 8px 8px 0 0; }
+.mindmap-group-icon { font-size: 18px; }
+.mindmap-group-title { font-size: 15px; font-weight: 700; color: #1a237e; }
+.mindmap-group-count { font-size: 12px; color: #64748b; background: #e2e8f0; padding: 2px 8px; border-radius: 12px; margin-left: auto; }
+.mindmap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; padding: 14px; background: #fff; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; }
+.mindmap-card { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; transition: box-shadow .15s; }
+.mindmap-card:hover { box-shadow: 0 4px 12px rgba(26,35,126,.1); }
+.mindmap-card-img { width: 100%; height: 180px; overflow: hidden; background: #f8fafc; display: flex; align-items: center; justify-content: center; }
+.mindmap-card-img img { width: 100%; height: 100%; object-fit: contain; }
+.mindmap-card-body { padding: 10px 12px; }
+.mindmap-card-name { font-size: 13px; font-weight: 600; color: #1a237e; margin-bottom: 8px; line-height: 1.4; }
+.mindmap-card-links { display: flex; gap: 8px; }
+.mindmap-link-edit, .mindmap-link-view { font-size: 12px; padding: 4px 10px; border-radius: 4px; text-decoration: none; font-weight: 500; }
+.mindmap-link-edit { background: #e3f2fd; color: #1565c0; }
+.mindmap-link-edit:hover { background: #bbdefb; }
+.mindmap-link-view { background: #f3e5f5; color: #7b1fa2; }
+.mindmap-link-view:hover { background: #e1bee7; }
+@media (max-width: 768px) {
+  .mindmap-grid { grid-template-columns: 1fr; }
+  .mindmap-portal-summary { gap: 8px; }
+}
+

@@ -169,6 +169,10 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.cerebras.ai/v1",
      "models": ["llama-3.3-70b", "llama3.1-70b", "gpt-oss-120b", "qwen-3-32b", "gemma-4-31b"],
      "default_model": "llama-3.3-70b"},                      # 免费 1M TPD/30 RPM，无需信用卡；免费档上下文 8K
+    {"id": "agnes", "name": "Agnes AI（agnes-2.5-flash · 中文优化 · 编码专项）",
+     "base_url": "https://api.agnes-ai.cn/v1",
+     "models": ["agnes-2.5-flash", "agnes-2.0-flash"],        # 2.5 Flash 全量升级：编码、Agent、多模态
+     "default_model": "agnes-2.5-flash"},                     # 512K 上下文 / 65K 输出，中文药学质量优
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
