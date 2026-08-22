@@ -26,3 +26,6 @@ llm_presets.json
 Thumbs.db
 backend.log
 backend_run.log
+
+# 调试 / 缓存目录
+.agents/

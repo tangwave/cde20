@@ -1,0 +1,150 @@
+[
+  {
+    "id": "openrouter",
+    "name": "OpenRouter（免费模型聚合 · 无需付费 Key）",
+    "base_url": "https://openrouter.ai/api/v1",
+    "models": [
+      "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "nvidia/nemotron-3-super-120b-a12b:free",
+      "nvidia/nemotron-3-nano-30b-a3b:free",
+      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "nvidia/nemotron-3.5-lightning:free",
+      "nvidia/nemotron-3.5-content-safety:free",
+      "nvidia/nemotron-nano-9b-v2:free",
+      "dots-studio/dots-3-note-preview:free",
+      "thinkingmachines/inkling:free",
+      "thinkingmachines/inkling-small:free",
+      "cohere/north-mini-code:free",
+      "liquid/lfm-2.5-2.6b:free",
+      "openrouter/free"
+    ],
+    "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free"
+  },
+  {
+    "id": "chatanywhere",
+    "name": "ChatAnywhere（GitHub 免费 Key · GPT/DeepSeek 免费额度）",
+    "base_url": "https://api.chatanywhere.tech/v1",
+    "models": ["gpt-4o-mini", "gpt-3.5-turbo", "gpt-4.1-mini", "gpt-5-mini", "gpt-5-nano", "deepseek-r1"],
+    "default_model": "gpt-4o-mini"
+  },
+  {
+    "id": "zhipu",
+    "name": "智谱 GLM（glm-4.7-flash / glm-4-flash 永久免费）",
+    "base_url": "https://open.bigmodel.cn/api/paas/v4",
+    "models": ["glm-4.7-flash", "glm-4-flash", "glm-5.1"],
+    "default_model": "glm-4.7-flash"
+  },
+  {
+    "id": "qwen",
+    "name": "通义千问 Qwen（阿里云百炼 · qwen-turbo 永久免费）",
+    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "models": ["qwen-plus", "qwen-turbo", "qwen-long", "qwen2.5-72b-instruct"],
+    "default_model": "qwen-plus"
+  },
+  {
+    "id": "kimi",
+    "name": "Kimi（月之暗面 · 15 元永久代金券起步）",
+    "base_url": "https://api.moonshot.cn/v1",
+    "models": ["kimi-k3", "kimi-k2.7-code", "kimi-k2.6"],
+    "default_model": "kimi-k2.6"
+  },
+  {
+    "id": "volcengine",
+    "name": "火山方舟 豆包（doubao-lite 每日 200 万免费）",
+    "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+    "models": ["doubao-lite-32k", "doubao-pro-32k", "doubao-pro-128k"],
+    "default_model": "doubao-lite-32k"
+  },
+  {
+    "id": "hunyuan",
+    "name": "腾讯混元（hunyuan-lite 永久免费不限量）",
+    "base_url": "https://api.hunyuan.cloud.tencent.com/v1",
+    "models": ["hunyuan-lite", "hunyuan-turbo-s", "hunyuan-t1"],
+    "default_model": "hunyuan-lite"
+  },
+  {
+    "id": "qianfan",
+    "name": "百度千帆（ERNIE-Speed/Lite 永久免费不限量）",
+    "base_url": "https://qianfan.baidubce.com/v2",
+    "models": ["ernie-speed-8k", "ernie-lite-8k", "ernie-3.5-8k", "ernie-4.5-turbo-128k"],
+    "default_model": "ernie-speed-8k"
+  },
+  {
+    "id": "siliconflow",
+    "name": "硅基流动 SiliconFlow（2000 万免费 · 轻量模型永久免费）",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "models": ["Qwen/Qwen2.5-7B-Instruct", "deepseek-ai/DeepSeek-V3", "deepseek-ai/DeepSeek-R1"],
+    "default_model": "Qwen/Qwen2.5-7B-Instruct"
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek（V3-Lite 永久免费 · V4 极廉价）",
+    "base_url": "https://api.deepseek.com/v1",
+    "models": ["deepseek-v3-lite", "deepseek-v4-flash", "deepseek-v4-pro"],
+    "default_model": "deepseek-v3-lite"
+  },
+  {
+    "id": "gemini",
+    "name": "Google Gemini（gemini-2.5-flash 免费 · 无需信用卡）",
+    "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+    "models": ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemma-3-12b-it"],
+    "default_model": "gemini-2.5-flash"
+  },
+  {
+    "id": "groq",
+    "name": "Groq（LPU 超快 · 无需信用卡）",
+    "base_url": "https://api.groq.com/openai/v1",
+    "models": ["llama-3.3-70b-versatile", "llama-4-scout-17b-16e-instruct", "qwen3-32b", "gpt-oss-120b"],
+    "default_model": "llama-3.3-70b-versatile"
+  },
+  {
+    "id": "mistral",
+    "name": "Mistral AI（La Plateforme 实验计划 · 免信用卡）",
+    "base_url": "https://api.mistral.ai/v1",
+    "models": ["mistral-small-4", "mistral-medium-3", "mistral-large-3", "mistral-nemo", "codestral", "ministral-8b"],
+    "default_model": "mistral-small-4"
+  },
+  {
+    "id": "ollama",
+    "name": "Ollama（本地部署 · 无需 API Key）",
+    "base_url": "http://localhost:11434/v1",
+    "models": ["qwen2.5:7b", "llama3.1", "deepseek-r1:7b"],
+    "default_model": "qwen2.5:7b"
+  },
+  {
+    "id": "githubmodels",
+    "name": "GitHub Models（GitHub 账号免费 · GPT-4.1/GPT-4o/o3/o4-mini）",
+    "base_url": "https://models.inference.ai.azure.com",
+    "models": ["gpt-4.1", "gpt-4o", "gpt-4o-mini", "o3-mini", "o4-mini", "Meta-Llama-3.3-70B-Instruct", "Phi-4"],
+    "default_model": "gpt-4.1"
+  },
+  {
+    "id": "nvidia_nim",
+    "name": "NVIDIA NIM（nvapi Key · DeepSeek V4 Flash 1M 上下文免费）",
+    "base_url": "https://integrate.api.nvidia.com/v1",
+    "models": ["deepseek-ai/deepseek-v4-flash", "meta/llama-3.3-70b-instruct", "nvidia/llama-3.3-nemotron-super-49b-v1.5", "qwen/qwen3.5-122b-a10b", "minimaxai/minimax-m2.7", "z-ai/glm-5.1"],
+    "default_model": "deepseek-ai/deepseek-v4-flash"
+  },
+  {
+    "id": "cerebras",
+    "name": "Cerebras（全球最快推理 · 1M tokens/天免费）",
+    "base_url": "https://api.cerebras.ai/v1",
+    "models": ["llama-3.3-70b", "llama3.1-70b", "gpt-oss-120b", "qwen-3-32b", "gemma-4-31b"],
+    "default_model": "llama-3.3-70b"
+  },
+  {
+    "id": "agnes",
+    "name": "Agnes AI（agnes-2.5-flash · 中文优化 · 编码专项）",
+    "base_url": "https://api.agnes-ai.cn/v1",
+    "models": ["agnes-2.5-flash", "agnes-2.0-flash"],
+    "default_model": "agnes-2.5-flash"
+  },
+  {
+    "id": "custom",
+    "name": "自定义（兼容 OpenAI）",
+    "base_url": "",
+    "models": [],
+    "default_model": "",
+    "custom": true
+  }
+]

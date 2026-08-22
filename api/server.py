@@ -89,8 +89,9 @@ LLM_PRESETS_DEFAULT = [
         "nvidia/nemotron-3.5-lightning:free",               # 真免费，Nemotron 3.5 极速
         "nvidia/nemotron-3.5-content-safety:free",          # 真免费，Nemotron 3.5 内容安全
         "nvidia/nemotron-nano-9b-v2:free",                   # 真免费，Nemotron Nano 9B
-        "openai/gpt-oss-20b:free",                          # 真免费，OpenAI 开放权重 20B（快速稳定）
         "dots-studio/dots-3-note-preview:free",             # 真免费，Dots 3 Note 预览（长上下文/笔记场景）
+        "thinkingmachines/inkling:free",                    # 真免费，Thinking Machines Lab Inkling
+        "thinkingmachines/inkling-small:free",              # 真免费，Thinking Machines Lab Inkling Small
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
         "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 轻量
         "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档）
