@@ -64,22 +64,20 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-21 实测真免费（共 **12** 个，均 `:free` 后缀且 prompt / completion 价格均为 0），均已通过连通性与中文药学问答实测。
-> ⚠️ 注意：2026-08-21 实测剔除 6 个不可用的 `:free` 模型——`google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`z-ai/glm-5.2:free` 因地区限制返回 Provider returned error；`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free` 提供方错误；`nvidia/nemotron-nano-12b-v2-vl:free` 调用超时/空响应。当前保留 12 个已验证可用模型，默认模型改为 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学问答质量最佳）。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-24 核验：OpenRouter 目录中 pricing 双 0 的免费模型共 **19** 个（含 `openrouter/free` 路由器及 `google/lyria-3-*` 音频模型）。其中**已内置 11 个文本对话免费模型 + `openrouter/free` 路由器**（均纳入 `llm_presets.json` / `LLM_PRESETS_DEFAULT`），默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳）。
+> ⚠️ 2026-08-24 处置说明：① 移除 2 个已从 OpenRouter 目录下线的模型——`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-nano-9b-v2:free`（目录已无此 ID，调用将 404）；② 新增 1 个目录新晋免费模型 `stealth/ox-alpha`；③ 此前（2026-08-21）实测不可用的 `google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`z-ai/glm-5.2:free`、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free` 因地区/提供方限制仍**保持剔除**，由 `openrouter/free` 路由器兜底免费档。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
 | **`nvidia/nemotron-3-ultra-550b-a55b:free`**（默认） | Nemotron 3 Ultra 550B 超大模型 | **默认推荐**：高难任务、最强能力（中文药学质量最佳） | 体量最大 |
 | `nvidia/nemotron-3-super-120b-a12b:free` | Nemotron 3 Super 120B 强模型 | 复杂推理、深度问答 | 大体量 |
-| `openai/gpt-oss-20b:free` | OpenAI 开放权重 20B 通用模型 | 常规法规问答、长文摘要（快速稳定，备选推荐） | 通用能力强、稳定 |
 | `dots-studio/dots-3-note-preview:free` | Dots 3 Note 预览（长上下文） | 笔记 / 长文摘要、法规要点梳理 | 长上下文 |
-| `nvidia/nemotron-3-nano-30b-a3b:free` | Nemotron 3 Nano 30B（A3B 激活） | 均衡、低延迟 | 高效 |
 | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free` | Nemotron 3 Nano Omni 多模态推理 | 推理 + 多模态 | 推理向 |
 | `nvidia/nemotron-3.5-lightning:free` | Nemotron 3.5 极速 | 低延迟问答 | 速度快 |
 | `nvidia/nemotron-3.5-content-safety:free` | Nemotron 3.5 内容安全 | 安全过滤场景 | 专项 |
-| `nvidia/nemotron-nano-9b-v2:free` | Nemotron Nano 9B | 轻量通用 | 小模型 |
 | `cohere/north-mini-code:free` | 代码生成模型 | 代码片段生成 | 偏代码 |
 | `liquid/lfm-2.5-2.6b:free` | LiquidAI LFM2.5 2.6B 轻量模型 | 低延迟、轻量问答 | 轻量 |
+| `stealth/ox-alpha` | 2026-08-24 新晋免费模型 | 通用对话（目录 pricing 双 0） | 未做连通性实测 |
 | `openrouter/free` | OpenRouter 免费模型路由器 | 自动分发到免费档（支持图文输入） | 免指定具体模型 |
 
 切换方式（任选其一）：

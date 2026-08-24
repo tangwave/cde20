@@ -84,16 +84,15 @@ LLM_PRESETS_DEFAULT = [
      "models": [
         "nvidia/nemotron-3-ultra-550b-a55b:free",           # 真免费，Nemotron 3 Ultra 550B 超大模型（中文药学质量最佳，默认）
         "nvidia/nemotron-3-super-120b-a12b:free",           # 真免费，Nemotron 3 Super 120B 强模型
-        "nvidia/nemotron-3-nano-30b-a3b:free",              # 真免费，Nemotron 3 Nano 30B A3B
         "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", # 真免费，Nemotron 3 Nano Omni 多模态推理
         "nvidia/nemotron-3.5-lightning:free",               # 真免费，Nemotron 3.5 极速
         "nvidia/nemotron-3.5-content-safety:free",          # 真免费，Nemotron 3.5 内容安全
-        "nvidia/nemotron-nano-9b-v2:free",                   # 真免费，Nemotron Nano 9B
         "dots-studio/dots-3-note-preview:free",             # 真免费，Dots 3 Note 预览（长上下文/笔记场景）
         "thinkingmachines/inkling:free",                    # 真免费，Thinking Machines Lab Inkling
         "thinkingmachines/inkling-small:free",              # 真免费，Thinking Machines Lab Inkling Small
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
         "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 轻量
+        "stealth/ox-alpha",                                  # 真免费（2026-08-24 新增，OpenRouter 目录 pricing 双0）
         "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档）
      ],
      "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free"},
