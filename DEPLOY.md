@@ -86,9 +86,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 > 💡 本项目是「药品法规问答」，默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳、稳定）；`openai/gpt-oss-20b:free` 为快速稳定的备选；Nemotron 3 系列其余型号适合复杂/深度问答，Cohere/Liquid 偏代码与轻量场景。
 
-### 全部 17 家内置服务商对照（base_url + 免费模型）
+### 全部 22 家内置服务商对照（base_url + 免费模型）
 
-> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外 17 家主流 OpenAI 兼容服务商。
+> 以下为 2026-08 实测「可免费 / 低成本使用」的模型清单，覆盖国内外 22 家主流 OpenAI 兼容服务商。
 > 网页内：设置 → 选服务商 → 粘贴 API Key（各服务商 Key 独立保存）→ 选模型即可，**无需改代码**。
 > 免费额度与模型 ID 随各平台调整，以官方文档为准；新增服务商会自动并入老用户的 `llm_presets.json`。
 
@@ -111,6 +111,10 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | 15 | GitHub Models | `https://models.inference.ai.azure.com` | **`gpt-4.1`**、`gpt-4o`、`gpt-4o-mini`、`o3-mini`、`o4-mini`、`Meta-Llama-3.3-70B-Instruct`、`Phi-4` | GitHub 账号免费·无需信用卡 | 用 GitHub 细粒度 PAT（需 Models 权限）；GPT-4.1/o3/o4-mini 等官方旗舰免费 |
 | 16 | NVIDIA NIM | `https://integrate.api.nvidia.com/v1` | **`deepseek-ai/deepseek-v4-flash`**（1M 上下文）、`meta/llama-3.3-70b-instruct`、`nvidia/llama-3.3-nemotron-super-49b-v1.5`、`qwen/qwen3.5-122b-a10b`、`minimaxai/minimax-m2.7`、`z-ai/glm-5.1` | nvapi 免费积分·无需信用卡 | 注册送 1000–5000 积分（永不过期）/40 RPM；DeepSeek V4 Flash 长上下文免费 |
 | 17 | Cerebras | `https://api.cerebras.ai/v1` | **`llama-3.3-70b`**、`llama3.1-70b`、`gpt-oss-120b`、`qwen-3-32b`、`gemma-4-31b` | 1M tokens/天免费·无需信用卡 | 全球最快推理（LPU）；免费档上下文 8K，付费档可更长 |
+| 18 | Hugging Face Inference Providers | `https://router.huggingface.co/v1` | **`meta-llama/Llama-3.3-70B-Instruct`**、`deepseek-ai/DeepSeek-V3`、`Qwen/Qwen2.5-72B-Instruct`、`google/gemma-3-12b-it`、`microsoft/Phi-4` | HF Token 免费额度·无需信用卡 | 路由聚合，模型 ID 追加 `:fastest`/`:cheapest` 自动选最快/最便宜后端（Groq/Cerebras/Together 等） |
+| 19 | Cloudflare Workers AI | `https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1` | **`@cf/meta/llama-3.3-70b-instruct`**、`@cf/deepseek-ai/deepseek-r1-distill-70b`、`@cf/qwen/qwen2.5-7b-instruct` | 每日 1 万次永久免费 | 边缘低延迟；`base_url` 把 `{account_id}` 替换为 CF 账户 ID |
+| 20 | 魔搭 ModelScope | `https://api.modelscope.cn/v1` | **`Qwen/Qwen2.5-72B-Instruct`**、`Qwen/Qwen3-32B`、`deepseek-ai/DeepSeek-V3`、`ZhipuAI/GLM-4-9B` | 每日 2000 次免费·国内直连 | 免翻墙；DeepSeek-R1 限 200 次/日，支持多模态与图生图 |
+| 21 | 讯飞星火 | `https://spark-api-open.xfyun.cn/v1` | **`spark-lite`**（永久免费）、`spark-pro`、`spark-max` | spark-lite 永久免费不限量 | 中文理解强，QPS=2；需讯飞开放平台 API Key |
 | — | 自定义 | （自填） | （自填） | 任意 OpenAI 兼容 | 填入 base_url / model 即可 |
 
 > 选型建议：国内中文法规问答首选 **智谱 glm-4.7-flash / 通义 qwen-plus / 腾讯 hunyuan-lite / 百度 ernie-speed**（均永久免费）；

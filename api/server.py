@@ -173,6 +173,22 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.agnes-ai.cn/v1",
      "models": ["agnes-2.5-flash", "agnes-2.0-flash"],        # 2.5 Flash 全量升级：编码、Agent、多模态
      "default_model": "agnes-2.5-flash"},                     # 512K 上下文 / 65K 输出，中文药学质量优
+    {"id": "huggingface", "name": "Hugging Face Inference Providers（路由聚合 · 免费额度 + :fastest/:cheapest 路由）",
+     "base_url": "https://router.huggingface.co/v1",
+     "models": ["meta-llama/Llama-3.3-70B-Instruct", "deepseek-ai/DeepSeek-V3", "Qwen/Qwen2.5-72B-Instruct", "google/gemma-3-12b-it", "microsoft/Phi-4"],
+     "default_model": "meta-llama/Llama-3.3-70B-Instruct"},  # HF Token 登录即用；追加 :fastest/:cheapest 自动选最快/最便宜后端
+    {"id": "cloudflare", "name": "Cloudflare Workers AI（边缘推理 · 永久免费 1 万次/日）",
+     "base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1",
+     "models": ["@cf/meta/llama-3.3-70b-instruct", "@cf/deepseek-ai/deepseek-r1-distill-70b", "@cf/qwen/qwen2.5-7b-instruct"],
+     "default_model": "@cf/meta/llama-3.3-70b-instruct"},  # 每日 1 万次免费；base_url 把 {account_id} 替换为 CF 账户 ID
+    {"id": "modelscope", "name": "魔搭 ModelScope（阿里达摩院 · 每日 2000 次免费，国内直连）",
+     "base_url": "https://api.modelscope.cn/v1",
+     "models": ["Qwen/Qwen2.5-72B-Instruct", "Qwen/Qwen3-32B", "deepseek-ai/DeepSeek-V3", "ZhipuAI/GLM-4-9B"],
+     "default_model": "Qwen/Qwen2.5-72B-Instruct"},  # 国内直连免翻墙；每日 2000 次免费（R1 限 200/日）
+    {"id": "xfyun", "name": "讯飞星火（spark-lite 永久免费不限量 · 国内直连）",
+     "base_url": "https://spark-api-open.xfyun.cn/v1",
+     "models": ["spark-lite", "spark-pro", "spark-max"],
+     "default_model": "spark-lite"},  # spark-lite 永久免费 QPS=2；需讯飞开放平台 API Key
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
