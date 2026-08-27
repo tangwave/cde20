@@ -396,6 +396,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---- 药品研发QA合规管理台 · 云端同步（独立 router，按文件加载，失败不影响主服务）----
+try:
+    import importlib.util as _ilu
+    _wb_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "qa_workbench.py")
+    if os.path.isfile(_wb_path):
+        _wb_spec = _ilu.spec_from_file_location("qa_workbench", _wb_path)
+        _wb_mod = _ilu.module_from_spec(_wb_spec)
+        _wb_spec.loader.exec_module(_wb_mod)
+        app.include_router(_wb_mod.router)
+        print("[boot] QA工作台同步 API 已挂载 (/api/register 等)")
+except Exception as _e:
+    print("[boot] QA工作台同步 API 加载失败（已跳过）:", repr(_e))
+
 
 # ---------------------------------------------------------------- 工具
 

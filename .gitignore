@@ -29,3 +29,9 @@ backend_run.log
 
 # 调试 / 缓存目录
 .agents/
+
+# QA工作台（药品研发QA合规管理台）运行时数据库与日志（本地同步，不入库）
+api/qa_workbench.db
+api/qa_workbench.db-wal
+api/qa_workbench.db-shm
+wb_server.log

@@ -3,1469 +3,746 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="药品研发 QA 工作台 · 文件审阅 / 记录与申报资料核查 / 变更管理 / 偏差与CAPA — 基于中国现行药品法规、部门规章、规范性文件与 ICH 指导原则">
-<title>QA 工作台 · 药品研发质量管理 | 海云AI</title>
-<!-- 单文件工作台：全部 CSS / JS / 图标（内联 SVG）内联，零外部依赖，离线可用。
-     数据存于本机浏览器 localStorage（前缀 wb_qa_），不上传服务器。
-     法规检索按需调用同源 /api/qa（本站自有后端），失败自动降级为内置摘要。 -->
+<title>药品研发QA合规管理台（研发质量管理体系 · GMP指南2023版）</title>
 <style>
-:root{
-  --primary:#1565C0; --primary-light:#1976D2; --primary-dark:#0D47A1;
-  --primary-50:#E3F2FD; --primary-100:#BBDEFB;
-  --green:#2E7D32; --green-50:#E8F5E9;
-  --orange:#EF6C00; --orange-50:#FFF3E0;
-  --red:#C62828; --red-50:#FFEBEE;
-  --purple:#6A1B9A; --purple-50:#F3E5F5;
-  --teal:#00695C; --teal-50:#E0F2F1;
-  --bg-body:#F5F7FA; --bg-card:#FFFFFF; --bg-hover:#F0F4F8; --bg-active:#E3F2FD; --bg-section:#FAFBFC;
-  --text-primary:#1A2332; --text-secondary:#546E7A; --text-muted:#90A4AE; --text-inverse:#FFFFFF;
-  --border-light:#E1E8ED; --border-medium:#CFD8DC;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08); --shadow-md:0 2px 8px rgba(0,0,0,.10); --shadow-lg:0 4px 16px rgba(0,0,0,.12);
-  --r-sm:4px; --r-md:8px; --r-lg:12px;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
-  background:var(--bg-body); color:var(--text-primary); font-size:14px; line-height:1.6;
-  -webkit-text-size-adjust:100%;
-}
-svg{flex:none;}
-button{font-family:inherit;}
-
-/* ---------- 顶栏 ---------- */
-.topbar{
-  position:sticky; top:0; z-index:60; background:#fff; border-bottom:1px solid var(--border-light);
-  box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:14px; padding:10px 18px; flex-wrap:wrap;
-}
-.brand{display:flex; align-items:center; gap:10px; min-width:0;}
-.brand-ico{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));
-  display:flex;align-items:center;justify-content:center;color:#fff;flex:none;}
-.brand-t{font-size:16px;font-weight:700;letter-spacing:.3px;}
-.brand-s{font-size:11.5px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.top-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap;}
-.tbtn{
-  display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:8px 12px;border:1px solid var(--border-medium);
-  background:#fff;color:var(--text-primary);border-radius:var(--r-md);font-size:13px;cursor:pointer;
-  text-decoration:none;transition:background .15s,border-color .15s;
-}
-.tbtn:hover{background:var(--bg-hover);border-color:var(--primary-light);}
-.tbtn.primary{background:var(--primary);color:#fff;border-color:var(--primary);}
-.tbtn.primary:hover{background:var(--primary-dark);}
-.tbtn.danger{color:var(--red);border-color:#EF9A9A;}
-.tbtn.danger:hover{background:var(--red-50);}
-.store-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--green);
-  background:var(--green-50);border:1px solid #A5D6A7;border-radius:999px;padding:5px 11px;}
-
-/* ---------- 布局 ---------- */
-.wrap{max-width:1320px;margin:0 auto;padding:16px 18px 96px;}
-
-/* ---------- 法规生效预警 ---------- */
-.reg-alert{
-  display:flex;gap:11px;align-items:flex-start;background:var(--orange-50);border:1px solid #FFCC80;
-  border-left:4px solid var(--orange);border-radius:var(--r-md);padding:12px 14px;margin-bottom:14px;
-}
-.reg-alert .ra-t{font-weight:700;color:#E65100;font-size:13.5px;margin-bottom:3px;}
-.reg-alert .ra-b{font-size:13px;color:#7c4a00;line-height:1.65;}
-.reg-alert .ra-b b{color:#bf360c;}
-
-/* ---------- 今天要处理 ---------- */
-.today{
-  background:#fff;border:1px solid var(--border-light);border-top:3px solid var(--primary);
-  border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:14px 16px;margin-bottom:16px;
-}
-.today-h{display:flex;align-items:center;gap:9px;margin-bottom:10px;flex-wrap:wrap;}
-.today-h h2{margin:0;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;}
-.today-sum{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto;}
-.pill{font-size:12px;padding:3px 10px;border-radius:999px;font-weight:600;white-space:nowrap;}
-.pill.od{background:var(--red-50);color:var(--red);border:1px solid #EF9A9A;}
-.pill.td{background:var(--orange-50);color:var(--orange);border:1px solid #FFCC80;}
-.pill.sn{background:var(--primary-50);color:var(--primary-dark);border:1px solid var(--primary-100);}
-.pill.ok{background:var(--green-50);color:var(--green);border:1px solid #A5D6A7;}
-.tlist{display:flex;flex-direction:column;gap:8px;}
-.titem{
-  display:flex;gap:11px;align-items:center;padding:10px 12px;border:1px solid var(--border-light);
-  border-radius:var(--r-md);background:var(--bg-section);
-}
-.titem.od{background:var(--red-50);border-color:#EF9A9A;}
-.titem.td{background:var(--orange-50);border-color:#FFCC80;}
-.titem-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:var(--r-sm);white-space:nowrap;flex:none;
-  background:#fff;border:1px solid var(--border-medium);color:var(--text-secondary);}
-.titem-main{flex:1;min-width:0;}
-.titem-t{font-size:13.5px;font-weight:600;margin-bottom:2px;word-break:break-word;}
-.titem-m{font-size:12px;color:var(--text-secondary);}
-.titem-m .od-txt{color:var(--red);font-weight:700;}
-.titem-act{display:flex;gap:6px;flex:none;}
-.mini{min-height:34px;min-width:34px;padding:6px 10px;border:1px solid var(--border-medium);background:#fff;
-  border-radius:var(--r-sm);font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
-.mini:hover{background:var(--bg-hover);border-color:var(--primary-light);}
-.mini.go{color:var(--primary);border-color:var(--primary-100);background:var(--primary-50);}
-.mini.done{color:var(--green);border-color:#A5D6A7;background:var(--green-50);}
-.empty{padding:22px;text-align:center;color:var(--text-muted);font-size:13px;}
-
-/* ---------- Tab ---------- */
-.tabs{display:flex;gap:6px;border-bottom:2px solid var(--border-light);margin-bottom:16px;overflow-x:auto;
-  -webkit-overflow-scrolling:touch;}
-.tab{
-  display:inline-flex;align-items:center;gap:7px;padding:11px 15px;min-height:44px;border:none;background:none;
-  color:var(--text-secondary);font-size:14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;
-  white-space:nowrap;font-weight:500;
-}
-.tab:hover{color:var(--primary);background:var(--bg-hover);}
-.tab.active{color:var(--primary-dark);border-bottom-color:var(--primary);font-weight:700;}
-.tab .cnt{font-size:11px;background:var(--primary-50);color:var(--primary-dark);border-radius:999px;padding:1px 7px;font-weight:700;}
-.tab.active .cnt{background:var(--primary);color:#fff;}
-.panel{display:none;}
-.panel.active{display:block;}
-
-/* ---------- 卡片 / 统计 ---------- */
-.card{background:#fff;border:1px solid var(--border-light);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);
-  padding:16px;margin-bottom:14px;}
-.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap;}
-.card-h h3{margin:0;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;}
-.card-h .sp{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap;}
-.card-sub{font-size:12.5px;color:var(--text-secondary);margin:-4px 0 12px;line-height:1.6;}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:14px;}
-.stat{background:#fff;border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 15px;
-  box-shadow:var(--shadow-sm);border-left:4px solid var(--primary);cursor:pointer;transition:box-shadow .15s,transform .1s;}
-.stat:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
-.stat.rv{border-left-color:var(--primary);} .stat.vf{border-left-color:var(--teal);}
-.stat.cc{border-left-color:var(--purple);} .stat.dv{border-left-color:var(--orange);}
-.stat-l{font-size:12.5px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-bottom:6px;}
-.stat-v{font-size:26px;font-weight:700;line-height:1.15;}
-.stat-m{font-size:11.5px;color:var(--text-muted);margin-top:3px;}
-.stat-m .r{color:var(--red);font-weight:700;}
-.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
-
-/* ---------- 表格 / 列表 ---------- */
-.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-table.t{width:100%;border-collapse:collapse;font-size:13px;}
-table.t th{background:var(--bg-section);color:var(--text-secondary);font-weight:600;text-align:left;
-  padding:9px 10px;border-bottom:2px solid var(--border-light);white-space:nowrap;font-size:12.5px;}
-table.t td{padding:9px 10px;border-bottom:1px solid var(--border-light);vertical-align:top;}
-table.t tr:hover td{background:var(--bg-hover);}
-.badge{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;font-weight:600;white-space:nowrap;}
-.b-grey{background:#ECEFF1;color:#546E7A;} .b-blue{background:var(--primary-50);color:var(--primary-dark);}
-.b-green{background:var(--green-50);color:var(--green);} .b-orange{background:var(--orange-50);color:var(--orange);}
-.b-red{background:var(--red-50);color:var(--red);} .b-purple{background:var(--purple-50);color:var(--purple);}
-.b-teal{background:var(--teal-50);color:var(--teal);}
-.due-od{color:var(--red);font-weight:700;} .due-td{color:var(--orange);font-weight:700;}
-.rowact{display:flex;gap:5px;}
-.linkish{color:var(--primary);cursor:pointer;text-decoration:none;border-bottom:1px dashed var(--primary-100);}
-.linkish:hover{color:var(--primary-dark);border-bottom-style:solid;}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;}
-
-/* ---------- 表单 / 弹窗 ---------- */
-.mask{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:200;display:flex;align-items:flex-start;
-  justify-content:center;padding:24px 14px;overflow-y:auto;}
-.modal{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow-lg);width:100%;max-width:880px;
-  margin:auto;overflow:hidden;}
-.modal-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border-light);
-  background:var(--bg-section);position:sticky;top:0;z-index:2;}
-.modal-h h3{margin:0;font-size:15.5px;font-weight:700;flex:1;display:flex;align-items:center;gap:8px;}
-.xbtn{min-width:36px;min-height:36px;border:1px solid var(--border-medium);background:#fff;border-radius:var(--r-sm);
-  cursor:pointer;font-size:18px;line-height:1;color:var(--text-secondary);}
-.xbtn:hover{background:var(--red-50);color:var(--red);border-color:#EF9A9A;}
-.modal-b{padding:16px 18px;max-height:calc(100vh - 190px);overflow-y:auto;}
-.modal-f{display:flex;gap:9px;padding:13px 18px;border-top:1px solid var(--border-light);background:var(--bg-section);
-  flex-wrap:wrap;position:sticky;bottom:0;}
-.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:12px;}
-.fld{display:flex;flex-direction:column;gap:5px;}
-.fld.full{grid-column:1/-1;}
-.fld label{font-size:12.5px;color:var(--text-secondary);font-weight:600;}
-.fld label .req{color:var(--red);}
-.fld input,.fld select,.fld textarea{
-  font-size:16px;padding:9px 11px;border:1px solid var(--border-medium);border-radius:var(--r-md);
-  background:#fff;color:var(--text-primary);font-family:inherit;width:100%;min-height:42px;
-}
-.fld textarea{min-height:74px;resize:vertical;line-height:1.6;}
-.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(21,101,192,.12);}
-.hint{font-size:11.5px;color:var(--text-muted);line-height:1.55;}
-fieldset.sect{border:1px solid var(--border-light);border-radius:var(--r-md);padding:12px 13px;margin:0 0 14px;}
-fieldset.sect > legend{font-size:12.5px;font-weight:700;color:var(--primary-dark);padding:0 7px;}
-.chk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:7px;}
-.chk{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border:1px solid var(--border-light);
-  border-radius:var(--r-sm);background:var(--bg-section);cursor:pointer;font-size:12.5px;line-height:1.5;}
-.chk:hover{background:var(--bg-active);border-color:var(--primary-100);}
-.chk input{width:20px;height:20px;min-height:20px;margin:1px 0 0;flex:none;accent-color:var(--primary);}
-.chk .ck-ref{display:block;font-size:11px;color:var(--text-muted);margin-top:2px;}
-.chk.checked{background:var(--green-50);border-color:#A5D6A7;}
-.subtbl{width:100%;border-collapse:collapse;font-size:12.5px;}
-.subtbl th{background:var(--bg-section);padding:7px 8px;text-align:left;font-size:11.5px;color:var(--text-secondary);
-  border-bottom:1px solid var(--border-light);}
-.subtbl td{padding:5px 6px;border-bottom:1px solid var(--border-light);}
-.subtbl input,.subtbl select{font-size:15px;padding:7px 8px;min-height:38px;border:1px solid var(--border-medium);
-  border-radius:var(--r-sm);width:100%;}
-.addrow{margin-top:8px;}
-
-/* ---------- 法规依据 ---------- */
-.reg-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;}
-.reg-g{background:#fff;border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px;box-shadow:var(--shadow-sm);}
-.reg-g h4{margin:0 0 4px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;}
-.reg-g .gs{font-size:11.5px;color:var(--text-muted);margin-bottom:10px;}
-.reg-item{padding:9px 10px;border:1px solid var(--border-light);border-radius:var(--r-md);margin-bottom:7px;
-  background:var(--bg-section);cursor:pointer;transition:background .15s;}
-.reg-item:hover{background:var(--bg-active);border-color:var(--primary-100);}
-.reg-item .rt{font-size:13px;font-weight:600;line-height:1.5;}
-.reg-item .rm{font-size:11.5px;color:var(--text-secondary);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;}
-.reg-item .ru{font-size:11.5px;color:var(--text-muted);margin-top:4px;line-height:1.5;}
-.reg-detail{font-size:13px;line-height:1.75;}
-.reg-detail dt{font-weight:700;color:var(--primary-dark);font-size:12.5px;margin-top:10px;}
-.reg-detail dd{margin:3px 0 0;color:var(--text-secondary);}
-#regHit{margin-top:12px;font-size:12.5px;}
-.hit{padding:9px 10px;border:1px solid var(--border-light);border-radius:var(--r-md);margin-bottom:7px;background:var(--bg-section);}
-.hit .ht{font-weight:600;font-size:12.5px;}
-.hit .hs{color:var(--text-secondary);font-size:11.5px;margin-top:3px;line-height:1.55;}
-
-/* ---------- 底部移动导航 ---------- */
-.mnav{display:none;}
-@media(max-width:860px){
-  .wrap{padding:14px 12px 110px;}
-  .brand-s{display:none;}
-  .top-actions .lbl{display:none;}
-  .stat-grid{grid-template-columns:repeat(2,1fr);gap:9px;}
-  .stat-v{font-size:22px;}
-  .frow{grid-template-columns:1fr;}
-  .tabs{display:none;}
-  .titem{flex-wrap:wrap;}
-  .titem-act{width:100%;}
-  .mini{flex:1;justify-content:center;min-height:40px;}
-  .reg-groups{grid-template-columns:1fr;}
-  .modal-b{max-height:calc(100vh - 210px);}
-  /* 窄屏：表格转卡片 */
-  table.t thead{display:none;}
-  table.t tr{display:block;border:1px solid var(--border-light);border-radius:var(--r-md);margin-bottom:10px;
-    background:#fff;padding:4px 2px;}
-  table.t td{display:flex;gap:10px;border:none;padding:6px 10px;}
-  table.t td::before{content:attr(data-l);font-size:11.5px;color:var(--text-muted);font-weight:600;
-    min-width:74px;flex:none;padding-top:1px;}
-  table.t tr:hover td{background:transparent;}
-  .mnav{
-    display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#fff;
-    border-top:1px solid var(--border-light);box-shadow:0 -2px 10px rgba(0,0,0,.08);
-    padding-bottom:env(safe-area-inset-bottom);
+  :root{
+    --bg:#f4f6fb; --panel:#ffffff; --ink:#1f2a44; --muted:#6b7691;
+    --line:#e3e8f2; --brand:#1f5fb0; --brand2:#2d7dd2; --soft:#eef4fc;
+    --warn:#d9822b; --danger:#c0392b; --ok:#2e8b57; --chip:#e8f0fb;
+    --shadow:0 1px 3px rgba(31,42,68,.08),0 6px 18px rgba(31,42,68,.06);
   }
-  .mnav button{flex:1;min-height:56px;border:none;background:none;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:2px;font-size:10.5px;color:var(--text-secondary);cursor:pointer;padding:6px 2px;}
-  .mnav button.active{color:var(--primary);font-weight:700;background:var(--primary-50);}
-}
-@media(max-width:420px){ .stat-grid{grid-template-columns:1fr;} }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Segoe UI","Microsoft YaHei",Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+  /* layout */
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:248px;background:#fff;border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+  .brand{padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+  .brand h1{font-size:16px;margin:0;color:var(--brand);letter-spacing:.5px}
+  .brand p{margin:4px 0 0;font-size:11px;color:var(--muted)}
+  .nav{padding:8px 0}
+  .nav-group{font-size:11px;color:var(--muted);font-weight:700;padding:12px 20px 4px;letter-spacing:1px}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:9px 20px;cursor:pointer;color:var(--ink);
+    border-left:3px solid transparent;font-size:13px;user-select:none}
+  .nav-item:hover{background:var(--soft)}
+  .nav-item.active{background:var(--soft);border-left-color:var(--brand);color:var(--brand);font-weight:600}
+  .nav-item .ic{font-size:15px;width:18px;text-align:center}
+  .nav-item .cnt{margin-left:auto;font-size:11px;background:var(--chip);color:var(--brand);border-radius:10px;padding:1px 7px}
+  .nav-item .cnt.alert{background:#fde8e4;color:var(--danger)}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .topbar h2{margin:0;font-size:18px}
+  .topbar .sub{font-size:12px;color:var(--muted)}
+  .spacer{flex:1}
+  .topbar input,.topbar select{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;background:#fff;color:var(--ink)}
+  .content{padding:22px 24px;flex:1}
+  /* buttons */
+  .btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;transition:.15s}
+  .btn:hover{border-color:var(--brand2);color:var(--brand)}
+  .btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand2);color:#fff}
+  .btn-danger{color:var(--danger);border-color:#f0c9c2}
+  .btn-danger:hover{background:#fde8e4;color:var(--danger)}
+  .btn-sm{padding:4px 9px;font-size:12px}
+  /* cards */
+  .grid{display:grid;gap:16px}
+  .cards{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .k{font-size:12px;color:var(--muted)}
+  .stat .v{font-size:26px;font-weight:700;margin-top:4px}
+  .stat .v.warn{color:var(--warn)} .stat .v.danger{color:var(--danger)} .stat .v.ok{color:var(--ok)}
+  .section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-top:18px}
+  .section h3{margin:0 0 14px;font-size:15px;display:flex;align-items:center;gap:8px}
+  .section h3 .badge{font-size:11px;font-weight:600;color:var(--muted);background:var(--soft);padding:2px 9px;border-radius:8px}
+  /* module grid on home */
+  .mod-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;box-shadow:var(--shadow);transition:.15s;position:relative}
+  .mod-card:hover{transform:translateY(-2px);border-color:var(--brand2)}
+  .mod-card .mic{font-size:24px}
+  .mod-card .mname{font-weight:600;margin-top:8px}
+  .mod-card .mstat{font-size:12px;color:var(--muted);margin-top:4px}
+  .mod-card .mopen{position:absolute;top:14px;right:14px;font-size:11px;border-radius:9px;padding:1px 8px;background:var(--chip);color:var(--brand)}
+  .mod-card .mopen.alert{background:#fde8e4;color:var(--danger)}
+  /* table */
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--soft);color:var(--muted);font-weight:600;font-size:12px;white-space:nowrap}
+  tbody tr:hover{background:#fafcff}
+  td .tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:8px;background:var(--chip);color:var(--brand);margin:1px 2px}
+  td .tag.r{background:#fde8e4;color:var(--danger)} td .tag.o{background:#fdf0e3;color:var(--warn)}
+  td .tag.g{background:#e7f5ec;color:var(--ok)}
+  .link{color:var(--brand);cursor:pointer;text-decoration:underline}
+  .empty{padding:30px;text-align:center;color:var(--muted)}
+  /* today list */
+  .today-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff}
+  .today-item.alert{border-color:#f0c9c2;background:#fff8f6}
+  .today-item .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);flex-shrink:0}
+  .today-item.alert .dot{background:var(--danger)}
+  .today-item .tc{flex:1;min-width:0}
+  .today-item .tt{font-weight:600}
+  .today-item .tm{font-size:12px;color:var(--muted)}
+  /* modal */
+  .mask{position:fixed;inset:0;background:rgba(20,28,46,.45);display:none;align-items:flex-start;justify-content:center;overflow-y:auto;z-index:50;padding:40px 16px}
+  .mask.show{display:flex}
+  .modal{background:#fff;border-radius:14px;width:720px;max-width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);margin-bottom:40px}
+  .modal-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+  .modal-head h3{margin:0;font-size:16px}
+  .modal-head .x{margin-left:auto;cursor:pointer;color:var(--muted);font-size:22px;line-height:1}
+  .modal-body{padding:18px 22px;max-height:64vh;overflow-y:auto}
+  .modal-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field.full{grid-column:1/3}
+  .field label{font-size:12px;color:var(--muted);font-weight:600}
+  .field label .req{color:var(--danger);margin-left:2px}
+  .field input,.field select,.field textarea{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;color:var(--ink);background:#fff}
+  .field textarea{resize:vertical;min-height:64px}
+  .checks{display:flex;flex-wrap:wrap;gap:6px 14px;padding-top:2px}
+  .checks label{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink);font-weight:400;cursor:pointer}
+  .detail dl{display:grid;grid-template-columns:140px 1fr;gap:8px 14px;margin:0}
+  .detail dt{color:var(--muted);font-size:12px;font-weight:600}
+  .detail dd{margin:0;font-size:13px;word-break:break-word}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;opacity:0;transition:.25s;z-index:99;pointer-events:none}
+  .toast.show{opacity:.95}
+  /* cloud sync badge */
+  .cloud-badge{font-size:12px;border:1px solid var(--line);border-radius:20px;padding:6px 13px;cursor:pointer;background:var(--soft);color:var(--muted);user-select:none;display:inline-flex;align-items:center;white-space:nowrap}
+  .cloud-badge:hover{border-color:var(--brand2)}
+  .cloud-badge.on{background:#e7f5ec;color:var(--ok);border-color:#bfe3cd}
+  .cloud-badge .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:5px}
+  .cloud-badge.on .dot{background:var(--ok)}
+  .cloud-badge .sync{font-size:10px;margin-left:6px;opacity:.8}
+  .cloud-badge .sub{font-size:11px}
+  @media(max-width:760px){.sidebar{display:none}.form-grid{grid-template-columns:1fr}.field.full{grid-column:1}.content{padding:14px}}
 </style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-ico">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>💊 研发QA合规管理台</h1>
+      <p>研发质量管理体系 · 对标《药品GMP指南（2023版）》第七章</p>
     </div>
-    <div>
-      <div class="brand-t">QA 工作台</div>
-      <div class="brand-s">药品研发质量管理 · 文件审阅 / 记录核查 / 变更 / 偏差 · 依据现行法规与 ICH</div>
+    <div class="nav" id="nav"></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h2 id="pageTitle">工作台首页</h2>
+        <div class="sub" id="pageSub">研发全生命周期质量管理系统</div>
+      </div>
+      <div class="spacer"></div>
+      <span id="cloudBadge" class="cloud-badge" onclick="openCloudModal()"><span class="dot"></span>☁ 本地模式（点此连接云端）</span>
+      <button class="btn" onclick="exportAll()">⬇ 导出备份</button>
+      <button class="btn" onclick="importAll()">⬆ 导入恢复</button>
+      <button class="btn btn-danger" onclick="clearAll()">🗑 清空数据</button>
+      <button class="btn" onclick="loadSamples()">✨ 载入示例</button>
     </div>
-  </div>
-  <div class="top-actions">
-    <span class="store-badge" id="storeBadge" title="数据保存在本机浏览器，刷新与关闭均不丢失">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-      <span id="storeTxt">本机已保存</span>
-    </span>
-    <button class="tbtn" id="btnExport" title="导出全部数据为 JSON 备份文件">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-      <span class="lbl">导出备份</span>
-    </button>
-    <button class="tbtn" id="btnImport" title="从 JSON 备份文件恢复（不限条数）">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
-      <span class="lbl">导入恢复</span>
-    </button>
-    <button class="tbtn" id="btnCsv" title="导出当前模块为 CSV（Excel 可直接打开）">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
-      <span class="lbl">CSV</span>
-    </button>
-    <button class="tbtn danger" id="btnClear" title="清空全部数据（需二次确认）">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-      <span class="lbl">清空</span>
-    </button>
-    <a class="tbtn primary" href="index.html" title="返回海云AI 主站（法规原文库 / 智能问答 / 药品分类 / 飞行检查）">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-      <span class="lbl">法规主站</span>
-    </a>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <!-- 法规生效预警（真实数据，来自知识库 03_部门规章） -->
-  <div class="reg-alert" id="regAlert">
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#EF6C00" stroke-width="2.2" stroke-linecap="round" style="margin-top:2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
-    <div>
-      <div class="ra-t">法规生效预警 · 影响文件审阅与记录核查基线</div>
-      <div class="ra-b" id="regAlertBody"></div>
-    </div>
-  </div>
-
-  <!-- 今天要处理 -->
-  <section class="today">
-    <div class="today-h">
-      <h2>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-        今天要处理
-      </h2>
-      <div class="today-sum" id="todaySum"></div>
-    </div>
-    <div class="tlist" id="todayList"></div>
-  </section>
-
-  <!-- Tab（PC） -->
-  <nav class="tabs" id="tabs">
-    <button class="tab active" data-t="ov">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 4 3 5-8"/></svg>概览看板
-    </button>
-    <button class="tab" data-t="rv">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 14l2 2 4-4"/></svg>文件审阅<span class="cnt" id="cRv">0</span>
-    </button>
-    <button class="tab" data-t="vf">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4h10M11 9h7M11 15h10M11 20h7"/><path d="M3 5l2 2 3-3"/><path d="M3 16l2 2 3-3"/></svg>记录·资料核查<span class="cnt" id="cVf">0</span>
-    </button>
-    <button class="tab" data-t="cc">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>变更管理<span class="cnt" id="cCc">0</span>
-    </button>
-    <button class="tab" data-t="dv">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>偏差·CAPA<span class="cnt" id="cDv">0</span>
-    </button>
-    <button class="tab" data-t="rg">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>法规依据库
-    </button>
-  </nav>
-
-  <!-- 概览 -->
-  <section class="panel active" id="p-ov">
-    <div class="stat-grid" id="statGrid"></div>
-    <div class="chart-grid">
-      <div class="card">
-        <div class="card-h"><h3>偏差分级分布</h3></div>
-        <div class="card-sub">分级依据 GMP（2010年修订）质量管理与 ICH Q9(R1) 风险评估：关键项影响产品安全性/有效性或申报数据可靠性。</div>
-        <div id="chDev"></div>
-      </div>
-      <div class="card">
-        <div class="card-h"><h3>变更状态与申报路径</h3></div>
-        <div class="card-sub">上市后变更分类与申报路径依据《药品上市后变更管理办法（试行）》（2021年第8号）；研发阶段变更按内部影响分级评估。</div>
-        <div id="chCc"></div>
-      </div>
-      <div class="card">
-        <div class="card-h"><h3>核查一致性达成率</h3></div>
-        <div class="card-sub">核查项「一致 / 不一致 / 无法追溯」比例。无法追溯项按数据可靠性缺陷处理（《药品记录与数据管理要求（试行）》第十五条）。</div>
-        <div id="chVf"></div>
-      </div>
-      <div class="card">
-        <div class="card-h"><h3>文件审阅缺陷分级</h3></div>
-        <div class="card-sub">含合规缺陷与文件间冲突。关键缺陷须在文件批准前闭环，不得以"后续修订"放行。</div>
-        <div id="chRv"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 四大模块面板（列表由 JS 渲染） -->
-  <section class="panel" id="p-rv"></section>
-  <section class="panel" id="p-vf"></section>
-  <section class="panel" id="p-cc"></section>
-  <section class="panel" id="p-dv"></section>
-
-  <!-- 法规依据库 -->
-  <section class="panel" id="p-rg">
-    <div class="card">
-      <div class="card-h">
-        <h3>法规依据库 · QA 日常判定基线</h3>
-        <div class="sp"><span class="pill sn" id="regCnt"></span></div>
-      </div>
-      <div class="card-sub">
-        以下条目均对应本知识库已收录的现行文件（法律 / 行政法规 / 部门规章 / 规范性文件 / 技术指导原则 / ICH 转化）。
-        点击任一条目可查看 QA 适用要点，并可在本站法规原文库中检索原文。
-      </div>
-      <div class="reg-groups" id="regGroups"></div>
-    </div>
-  </section>
+    <div class="content" id="content"></div>
+  </main>
 </div>
 
-<!-- 移动底部导航 -->
-<nav class="mnav" id="mnav"></nav>
-
-<div id="modalHost"></div>
-<input type="file" id="fileIn" accept="application/json,.json" style="display:none">
+<div class="mask" id="mask">
+  <div class="modal">
+    <div class="modal-head"><h3 id="modalTitle"></h3><span class="x" onclick="closeModal()">×</span></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+<input type="file" id="fileInput" accept=".json" style="display:none" onchange="doImport(event)">
+<div class="toast" id="toast"></div>
 
 <script>
-/* =========================================================================
-   药品研发 QA 工作台 · 单文件实现
-   四大模块：文件审阅 / 记录与申报资料核查 / 变更管理 / 偏差与 CAPA
-   数据：localStorage（前缀 wb_qa_），导出导入 JSON，导出 CSV
-   ========================================================================= */
-'use strict';
-var LS = 'wb_qa_';
-var TODAY = new Date().toISOString().slice(0,10);
+/* ============ 基础工具 ============ */
+const PREFIX='wb_qa_rd_qms_v1_';
+const $=(s,r=document)=>r.querySelector(s);
+function esc(s){if(s==null)return'';return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function today(){const d=new Date();return d.toISOString().slice(0,10);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function getA(key){try{return JSON.parse(localStorage.getItem(PREFIX+key)||'[]');}catch(e){return[];}}
+function setA(key,arr){localStorage.setItem(PREFIX+key,JSON.stringify(arr));}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+const BASIS=['NMPA GMP(2010修订)','NMPA GLP','ICH Q8','ICH Q9(R1)','ICH Q10','ICH Q11','ICH Q12','ICH Q14','FDA 21CFR','EMA','OECD GLP','中国药典','药品注册核查要点','GMP指南2023'];
 
-/* ---------- 工具 ---------- */
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
-  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function uid(p){return p+'-'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function daysTo(d){ if(!d) return null;
-  var a=new Date(TODAY+'T00:00:00'), b=new Date(d+'T00:00:00');
-  return Math.round((b-a)/86400000);}
-function addDays(d,n){var t=new Date(d+'T00:00:00');t.setDate(t.getDate()+n);return t.toISOString().slice(0,10);}
-function fmtDue(d){ if(!d) return '<span style="color:var(--text-muted)">—</span>';
-  var n=daysTo(d);
-  if(n<0) return '<span class="due-od">'+d+'（逾期 '+(-n)+' 天）</span>';
-  if(n===0) return '<span class="due-td">'+d+'（今天）</span>';
-  if(n<=3) return '<span class="due-td">'+d+'（'+n+' 天内）</span>';
-  return d;}
-function toast(msg,type){
-  var t=document.createElement('div');
-  t.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:86px;z-index:400;'+
-    'background:'+(type==='err'?'#C62828':type==='warn'?'#EF6C00':'#2E7D32')+';color:#fff;padding:11px 20px;'+
-    'border-radius:24px;font-size:13.5px;box-shadow:0 4px 16px rgba(0,0,0,.22);max-width:88vw;text-align:center;';
-  t.textContent=msg; document.body.appendChild(t);
-  setTimeout(function(){t.style.transition='opacity .3s';t.style.opacity='0';
-    setTimeout(function(){t.remove();},320);},2100);}
-
-/* ---------- 法规依据库（条目均已核对本知识库收录情况） ---------- */
-var REGS=[
- {g:'法律 · 行政法规', gs:'最高层级依据，数据真实性法律责任来源', ico:'law', items:[
-  {t:'中华人民共和国药品管理法', no:'主席令第31号（2019年修订）', eff:'2019-12-01',
-   use:'第六章药品上市后管理、第九章监督管理；禁止编造生产、检验记录（第九十八条相关），提供虚假资料的法律责任。',
-   pts:['MAH 对药品全生命周期质量负责，研制、生产、经营、使用全过程记录须真实、准确、完整、可追溯',
-        '申请药品注册提供虚假资料属严重违法，直接触发行政处罚与信用惩戒',
-        'QA 用法：一切"记录不可溯"问题最终归到本法的真实性要求，不得内部消化']},
-  {t:'中华人民共和国疫苗管理法', no:'主席令第30号', eff:'2019-12-01',
-   use:'疫苗类项目的记录与数据要求更严（全过程可追溯、生产全过程记录保存至有效期满后5年）。',
-   pts:['疫苗生产全过程数据须真实完整，实施电子追溯','偏差与质量问题报告时限要求更严']},
-  {t:'中华人民共和国电子签名法', no:'—', eff:'—',
-   use:'电子记录采用电子签名时的合法性依据，《药品记录与数据管理要求（试行）》第二十二条直接引用。',
-   pts:['电子签名须能识别签名人身份并表明其认可内容','签名不可与记录分离，须唯一且可追溯']}
- ]},
- {g:'记录与数据管理 · 数据可靠性', gs:'记录审阅与申报资料核查的核心判定依据', ico:'data', items:[
-  {t:'药品记录与数据管理要求（试行）', no:'2020年第74号公告', eff:'2020-12-01',
-   use:'6章30条。纸质/电子记录管理、计算机化系统权限与审计追踪、数据分类管理与术语定义。QA 记录核查的第一依据。',
-   pts:['第十五条：原始数据应当直接记载于规定记录上，不得通过非受控载体暂写或转录（"小纸条""白板"记录 = 关键缺陷）',
-        '第十六条：更改须签注修改人姓名、修改日期，保持原信息清晰可辨，必要时说明理由（禁止涂改覆盖）',
-        '第二十二条：业务流程负责人不得赋予系统管理员权限；审计追踪至少含操作者、时间、过程、原因',
-        '第二十一条：数据定期备份，备份与恢复流程必须经过验证；系统退役后数据在保存期内可查阅追溯',
-        '第二十六条：人工输入经软件处理的数据须审核输入值与系统产出值，原始数据按规定保存']},
-  {t:'药品质量控制实验室数据可靠性检查指南（征求意见稿）', no:'CFDI 征求意见', eff:'征求意见阶段',
-   use:'QC 实验室数据可靠性检查要点，适用于图谱、进样序列、试验重复（Retest）与超标结果（OOS）审阅。',
-   pts:['关注审计追踪审阅（Audit Trail Review）是否形成常规、有记录','进样序列完整性、样品前处理时间逻辑、异常删除是否留痕']}
- ]},
- {g:'GMP · 生产质量管理', gs:'偏差、变更、文件与记录、放行的规章依据', ico:'gmp', items:[
-  {t:'药品生产质量管理规范（2010年修订）', no:'卫生部令第79号', eff:'2011-03-01',
-   use:'文件管理、记录管理、偏差处理、变更控制、纠正与预防措施（CAPA）、质量回顾、产品放行的基本要求。',
-   pts:['偏差须调查、评估影响、形成书面结论并采取措施，不得"仅记录不评估"',
-        '变更须经质量管理部门审核批准，评估对产品质量、注册批准事项的影响',
-        '文件须有审核、批准、生效、版本控制，防止无效版本使用',
-        'QA 用法：偏差是否影响已放行批次 / 是否需回顾同期批次，是审阅第一问']},
-  {t:'药品生产质量管理规范 附录（无菌药品、原料药、生物制品、中药制剂等）', no:'见 NMPA 附录发布公告', eff:'分别施行',
-   use:'按剂型/品种类别叠加要求；无菌药品的污染控制策略（CCS）、生物制品的病毒清除与分段生产要求。',
-   pts:['共线生产须做质量风险评估（参见《药品共线生产质量风险管理指南》）','附录要求与正文冲突时按附录从严执行']},
-  {t:'药品共线生产质量风险管理指南', no:'CFDI 通告发布', eff:'现行有效',
-   use:'共线生产的风险评估、清洁验证限度设定、残留可接受标准（含 PDE/ADE）依据。',
-   pts:['共线可行性结论须有毒理学数据支撑（PDE/ADE），不得仅凭"清洁后目视洁净"']},
-  {t:'药品检查管理办法（试行）', no:'国药监药管〔2021〕31号', eff:'现行有效',
-   use:'检查类型、缺陷分级（严重/主要/一般）与处理，为内部自检缺陷定级提供口径。',
-   pts:['内部自检建议与官方缺陷分级口径对齐，便于迎检时说明整改充分性']}
- ]},
- {g:'GLP · 非临床研究质量', gs:'非临床研究记录、报告与 QA 检查依据', ico:'glp', items:[
-  {t:'药物非临床研究质量管理规范', no:'国家食品药品监督管理总局令第34号', eff:'2017-09-01',
-   use:'GLP 机构组织、专题负责人职责、试验方案与变更、原始资料记录、总结报告、QA 部门检查与声明。',
-   pts:['原始数据须及时、直接、准确、清晰记录并签署日期；修改不得覆盖原始记录',
-        '总结报告须由专题负责人签署，QA 声明须列明检查阶段与日期',
-        '试验方案变更须书面批准并说明理由，报告中如实体现',
-        'QA 用法：报告结论必须能逐项回溯到原始记录，"报告有、记录无"= 关键缺陷']},
-  {t:'药物非临床研究质量管理规范检查办法（试行）', no:'NMPA 印发', eff:'现行有效',
-   use:'GLP 机构检查程序与要点，用于内部模拟检查与迎检准备。', pts:['关注人员资质、设施设备校准、SOP 执行一致性、数据可追溯性']}
- ]},
- {g:'GCP · 临床试验质量', gs:'临床数据核查与申报资料一致性', ico:'gcp', items:[
-  {t:'药物临床试验质量管理规范（2026年修订）', no:'2026年第50号公告', eff:'2026-09-01',
-   use:'国家药监局、国家卫生健康委、国家中医药局、国家疾控局联合发布的修订版 GCP，将替代 2020年第57号版本。',
-   pts:['⚠ 2026-09-01 起施行：SOP、方案模板、监查与稽查检查表须在生效前完成对标更新',
-        'QA 用法：跨越生效日的在研项目须明确新旧版本适用切换点，并在稽查计划中留痕']},
-  {t:'药物临床试验质量管理规范', no:'2020年第57号公告', eff:'2020-07-01',
-   use:'现阶段在研项目的执行基线（至 2026-08-31）；受试者保护、必备文件、数据管理与源数据核查（SDV）。',
-   pts:['源数据须可归因、易读、同步记录、原始、准确、完整（ALCOA+）','必备文件保存至试验终止后至少5年']},
-  {t:'ICH E6(R3) 药物临床试验质量管理规范', no:'ICH 转化', eff:'国际现行',
-   use:'质量源于设计（QbD）、按风险比例的质量管理，与国内 GCP 修订方向一致。',
-   pts:['关键质量因素（Critical to Quality）识别 → 风险比例化监查']}
- ]},
- {g:'变更管理', gs:'变更分类、申报路径与研究要求', ico:'change', items:[
-  {t:'药品上市后变更管理办法（试行）', no:'2021年第8号公告', eff:'2021-01-13',
-   use:'变更分类（重大/中等/微小）与申报路径（审批 / 备案 / 年度报告），变更管理体系与实施条件。',
-   pts:['重大变更 → 补充申请（审批）；中等变更 → 备案；微小变更 → 年度报告',
-        '分类结果须有研究数据与风险评估支撑，不得就低不就高',
-        'QA 用法：变更未评估注册承诺影响即实施，属注册合规风险，非单纯 GMP 问题']},
-  {t:'已上市化学药品药学变更研究技术指导原则（试行）', no:'CDE 指导原则', eff:'现行有效',
-   use:'化药变更的研究项目与可比性判定（处方、工艺、场地、包材、质量标准、规格）。',
-   pts:['变更等级与研究要求逐项对应，须提供可比性研究结论']},
-  {t:'已上市中药药学变更研究技术指导原则（试行）／已上市中药生产工艺变更研究技术指导原则', no:'CDE 指导原则', eff:'现行有效',
-   use:'中药变更的研究要求，含工艺变更的等效性评价。', pts:['中药变更须关注药材基原、炮制、提取工艺参数对物质基础的影响']},
-  {t:'ICH Q12 药品生命周期管理', no:'ICH 转化', eff:'国际现行',
-   use:'既定条件（Established Conditions）、上市后变更管理方案（PACMP）、产品生命周期管理。',
-   pts:['ECs 明确后，非 ECs 参数调整可降低申报层级，前提是有充分的控制策略']},
-  {t:'ICH Q10 药品质量体系', no:'ICH 转化', eff:'国际现行',
-   use:'变更管理系统、CAPA 系统、工艺性能与质量监测、管理评审四大要素。',
-   pts:['变更管理与 CAPA 须形成闭环并进入管理评审，避免"关闭即结束"']}
- ]},
- {g:'偏差 · 风险 · 药物警戒', gs:'偏差分级、根本原因与风险管理工具', ico:'risk', items:[
-  {t:'ICH Q9(R1) 质量风险管理', no:'ICH 转化', eff:'国际现行',
-   use:'风险评估（识别/分析/评价）、风险控制、风险沟通与审核；主观性管理与形式化风险（R1 新增）。',
-   pts:['偏差分级须有风险逻辑（严重性 × 可检测性 × 发生概率），不得凭经验直接定"次要"',
-        'R1 强调避免风险管理形式化：评估结论要能驱动决策']},
-  {t:'药物警戒质量管理规范（GVP）', no:'2021年第65号公告', eff:'2021-12-01',
-   use:'药物警戒体系、个例报告、定期安全性报告、风险信号识别与处置。',
-   pts:['临床阶段 SUSAR 报告时限与偏差处理联动','安全性信息相关偏差须评估是否触发警戒报告义务']},
-  {t:'药品年度报告管理规定', no:'国药监药管〔2022〕16号', eff:'现行有效',
-   use:'年度报告内容与提交要求；微小变更、生产与质量情况的年度汇总渠道。',
-   pts:['微小变更在年度报告中体现，需与内部变更台账一致']}
- ]},
- {g:'注册核查 · 申报资料', gs:'记录与申报资料一致性核查的官方判定口径', ico:'reg', items:[
-  {t:'药品注册核查工作程序（试行）', no:'CFDI 发布', eff:'现行有效',
-   use:'注册核查启动、实施、结论判定流程，明确研制现场与生产现场核查衔接。',
-   pts:['核查发现"数据不可溯"直接影响注册结论，QA 应在申报前完成自查闭环']},
-  {t:'药品注册核查要点与判定原则（药学研制和生产现场）（试行）', no:'CFDI 发布', eff:'现行有效',
-   use:'药学研究记录、样品试制、检验数据与申报资料一致性的官方核查要点。',
-   pts:['申报资料中的批号、批量、日期、检验数据须与原始记录一一对应',
-        '关注试制批与注册批的时间逻辑、物料台账与投料记录的匹配']},
-  {t:'药品注册核查要点与判定原则（药理毒理学研究）（试行）', no:'CFDI 发布', eff:'现行有效',
-   use:'非临床研究现场核查要点：方案、原始记录、报告三者一致性与 GLP 符合性。',
-   pts:['报告数据须溯源到原始记录与仪器原始文件；动物编号、给药记录、取样时间是高频核查点']},
-  {t:'药品注册核查要点与判定原则（药物临床试验）（试行）', no:'CFDI 发布', eff:'现行有效',
-   use:'临床试验数据核查要点：源数据、CRF、数据库与申报资料一致性。',
-   pts:['关注入排标准执行、知情同意时间逻辑、SAE 报告时限、源数据与 CRF 一致性']},
-  {t:'ICH M4 CTD 通用技术文档', no:'ICH 转化', eff:'国际现行',
-   use:'CTD 五个模块的结构与内容要求，是"资料内部一致性"核查的结构基础。',
-   pts:['M2 概述性总结中的数据必须与 M3/M4/M5 详述完全一致，含数值、批号、方法版本',
-        '常见缺陷：M2 沿用早期数据、M3 已更新，形成模块间冲突']},
-  {t:'药品注册管理办法', no:'国家市场监督管理总局令第27号', eff:'2020-07-01',
-   use:'注册程序、申报资料要求、审评审批与核查检验衔接、变更与再注册。',
-   pts:['申报资料真实性由申请人负责；核查检验与审评并行推进']}
- ]},
- {g:'ICH 质量体系与技术', gs:'方法、稳定性与工艺的技术判定依据', ico:'ich', items:[
-  {t:'ICH Q7 原料药 GMP', no:'ICH 转化', eff:'国际现行', use:'原料药生产与质量管理，含返工/重新加工、变更控制、供应商管理。',
-   pts:['返工与重新加工须有评估与批准记录，并评估对杂质谱的影响']},
-  {t:'ICH Q2(R2) 分析方法验证', no:'ICH 转化', eff:'国际现行', use:'方法验证参数与可接受标准，方法变更后再验证范围判定。',
-   pts:['方法版本变更须评估是否需桥接/再验证，报告中方法版本必须与执行版本一致']},
-  {t:'ICH Q1A(R2) 新原料药和制剂稳定性试验', no:'ICH 转化', eff:'国际现行', use:'稳定性设计、考察条件与时间点，变更后稳定性启动依据。',
-   pts:['变更评估结论若"需启动稳定性"，须明确批次数、条件与时间点，并纳入变更关闭条件']},
-  {t:'ICH Q8(R2) 药物研发 / ICH Q11 原料药开发和生产', no:'ICH 转化', eff:'国际现行', use:'QbD、设计空间、控制策略与关键工艺参数（CPP）识别。',
-   pts:['CQA/CPP 定义清晰后，偏差与变更的影响评估才有客观基线']}
- ]}
-];
-
-/* ---------- 审阅检查表（按文件类型加载，条目均对应真实法规要求） ---------- */
-var CK_COMMON=[
- {t:'引用的法规、标准、药典均为现行有效版本（已核对生效日期与废止情况）', r:'药品管理法；本站法规原文库'},
- {t:'与上层文件（质量手册 / 管理制度）无冲突，层级关系清晰', r:'GMP（2010修订）文件管理'},
- {t:'与同级 SOP 的术语、编号规则、职责划分一致，无相互矛盾条款', r:'GMP 文件管理；ICH Q10'},
- {t:'职责与权限明确，不存在起草人自审自批、同一人兼任放行与操作', r:'GMP 质量管理；74号第二十二条'},
- {t:'版本号、生效日期、审批签署齐全；旧版回收与作废有记录', r:'74号第十三条、第十四条'},
- {t:'正文引用的记录表单（附件）齐全，且与条款要求一一对应', r:'74号第十二条'},
- {t:'培训要求明确（生效前完成培训并留痕），可追溯到培训记录', r:'74号第十条；GMP 人员'}
-];
-var CK_BY_TYPE={
- 'SOP / 管理规程':[
-  {t:'操作步骤可执行、无歧义，异常与偏差处置路径明确', r:'GMP 文件管理'},
-  {t:'规定了记录填写要求（谁记、何时记、如何改）', r:'74号第十五条、第十六条'},
-  {t:'与计算机化系统实际权限配置一致（如涉及系统操作）', r:'74号第二十二条'}],
- '技术方案（研究/验证）':[
-  {t:'方案先批准后执行，批准日期早于首个执行日期（时间逻辑成立）', r:'GLP 第34号令；GMP 确认与验证'},
-  {t:'可接受标准有依据（法规 / 风险评估 / 历史数据 / 毒理学数据）', r:'ICH Q9(R1)；共线生产指南'},
-  {t:'方案变更的批准路径与报告体现要求明确', r:'GLP 试验方案变更；GMP 变更控制'},
-  {t:'样本量、取样点、统计方法与研究目的匹配', r:'ICH Q8(R2)/Q11'}],
- '研究报告（药学/非临床/临床）':[
-  {t:'报告数据可逐项溯源至原始记录，无非受控载体转录', r:'74号第十五条；GLP 原始资料'},
-  {t:'分析方法 / SOP 版本与研究执行期间实际版本一致', r:'ICH Q2(R2)；GLP'},
-  {t:'研究期间的偏差、方案变更在报告中如实描述并评估影响', r:'GLP；GMP 偏差处理'},
-  {t:'统计方法与方案一致，结论有数据支撑、不外推', r:'ICH E9(R1)'},
-  {t:'签署完整（专题负责人 / 研究者 / QA 声明 / 机构负责人）', r:'GLP 总结报告与 QA 声明'},
-  {t:'仪器编号与校准状态在研究期间处于有效期内', r:'74号第二十五条'}],
- '申报资料（CTD 模块）':[
-  {t:'CTD 模块间数据一致：M2 概述与 M3/M4/M5 详述完全对应', r:'ICH M4；注册核查要点'},
-  {t:'工艺描述、质量标准与注册承诺（拟定标准）一致', r:'药品注册管理办法；上市后变更管理办法'},
-  {t:'引用的研究报告编号、版本、日期准确，与报告实物一致', r:'注册核查要点（药学研制和生产现场）'},
-  {t:'批号、批量、生产日期、检验日期在全套资料中一致', r:'注册核查要点；74号'},
-  {t:'研发过程中的变更历史在资料中完整体现，无隐性变更', r:'上市后变更管理办法；ICH Q12'},
-  {t:'翻译件与原文一致（如涉及境外资料），术语统一', r:'ICH M4'}],
- '验证 / 确认文件':[
-  {t:'方案批准 → 执行 → 报告签署的时间链条完整且合理', r:'GMP 确认与验证'},
-  {t:'偏差处理与再验证触发条件明确', r:'GMP 确认与验证；ICH Q9(R1)'},
-  {t:'计算机化系统验证覆盖权限、审计追踪、备份恢复', r:'74号第二十一至二十三条'},
-  {t:'原始数据（图谱、打印件、电子文件）附件齐全可追溯', r:'74号第二十六条'}],
- '质量标准 / 检验规程':[
-  {t:'标准项目与限度与注册批准内容一致（或已完成变更申报）', r:'药品注册管理办法；上市后变更管理办法'},
-  {t:'方法来源明确（药典 / 自建），自建方法已完成验证', r:'ICH Q2(R2)；药典指导原则'},
-  {t:'系统适用性要求、OOS 处置路径明确', r:'数据可靠性检查指南'}],
- '批记录 / 记录模板':[
-  {t:'记录栏位能覆盖全过程关键参数，无需另附"临时纸"', r:'74号第十五条'},
-  {t:'预留复核签署栏，关键步骤双人确认', r:'74号第二十四条；GMP'},
-  {t:'页码、编号、版本受控，防止替换或篡改', r:'74号第十四条'}],
- '计算机化系统 / 数据类文件':[
-  {t:'权限分级合理：业务负责人不得兼任系统管理员', r:'74号第二十二条（一）'},
-  {t:'审计追踪已开启且不可关闭，含操作者/时间/过程/原因', r:'74号第二十二条（四）'},
-  {t:'备份与恢复流程经过验证，备份与删除均有记录', r:'74号第二十一条（三）'},
-  {t:'电子签名符合《电子签名法》，唯一可追溯', r:'74号第二十二条（三）'},
-  {t:'系统退役/升级后原数据在保存期内可查阅追溯', r:'74号第二十一条（四）'}]
-};
-
-/* ---------- 核查项模板（记录 ↔ 报告 ↔ 申报资料） ---------- */
-var VF_TPL=[
- '批号 / 样品编号','试验（生产）日期与时间逻辑','仪器编号与校准有效期','分析方法 / SOP 版本号',
- '原始数值 → 计算值 → 报告值','图谱编号与积分参数','人员资质与授权范围','计算公式与换算因子',
- '稳定性时间点与考察条件','规格 / 批量 / 投料量','偏差与变更在报告中的对应描述','签署与日期完整性'
-];
-
-/* ---------- 影响评估维度 ---------- */
-var CC_IMPACT=[
- {t:'关键质量属性（CQA）', r:'ICH Q8(R2)'},{t:'生产工艺与工艺验证', r:'GMP 确认与验证'},
- {t:'分析方法与方法验证', r:'ICH Q2(R2)'},{t:'稳定性（需否启动考察）', r:'ICH Q1A(R2)'},
- {t:'包装材料与相容性', r:'药包材相容性指导原则'},{t:'注册承诺与批准事项', r:'上市后变更管理办法'},
- {t:'GMP 合规（厂房/设备/共线）', r:'GMP 附录；共线生产指南'},{t:'供应链与供应商资质', r:'GMP 物料与供应商'},
- {t:'临床用样品可比性', r:'ICH Q5E / 相关变更指导原则'},{t:'计算机化系统与数据完整性', r:'74号第四章'},
- {t:'文件体系与培训', r:'GMP 文件管理'},{t:'药物警戒 / 安全性信息', r:'GVP（2021年第65号）'}
-];
-var DV_IMPACT=[
- {t:'影响已生产 / 已放行批次', r:'GMP 偏差与放行'},{t:'影响申报数据可靠性', r:'74号；注册核查要点'},
- {t:'影响研究完整性（GLP / GCP）', r:'GLP 第34号令；GCP'},{t:'需评估同期批次 / 同期研究（回顾）', r:'GMP 质量回顾'},
- {t:'需向监管部门报告 / 通报', r:'药品管理法；GVP'},{t:'涉及受试者安全 / 需伦理报告', r:'GCP'},
- {t:'需启动召回或暂停使用', r:'药品召回管理办法'},{t:'触发工艺 / 方法再验证', r:'GMP 确认与验证'}
-];
-var ROOT_TYPE=['人员（培训 / 执行 / 沟通）','设备（故障 / 校准 / 维护）','物料（供应商 / 质量波动）',
- '方法（SOP 缺陷 / 设计不足）','环境（洁净 / 温湿度 / 设施）','检测（方法 / 系统适用性）',
- '管理（变更未评估 / 计划不足）','其他 / 待调查'];
-
-/* ---------- 模块 Schema ---------- */
-var MODS={
- rv:{key:'reviews',name:'文件审阅',code:'REV',cls:'rv',
-  sub:'对 SOP、方案、报告、申报资料等做合规性审阅，并识别文件与文件之间的冲突（上下层级冲突、同级矛盾、与注册承诺不一致）。检查表按文件类型自动加载，条目对应真实法规条款。',
-  fields:[
-   {k:'title',l:'文件名称',t:'text',req:1,ph:'如 SOP-QA-012《分析方法验证管理规程》',full:1},
-   {k:'docNo',l:'文件编号',t:'text',ph:'SOP-QA-012'},
-   {k:'version',l:'版本',t:'text',ph:'V2.0'},
-   {k:'docType',l:'文件类型',t:'select',o:['SOP / 管理规程','技术方案（研究/验证）','研究报告（药学/非临床/临床）','申报资料（CTD 模块）','验证 / 确认文件','质量标准 / 检验规程','批记录 / 记录模板','计算机化系统 / 数据类文件'],req:1},
-   {k:'project',l:'项目 / 品种',t:'text',ph:'如 XZB-2026'},
-   {k:'owner',l:'起草部门 / 人',t:'text'},
-   {k:'reviewer',l:'审阅人（QA）',t:'text'},
-   {k:'dueDate',l:'审阅截止日',t:'date',req:1},
-   {k:'status',l:'状态',t:'select',o:['待审阅','审阅中','已出意见','待回复确认','已关闭']},
-   {k:'conclusion',l:'审阅结论',t:'select',o:['—','批准','修订后批准','不批准（退回重写）']},
-   {k:'remark',l:'备注 / 沟通要点',t:'textarea',full:1}],
-  checks:1,
-  subs:[
-   {k:'findings',l:'审阅发现（合规缺陷）',cols:[
-     {k:'desc',l:'缺陷描述',w:'40%'},{k:'severity',l:'分级',t:'select',o:['关键','主要','次要'],w:'14%'},
-     {k:'ref',l:'法规依据',w:'26%'},{k:'fix',l:'整改要求',w:'20%'}]},
-   {k:'conflicts',l:'文件间冲突（重点：跨文件矛盾）',cols:[
-     {k:'withDoc',l:'冲突文件 / 条款',w:'26%'},{k:'point',l:'冲突点描述',w:'34%'},
-     {k:'type',l:'冲突类型',t:'select',o:['与上层文件冲突','同级 SOP 相互矛盾','与注册申报承诺不一致','与实际执行不符','术语/编号不统一'],w:'20%'},
-     {k:'severity',l:'分级',t:'select',o:['关键','主要','次要'],w:'12%'}]}],
-  cols:[
-   {k:'title',l:'文件',main:1},{k:'docType',l:'类型',badge:'b-blue'},{k:'version',l:'版本'},
-   {k:'reviewer',l:'审阅人'},{k:'_def',l:'缺陷/冲突'},{k:'dueDate',l:'截止',due:1},
-   {k:'status',l:'状态',st:1},{k:'conclusion',l:'结论'}]},
-
- vf:{key:'verifs',name:'记录·资料核查',code:'VER',cls:'vf',
-  sub:'对报告与原始记录、申报资料与研究报告做逐项一致性与合规性核查（批号、日期、数值、图谱、方法版本、仪器校准）。不一致与无法追溯项按数据可靠性缺陷处理，可直接转偏差。',
-  fields:[
-   {k:'subject',l:'核查对象',t:'text',req:1,ph:'如 RPT-2026-013 报告 ↔ EXP-003 原始记录',full:1},
-   {k:'scope',l:'核查范围',t:'select',o:['原始记录 ↔ 研究报告','研究报告 ↔ 申报资料','申报资料内部（CTD 模块间）','原始数据 ↔ 图谱/仪器文件','批记录 ↔ 放行检验报告','数据库 ↔ CRF ↔ 源数据'],req:1},
-   {k:'project',l:'项目 / 品种',t:'text',ph:'XZB-2026'},
-   {k:'ctdModule',l:'CTD 模块 / 章节',t:'text',ph:'如 M4.2.3.1 / M3.2.P.5'},
-   {k:'verifier',l:'核查人（QA）',t:'text'},
-   {k:'dueDate',l:'完成截止日',t:'date',req:1},
-   {k:'status',l:'状态',t:'select',o:['待核查','核查中','已出核查表','待整改回复','已关闭']},
-   {k:'conclusion',l:'核查结论',t:'select',o:['—','一致，可提交','存在不一致，需整改后提交','存在数据可靠性风险，需暂停提交']},
-   {k:'linkDev',l:'关联偏差编号',t:'text',ph:'如 DEV-2026-008（存在数据可靠性问题时填写）'},
-   {k:'remark',l:'备注',t:'textarea',full:1}],
-  subs:[
-   {k:'items',l:'核查项逐条对照（可用模板一键填充）',tpl:VF_TPL,cols:[
-     {k:'field',l:'核查项',w:'22%'},{k:'src',l:'源值（原始记录）',w:'22%'},{k:'tgt',l:'目标值（报告/资料）',w:'22%'},
-     {k:'result',l:'判定',t:'select',o:['一致','不一致','无法追溯','不适用'],w:'14%'},{k:'ref',l:'依据/说明',w:'20%'}]}],
-  cols:[
-   {k:'subject',l:'核查对象',main:1},{k:'scope',l:'范围',badge:'b-teal'},{k:'ctdModule',l:'CTD'},
-   {k:'verifier',l:'核查人'},{k:'_rate',l:'一致率'},{k:'dueDate',l:'截止',due:1},
-   {k:'status',l:'状态',st:1},{k:'conclusion',l:'结论'}]},
-
- cc:{key:'changes',name:'变更管理',code:'CC',cls:'cc',
-  sub:'变更申请、影响评估、分类与申报路径判定、实施与验证闭环。上市后变更分类依据《药品上市后变更管理办法（试行）》（2021年第8号）；研发阶段变更按内部影响分级。',
-  fields:[
-   {k:'code',l:'变更编号',t:'text',ph:'CC-2026-014'},
-   {k:'title',l:'变更事项',t:'text',req:1,ph:'如 XZB-2026 原料药精制溶剂由乙醇改为异丙醇',full:1},
-   {k:'phase',l:'所处阶段',t:'select',o:['研发阶段（未上市）','注册申报期间','已上市（上市后变更）']},
-   {k:'changeType',l:'变更类型',t:'select',o:['生产工艺','处方 / 组成','质量标准 / 分析方法','原辅料 / 供应商','包装材料','生产场地','设备 / 设施','规格 / 剂型','文件体系','计算机化系统','标签说明书','其他'],req:1},
-   {k:'category',l:'变更分级',t:'select',o:['微小（年度报告）','中等（备案）','重大（补充申请/审批）','研发内部-低','研发内部-中','研发内部-高','待评估'],req:1},
-   {k:'regPath',l:'申报路径',t:'select',o:['无需申报（内部控制）','年度报告','备案','补充申请（审批）','待确认']},
-   {k:'project',l:'项目 / 品种',t:'text'},
-   {k:'owner',l:'提出部门 / 人',t:'text'},
-   {k:'qaOwner',l:'QA 评估人',t:'text'},
-   {k:'dueDate',l:'关闭截止日',t:'date',req:1},
-   {k:'status',l:'状态',t:'select',o:['已提出','评估中','已批准','实施中','待验证/确认','待关闭','已关闭','已否决']},
-   {k:'effectiveDate',l:'计划生效日',t:'date'},
-   {k:'reason',l:'变更原因与必要性',t:'textarea',full:1},
-   {k:'plan',l:'实施措施与验证/确认要求',t:'textarea',full:1,ph:'如：3 批工艺验证 + 6 个月加速稳定性 + 方法桥接'},
-   {k:'closeCond',l:'关闭条件（可验证的判据）',t:'textarea',full:1,ph:'如：验证报告批准 + 变更后首批放行 + 培训完成 + 文件生效'}],
-  impacts:CC_IMPACT,
-  subs:[{k:'tasks',l:'实施任务清单',cols:[
-     {k:'desc',l:'任务',w:'40%'},{k:'owner',l:'责任人',w:'16%'},{k:'due',l:'期限',t:'date',w:'20%'},
-     {k:'done',l:'状态',t:'select',o:['未开始','进行中','已完成'],w:'16%'}]}],
-  cols:[
-   {k:'title',l:'变更事项',main:1},{k:'code',l:'编号',mono:1},{k:'changeType',l:'类型',badge:'b-purple'},
-   {k:'category',l:'分级',lv:1},{k:'regPath',l:'申报路径'},{k:'dueDate',l:'截止',due:1},{k:'status',l:'状态',st:1}]},
-
- dv:{key:'devs',name:'偏差·CAPA',code:'DEV',cls:'dv',
-  sub:'偏差记录、分级、影响评估、根本原因分析与 CAPA 闭环。分级依据 GMP（2010年修订）与 ICH Q9(R1)；默认关闭时限为发现日 +30 天，逾期自动进入「今天要处理」。',
-  fields:[
-   {k:'code',l:'偏差编号',t:'text',ph:'DEV-2026-008'},
-   {k:'title',l:'偏差事项',t:'text',req:1,ph:'如 稳定性 6 个月样品超温 2 小时（2-8℃ 冰箱故障）',full:1},
-   {k:'stage',l:'发生环节',t:'select',o:['药学研究','非临床研究（GLP）','临床试验（GCP）','生产（GMP）','检验（QC）','仓储 / 物流','注册申报','计算机化系统 / 数据'],req:1},
-   {k:'level',l:'偏差分级',t:'select',o:['关键','主要','次要','待评估'],req:1},
-   {k:'occurDate',l:'发生日期',t:'date'},
-   {k:'findDate',l:'发现日期',t:'date',req:1},
-   {k:'finder',l:'发现人',t:'text'},
-   {k:'owner',l:'调查负责人',t:'text'},
-   {k:'project',l:'项目 / 品种 / 批号',t:'text'},
-   {k:'dueDate',l:'关闭截止日',t:'date',req:1,hint:'默认发现日 +30 天，可按内部规程调整'},
-   {k:'status',l:'状态',t:'select',o:['已登记','调查中','CAPA 执行中','待关闭审核','已关闭']},
-   {k:'rootType',l:'根本原因类别',t:'select',o:ROOT_TYPE},
-   {k:'desc',l:'偏差描述（何时/何地/何事/发现方式）',t:'textarea',full:1},
-   {k:'immediate',l:'即时措施（隔离/停用/标识）',t:'textarea',full:1},
-   {k:'rootCause',l:'根本原因分析（5Why / 鱼骨图结论）',t:'textarea',full:1},
-   {k:'impactConc',l:'影响评估结论',t:'textarea',full:1,ph:'对产品质量/研究完整性/申报数据的结论，含同期批次或同期研究的回顾结果'}],
-  impacts:DV_IMPACT,
-  subs:[{k:'capa',l:'CAPA 措施（纠正 / 预防）',cols:[
-     {k:'type',l:'类型',t:'select',o:['纠正措施(CA)','预防措施(PA)'],w:'16%'},{k:'desc',l:'措施内容',w:'34%'},
-     {k:'owner',l:'责任人',w:'14%'},{k:'due',l:'期限',t:'date',w:'18%'},
-     {k:'done',l:'状态',t:'select',o:['未开始','进行中','已完成','有效性已确认'],w:'18%'}]}],
-  cols:[
-   {k:'title',l:'偏差事项',main:1},{k:'code',l:'编号',mono:1},{k:'stage',l:'环节',badge:'b-orange'},
-   {k:'level',l:'分级',lv:1},{k:'_capa',l:'CAPA'},{k:'dueDate',l:'截止',due:1},{k:'status',l:'状态',st:1}]}
-};
-
-/* ---------- 存储 ---------- */
-var DB={reviews:[],verifs:[],changes:[],devs:[]};
-function load(){
-  var seeded=localStorage.getItem(LS+'seeded');
-  Object.keys(DB).forEach(function(k){
-    try{ var raw=localStorage.getItem(LS+k); if(raw) DB[k]=JSON.parse(raw)||[]; }catch(e){ DB[k]=[]; }
-  });
-  if(!seeded){ seed(); localStorage.setItem(LS+'seeded','1'); save(); }
+/* ============ 云端同步层（多端实时同步 · FastAPI后端）============ */
+const CLOUD_KEY='wb_qa_rd_qms_cloud_';
+let CLOUD={enabled:false,url:'',token:'',workspace:'',lastSync:'0'};
+let _syncTimer=null;
+function loadCloud(){try{const o=JSON.parse(localStorage.getItem(CLOUD_KEY)||'{}');CLOUD=Object.assign(CLOUD,o);}catch(e){}}
+function saveCloud(){try{localStorage.setItem(CLOUD_KEY,JSON.stringify(CLOUD));}catch(e){}}
+function stripMeta(rec){const c=Object.assign({},rec);delete c._v;delete c._uat;return c;}
+async function api(method,path,body){
+  let base=(CLOUD.url||'').trim();
+  if(!base||base==='/')base=''; else base=base.replace(/\/+$/,'');
+  try{
+    const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+(CLOUD.token||'')},body:(body!==undefined)?JSON.stringify(body):undefined});
+    const t=await r.text();
+    return[r.status,t?JSON.parse(t):{}];
+  }catch(e){return[0,{}];}
 }
-function save(){
-  Object.keys(DB).forEach(function(k){ localStorage.setItem(LS+k,JSON.stringify(DB[k])); });
-  localStorage.setItem(LS+'updated',new Date().toISOString());
-  var n=total(); var el=document.getElementById('storeTxt');
-  if(el) el.textContent='本机已保存 '+n+' 条';
-  if(n>=30 && !localStorage.getItem(LS+'bkTip')){
-    toast('数据已积累 '+n+' 条，建议点「导出备份」保存一份 JSON','warn');
-    localStorage.setItem(LS+'bkTip','1');
+async function cloudBootstrap(){
+  const [st,res]=await api('GET','/api/bootstrap');
+  if(st!==200){toast('拉取云端数据失败');return false;}
+  (res.records||[]).forEach(rec=>{
+    const key=rec.module;const obj=JSON.parse(rec.data);obj._v=rec.version;obj._uat=rec.updated_at;
+    const a=getA(key);const i=a.findIndex(r=>r.id===obj.id);
+    if(i<0)a.push(obj);else if(rec.version>(a[i]._v||0))a[i]=obj;
+    setA(key,a);
+  });
+  CLOUD.lastSync=res.server_time;saveCloud();renderCloudBadge();
+  return true;
+}
+async function pullSync(){
+  if(!CLOUD.enabled||!CLOUD.token)return;
+  const [st,res]=await api('GET','/api/sync?since='+encodeURIComponent(CLOUD.lastSync||'0'));
+  if(st!==200)return;
+  let changed=false;
+  (res.changes||[]).forEach(ch=>{
+    const key=ch.module;const obj=JSON.parse(ch.data);obj._v=ch.version;obj._uat=ch.updated_at;
+    const a=getA(key);const i=a.findIndex(r=>r.id===ch.id);
+    if(ch.deleted){if(i>=0){a.splice(i,1);changed=true;}}
+    else{if(i<0){a.push(obj);changed=true;}else if(ch.version>(a[i]._v||0)){a[i]=obj;changed=true;}}
+    setA(key,a);
+  });
+  if((res.changes||[]).length)CLOUD.lastSync=res.server_time;saveCloud();
+  if(changed){renderNav();if(!curMod||curMod==='__home')renderHome();else renderModule();}
+}
+function startSync(){if(_syncTimer)clearInterval(_syncTimer);_syncTimer=setInterval(pullSync,15000);pullSync();}
+function stopSync(){if(_syncTimer){clearInterval(_syncTimer);_syncTimer=null;}}
+async function apiPersist(mod,rec){
+  if(!CLOUD.enabled||!CLOUD.token)return;
+  const isNew=!rec._v;
+  const body={record:stripMeta(rec),baseVersion:rec._v||null};
+  let st,res;
+  if(isNew){[st,res]=await api('POST','/api/'+mod+'/records',body);}
+  else{[st,res]=await api('PUT','/api/'+mod+'/records/'+rec.id,body);}
+  if(st===404&&!isNew){[st,res]=await api('POST','/api/'+mod+'/records',body);}
+  if(st===409){toast('⚠ 该记录已被他人修改，已自动刷新为最新');pullSync();return;}
+  if(st!==200){toast('⚠ 云端保存失败，已保留本地副本');return;}
+  rec._v=res.version;rec._uat=res.updated_at;
+  const a=getA(mod);const i=a.findIndex(r=>r.id===rec.id);if(i>=0){a[i]=rec;setA(mod,a);}
+}
+async function cloudDelete(mod,id){
+  if(!CLOUD.enabled||!CLOUD.token)return;
+  const [st]=await api('DELETE','/api/'+mod+'/records/'+id);
+  if(st!==200)toast('⚠ 云端删除失败，本地已删除');
+}
+function renderCloudBadge(){
+  const b=$('#cloudBadge');if(!b)return;
+  if(CLOUD.enabled&&CLOUD.token){
+    b.className='cloud-badge on';
+    b.innerHTML='<span class="dot"></span>☁ 云端已连接 · '+esc(CLOUD.workspace||'')+'<span class="sync">↻15s</span>';
+  }else{
+    b.className='cloud-badge';
+    b.innerHTML='<span class="dot"></span>☁ 本地模式（点此连接云端）';
   }
 }
-function total(){return Object.keys(DB).reduce(function(a,k){return a+DB[k].length;},0);}
-
-/* ---------- 预置示例数据（含逾期项，可一键清空） ---------- */
-function seed(){
-  DB.reviews=[
-   {id:uid('REV'),title:'SOP-QA-012《分析方法验证管理规程》',docNo:'SOP-QA-012',version:'V2.0',
-    docType:'SOP / 管理规程',project:'体系文件',owner:'QC 部',reviewer:'唐海云',
-    dueDate:addDays(TODAY,-3),status:'已出意见',conclusion:'修订后批准',
-    remark:'示例数据。规程中"方法转移"章节与 SOP-QC-030 职责划分冲突，须一并修订。',
-    checks:{0:1,1:1,4:1},
-    findings:[{desc:'引用《中国药典》2015年版，现行为 2020年版',severity:'主要',ref:'药典现行版本；74号第十三条',fix:'更新引用版本并复核限度差异'},
-              {desc:'未规定方法变更后再验证的触发条件',severity:'主要',ref:'ICH Q2(R2)',fix:'增加再验证判定表'}],
-    conflicts:[{withDoc:'SOP-QC-030《分析方法转移规程》第5.2条',point:'方法转移的接收方确认职责在两份文件中分别规定为 QC 与 QA，相互矛盾',type:'同级 SOP 相互矛盾',severity:'主要'}]},
-   {id:uid('REV'),title:'XZB-2026 IND 申报资料 M2.6.2 药理学书面总结',docNo:'IND-XZB-M2.6.2',version:'V1.0',
-    docType:'申报资料（CTD 模块）',project:'XZB-2026',owner:'注册部',reviewer:'唐海云',
-    dueDate:TODAY,status:'审阅中',conclusion:'—',
-    remask:'',remark:'示例数据。重点核对 M2 概述与 M4 详述数据一致性。',
-    checks:{0:1,1:1,2:1},
-    findings:[{desc:'M2.6.2 引用 RPT-2026-005 的 NOAEL 数值与报告正文不一致（30 vs 25 mg/kg）',severity:'关键',ref:'ICH M4；注册核查要点（药理毒理学研究）',fix:'核对原始记录后统一，并说明差异来源'}],
-    conflicts:[{withDoc:'RPT-2026-005 非临床研究报告',point:'NOAEL 数值不一致，申报资料高于报告结论',type:'与注册申报承诺不一致',severity:'关键'}]},
-   {id:uid('REV'),title:'PV-2026-002《清洁验证方案》',docNo:'PV-2026-002',version:'V1.0',
-    docType:'技术方案（研究/验证）',project:'共线车间',owner:'生产技术部',reviewer:'QA-李',
-    dueDate:addDays(TODAY,2),status:'待审阅',conclusion:'—',remark:'示例数据。需核对残留限度是否有 PDE 依据。',
-    checks:{},findings:[],conflicts:[]}
-  ];
-  DB.verifs=[
-   {id:uid('VER'),subject:'RPT-2026-013 报告 ↔ EXP-003 原始记录（一致性核查）',scope:'原始记录 ↔ 研究报告',
-    project:'XZB-2026',ctdModule:'M4.2.3.1',verifier:'唐海云',dueDate:addDays(TODAY,-1),
-    status:'已出核查表',conclusion:'存在不一致，需整改后提交',linkDev:'DEV-2026-008',
-    remark:'示例数据。第 3 项数值不一致已开偏差。',
-    items:[
-     {field:'批号 / 样品编号',src:'XZB-20260412-01',tgt:'XZB-20260412-01',result:'一致',ref:''},
-     {field:'仪器编号与校准有效期',src:'HPLC-07，校准至 2026-10-31',tgt:'HPLC-07',result:'一致',ref:'74号第二十五条'},
-     {field:'原始数值 → 计算值 → 报告值',src:'峰面积均值 12456',tgt:'报告含量 98.7%（按 12654 计算）',result:'不一致',ref:'74号第二十六条；已开 DEV-2026-008'},
-     {field:'分析方法 / SOP 版本号',src:'SOP-QC-105 V1.2',tgt:'SOP-QC-105 V1.1',result:'不一致',ref:'报告引用旧版方法号'},
-     {field:'签署与日期完整性',src:'复核人签署缺失',tgt:'—',result:'无法追溯',ref:'74号第二十四条'}]},
-   {id:uid('VER'),subject:'IND V2.0 数据校准版 ↔ RPT-001~006 全套报告',scope:'研究报告 ↔ 申报资料',
-    project:'XZB-2026',ctdModule:'M2 / M4',verifier:'唐海云',dueDate:addDays(TODAY,4),
-    status:'核查中',conclusion:'—',linkDev:'',remark:'示例数据。V1.0 → V2.0 校准后须全量复核。',
-    items:[{field:'批号 / 样品编号',src:'',tgt:'',result:'不适用',ref:''}]},
-   {id:uid('VER'),subject:'2026 年 8 月放行批 批记录 ↔ 检验报告',scope:'批记录 ↔ 放行检验报告',
-    project:'商业化品种 A',ctdModule:'—',verifier:'QA-王',dueDate:addDays(TODAY,9),
-    status:'待核查',conclusion:'—',linkDev:'',remark:'示例数据。',items:[]}
-  ];
-  DB.changes=[
-   {id:uid('CC'),code:'CC-2026-014',title:'XZB-2026 原料药精制溶剂由乙醇变更为异丙醇',
-    phase:'研发阶段（未上市）',changeType:'生产工艺',category:'研发内部-高',regPath:'待确认',
-    project:'XZB-2026',owner:'工艺开发部',qaOwner:'唐海云',dueDate:addDays(TODAY,-2),
-    status:'评估中',effectiveDate:'',
-    reason:'示例数据。乙醇残留难以控制在限度内，改用异丙醇以改善精制收率与残留水平。',
-    plan:'3 批小试确认 + 杂质谱对比 + 残留溶剂方法适用性确认 + 6 个月加速稳定性',
-    closeCond:'杂质谱可比性结论批准 + 残留溶剂方法验证报告批准 + 工艺文件生效 + 相关人员培训完成',
-    impacts:{0:1,1:1,3:1,5:1},
-    tasks:[{desc:'杂质谱对比研究（含未知杂质定性）',owner:'分析研究部',due:addDays(TODAY,10),done:'进行中'},
-           {desc:'残留溶剂检测方法适用性确认',owner:'QC',due:addDays(TODAY,-2),done:'未开始'}]},
-   {id:uid('CC'),code:'CC-2026-015',title:'成品内包材由 PVC 泡罩变更为 PVC/PVDC 泡罩',
-    phase:'已上市（上市后变更）',changeType:'包装材料',category:'中等（备案）',regPath:'备案',
-    project:'商业化品种 A',owner:'包装工程',qaOwner:'QA-李',dueDate:addDays(TODAY,20),
-    status:'已批准',effectiveDate:addDays(TODAY,45),
-    reason:'示例数据。提升阻湿性能，延长有效期内质量稳定性。',
-    plan:'相容性研究 + 3 批变更后稳定性（6 个月加速 + 长期启动）+ 备案资料准备',
-    closeCond:'备案完成 + 稳定性 6 个月数据符合 + 变更后首批放行',
-    impacts:{3:1,4:1,5:1},
-    tasks:[{desc:'提交备案资料',owner:'注册部',due:addDays(TODAY,15),done:'进行中'}]},
-   {id:uid('CC'),code:'CC-2026-016',title:'LIMS 系统升级（V3.2 → V4.0）',
-    phase:'已上市（上市后变更）',changeType:'计算机化系统',category:'微小（年度报告）',regPath:'无需申报（内部控制）',
-    project:'质量体系',owner:'IT',qaOwner:'唐海云',dueDate:addDays(TODAY,30),
-    status:'实施中',effectiveDate:addDays(TODAY,40),
-    reason:'示例数据。原版本停止维护。',
-    plan:'GAMP5 风险评估 + IQ/OQ/PQ + 审计追踪与权限矩阵确认 + 数据迁移验证',
-    closeCond:'验证报告批准 + 旧系统数据可查阅追溯确认 + 权限矩阵审批 + 用户培训',
-    impacts:{9:1,10:1},
-    tasks:[{desc:'数据迁移一致性核对（迁移前后 100% 比对关键字段）',owner:'IT + QA',due:addDays(TODAY,18),done:'未开始'},
-           {desc:'审计追踪功能确认（不可关闭、含原因字段）',owner:'QA',due:addDays(TODAY,22),done:'未开始'}]}
-  ];
-  DB.devs=[
-   {id:uid('DEV'),code:'DEV-2026-008',title:'RPT-2026-013 报告含量计算所用峰面积与原始图谱不一致',
-    stage:'检验（QC）',level:'关键',occurDate:addDays(TODAY,-12),findDate:addDays(TODAY,-6),
-    finder:'唐海云（QA 记录核查）',owner:'QC 主管',project:'XZB-2026 / 批 XZB-20260412-01',
-    dueDate:addDays(TODAY,-4),status:'调查中',rootType:'管理（变更未评估 / 计划不足）',
-    desc:'示例数据。QA 在 RPT-2026-013 与 EXP-003 一致性核查中发现，报告含量按峰面积 12654 计算，而原始图谱峰面积均值为 12456，差异未见任何说明或复核痕迹。',
-    immediate:'暂停该报告用于申报；隔离相关数据；调取 HPLC 审计追踪与原始进样序列。',
-    rootCause:'初步：数据转录环节无双人复核，且报告编制使用了未受控的中间 Excel 表（转录环节缺失控制）。',
-    impactConc:'待完成同期 5 批数据回顾后确认；若确认转录错误，须评估是否影响 IND 申报数据集。',
-    impacts:{1:1,3:1},
-    capa:[{type:'纠正措施(CA)',desc:'重新按原始图谱计算并修订报告，说明差异与更正过程',owner:'QC',due:addDays(TODAY,-1),done:'进行中'},
-          {type:'纠正措施(CA)',desc:'回顾同期 5 批数据，确认是否存在同类转录偏差',owner:'QA',due:addDays(TODAY,3),done:'未开始'},
-          {type:'预防措施(PA)',desc:'取消中间 Excel 转录，报告数据直接由 LIMS 导出；增加双人复核签署栏',owner:'QC + IT',due:addDays(TODAY,25),done:'未开始'}]},
-   {id:uid('DEV'),code:'DEV-2026-009',title:'稳定性样品 2-8℃ 冰箱故障，超温 2 小时（最高 14.2℃）',
-    stage:'药学研究',level:'主要',occurDate:addDays(TODAY,-4),findDate:addDays(TODAY,-4),
-    finder:'稳定性负责人',owner:'制剂研究部',project:'XZB-2026 / 6 个月长期样品',
-    dueDate:addDays(TODAY,26),status:'CAPA 执行中',rootType:'设备（故障 / 校准 / 维护）',
-    desc:'示例数据。温度监控报警显示 2-8℃ 冰箱压缩机故障，最高温度 14.2℃，持续约 2 小时。',
-    immediate:'样品转移至备用冰箱；导出温度曲线留存；对受影响时间点样品加测。',
-    rootCause:'压缩机启动继电器失效；预防性维护周期未覆盖该部件。',
-    impactConc:'按 ICH Q1A(R2) 评估短时偏离，加测含量与有关物质，结果符合则判定不影响结论。',
-    impacts:{2:1,7:1},
-    capa:[{type:'纠正措施(CA)',desc:'受影响时间点样品加测含量与有关物质',owner:'QC',due:addDays(TODAY,7),done:'进行中'},
-          {type:'预防措施(PA)',desc:'修订预防性维护计划，纳入继电器等易损件；增加备用冰箱与超温自动短信报警',owner:'设备工程',due:addDays(TODAY,24),done:'未开始'}]},
-   {id:uid('DEV'),code:'DEV-2026-010',title:'GLP 毒理试验动物给药时间记录存在事后补记',
-    stage:'非临床研究（GLP）',level:'主要',occurDate:addDays(TODAY,-20),findDate:addDays(TODAY,-2),
-    finder:'QA 稽查',owner:'专题负责人',project:'RPT-2026-005 / 28 天毒性试验',
-    dueDate:addDays(TODAY,28),status:'已登记',rootType:'人员（培训 / 执行 / 沟通）',
-    desc:'示例数据。QA 稽查发现 D14 给药记录中 3 只动物给药时间为当日下班后统一补记，未标注补记原因。',
-    immediate:'确认实际给药已完成（通过称重与观察记录交叉印证）；要求补充说明并签署。',
-    rootCause:'待调查。初步指向操作人员对"及时记录"要求理解不足。',
-    impactConc:'待评估是否影响该时间点数据可用性及 GLP 声明。',
-    impacts:{2:1,1:1},
-    capa:[{type:'纠正措施(CA)',desc:'补充记录说明并由专题负责人确认；评估数据可用性',owner:'专题负责人',due:addDays(TODAY,10),done:'未开始'},
-          {type:'预防措施(PA)',desc:'开展《药品记录与数据管理要求》第十五、十六条专项培训并考核',owner:'QA',due:addDays(TODAY,25),done:'未开始'}]}
-  ];
+function openCloudModal(){
+  $('#modalTitle').textContent='☁ 云端同步设置';
+  let h=`<div class="form-grid">
+    <div class="field full"><label>后端服务地址</label><input type="text" id="cUrl" placeholder="同域部署填 / 或留空（如知识库网页自带后端）；独立后端填 https://... 或 http://IP:8000" value="${esc(CLOUD.url||'')}"></div>
+    <div class="field"><label>工作区名称</label><input type="text" id="cWs" placeholder="自定义工作区名" value="${esc(CLOUD.workspace||'')}"></div>
+    <div class="field"><label>密码</label><input type="password" id="cPw" placeholder="工作区密码（≥4位）"></div>
+    <div class="field full" style="font-size:12px;color:var(--muted);line-height:1.7">说明：<b>工作区</b>是一个共享空间。多人/多设备使用<b>相同的工作区名称+密码</b>即可访问同一份数据，实现实时同步。密码不可找回，请牢记。后端服务需自行部署（见随附的部署文档）。</div>
+  </div>`;
+  $('#modalBody').innerHTML=h;
+  $('#modalFoot').innerHTML=
+    `<button class="btn" onclick="closeModal()">取消</button>`+
+    (CLOUD.enabled?`<button class="btn btn-danger" onclick="cloudDisconnect()">断开并切回本地</button>`:'')+
+    (CLOUD.enabled?`<button class="btn" onclick="cloudUploadLocal()">⬆ 上传本地数据到云端</button>`:'')+
+    `<button class="btn" onclick="cloudAuth('login')">登录</button>`+
+    `<button class="btn btn-primary" onclick="cloudAuth('register')">注册并连接</button>`;
+  showMask();
 }
-
-/* ---------- 徽章与分级 ---------- */
-function stBadge(s){
-  var m={'待审阅':'b-grey','审阅中':'b-blue','已出意见':'b-orange','待回复确认':'b-orange','已关闭':'b-green',
-    '待核查':'b-grey','核查中':'b-blue','已出核查表':'b-orange','待整改回复':'b-orange',
-    '已提出':'b-grey','评估中':'b-blue','已批准':'b-teal','实施中':'b-blue','待验证/确认':'b-orange','待关闭':'b-orange','已否决':'b-red',
-    '已登记':'b-grey','调查中':'b-blue','CAPA 执行中':'b-orange','待关闭审核':'b-orange'};
-  return '<span class="badge '+(m[s]||'b-grey')+'">'+esc(s||'—')+'</span>';}
-function lvBadge(v){
-  if(!v) return '—';
-  if(/关键|重大|高/.test(v)) return '<span class="badge b-red">'+esc(v)+'</span>';
-  if(/主要|中等|中$|-中/.test(v)) return '<span class="badge b-orange">'+esc(v)+'</span>';
-  if(/次要|微小|低/.test(v)) return '<span class="badge b-green">'+esc(v)+'</span>';
-  return '<span class="badge b-grey">'+esc(v)+'</span>';}
-function isOpen(m,r){
-  if(m==='rv') return r.status!=='已关闭';
-  if(m==='vf') return r.status!=='已关闭';
-  if(m==='cc') return r.status!=='已关闭'&&r.status!=='已否决';
-  return r.status!=='已关闭';}
-function titleOf(m,r){return m==='vf'?r.subject:r.title;}
-
-/* ---------- 今天要处理 ---------- */
-function buildToday(){
-  var rows=[];
-  Object.keys(MODS).forEach(function(m){
-    var M=MODS[m];
-    DB[M.key].forEach(function(r){
-      if(!isOpen(m,r)) return;
-      var n=daysTo(r.dueDate);
-      if(n===null||n>3) return;
-      rows.push({m:m,r:r,n:n});
-    });
-    // 子任务（CAPA / 变更任务）逾期也要冒出来
-    (M.subs||[]).forEach(function(sb){
-      if(sb.k!=='capa'&&sb.k!=='tasks') return;
-      DB[M.key].forEach(function(r){
-        if(!isOpen(m,r)) return;
-        (r[sb.k]||[]).forEach(function(t,i){
-          if(!t.due||/已完成|有效性已确认/.test(t.done||'')) return;
-          var n=daysTo(t.due); if(n===null||n>3) return;
-          rows.push({m:m,r:r,n:n,sub:{k:sb.k,i:i,t:t}});
-        });
-      });
-    });
-  });
-  rows.sort(function(a,b){return a.n-b.n;});
-  var od=rows.filter(function(x){return x.n<0;}).length,
-      td=rows.filter(function(x){return x.n===0;}).length,
-      sn=rows.filter(function(x){return x.n>0;}).length;
-  var sum=document.getElementById('todaySum');
-  sum.innerHTML = rows.length
-    ? '<span class="pill od">逾期 '+od+'</span><span class="pill td">今天到期 '+td+'</span><span class="pill sn">3 天内 '+sn+'</span>'
-    : '<span class="pill ok">全部按期，无逾期项</span>';
-
-  var host=document.getElementById('todayList');
-  if(!rows.length){
-    host.innerHTML='<div class="empty">当前没有逾期或临期事项。新登记的文件审阅 / 核查 / 变更 / 偏差到期前 3 天会自动出现在这里，昨天未完成的会自动顺延。</div>';
-    return;
-  }
-  host.innerHTML=rows.slice(0,14).map(function(x,idx){
-    var M=MODS[x.m], cls=x.n<0?'od':(x.n===0?'td':'');
-    var due=x.sub?x.sub.t.due:x.r.dueDate;
-    var name=x.sub? (x.sub.k==='capa'?'CAPA：':'任务：')+esc(x.sub.t.desc||'（未填写）') : esc(titleOf(x.m,x.r));
-    var meta=[];
-    if(x.sub) meta.push('所属：'+esc(titleOf(x.m,x.r)).slice(0,32));
-    if(x.r.level) meta.push('分级 '+esc(x.r.level));
-    if(x.r.category) meta.push(esc(x.r.category));
-    if(x.r.status) meta.push('状态 '+esc(x.r.status));
-    var dtxt = x.n<0? '<span class="od-txt">已逾期 '+(-x.n)+' 天（'+due+'）</span>'
-             : x.n===0? '今天到期（'+due+'）' : x.n+' 天内到期（'+due+'）';
-    return '<div class="titem '+cls+'">'+
-      '<span class="titem-tag">'+esc(M.name)+'</span>'+
-      '<div class="titem-main"><div class="titem-t">'+name+'</div>'+
-      '<div class="titem-m">'+dtxt+(meta.length?' · '+meta.join(' · '):'')+'</div></div>'+
-      '<div class="titem-act">'+
-        '<button class="mini go" data-go="'+x.m+'" data-id="'+x.r.id+'">'+
-        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>处理</button>'+
-        (x.sub
-          ? '<button class="mini done" data-fin="'+x.m+'" data-id="'+x.r.id+'" data-sk="'+x.sub.k+'" data-si="'+x.sub.i+'">✓ 标记完成</button>'
-          : '<button class="mini done" data-ext="'+x.m+'" data-id="'+x.r.id+'">+7 天</button>')+
-      '</div></div>';
-  }).join('') + (rows.length>14?'<div class="hint" style="text-align:center;padding-top:6px">另有 '+(rows.length-14)+' 项，可进入各模块查看</div>':'');
-}
-
-/* ---------- 概览 ---------- */
-function buildOverview(){
-  var g=document.getElementById('statGrid'), h='';
-  Object.keys(MODS).forEach(function(m){
-    var M=MODS[m], all=DB[M.key], open=all.filter(function(r){return isOpen(m,r);});
-    var od=open.filter(function(r){var n=daysTo(r.dueDate);return n!==null&&n<0;}).length;
-    var extra='';
-    if(m==='rv'){var d=0;all.forEach(function(r){d+=(r.findings||[]).length+(r.conflicts||[]).length;});extra='累计缺陷/冲突 '+d+' 项';}
-    if(m==='vf'){var t=0,bad=0;all.forEach(function(r){(r.items||[]).forEach(function(i){
-        if(i.result&&i.result!=='不适用'){t++;if(i.result!=='一致')bad++;}});});
-      extra='核查项 '+t+' 项，异常 '+bad+' 项';}
-    if(m==='cc'){extra='待申报确认 '+all.filter(function(r){return r.regPath==='待确认';}).length+' 项';}
-    if(m==='dv'){extra='关键偏差 '+all.filter(function(r){return r.level==='关键';}).length+' 项';}
-    h+='<div class="stat '+M.cls+'" data-jump="'+m+'">'+
-      '<div class="stat-l">'+esc(M.name)+'</div>'+
-      '<div class="stat-v">'+open.length+'<span style="font-size:13px;color:var(--text-muted);font-weight:500"> / '+all.length+' 在办</span></div>'+
-      '<div class="stat-m">'+(od?'<span class="r">逾期 '+od+' 项</span> · ':'')+extra+'</div></div>';
-  });
-  g.innerHTML=h;
-
-  // 偏差分级
-  var lv=['关键','主要','次要','待评估'], lvC=['#C62828','#EF6C00','#2E7D32','#90A4AE'];
-  document.getElementById('chDev').innerHTML=donut(lv.map(function(x,i){
-    return {l:x,v:DB.devs.filter(function(r){return r.level===x;}).length,c:lvC[i]};}),'偏差总数');
-  // 变更状态
-  var cs=['已提出','评估中','已批准','实施中','待验证/确认','待关闭','已关闭','已否决'];
-  document.getElementById('chCc').innerHTML=bars(cs.map(function(s){
-    return {l:s,v:DB.changes.filter(function(r){return r.status===s;}).length};}),'#6A1B9A');
-  // 一致率
-  var tot=0,ok=0,ne=0,nt=0;
-  DB.verifs.forEach(function(r){(r.items||[]).forEach(function(i){
-    if(!i.result||i.result==='不适用') return; tot++;
-    if(i.result==='一致')ok++; else if(i.result==='不一致')ne++; else nt++;});});
-  document.getElementById('chVf').innerHTML = tot
-    ? ring(Math.round(ok/tot*100), '一致 '+ok+' · 不一致 '+ne+' · 无法追溯 '+nt+' · 合计 '+tot+' 项')
-    : '<div class="empty">暂无核查项数据</div>';
-  // 审阅缺陷
-  var sev=['关键','主要','次要'], sc=[0,0,0];
-  DB.reviews.forEach(function(r){
-    (r.findings||[]).concat(r.conflicts||[]).forEach(function(f){
-      var i=sev.indexOf(f.severity); if(i>=0) sc[i]++;});});
-  document.getElementById('chRv').innerHTML=bars(sev.map(function(s,i){return {l:s+'缺陷',v:sc[i]};}),'#1565C0');
-}
-/* 内联 SVG 图表 */
-function donut(data,label){
-  var tot=data.reduce(function(a,d){return a+d.v;},0);
-  if(!tot) return '<div class="empty">暂无数据</div>';
-  var R=54,C=2*Math.PI*R,off=0,segs='',lg='';
-  data.forEach(function(d){
-    if(!d.v) {lg+=lgi(d,tot);return;}
-    var len=d.v/tot*C;
-    segs+='<circle cx="70" cy="70" r="'+R+'" fill="none" stroke="'+d.c+'" stroke-width="20" '+
-      'stroke-dasharray="'+len.toFixed(2)+' '+(C-len).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'" '+
-      'transform="rotate(-90 70 70)"><title>'+esc(d.l)+'：'+d.v+'</title></circle>';
-    off+=len; lg+=lgi(d,tot);
-  });
-  return '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'+
-    '<svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label="'+esc(label)+'">'+
-    '<circle cx="70" cy="70" r="'+R+'" fill="none" stroke="#ECEFF1" stroke-width="20"/>'+segs+
-    '<text x="70" y="66" text-anchor="middle" font-size="24" font-weight="700" fill="#1A2332">'+tot+'</text>'+
-    '<text x="70" y="86" text-anchor="middle" font-size="10.5" fill="#90A4AE">'+esc(label)+'</text></svg>'+
-    '<div style="flex:1;min-width:130px">'+lg+'</div></div>';
-}
-function lgi(d,tot){
-  return '<div style="display:flex;align-items:center;gap:8px;font-size:12.5px;padding:3px 0">'+
-    '<span style="width:11px;height:11px;border-radius:3px;background:'+d.c+';flex:none"></span>'+
-    '<span style="flex:1">'+esc(d.l)+'</span><b>'+d.v+'</b>'+
-    '<span style="color:var(--text-muted);font-size:11px">'+(tot?Math.round(d.v/tot*100):0)+'%</span></div>';
-}
-function bars(data,color){
-  var max=Math.max.apply(null,data.map(function(d){return d.v;}).concat([1]));
-  if(!data.some(function(d){return d.v;})) return '<div class="empty">暂无数据</div>';
-  var bw=26,gap=16,W=data.length*(bw+gap)+20,H=170;
-  var b='';
-  data.forEach(function(d,i){
-    var h=Math.round(d.v/max*104), x=14+i*(bw+gap), y=124-h;
-    b+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+Math.max(h,d.v?3:0)+'" rx="4" fill="'+color+'" opacity="'+(d.v?0.88:0.15)+'">'+
-       '<title>'+esc(d.l)+'：'+d.v+'</title></rect>'+
-       (d.v?'<text x="'+(x+bw/2)+'" y="'+(y-5)+'" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1A2332">'+d.v+'</text>':'')+
-       '<text x="'+(x+bw/2)+'" y="140" text-anchor="middle" font-size="9.5" fill="#546E7A" transform="rotate(28 '+(x+bw/2)+' 140)">'+esc(d.l.length>6?d.l.slice(0,6):d.l)+'</text>';
-  });
-  return '<div style="overflow-x:auto"><svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="img">'+
-    '<line x1="10" y1="124" x2="'+(W-6)+'" y2="124" stroke="#E1E8ED" stroke-width="1"/>'+b+'</svg></div>';
-}
-function ring(pct,sub){
-  var R=52,C=2*Math.PI*R,len=pct/100*C;
-  var col=pct>=95?'#2E7D32':pct>=80?'#EF6C00':'#C62828';
-  return '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'+
-   '<svg width="132" height="132" viewBox="0 0 132 132" role="img" aria-label="一致率 '+pct+'%">'+
-   '<circle cx="66" cy="66" r="'+R+'" fill="none" stroke="#ECEFF1" stroke-width="16"/>'+
-   '<circle cx="66" cy="66" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="16" stroke-linecap="round" '+
-   'stroke-dasharray="'+len.toFixed(2)+' '+(C-len).toFixed(2)+'" transform="rotate(-90 66 66)"/>'+
-   '<text x="66" y="70" text-anchor="middle" font-size="25" font-weight="700" fill="'+col+'">'+pct+'%</text>'+
-   '<text x="66" y="88" text-anchor="middle" font-size="10" fill="#90A4AE">一致率</text></svg>'+
-   '<div style="flex:1;min-width:140px;font-size:12.5px;color:var(--text-secondary);line-height:1.8">'+esc(sub)+
-   '<div class="hint" style="margin-top:6px">一致率 &lt; 95% 时不建议提交申报；「无法追溯」项须按数据可靠性缺陷开偏差。</div></div></div>';
-}
-
-/* ---------- 模块列表 ---------- */
-function buildModule(m){
-  var M=MODS[m], host=document.getElementById('p-'+m), rows=DB[M.key].slice();
-  rows.sort(function(a,b){
-    var ao=isOpen(m,a)?0:1, bo=isOpen(m,b)?0:1;
-    if(ao!==bo) return ao-bo;
-    return (a.dueDate||'9999').localeCompare(b.dueDate||'9999');});
-  var h='<div class="card"><div class="card-h"><h3>'+esc(M.name)+'</h3><div class="sp">'+
-    '<button class="tbtn primary" data-add="'+m+'">'+
-    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>新建'+esc(M.name)+'</button>'+
-    '</div></div><div class="card-sub">'+esc(M.sub)+'</div>';
-  if(!rows.length){
-    h+='<div class="empty">暂无记录，点右上「新建'+esc(M.name)+'」开始。</div></div>';
-    host.innerHTML=h; return;
-  }
-  h+='<div class="tbl-wrap"><table class="t"><thead><tr>';
-  M.cols.forEach(function(c){h+='<th>'+esc(c.l)+'</th>';});
-  h+='<th>操作</th></tr></thead><tbody>';
-  rows.forEach(function(r){
-    h+='<tr>';
-    M.cols.forEach(function(c){
-      var v='';
-      if(c.k==='_def'){var n=(r.findings||[]).length,k=(r.conflicts||[]).length;
-        v=(n||k)?'<span class="badge '+(k?'b-red':'b-orange')+'">缺陷 '+n+' · 冲突 '+k+'</span>':'<span class="badge b-green">无</span>';}
-      else if(c.k==='_rate'){
-        var t=0,ok=0;(r.items||[]).forEach(function(i){if(i.result&&i.result!=='不适用'){t++;if(i.result==='一致')ok++;}});
-        v=t?'<span class="badge '+(ok===t?'b-green':(ok/t>=0.8?'b-orange':'b-red'))+'">'+Math.round(ok/t*100)+'%（'+ok+'/'+t+'）</span>':'<span class="badge b-grey">未录入</span>';}
-      else if(c.k==='_capa'){
-        var cs=r.capa||[],dn=cs.filter(function(x){return /已完成|有效性已确认/.test(x.done||'');}).length;
-        v=cs.length?'<span class="badge '+(dn===cs.length?'b-green':'b-orange')+'">'+dn+'/'+cs.length+'</span>':'<span class="badge b-grey">未制定</span>';}
-      else if(c.due) v=fmtDue(r[c.k]);
-      else if(c.st) v=stBadge(r[c.k]);
-      else if(c.lv) v=lvBadge(r[c.k]);
-      else if(c.badge) v=r[c.k]?'<span class="badge '+c.badge+'">'+esc(r[c.k])+'</span>':'—';
-      else if(c.mono) v='<span class="mono">'+esc(r[c.k]||'—')+'</span>';
-      else if(c.main) v='<span class="linkish" data-go="'+m+'" data-id="'+r.id+'">'+esc(r[c.k]||'（未命名）')+'</span>'+
-        (r.project?'<div class="hint">'+esc(r.project)+'</div>':'');
-      else v=esc(r[c.k]||'—');
-      h+='<td data-l="'+esc(c.l)+'">'+v+'</td>';
-    });
-    h+='<td data-l="操作"><div class="rowact">'+
-      '<button class="mini" data-go="'+m+'" data-id="'+r.id+'" title="编辑">编辑</button>'+
-      '<button class="mini" data-del="'+m+'" data-id="'+r.id+'" title="删除" style="color:var(--red)">删除</button>'+
-      '</div></td></tr>';
-  });
-  h+='</tbody></table></div></div>';
-  host.innerHTML=h;
-}
-
-/* ---------- 法规依据库 ---------- */
-function buildRegs(){
-  var n=REGS.reduce(function(a,g){return a+g.items.length;},0);
-  document.getElementById('regCnt').textContent='共 '+n+' 项依据 · '+REGS.length+' 个专题';
-  document.getElementById('regGroups').innerHTML=REGS.map(function(g,gi){
-    return '<div class="reg-g"><h4>'+esc(g.g)+'</h4><div class="gs">'+esc(g.gs)+'</div>'+
-      g.items.map(function(it,ii){
-        return '<div class="reg-item" data-reg="'+gi+'-'+ii+'"><div class="rt">'+esc(it.t)+'</div>'+
-          '<div class="rm">'+(it.no&&it.no!=='—'?'<span>'+esc(it.no)+'</span>':'')+
-          (it.eff&&it.eff!=='—'?'<span>施行 '+esc(it.eff)+'</span>':'')+'</div>'+
-          '<div class="ru">'+esc(it.use)+'</div></div>';
-      }).join('')+'</div>';
-  }).join('');
-}
-function openReg(gi,ii){
-  var it=REGS[gi].items[ii];
-  openModal({
-    title:it.t,
-    body:'<div class="reg-detail">'+
-      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">'+
-        (it.no&&it.no!=='—'?'<span class="badge b-blue">'+esc(it.no)+'</span>':'')+
-        (it.eff&&it.eff!=='—'?'<span class="badge b-teal">施行 '+esc(it.eff)+'</span>':'')+
-        '<span class="badge b-grey">'+esc(REGS[gi].g)+'</span></div>'+
-      '<dl><dt>QA 适用场景</dt><dd>'+esc(it.use)+'</dd>'+
-      '<dt>关键要点（审阅 / 核查时直接引用）</dt><dd><ul style="margin:4px 0 0;padding-left:19px">'+
-        it.pts.map(function(p){return '<li style="margin-bottom:5px">'+esc(p)+'</li>';}).join('')+'</ul></dd></dl>'+
-      '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">'+
-        '<button class="tbtn primary" id="regSearchBtn">在本站法规原文库中检索</button>'+
-        '<a class="tbtn" href="index.html" target="_blank" rel="noopener">打开法规原文库主站</a></div>'+
-      '<div id="regHit"></div></div>',
-    wide:1
-  });
-  var btn=document.getElementById('regSearchBtn');
-  btn.addEventListener('click',function(){
-    var hit=document.getElementById('regHit');
-    hit.innerHTML='<div class="hint">正在检索本站知识库…</div>';
-    var q=encodeURIComponent(it.t.replace(/[（(].*?[)）]/g,'').slice(0,28));
-    fetch('/api/qa?q='+q+'&n=5',{headers:{'Accept':'application/json'}})
-      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-      .then(function(d){
-        var list=(d&&(d.docs||d.results||d.hits))||[];
-        if(!list.length){ hit.innerHTML='<div class="hint">本站实时检索接口未返回命中结果（可能全文索引未重建）。可点上方「打开法规原文库主站」在分类目录中查阅原文。</div>'; return; }
-        hit.innerHTML='<div style="font-weight:700;font-size:12.5px;margin:10px 0 7px">知识库命中 '+list.length+' 篇：</div>'+
-          list.map(function(x){
-            var t=x.title||x.name||x.rel||'（无标题）', s=x.snippet||x.summary||'';
-            return '<div class="hit"><div class="ht">'+esc(t)+'</div>'+(s?'<div class="hs">'+esc(String(s).slice(0,180))+'</div>':'')+'</div>';
-          }).join('');
-      })
-      .catch(function(){
-        hit.innerHTML='<div class="hint">当前为静态部署或后端未启动，实时检索不可用。已内置上述要点可直接引用；如需原文请点「打开法规原文库主站」。</div>';
-      });
-  });
-}
-
-/* ---------- 弹窗 ---------- */
-function openModal(o){
+async function cloudAuth(mode){
+  const url=$('#cUrl').value.trim(),ws=$('#cWs').value.trim(),pw=$('#cPw').value;
+  if(!url||!ws||pw.length<4){toast('请填写地址、工作区名，密码≥4位');return;}
+  CLOUD.url=url;CLOUD.workspace=ws;saveCloud();
+  $('#modalFoot').innerHTML='<span class="sub">连接中…</span>';
+  const [st,res]=await api('POST','/'+(mode==='register'?'api/register':'api/login'),{name:ws,password:pw});
+  if(st!==200){toast(mode==='register'?'注册失败（可能已存在，请改用登录）':'登录失败：名称或密码错误');return;}
+  CLOUD.token=res.token;CLOUD.enabled=true;CLOUD.lastSync='0';saveCloud();
+  const ok=await cloudBootstrap();
   closeModal();
-  var host=document.getElementById('modalHost');
-  host.innerHTML='<div class="mask" id="mask"><div class="modal'+(o.wide?'':'')+'" role="dialog" aria-modal="true">'+
-    '<div class="modal-h"><h3>'+esc(o.title)+'</h3><button class="xbtn" id="mClose" aria-label="关闭">×</button></div>'+
-    '<div class="modal-b">'+o.body+'</div>'+
-    (o.footer?'<div class="modal-f">'+o.footer+'</div>':'')+'</div></div>';
-  document.getElementById('mClose').onclick=closeModal;
-  document.getElementById('mask').addEventListener('click',function(e){ if(e.target.id==='mask') closeModal(); });
-  document.body.style.overflow='hidden';
+  if(ok){toast('☁ 已连接云端，开始同步');startSync();}
+  else{CLOUD.enabled=false;CLOUD.token='';saveCloud();toast('云端连接失败，请检查地址');}
+  renderCloudBadge();renderNav();renderHome();
 }
-function closeModal(){
-  document.getElementById('modalHost').innerHTML='';
-  document.body.style.overflow='';
+function cloudDisconnect(){
+  stopSync();CLOUD.enabled=false;CLOUD.token='';saveCloud();
+  closeModal();renderCloudBadge();toast('已断开，切回本地模式');
 }
-
-/* ---------- 记录编辑表单 ---------- */
-function openRec(m,id){
-  var M=MODS[m], rec=id?DB[M.key].filter(function(r){return r.id===id;})[0]:null;
-  var isNew=!rec;
-  if(isNew){
-    rec={id:uid(M.code),status:M.fields.filter(function(f){return f.k==='status';})[0].o[0],dueDate:addDays(TODAY,14)};
-    if(m==='dv'){rec.findDate=TODAY;rec.dueDate=addDays(TODAY,30);}
-  }
-  var h='<form id="recForm"><div class="frow">';
-  M.fields.forEach(function(f){
-    var v=rec[f.k]==null?'':rec[f.k];
-    h+='<div class="fld'+(f.full||f.t==='textarea'?' full':'')+'"><label for="f_'+f.k+'">'+esc(f.l)+
-       (f.req?' <span class="req">*</span>':'')+'</label>';
-    if(f.t==='select'){
-      h+='<select id="f_'+f.k+'" name="'+f.k+'">'+f.o.map(function(op){
-        return '<option value="'+esc(op)+'"'+(String(v)===op?' selected':'')+'>'+esc(op)+'</option>';}).join('')+'</select>';
-    }else if(f.t==='textarea'){
-      h+='<textarea id="f_'+f.k+'" name="'+f.k+'" placeholder="'+esc(f.ph||'')+'">'+esc(v)+'</textarea>';
-    }else{
-      h+='<input id="f_'+f.k+'" name="'+f.k+'" type="'+(f.t||'text')+'" value="'+esc(v)+'" placeholder="'+esc(f.ph||'')+'">';
-    }
-    if(f.hint) h+='<span class="hint">'+esc(f.hint)+'</span>';
-    h+='</div>';
-  });
-  h+='</div>';
-
-  // 审阅检查表
-  if(M.checks){
-    var dt=rec.docType||M.fields.filter(function(f){return f.k==='docType';})[0].o[0];
-    h+='<fieldset class="sect" id="ckSect"><legend>合规审阅检查表（按文件类型自动加载）</legend>'+
-       '<div class="hint" style="margin-bottom:9px">勾选=已确认符合。未勾选项应在「审阅发现」中登记缺陷，或写明不适用理由。</div>'+
-       '<div class="chk-grid" id="ckGrid">'+ckHtml(dt,rec.checks||{})+'</div></fieldset>';
-  }
-  // 影响评估
-  if(M.impacts){
-    h+='<fieldset class="sect"><legend>'+(m==='cc'?'影响评估维度（勾选=受影响，须在措施中对应处理）':'影响评估（勾选=存在该影响）')+'</legend>'+
-       '<div class="chk-grid">'+M.impacts.map(function(x,i){
-         var on=(rec.impacts||{})[i]?' checked':'';
-         return '<label class="chk'+(on?' checked':'')+'"><input type="checkbox" name="imp_'+i+'"'+on+'>'+
-           '<span>'+esc(x.t)+'<span class="ck-ref">依据：'+esc(x.r)+'</span></span></label>';
-       }).join('')+'</div></fieldset>';
-  }
-  // 子表
-  (M.subs||[]).forEach(function(sb){
-    h+='<fieldset class="sect"><legend>'+esc(sb.l)+'</legend>'+
-       '<div class="tbl-wrap"><table class="subtbl" id="sub_'+sb.k+'"><thead><tr>'+
-       sb.cols.map(function(c){return '<th style="width:'+(c.w||'auto')+'">'+esc(c.l)+'</th>';}).join('')+
-       '<th style="width:44px"></th></tr></thead><tbody>'+
-       ((rec[sb.k]||[]).map(function(row){return subRow(sb,row);}).join(''))+
-       '</tbody></table></div><div class="addrow">'+
-       '<button type="button" class="mini" data-addrow="'+sb.k+'">+ 添加一行</button>'+
-       (sb.tpl?' <button type="button" class="mini" data-tpl="'+sb.k+'">按模板填充核查项（'+sb.tpl.length+' 项）</button>':'')+
-       '</div></fieldset>';
-  });
-  h+='</form>';
-
-  openModal({
-    title:(isNew?'新建 ':'编辑 ')+M.name,
-    body:h,
-    footer:'<button class="tbtn primary" id="saveBtn">保存</button>'+
-           '<button class="tbtn" id="cancelBtn">取消</button>'+
-           (isNew?'':'<button class="tbtn danger" id="delBtn" style="margin-left:auto">删除此条</button>')
-  });
-
-  var modalB=document.querySelector('.modal-b');
-  // 文件类型切换 → 重载检查表
-  var dtSel=document.getElementById('f_docType');
-  if(dtSel && M.checks) dtSel.addEventListener('change',function(){
-    document.getElementById('ckGrid').innerHTML=ckHtml(dtSel.value,{});
-  });
-  // 发现日期 → 自动算关闭截止（+30天）
-  var fd=document.getElementById('f_findDate'), dd=document.getElementById('f_dueDate');
-  if(fd&&dd) fd.addEventListener('change',function(){ if(fd.value) dd.value=addDays(fd.value,30); });
-  // 勾选高亮
-  modalB.addEventListener('change',function(e){
-    if(e.target.type==='checkbox'){ e.target.closest('.chk').classList.toggle('checked',e.target.checked); }
-  });
-  // 子表按钮
-  modalB.addEventListener('click',function(e){
-    var a=e.target.closest('[data-addrow]'), t=e.target.closest('[data-tpl]'), d=e.target.closest('[data-delrow]');
-    if(a){ var sb=findSub(M,a.getAttribute('data-addrow'));
-      document.querySelector('#sub_'+sb.k+' tbody').insertAdjacentHTML('beforeend',subRow(sb,{})); }
-    if(t){ var sb2=findSub(M,t.getAttribute('data-tpl'));
-      var tb=document.querySelector('#sub_'+sb2.k+' tbody');
-      sb2.tpl.forEach(function(x){ tb.insertAdjacentHTML('beforeend',subRow(sb2,{field:x,result:'一致'})); });
-      toast('已填充 '+sb2.tpl.length+' 个标准核查项，逐项填写源值与目标值'); }
-    if(d){ d.closest('tr').remove(); }
-  });
-  document.getElementById('cancelBtn').onclick=closeModal;
-  var delB=document.getElementById('delBtn');
-  if(delB) delB.onclick=function(){ closeModal(); delRec(m,rec.id); };
-  document.getElementById('saveBtn').onclick=function(){
-    var f=document.getElementById('recForm'), out={id:rec.id};
-    var bad=null;
-    M.fields.forEach(function(fd2){
-      var el=f.querySelector('[name="'+fd2.k+'"]'); var v=el?el.value.trim():'';
-      if(fd2.req&&!v) bad=bad||fd2.l;
-      out[fd2.k]=v;
-    });
-    if(bad){ toast('请填写必填项：'+bad,'err'); return; }
-    if(M.checks){
-      out.checks={};
-      f.querySelectorAll('[name^="ck_"]').forEach(function(el){
-        if(el.checked) out.checks[el.name.slice(3)]=1;});
-      out.checkType=out.docType;
-    }
-    if(M.impacts){
-      out.impacts={};
-      f.querySelectorAll('[name^="imp_"]').forEach(function(el){
-        if(el.checked) out.impacts[el.name.slice(4)]=1;});
-    }
-    (M.subs||[]).forEach(function(sb){
-      out[sb.k]=[];
-      f.querySelectorAll('#sub_'+sb.k+' tbody tr').forEach(function(tr){
-        var row={},any=false;
-        sb.cols.forEach(function(c){
-          var el=tr.querySelector('[data-c="'+c.k+'"]'); var v=el?el.value.trim():'';
-          row[c.k]=v; if(v) any=true;});
-        if(any) out[sb.k].push(row);
-      });
-    });
-    var arr=DB[M.key], i=-1;
-    arr.forEach(function(r,ix){ if(r.id===out.id) i=ix; });
-    if(i>=0) arr[i]=out; else arr.unshift(out);
-    save(); closeModal(); renderAll();
-    toast((i>=0?'已更新：':'已新建：')+(titleOf(m,out)||M.name).slice(0,24));
-  };
-}
-function findSub(M,k){ return (M.subs||[]).filter(function(s){return s.k===k;})[0]; }
-function subRow(sb,row){
-  return '<tr>'+sb.cols.map(function(c){
-    var v=row[c.k]==null?'':row[c.k];
-    if(c.t==='select') return '<td><select data-c="'+c.k+'">'+
-      ['<option value=""></option>'].concat(c.o.map(function(o){
-        return '<option value="'+esc(o)+'"'+(v===o?' selected':'')+'>'+esc(o)+'</option>';})).join('')+'</select></td>';
-    return '<td><input data-c="'+c.k+'" type="'+(c.t||'text')+'" value="'+esc(v)+'"></td>';
-  }).join('')+'<td><button type="button" class="mini" data-delrow="1" title="删除该行" style="color:var(--red)">×</button></td></tr>';
-}
-function ckHtml(docType,checked){
-  var list=CK_COMMON.concat(CK_BY_TYPE[docType]||[]);
-  return list.map(function(x,i){
-    var on=checked[i]?' checked':'';
-    return '<label class="chk'+(on?' checked':'')+'"><input type="checkbox" name="ck_'+i+'"'+on+'>'+
-      '<span>'+esc(x.t)+'<span class="ck-ref">依据：'+esc(x.r)+'</span></span></label>';
-  }).join('');
-}
-function delRec(m,id){
-  var M=MODS[m], r=DB[M.key].filter(function(x){return x.id===id;})[0];
-  if(!r) return;
-  openModal({title:'确认删除',
-    body:'<p style="font-size:13.5px;line-height:1.7">确定删除以下'+esc(M.name)+'记录？此操作不可撤销（建议先「导出备份」）。</p>'+
-      '<div class="hit"><div class="ht">'+esc(titleOf(m,r)||'（未命名）')+'</div>'+
-      '<div class="hs">状态：'+esc(r.status||'—')+' · 截止：'+esc(r.dueDate||'—')+'</div></div>',
-    footer:'<button class="tbtn danger" id="okDel">确认删除</button><button class="tbtn" id="noDel">取消</button>'});
-  document.getElementById('noDel').onclick=closeModal;
-  document.getElementById('okDel').onclick=function(){
-    DB[M.key]=DB[M.key].filter(function(x){return x.id!==id;});
-    save(); closeModal(); renderAll(); toast('已删除','warn');
-  };
+async function cloudUploadLocal(){
+  if(!CLOUD.enabled||!CLOUD.token){toast('请先连接云端');return;}
+  let n=0;
+  for(const m of ORDER){getA(m).forEach(r=>{const c=Object.assign({},r);if(!c.id)c.id=uid();apiPersist(m,c);n++;});}
+  toast('已提交 '+n+' 条本地数据到云端（后台同步中）');
 }
 
-/* ---------- 导出 / 导入 / 清空 ---------- */
-function dl(name,content,type){
-  var b=new Blob(['\ufeff'+content],{type:type||'application/json;charset=utf-8'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name;
-  document.body.appendChild(a); a.click();
-  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},400);
-}
-function doExport(){
-  dl('QA工作台备份_'+TODAY+'.json',JSON.stringify({
-    app:'pharma-qa-workbench',version:1,exportedAt:new Date().toISOString(),data:DB},null,2));
-  toast('已导出 JSON 备份（'+total()+' 条）');
-}
-function doImport(file){
-  var fr=new FileReader();
-  fr.onload=function(){
-    try{
-      var j=JSON.parse(fr.result), d=j.data||j, n=0;
-      Object.keys(DB).forEach(function(k){ if(Array.isArray(d[k])){ DB[k]=d[k]; n+=d[k].length; } });
-      save(); renderAll(); toast('已导入恢复 '+n+' 条记录');
-    }catch(e){ toast('导入失败：文件不是有效的备份 JSON','err'); }
-  };
-  fr.readAsText(file,'utf-8');
-}
-function doCsv(){
-  var m=curTab; if(m==='ov'||m==='rg') m='dv';
-  var M=MODS[m], rows=DB[M.key];
-  if(!rows.length){ toast('当前模块暂无数据可导出','warn'); return; }
-  var keys=M.fields.map(function(f){return f.k;});
-  var head=M.fields.map(function(f){return f.l;});
-  var lines=[head.join(',')];
-  rows.forEach(function(r){
-    lines.push(keys.map(function(k){
-      var v=r[k]==null?'':String(r[k]).replace(/"/g,'""').replace(/\r?\n/g,' ');
-      return '"'+v+'"';}).join(','));
-  });
-  dl('QA工作台_'+M.name+'_'+TODAY+'.csv',lines.join('\r\n'),'text/csv;charset=utf-8');
-  toast('已导出 '+M.name+' CSV（'+rows.length+' 条）');
-}
-function doClear(){
-  openModal({title:'清空全部数据',
-    body:'<p style="font-size:13.5px;line-height:1.75;color:var(--red);font-weight:600">'+
-      '此操作将删除本机保存的全部 '+total()+' 条记录（文件审阅 / 记录核查 / 变更 / 偏差），不可撤销。</p>'+
-      '<p style="font-size:13px;line-height:1.7">建议先点「导出备份」保存 JSON。确认清空请在下方输入框内输入 <b>清空</b>。</p>'+
-      '<div class="fld"><input id="clrTxt" type="text" placeholder="输入：清空"></div>'+
-      '<div class="hint">如只想删除预置示例数据，可逐条删除，或清空后不再重新生成示例。</div>',
-    footer:'<button class="tbtn danger" id="okClr">确认清空</button>'+
-      '<button class="tbtn" id="noClr">取消</button>'+
-      '<button class="tbtn" id="bkFirst" style="margin-left:auto">先导出备份</button>'});
-  document.getElementById('noClr').onclick=closeModal;
-  document.getElementById('bkFirst').onclick=doExport;
-  document.getElementById('okClr').onclick=function(){
-    if(document.getElementById('clrTxt').value.trim()!=='清空'){ toast('请输入「清空」以确认','err'); return; }
-    Object.keys(DB).forEach(function(k){DB[k]=[];});
-    localStorage.setItem(LS+'seeded','1'); save(); closeModal(); renderAll(); toast('已清空全部数据','warn');
-  };
-}
-
-/* ---------- Tab ---------- */
-var curTab='ov';
-var TAB_META=[
- {t:'ov',n:'概览',ico:'<path d="M3 3v18h18"/><path d="M7 16l4-6 4 3 5-8"/>'},
- {t:'rv',n:'文件审阅',ico:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M9 14l2 2 4-4"/>'},
- {t:'vf',n:'记录核查',ico:'<path d="M11 4h10M11 9h7M11 15h10M11 20h7"/><path d="M3 5l2 2 3-3"/>'},
- {t:'cc',n:'变更',ico:'<path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>'},
- {t:'dv',n:'偏差',ico:'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/>'},
- {t:'rg',n:'法规',ico:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'}
+/* ============ 模块配置（22个，对标GMP指南2023研发体系）============ */
+const GROUPS=[
+ {g:'质量管理系统',mods:['doc_review','record_check','change','deviation','capa','qrm']},
+ {g:'物料与供应商',mods:['supplier','audit','outsourcing']},
+ {g:'实验室与分析方法',mods:['oos','method','stability']},
+ {g:'设备与数据',mods:['equip','di']},
+ {g:'人员与知识',mods:['training','knowledge']},
+ {g:'生产与技术',mods:['pv','tech_transfer','release']},
+ {g:'监督与改进',mods:['complaint','self_inspect','mgmt_review']},
 ];
-function buildMnav(){
-  document.getElementById('mnav').innerHTML=TAB_META.map(function(x){
-    return '<button data-t="'+x.t+'" class="'+(curTab===x.t?'active':'')+'">'+
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+x.ico+'</svg>'+
-      '<span>'+x.n+'</span></button>';}).join('');
-}
-function setTab(t){
-  curTab=t;
-  document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-t')===t);});
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active',p.id==='p-'+t);});
-  document.querySelectorAll('#mnav button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-t')===t);});
-  window.scrollTo({top:0,behavior:'smooth'});
+const M={};
+function F(k,l,t,o){const f={key:k,label:l,type:t||'text'};if(o)f.options=o;return f;}
+M.doc_review={name:'文件审阅',ic:'📋',done:['已完成'],
+ fields:[F('code','文件编号','text'),F('name','文件名称','text'),F('type','文件类型','select',['IND申报资料','NDA申报资料','研究报告','质量文件','实验记录','SOP/方案','其他']),
+  F('reviewType','审阅类型','multiselect',['合规审阅','冲突检查','格式审阅','数据审阅','内容审阅']),
+  F('basis','法规依据','multiselect',BASIS),F('relatedFiles','关联文件','textarea'),
+  F('conflict','冲突检查结果','select',['无冲突','有冲突']),F('conflictDesc','冲突描述','textarea'),
+  F('conclusion','审阅结论','select',['通过','有条件通过','不通过']),F('rectify','整改要求','textarea'),
+  F('owner','审阅人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['待处理','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待处理','where',{status:'待处理'}],['有冲突','where',{conflict:'有冲突'}],['不通过','where',{conclusion:'不通过'}],['逾期','overdue']],
+ cols:['code','name','type','conflict','conclusion','status','dueDate']};
+
+M.record_check={name:'记录/申报资料核查',ic:'🔍',done:['已完成'],
+ fields:[F('code','核查编号','text'),F('name','核查名称','text'),F('targetDoc','目标文档','text'),F('attach','附件名称','textarea'),
+  F('basis','核查依据','multiselect',['法规','SOP','指导原则(如ICH E6)','药典']),F('risk','风险等级','select',['高','中','低']),
+  F('method','核查方法','select',['人工比对','工具辅助','组合']),F('items','不一致项清单','textarea'),
+  F('consistency','一致性状态','select',['一致','不一致','待核查']),F('rectifyStatus','整改跟进','select',['整改中','已整改','无法整改']),
+  F('owner','核查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['待核查','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待核查','where',{status:'待核查'}],['高风险','where',{risk:'高'}],['不一致','where',{consistency:'不一致'}],['逾期','overdue']],
+ cols:['code','name','risk','consistency','rectifyStatus','status','dueDate']};
+
+M.change={name:'变更管理',ic:'🔄',done:['已关闭','已实施'],
+ fields:[F('code','变更编号','text'),F('title','变更标题','text'),F('type','变更类型','select',['方法变更','设备变更','文件变更','物料变更','人员变更','工艺变更','场地变更']),
+  F('level','变更级别','select',['重大','中等','微小']),F('phase','研发阶段','select',['早期开发','I期','II期','III期','申报/上市']),
+  F('reason','变更原因','textarea'),F('impact','影响评估维度','multiselect',['产品质量','法规合规','验证状态','培训需求','文件更新','注册申报']),
+  F('ccb','CCB审批意见','textarea'),F('approver','审批人','text'),F('approveDate','批准日期','date'),
+  F('impl','实施计划','textarea'),F('relatedSys','关联系统/文件','text'),
+  F('owner','负责人','text'),F('dueDate','计划完成','date'),F('status','状态','select',['待审批','已批准','已实施','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待审批','where',{status:'待审批'}],['重大变更','where',{level:'重大'}],['已完成','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','title','level','phase','status','dueDate']};
+
+M.deviation={name:'偏差管理',ic:'⚠️',done:['已关闭'],
+ fields:[F('code','偏差编号','text'),F('title','偏差描述','text'),F('category','偏差分类','select',['实验室偏差','数据偏差','系统偏差','文件偏差','生产偏差']),
+  F('severity','严重程度','select',['严重','重要','次要']),F('immediate','即时措施','textarea'),F('impact','影响评估','textarea'),
+  F('method','调查方法','select',['鱼骨图','5Why','流程图','其他']),F('rootCause','根本原因','textarea'),
+  F('ca','纠正措施(CA)','textarea'),F('pa','预防措施(PA)','textarea'),F('capaOwner','CAPA责任人','text'),F('capaDue','CAPA计划日期','date'),
+  F('owner','调查人','text'),F('dueDate','关闭期限','date'),F('status','状态','select',['待调查','调查中','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['调查中','where',{status:'调查中'}],['严重偏差','where',{severity:'严重'}],['已逾期','overdue'],['逾期','overdue']],
+ cols:['code','title','category','severity','status','dueDate']};
+
+M.capa={name:'CAPA台账',ic:'🛠',done:['已关闭'],
+ fields:[F('code','CAPA编号','text'),F('source','来源','select',['偏差','审计','投诉','自检','管理评审','回顾']),F('ref','关联编号','text'),
+  F('desc','问题描述','textarea'),F('type','类型','select',['纠正措施CA','预防措施PA','综合']),F('responsible','责任人','text'),
+  F('planDate','计划完成','date'),F('effect','有效性评估','textarea'),F('closeDate','关闭日期','date'),
+  F('owner','跟踪人','text'),F('dueDate','跟踪日期','date'),F('status','状态','select',['进行中','已延期','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已延期','where',{status:'已延期'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','source','type','responsible','status','dueDate']};
+
+M.qrm={name:'质量风险管理',ic:'🎯',done:['已完成','已关闭'],
+ fields:[F('code','评估编号','text'),F('subject','评估对象','text'),F('method','评估方法','select',['FMEA','HACCP','故障树','风险排序筛选','初步危害分析','鱼骨图']),
+  F('scope','评估范围','textarea'),F('risk','风险等级','select',['高','中','低']),F('result','评估结论','textarea'),F('control','控制措施','textarea'),
+  F('reviewDate','回顾日期','date'),F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['高风险','where',{risk:'高'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','subject','method','risk','status','dueDate']};
+
+M.supplier={name:'供应商管理',ic:'🏭',done:['淘汰'],
+ fields:[F('code','供应商编号','text'),F('name','供应商名称','text'),F('material','供应物料/服务','text'),
+  F('type','供应商类型','select',['物料供应商','CMO','CDMO','检验机构','CRO','包材/标签']),F('risk','风险等级','select',['高','中','低']),
+  F('qualify','资质评估方式','select',['问卷','现场审计','问卷+审计']),F('result','评估结果','select',['合格','不合格','有条件合格']),
+  F('approveDate','批准日期','date'),F('reevalCycle','再评估周期','text'),F('reevalDate','再评估日期','date'),
+  F('owner','管理人','text'),F('dueDate','跟踪日期','date'),F('status','状态','select',['候选','已批准','暂停','淘汰']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['已批准','where',{status:'已批准'}],['待再评估','open'],['高风险','where',{risk:'高'}],['逾期','overdue']],
+ cols:['code','name','type','risk','result','status','dueDate']};
+
+M.audit={name:'审计管理',ic:'🧾',done:['已完成','已出报告'],
+ fields:[F('code','审计编号','text'),F('name','审计名称','text'),F('auditType','审计类型','select',['内部审计','供应商审计','监管检查','飞行检查','委托审计']),
+  F('target','被审计方','text'),F('scope','审计范围','textarea'),F('planDate','计划日期','date'),F('execDate','实施日期','date'),
+  F('findings','发现项数','text'),F('major','严重项','text'),F('reportRef','报告编号','text'),
+  F('owner','审计组长','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成','已出报告']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['计划中','where',{status:'计划中'}],['已出报告','where',{status:'已出报告'}],['逾期','overdue']],
+ cols:['code','name','auditType','target','status','dueDate']};
+
+M.outsourcing={name:'委托生产/检验',ic:'🤝',done:['已结束'],
+ fields:[F('code','委托编号','text'),F('partner','受托方','text'),F('service','服务内容','select',['委托生产','委托检验','委托研发','CMO/CDMO']),
+  F('agreement','质量协议','text'),F('auditRef','审计编号','text'),F('phase','研发阶段','select',['早期开发','I期','II期','III期','申报']),
+  F('owner','负责人','text'),F('dueDate','结束日期','date'),F('status','状态','select',['进行中','已结束']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已结束','where',{status:'已结束'}],['逾期','overdue']],
+ cols:['code','partner','service','phase','status','dueDate']};
+
+M.oos={name:'实验室异常结果调查',ic:'🧪',done:['已关闭','无效OOS'],
+ fields:[F('code','调查编号','text'),F('sample','样品/批号','text'),F('item','检验项目','text'),
+  F('rtype','结果类型','select',['OOS','OOT','AD(异常数据)','其他']),F('initial','初始结果','text'),F('retest','复测结果','text'),
+  F('phase1','阶段1(实验室评估)','textarea'),F('phase2','阶段2(全面调查)','textarea'),F('rootCause','根本原因','textarea'),
+  F('conclusion','调查结论','select',['实验室错误','生产问题','无效OOS','待定']),F('capaRef','CAPA编号','text'),
+  F('owner','调查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['调查中','已关闭','无效OOS']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['调查中','where',{status:'调查中'}],['OOS','where',{rtype:'OOS'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','sample','item','rtype','conclusion','status','dueDate']};
+
+M.method={name:'分析方法管理',ic:'📈',done:['已批准','已转移'],
+ fields:[F('code','方法编号','text'),F('name','方法名称','text'),F('type','方法类型','select',['含量','有关物质','溶出度','鉴别','微生物','生物活性','残留溶剂']),
+  F('stage','方法阶段','select',['开发','确认','验证','转移','再验证']),
+  F('params','验证参数','multiselect',['专属性','准确度','精密度','线性','范围','耐用性','检测限','定量限']),
+  F('equip','仪器设备','text'),F('validation','验证状态','select',['未验证','进行中','已验证']),F('reportRef','验证报告','text'),
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['开发中','确认中','验证中','已批准','已转移']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','open'],['已验证','where',{validation:'已验证'}],['已批准','where',{status:'已批准'}],['逾期','overdue']],
+ cols:['code','name','type','stage','validation','status','dueDate']};
+
+M.stability={name:'稳定性研究管理',ic:'⏳',done:['已完成'],
+ fields:[F('code','研究编号','text'),F('product','产品/批号','text'),F('condition','考察条件','select',['长期','加速','中间','强降解','其他']),
+  F('timePoint','时间点计划','text'),F('donePoint','已完成时间点','text'),F('spec','质量标准','textarea'),
+  F('conclusion','稳定性结论','textarea'),F('nextPoint','下一时间点','date'),
+  F('owner','负责人','text'),F('dueDate','下次取样','date'),F('status','状态','select',['进行中','已完成','已暂停']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['已暂停','where',{status:'已暂停'}],['逾期','overdue']],
+ cols:['code','product','condition','donePoint','status','dueDate']};
+
+M.equip={name:'设备设施与CSV',ic:'⚙️',done:[],
+ fields:[F('code','编号','text'),F('name','设备/系统名称','text'),F('category','类别','select',['生产设备','检验仪器','计算机化系统','厂房设施']),
+  F('model','型号/规格','text'),F('cycle','校准/确认周期','text'),F('lastCal','上次校准','date'),F('nextCal','下次校准','date'),
+  F('confirm','确认类型','select',['IQ','OQ','PQ','校准','无']),F('csv','CSV状态','select',['未验证','进行中','已验证']),
+  F('owner','责任人','text'),F('dueDate','到期日期','date'),F('status','状态','select',['正常','待校准','待确认','偏差']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待校准','where',{status:'待校准'}],['待确认','where',{status:'待确认'}],['CSV进行中','where',{csv:'进行中'}],['逾期','overdue']],
+ cols:['code','name','category','nextCal','status','dueDate']};
+
+M.di={name:'数据可靠性',ic:'🔐',done:['已关闭'],
+ fields:[F('code','编号','text'),F('area','业务区域','select',['实验室','生产','QC','CSV','仓储','其他']),
+  F('principle','ALCOA+要素','multiselect',['完整性','一致性','准确性','及时性','原始性','可用性','可追溯']),
+  F('finding','发现项','textarea'),F('risk','风险等级','select',['高','中','低']),F('measure','整改措施','textarea'),
+  F('owner','责任人','text'),F('dueDate','整改期限','date'),F('status','状态','select',['评估中','整改中','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['整改中','where',{status:'整改中'}],['高风险','where',{risk:'高'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','area','principle','risk','status','dueDate']};
+
+M.training={name:'培训管理',ic:'🎓',done:['已完成','已评估'],
+ fields:[F('code','培训编号','text'),F('subject','培训主题','text'),F('content','培训内容','textarea'),F('target','培训对象','text'),
+  F('trainer','讲师','text'),F('trainDate','培训日期','date'),F('check','考核方式','select',['笔试','实操','提问','免考']),
+  F('passRate','合格率','text'),F('reTrain','需再培训','select',['是','否']),
+  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成','已评估']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['计划中','where',{status:'计划中'}],['已评估','where',{status:'已评估'}],['需再培训','where',{reTrain:'是'}],['逾期','overdue']],
+ cols:['code','subject','target','trainDate','status','dueDate']};
+
+M.knowledge={name:'知识管理',ic:'📚',done:['已归档','已应用'],
+ fields:[F('code','编号','text'),F('title','知识点','text'),F('category','知识类别','select',['QTPP','CQA','CPP','经验教训','工艺知识','产品知识','法规更新']),
+  F('project','所属项目','text'),F('source','来源','select',['偏差','变更','审计','文献','试验','其他']),F('content','内容','textarea'),
+  F('value','价值等级','select',['高','中','低']),F('owner','维护人','text'),F('dueDate','更新日期','date'),F('status','状态','select',['采集中','已归档','已应用']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['采集中','where',{status:'采集中'}],['已归档','where',{status:'已归档'}],['已应用','where',{status:'已应用'}],['逾期','overdue']],
+ cols:['code','title','category','value','status','dueDate']};
+
+M.pv={name:'工艺验证',ic:'🏗',done:['已完成','已批准'],
+ fields:[F('code','验证编号','text'),F('product','产品/工艺','text'),F('stage','验证阶段','select',['工艺设计','PPQ','持续工艺确认']),
+  F('protocol','验证方案','text'),F('batch','验证批','text'),F('cqa','CQA/CPP','textarea'),F('result','验证结果','textarea'),
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成','已批准']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['已批准','where',{status:'已批准'}],['逾期','overdue']],
+ cols:['code','product','stage','batch','status','dueDate']};
+
+M.tech_transfer={name:'技术转移',ic:'🔁',done:['已完成'],
+ fields:[F('code','转移编号','text'),F('project','转移项目','text'),F('from','转出方','text'),F('to','接收方','text'),
+  F('content','转移内容','multiselect',['工艺','分析方法','清洁方法','包装','其他']),F('risk','风险评估','textarea'),
+  F('protocol','转移方案','text'),F('report','转移报告','text'),
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','project','from','to','status','dueDate']};
+
+M.release={name:'放行管理',ic:'✅',done:['已放行','不放行'],
+ fields:[F('code','放行编号','text'),F('batch','批号','text'),F('product','产品','text'),F('type','样品类型','select',['临床样品','毒理批','申报批','稳定性批']),
+  F('qaReview','QA审核','textarea'),F('decision','放行结论','select',['待审核','放行','不放行','有条件放行']),
+  F('releasePerson','放行责任人','text'),F('releaseDate','放行日期','date'),
+  F('owner','跟踪人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['待审核','已放行','不放行']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待审核','where',{status:'待审核'}],['已放行','where',{status:'已放行'}],['不放行','where',{status:'不放行'}],['逾期','overdue']],
+ cols:['code','batch','product','type','decision','status','dueDate']};
+
+M.complaint={name:'投诉与召回',ic:'📞',done:['已关闭'],
+ fields:[F('code','编号','text'),F('source','投诉来源','text'),F('product','产品/批号','text'),F('content','投诉内容','textarea'),
+  F('type','投诉类型','select',['质量投诉','不良反应','疑似造假','其他']),F('severity','严重程度','select',['严重','一般']),
+  F('action','处理措施','select',['调查','召回','答复','关闭']),F('recallLevel','召回级别','select',['无','I级','II级','III级']),
+  F('closeDate','关闭日期','date'),F('owner','处理人','text'),F('dueDate','处理期限','date'),F('status','状态','select',['处理中','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['处理中','where',{status:'处理中'}],['需召回','where',{recallLevel:['I级','II级','III级']}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','product','type','recallLevel','status','dueDate']};
+
+M.self_inspect={name:'自检',ic:'🔎',done:['已完成'],
+ fields:[F('code','自检编号','text'),F('plan','自检计划/区域','text'),F('scope','自检范围','textarea'),F('team','检查组','text'),
+  F('date','实施日期','date'),F('findings','发现项','text'),F('track','整改追踪','textarea'),F('reportRef','报告编号','text'),
+  F('owner','负责人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['计划中','where',{status:'计划中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','plan','scope','date','status','dueDate']};
+
+M.mgmt_review={name:'管理评审',ic:'📊',done:['已完成'],
+ fields:[F('code','评审编号','text'),F('period','评审周期','text'),
+  F('topics','评审主题','multiselect',['质量目标','风险趋势','变更','CAPA','审计','资源','投诉','有效性']),F('inputs','评审输入','textarea'),
+  F('outputs','评审输出/决议','textarea'),F('decision','决议事项','textarea'),F('date','评审日期','date'),
+  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['计划中','where',{status:'计划中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','period','topics','date','status','dueDate']};
+
+const ORDER=[];GROUPS.forEach(g=>g.mods.forEach(m=>ORDER.push(m)));
+
+/* ============ 状态判断 ============ */
+function isOpen(mod,rec){const d=M[mod].done;return !d.includes(rec.status);}
+function isOverdue(mod,rec){return isOpen(mod,rec)&&rec.dueDate&&rec.dueDate<today();}
+function isDueToday(mod,rec){return isOpen(mod,rec)&&rec.dueDate===today();}
+function isUpcoming(mod,rec){if(!isOpen(mod,rec)||!rec.dueDate)return false;const t=today();return rec.dueDate>t&&rec.dueDate<=addDays(t,7);}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x.toISOString().slice(0,10);}
+
+/* ============ 导航 ============ */
+function renderNav(){
+  let h='<div class="nav-item" data-mod="__home"><span class="ic">🏠</span>工作台首页</div>';
+  GROUPS.forEach(g=>{
+    h+=`<div class="nav-group">${g.g}</div>`;
+    g.mods.forEach(m=>{
+      const arr=getA(m);let open=0,ov=0;
+      arr.forEach(r=>{if(isOpen(m,r))open++;if(isOverdue(m,r))ov++;});
+      h+=`<div class="nav-item" data-mod="${m}"><span class="ic">${M[m].ic}</span>${M[m].name}`+
+         `<span class="cnt ${ov?'alert':''}">${open}${ov?'·'+ov:''}</span></div>`;
+    });
+  });
+  $('#nav').innerHTML=h;
+  document.querySelectorAll('.nav-item').forEach(el=>el.onclick=()=>openMod(el.dataset.mod));
 }
 
-/* ---------- 渲染 ---------- */
-function renderAll(){
-  ['rv','vf','cc','dv'].forEach(buildModule);
-  buildOverview(); buildToday();
-  document.getElementById('cRv').textContent=DB.reviews.filter(function(r){return isOpen('rv',r);}).length;
-  document.getElementById('cVf').textContent=DB.verifs.filter(function(r){return isOpen('vf',r);}).length;
-  document.getElementById('cCc').textContent=DB.changes.filter(function(r){return isOpen('cc',r);}).length;
-  document.getElementById('cDv').textContent=DB.devs.filter(function(r){return isOpen('dv',r);}).length;
-}
-function buildAlert(){
-  var d=daysTo('2026-09-01');
-  var txt='《药物临床试验质量管理规范》修订版（<b>2026年第50号公告</b>，2026-06-08 发布）将于 <b>2026-09-01 施行</b>'+
-    (d>0?'（还有 <b>'+d+' 天</b>）':'（已施行）')+
-    '，届时替代 2020年第57号版本。涉及临床的 SOP、方案模板、监查/稽查检查表须在生效前完成对标；跨越生效日的在研项目需明确新旧版本切换点并留痕。'+
-    '<br>另：《药品记录与数据管理要求（试行）》（2020年第74号）已纳入本工作台检查表，记录审阅与数据可靠性判定以其第十五、十六、二十二条为主要依据。';
-  document.getElementById('regAlertBody').innerHTML=txt;
+/* ============ 首页 ============ */
+function renderHome(){
+  $('#pageTitle').textContent='工作台首页';
+  $('#pageSub').textContent='研发全生命周期质量管理系统 · 对标《药品GMP指南（2023版）》第七章';
+  let total=0,open=0,ov=0,due=0,up=0;
+  const modStats={};
+  ORDER.forEach(m=>{const a=getA(m);let o=0,vo=0,du=0,upc=0;
+    a.forEach(r=>{if(isOpen(m,r))o++;if(isOverdue(m,r))vo++;if(isDueToday(m,r))du++;if(isUpcoming(m,r))upc++;});
+    total+=a.length;open+=o;ov+=vo;due+=du;up+=upc;modStats[m]={t:a.length,o,vo,du,upc};});
+
+  let h='';
+  h+=`<div class="grid cards">
+    <div class="stat"><div class="k">记录总数</div><div class="v">${total}</div></div>
+    <div class="stat"><div class="k">进行中/未关闭</div><div class="v">${open}</div></div>
+    <div class="stat"><div class="k">今日到期</div><div class="v warn">${due}</div></div>
+    <div class="stat"><div class="k">逾期未处理</div><div class="v ${ov?'danger':''}">${ov}</div></div>
+    <div class="stat"><div class="k">7日内到期</div><div class="v warn">${up}</div></div>
+  </div>`;
+
+  h+=`<div class="section"><h3>📌 今天要处理 <span class="badge">逾期 + 今日到期 + 7日内</span></h3><div id="todayList"></div></div>`;
+
+  h+=`<div class="section"><h3>🧩 全部模块 <span class="badge">22个 · 点击进入</span></h3><div class="grid cards" style="margin-top:6px">`;
+  ORDER.forEach(m=>{const s=modStats[m];
+    h+=`<div class="mod-card" onclick="openMod('${m}')">
+      <span class="mopen ${s.vo?'alert':''}">${s.o} 进行中${s.vo?' / '+s.vo+'逾期':''}</span>
+      <div class="mic">${M[m].ic}</div><div class="mname">${M[m].name}</div>
+      <div class="mstat">共 ${s.t} 条 · 今日 ${s.du} · 7日内 ${s.upc}</div></div>`;});
+  h+=`</div></div>`;
+  $('#content').innerHTML=h;
+  renderToday();
 }
 
-/* ---------- 事件 ---------- */
-document.addEventListener('click',function(e){
-  var t=e.target;
-  var tab=t.closest('[data-t]'); if(tab&&(tab.classList.contains('tab')||tab.closest('#mnav'))){ setTab(tab.getAttribute('data-t')); return; }
-  var jump=t.closest('[data-jump]'); if(jump){ setTab(jump.getAttribute('data-jump')); return; }
-  var add=t.closest('[data-add]'); if(add){ openRec(add.getAttribute('data-add'),null); return; }
-  var go=t.closest('[data-go]'); if(go){ openRec(go.getAttribute('data-go'),go.getAttribute('data-id')); return; }
-  var del=t.closest('[data-del]'); if(del){ delRec(del.getAttribute('data-del'),del.getAttribute('data-id')); return; }
-  var reg=t.closest('[data-reg]'); if(reg){ var p=reg.getAttribute('data-reg').split('-'); openReg(+p[0],+p[1]); return; }
-  var ext=t.closest('[data-ext]'); if(ext){
-    var M=MODS[ext.getAttribute('data-ext')], id=ext.getAttribute('data-id');
-    DB[M.key].forEach(function(r){ if(r.id===id) r.dueDate=addDays(r.dueDate||TODAY,7); });
-    save(); renderAll(); toast('截止日已顺延 7 天（原因建议在备注中记录）','warn'); return; }
-  var fin=t.closest('[data-fin]'); if(fin){
-    var M2=MODS[fin.getAttribute('data-fin')], id2=fin.getAttribute('data-id'),
-        sk=fin.getAttribute('data-sk'), si=+fin.getAttribute('data-si');
-    DB[M2.key].forEach(function(r){ if(r.id===id2&&r[sk]&&r[sk][si]) r[sk][si].done='已完成'; });
-    save(); renderAll(); toast('已标记完成'); return; }
-});
-document.getElementById('btnExport').onclick=doExport;
-document.getElementById('btnCsv').onclick=doCsv;
-document.getElementById('btnClear').onclick=doClear;
-document.getElementById('btnImport').onclick=function(){document.getElementById('fileIn').click();};
-document.getElementById('fileIn').onchange=function(e){ if(e.target.files[0]) doImport(e.target.files[0]); e.target.value=''; };
-document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeModal(); });
+function renderToday(){
+  const items=[];
+  ORDER.forEach(m=>{getA(m).forEach(r=>{
+    if(!isOpen(m,r)||!r.dueDate)return;
+    const ov=isOverdue(m,r),du=isDueToday(m,r);
+    if(ov||du||isUpcoming(m,r))items.push({mod:m,ov,du,rec:r});
+  });});
+  items.sort((a,b)=>{
+    if(a.ov!==b.ov)return a.ov?-1:1;
+    return a.rec.dueDate.localeCompare(b.rec.dueDate);
+  });
+  const box=$('#todayList');
+  if(!items.length){box.innerHTML='<div class="empty">暂无需要处理的事项 🎉</div>';return;}
+  box.innerHTML=items.map(it=>{
+    const t=it.ov?'逾期':(it.du?'今日到期':'即将到期');
+    return `<div class="today-item ${it.ov?'alert':''}">
+      <div class="dot"></div>
+      <div class="tc">
+        <div class="tt">${M[it.mod].ic} ${esc(it.rec.code||'')} ${esc(it.rec.name||it.rec.title||it.rec.subject||'')}</div>
+        <div class="tm">${M[it.mod].name} · ${t} · 截止 ${it.rec.dueDate} · 责任人 ${esc(it.rec.owner||'-')}</div>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="openMod('${it.mod}')">查看</button>
+    </div>`;}).join('');
+}
 
-/* ---------- 启动 ---------- */
-load(); buildRegs(); buildMnav(); buildAlert(); renderAll();
-var n=total(); document.getElementById('storeTxt').textContent='本机已保存 '+n+' 条';
+/* ============ 模块视图 ============ */
+let curMod=null,curFilter='';
+function openMod(mod){
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.toggle('active',e.dataset.mod===mod));
+  if(mod==='__home'){renderHome();return;}
+  curMod=mod;curFilter='';
+  const m=M[mod];
+  $('#pageTitle').textContent=m.ic+' '+m.name;
+  $('#pageSub').textContent='研发质量管理体系模块';
+  renderModule();
+}
+
+function renderModule(){
+  const m=M[curMod];const arr=getA(curMod);
+  // stats
+  function cnt(kind,where){
+    if(kind==='count')return arr.length;
+    if(kind==='open')return arr.filter(r=>isOpen(curMod,r)).length;
+    if(kind==='overdue')return arr.filter(r=>isOverdue(curMod,r)).length;
+    if(kind==='where'){return arr.filter(r=>{
+      return Object.entries(where).every(([k,v])=>Array.isArray(v)?v.includes(r[k]):r[k]===v);}).length;}
+    return 0;
+  }
+  let statHtml='<div class="grid cards" style="margin-bottom:4px">';
+  m.stats.forEach(s=>{const v=cnt(s[1],s[2]);const cls=(s[1]==='overdue'&&v)?'danger':(s[1]==='overdue'||s[0].includes('逾期')?'':'');
+    statHtml+=`<div class="stat"><div class="k">${s[0]}</div><div class="v ${cls}">${v}</div></div>`;});
+  statHtml+='</div>';
+
+  // toolbar
+  let tb=`<div class="toolbar">
+    <button class="btn btn-primary" onclick="openForm()">＋ 新增</button>
+    <input id="flt" placeholder="搜索编号/名称…" value="${esc(curFilter)}" oninput="curFilter=this.value;renderTable()" style="min-width:200px">
+    <select onchange="curFilter=this.value;renderTable()">
+      <option value="">全部状态</option>${m.fields.find(f=>f.key==='status')?.options.map(o=>`<option ${curFilter===o?'selected':''}>${o}</option>`).join('')||''}</select>
+    <div class="spacer"></div>
+    <span class="sub" style="color:var(--muted)">共 ${arr.length} 条</span>
+  </div>`;
+
+  $('#content').innerHTML=`<div class="section" style="margin-top:0">${statHtml}${tb}<div id="tblBox"></div></div>`;
+  renderTable();
+}
+
+function renderTable(){
+  const m=M[curMod];let arr=getA(curMod);
+  if(curFilter){const q=curFilter.toLowerCase();
+    arr=arr.filter(r=>JSON.stringify(Object.values(r)).toLowerCase().includes(q));}
+  const cols=m.cols;
+  const fmap={};m.fields.forEach(f=>fmap[f.key]=f);
+  let h=`<table><thead><tr><th>操作</th>`;
+  cols.forEach(c=>{const f=fmap[c];h+=`<th>${f?f.label:c}</th>`;});
+  h+=`</tr></thead><tbody>`;
+  if(!arr.length){h+=`<tr><td colspan="${cols.length+1}" class="empty">暂无记录，点击"新增"开始</td></tr>`;}
+  arr.forEach(r=>{
+    h+=`<tr><td><button class="btn btn-sm" onclick="openForm('${r.id}')">编辑</button> <button class="btn btn-sm" onclick="showDetail('${r.id}')">详情</button> <button class="btn btn-sm btn-danger" onclick="delRec('${r.id}')">删</button></td>`;
+    cols.forEach(c=>{const f=fmap[c];let v=r[c];
+      if(f&&f.type==='multiselect')v=Array.isArray(v)?v.map(x=>`<span class="tag">${esc(x)}</span>`).join(''):esc(v);
+      else if(f&&f.options){const cls=(c==='status'||c==='severity'||c==='risk'||c==='level'||c==='conclusion'||c==='consistency')?(v==='严重'||v==='高'||v==='重大'||v==='不通过'||v==='不一致'||v==='不放行'?'r':(v==='已关闭'||v==='已放行'||v==='合格'||v==='通过'||v==='一致'?'g':(v==='有条件通过'||v==='中等'||v==='中'||v==='次要'||v==='微小'?'o':''))):'';
+        v=`<span class="tag ${cls}">${esc(v)}</span>`;}
+      else v=esc(v);
+      h+=`<td>${v||'<span style="color:var(--muted)">-</span>'}</td>`;});
+    h+=`</tr>`;
+  });
+  h+=`</tbody></table>`;
+  $('#tblBox').innerHTML=h;
+}
+
+/* ============ 表单 ============ */
+function openForm(id){
+  const m=M[curMod];const rec=id?getA(curMod).find(r=>r.id===id):null;
+  $('#modalTitle').textContent=(rec?'编辑':'新增')+' · '+m.name;
+  let h=`<div class="form-grid">`;
+  m.fields.forEach(f=>{
+    const val=rec?rec[f.key]:'';const full=(f.type==='textarea'||f.key==='remark'||['conflictDesc','rectify','items','impact','rootCause','ca','pa','scope','content','measure','method'===f.key?'':''].includes(f.key));
+    h+=`<div class="field ${full?'full':''}"><label>${esc(f.label)}${f.type!=='textarea'&&false?'':'<span class="req"></span>'}</label>`;
+    if(f.type==='textarea'){h+=`<textarea data-k="${f.key}">${esc(val)}</textarea>`;}
+    else if(f.type==='select'){h+=`<select data-k="${f.key}"><option value="">—请选择—</option>${f.options.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select>`;}
+    else if(f.type==='multiselect'){const arr=Array.isArray(val)?val:[];
+      h+=`<div class="checks">${f.options.map(o=>`<label><input type="checkbox" data-m="${f.key}" value="${esc(o)}" ${arr.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div>`;}
+    else if(f.type==='date'){h+=`<input type="date" data-k="${f.key}" value="${esc(val)}">`;}
+    else{h+=`<input type="text" data-k="${f.key}" value="${esc(val)}">`;}
+    h+=`</div>`;
+  });
+  h+=`</div>`;
+  $('#modalBody').innerHTML=h;
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveForm('${id||''}')">保存</button>`;
+  showMask();
+}
+function saveForm(id){
+  const m=M[curMod];const rec={};let ok=true;
+  m.fields.forEach(f=>{
+    if(f.type==='multiselect'){rec[f.key]=[...document.querySelectorAll(`input[data-m="${f.key}"]:checked`)].map(x=>x.value);}
+    else{const el=document.querySelector(`[data-k="${f.key}"]`);rec[f.key]=el?el.value.trim():'';}
+  });
+  if(!rec.code){toast('请填写编号');return;}
+  rec.id=id||uid();
+  const arr=getA(curMod);
+  if(id){const i=arr.findIndex(r=>r.id===id);if(i>=0)arr[i]=rec;else arr.push(rec);}
+  else arr.push(rec);
+  setA(curMod,arr);
+  apiPersist(curMod,rec);
+  closeModal();renderNav();renderModule();toast('已保存');
+}
+
+/* ============ 详情 ============ */
+function showDetail(id){
+  const m=M[curMod];const rec=getA(curMod).find(r=>r.id===id);if(!rec)return;
+  $('#modalTitle').textContent=m.name+' · 详情';
+  let h='<div class="detail"><dl>';
+  m.fields.forEach(f=>{let v=rec[f.key];
+    if(f.type==='multiselect')v=Array.isArray(v)?v.join('、'):(v||'');
+    h+=`<dt>${esc(f.label)}</dt><dd>${esc(v)||'-'}</dd>`;});
+  h+='</dl></div>';
+  $('#modalBody').innerHTML=h;
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button><button class="btn btn-primary" onclick="openForm('${id}')">编辑</button>`;
+  showMask();
+}
+function delRec(id){
+  if(!confirm('确认删除该记录？'))return;
+  let arr=getA(curMod);arr=arr.filter(r=>r.id!==id);setA(curMod,arr);
+  cloudDelete(curMod,id);
+  renderNav();renderModule();toast('已删除');
+}
+
+/* ============ 备份 ============ */
+function exportAll(){
+  const data={};ORDER.forEach(m=>data[m]=getA(m));
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='研发QA工作台备份_'+today()+'.json';a.click();toast('已导出备份');
+}
+function importAll(){ $('#fileInput').click(); }
+function doImport(e){
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=ev=>{try{const d=JSON.parse(ev.target.result);
+    ORDER.forEach(m=>{if(d[m]){d[m].forEach(r=>{if(!r.id)r.id=uid();});setA(m,d[m]);}});
+    if(CLOUD.enabled&&CLOUD.token){
+      ORDER.forEach(m=>{(d[m]||[]).forEach(r=>apiPersist(m,r));});
+      renderNav();renderHome();toast('导入成功，正在同步云端');
+    }else{
+      renderNav();renderHome();toast('导入成功');
+    }
+  }catch(err){toast('导入失败：文件格式错误');}};
+  rd.readAsText(f);e.target.value='';
+}
+function clearAll(){
+  if(!confirm('将清空全部 22 个模块的所有数据，且不可恢复！确认？'))return;
+  ORDER.forEach(m=>localStorage.removeItem(PREFIX+m));
+  renderNav();renderHome();toast('已清空全部数据');
+}
+function loadSamples(){
+  if(!confirm('将载入演示示例数据（不影响已有数据，仅追加）。继续？'))return;
+  const S={
+   doc_review:[{code:'DR-001',name:'XZB-2026 IND申报资料V2.0审阅',type:'IND申报资料',reviewType:['合规审阅','冲突检查'],basis:['NMPA GMP(2010修订)','ICH M4'],relatedFiles:'实验记录EXP-001~006',conflict:'有冲突',conflictDesc:'3.2.S.4.2 质量标准与EXP-003检测方法不一致',conclusion:'有条件通过',rectify:'修订质量标准中有关物质限度',owner:'唐海云',dueDate:addDays(today(),2),status:'进行中',remark:''}],
+   record_check:[{code:'RC-001',name:'申报资料与实验记录一致性核查',targetDoc:'IND申报资料V2.0',attach:'EXP-001~006',basis:['SOP'],risk:'高',method:'组合',items:'批号XZB-2026-01含量：申报99.8% vs 记录99.6%',consistency:'不一致',rectifyStatus:'整改中',owner:'唐海云',dueDate:addDays(today(),1),status:'进行中',remark:''}],
+   change:[{code:'CH-001',title:'有关物质色谱方法变更',type:'方法变更',level:'中等',phase:'III期',reason:'优化分离度',impact:['产品质量','验证状态'],ccb:'同意',approver:'QA',approveDate:today(),impl:'按变更计划执行',relatedSys:'Empower',owner:'张工',dueDate:addDays(today(),5),status:'已批准',remark:''}],
+   deviation:[{code:'DV-001',title:'HPLC系统积分异常',category:'系统偏差',severity:'重要',immediate:'冻结数据',impact:'可能影响批次放行',method:'5Why',rootCause:'软件升级参数丢失',ca:'恢复参数',pa:'升级审批流程',capaOwner:'李工',capaDue:addDays(today(),10),owner:'李工',dueDate:addDays(today(),8),status:'调查中',remark:''}],
+   capa:[{code:'CA-001',source:'偏差',ref:'DV-001',desc:'积分参数管理缺陷',type:'预防措施PA',responsible:'李工',planDate:addDays(today(),10),effect:'',closeDate:'',owner:'唐海云',dueDate:addDays(today(),10),status:'进行中',remark:''}],
+   qrm:[{code:'QR-001',subject:'共线生产交叉污染',method:'FMEA',scope:'临床样品车间',risk:'高',result:'需阶段性生产',control:'专用设备+清洁确认',reviewDate:addDays(today(),30),owner:'唐海云',dueDate:addDays(today(),3),status:'进行中',remark:''}],
+   supplier:[{code:'SP-001',name:'XX原料药有限公司',material:'原料药API',type:'物料供应商',risk:'中',qualify:'现场审计',result:'合格',approveDate:today(),reevalCycle:'每年',reevalDate:addDays(today(),200),owner:'王工',dueDate:addDays(today(),200),status:'已批准',remark:''}],
+   audit:[{code:'AU-001',name:'2026年度内部自检',auditType:'内部审计',target:'QC实验室',scope:'数据可靠性/偏差/CAPA',planDate:today(),execDate:addDays(today(),15),findings:'',major:'',reportRef:'',owner:'唐海云',dueDate:addDays(today(),15),status:'计划中',remark:''}],
+   oos:[{code:'OO-001',sample:'XZB-2026-03',item:'含量',rtype:'OOS',initial:'88.2%',retest:'99.5%',phase1:'复核称样',phase2:'',rootCause:'称样量错误',conclusion:'实验室错误',capaRef:'',owner:'赵工',dueDate:addDays(today(),4),status:'调查中',remark:''}],
+   method:[{code:'MT-001',name:'有关物质HPLC法',type:'有关物质',stage:'验证',params:['专属性','准确度','精密度'],equip:'HPLC-01',validation:'进行中',reportRef:'',owner:'赵工',dueDate:addDays(today(),6),status:'验证中',remark:''}],
+   stability:[{code:'ST-001',product:'XZB-2026 中试批',condition:'加速',timePoint:'0,1,2,3,6M',donePoint:'0,1M',spec:'符合草案',conclusion:'',nextPoint:addDays(today(),20),owner:'钱工',dueDate:addDays(today(),20),status:'进行中',remark:''}],
+   equip:[{code:'EQ-001',name:'HPLC-01',category:'检验仪器',model:'Agilent',cycle:'年',lastCal:addDays(today(),-340),nextCal:addDays(today(),25),confirm:'OQ',csv:'已验证',owner:'赵工',dueDate:addDays(today(),25),status:'正常',remark:''}],
+   di:[{code:'DI-001',area:'实验室',principle:['完整性','可追溯'],finding:'部分手工记录未签注时间',risk:'中',measure:'启用电子记录',owner:'唐海云',dueDate:addDays(today(),7),status:'整改中',remark:''}],
+   training:[{code:'TR-001',subject:'数据可靠性培训',content:'ALCOA+原则',target:'QC全员',trainer:'唐海云',trainDate:addDays(today(),-5),check:'提问',passRate:'100%',reTrain:'否',owner:'唐海云',dueDate:addDays(today(),-5),status:'已评估',remark:''}],
+   knowledge:[{code:'KM-001',title:'XZB-2026 CQA确定',category:'CQA',project:'XZB-2026',source:'试验',content:'关键质量属性：含量、有关物质、溶出',value:'高',owner:'唐海云',dueDate:addDays(today(),-10),status:'已归档',remark:''}],
+   pv:[{code:'PV-001',product:'XZB-2026 工艺',stage:'PPQ',protocol:'P-001',batch:'PPQ-01/02/03',cqa:'含量、溶出',result:'',owner:'孙工',dueDate:addDays(today(),40),status:'计划中',remark:''}],
+   tech_transfer:[{code:'TT-001',project:'分析方法转移至QC',from:'研发',to:'QC',content:['分析方法'],risk:'中',protocol:'TT-P01',report:'',owner:'赵工',dueDate:addDays(today(),12),status:'进行中',remark:''}],
+   release:[{code:'RL-001',batch:'XZB-2026-03',product:'XZB-2026片',type:'临床样品',qaReview:'审核通过',decision:'待审核',releasePerson:'唐海云',releaseDate:'',owner:'唐海云',dueDate:addDays(today(),1),status:'待审核',remark:''}],
+   complaint:[{code:'CM-001',source:'研究者',product:'XZB-2026-02',content:'包装标签信息疑问',type:'其他',severity:'一般',action:'答复',recallLevel:'无',closeDate:'',owner:'唐海云',dueDate:addDays(today(),6),status:'处理中',remark:''}],
+   self_inspect:[{code:'SI-001',plan:'季度自检-生产',scope:'厂房/设备/物料',team:'QA+生产',date:addDays(today(),15),findings:'',track:'',reportRef:'',owner:'唐海云',dueDate:addDays(today(),15),status:'计划中',remark:''}],
+   mgmt_review:[{code:'MR-001',period:'2026Q3',topics:['质量目标','风险趋势','CAPA'],inputs:'质量指标汇总',outputs:'',decision:'',date:addDays(today(),25),owner:'唐海云',dueDate:addDays(today(),25),status:'计划中',remark:''}],
+   outsourcing:[{code:'OS-001',partner:'XX CDMO',service:'CMO/CDMO',agreement:'QA-2026-01',auditRef:'AU-000',phase:'III期',owner:'周工',dueDate:addDays(today(),60),status:'进行中',remark:''}],
+  };
+  ORDER.forEach(m=>{if(S[m]){const a=getA(m);S[m].forEach(r=>{r.id=r.id||uid();if(!a.find(x=>x.code===r.code))a.push(r);});setA(m,a);}});
+  renderNav();renderHome();toast('已载入示例数据');
+}
+
+/* ============ 弹窗 ============ */
+function showMask(){$('#mask').classList.add('show');}
+function closeModal(){$('#mask').classList.remove('show');}
+$('#mask').onclick=e=>{if(e.target.id==='mask')closeModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ============ 启动 ============ */
+loadCloud();renderCloudBadge();
+renderNav();renderHome();
+if(CLOUD.enabled&&CLOUD.token){
+  (async()=>{const ok=await cloudBootstrap();if(ok){toast('☁ 已自动同步云端数据');startSync();}else{CLOUD.enabled=false;CLOUD.token='';saveCloud();renderCloudBadge();}})();
+}
 </script>
 </body>
 </html>
