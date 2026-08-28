@@ -142,6 +142,8 @@
   .ai-ul{margin:4px 0 4px 18px;padding:0}
   .ai-ul li{margin-bottom:4px}
 </style>
+<meta name="qa-api-base" content="same-origin">
+<link rel="stylesheet" href="css/qa9.css" />
 </head>
 <body>
 <div class="app">
@@ -920,5 +922,6 @@ if(CLOUD.enabled&&CLOUD.token){
   (async()=>{const ok=await cloudBootstrap();if(ok){toast('☁ 已自动同步云端数据');startSync();}else{CLOUD.enabled=false;CLOUD.token='';saveCloud();renderCloudBadge();}})();
 }
 </script>
+<script src="js/qa9-chat.js"></script>
 </body>
 </html>
