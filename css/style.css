@@ -135,6 +135,7 @@ a:hover {
    顶部栏
    ============================================ */
 .topbar {
+  position: relative;
   height: var(--topbar-height);
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
   color: var(--text-inverse);
@@ -258,6 +259,27 @@ a:hover {
   align-items: center;
   gap: 4px;
 }
+
+/* 顶部导航：分组下拉菜单（整合 13 个按钮 → 2 常驻 + 3 下拉） */
+.topbar-menu { position: relative; }
+.topbar-menu-btn { cursor: pointer; }
+.topbar-menu-btn::after { content: '▾'; font-size: 10px; margin-left: 4px; opacity: .75; }
+.topbar-menu.open .topbar-menu-btn { background: rgba(255, 255, 255, .25); border-color: rgba(255, 255, 255, .6); }
+.topbar-menu-list {
+  display: none; position: absolute; top: calc(100% + 8px); right: 0; z-index: 1300;
+  min-width: 210px; padding: 6px;
+  background: #1f2a44; border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 12px; box-shadow: 0 14px 34px rgba(0, 0, 0, .32);
+}
+.topbar-menu.open .topbar-menu-list { display: block; }
+.topbar-menu-list .topbar-btn {
+  width: 100%; height: auto; justify-content: flex-start;
+  border: none; background: transparent; color: #e8edf7; font-weight: 500;
+  padding: 9px 12px; margin: 2px 0; white-space: nowrap;
+}
+.topbar-menu-list .topbar-btn:hover { background: rgba(255, 255, 255, .12); border-color: transparent; }
+.topbar-menu-list .topbar-btn.active { background: rgba(99, 140, 255, .32); border-color: transparent; }
+.topbar-primary { font-weight: 600; background: rgba(255, 255, 255, .18); }
 
 /* ============================================
    搜索结果下拉

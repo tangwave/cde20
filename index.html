@@ -38,64 +38,53 @@
       </div>
 
       <div class="topbar-actions">
-        <a class="topbar-btn" href="qa-workbench.html" target="_self"
+        <!-- 工作台 & 核心 AI：常驻突出，不收起 -->
+        <a class="topbar-btn topbar-primary" href="qa-workbench.html" target="_self"
            title="QA 工作台：文件审阅（合规性/文件间冲突）· 记录与申报资料核查（一致性/合规性）· 变更管理 · 偏差与CAPA。检查表条目对应现行法规条款，数据存本机。"
            style="text-decoration:none;color:inherit;font-weight:600;">
           <span>✅</span>
           <span>QA 工作台</span>
         </a>
-        <button class="topbar-btn" data-portal="panorama" title="全景总览（整体认识入口）">
-          <span>🗺️</span>
-          <span>全景</span>
-        </button>
-        <button class="topbar-btn" data-portal="framework" title="知识框架（主题词）">
-          <span>📚</span>
-          <span>知识框架</span>
-        </button>
-        <button class="topbar-btn" data-portal="caselibrary" title="案例库（如何开展）">
-          <span>🧭</span>
-          <span>案例库</span>
-        </button>
-        <button id="regLibBtn" class="topbar-btn" title="法规原文库（识林式穿透阅读）">
-          <span>📖</span>
-          <span>法规原文</span>
-        </button>
-        <button id="qaAiBtn" class="topbar-btn" title="海云AI 智能问答">
+        <button class="topbar-btn topbar-primary" id="qaAiBtn" title="海云AI 智能问答">
           <span>💬</span>
           <span>海云AI</span>
         </button>
-        <button id="matrixToggleBtn" class="topbar-btn" title="切换矩阵视图 (Ctrl+M)">
-          <span>📊</span>
-          <span>矩阵视图</span>
-        </button>
-        <button id="classifyBtn" class="topbar-btn" title="药品分类布局（化药/生物制品/中药）">
-          <span>🗂️</span>
-          <span>药品分类</span>
-        </button>
-        <button class="topbar-btn" data-portal="manufacture" title="生产工艺 ↔ 药品分类体系（融合视图）：类型×剂型×技术路线 + 研发/生产要点综述 · 术语穿透">
-          <span>🏭</span>
-          <span>生产工艺·分类</span>
-        </button>
-        <button class="topbar-btn" data-portal="mindmap" title="药品注册与质量管理思维导图：32 个药品子类的分类、术语、全生命周期与申报资料要求">
-          <span>🧠</span>
-          <span>思维导图</span>
-        </button>
-        <button class="topbar-btn" data-portal="flightchecks" title="药品飞行检查通报：国家局+重点省份药品生产飞检，可按省份/年份/药品类型/缺陷类型筛选并与药品分类关联">
-          <span>✈️</span>
-          <span>飞行检查</span>
-        </button>
-        <a class="topbar-btn" href="quality-management.html" target="_self"
-           title="药品研发生产·质量管理知识库：GMP / GLP / GCP / ICH-Q / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回"
-           style="text-decoration:none;color:inherit;">
-          <span>🧪</span>
-          <span>质量管理</span>
-        </a>
-        <a class="topbar-btn" href="gmp-glossary-network.html" target="_self"
-           title="GMP 核心术语知识网络：112 个核心术语的可交互知识图谱，贯通质量体系/厂房设备/QC/验证/偏差CAPA/供应商等概念与跳转"
-           style="text-decoration:none;color:inherit;">
-          <span>🔗</span>
-          <span>术语网络</span>
-        </a>
+
+        <!-- 知识视图 -->
+        <div class="topbar-menu">
+          <button class="topbar-btn topbar-menu-btn" title="知识浏览与总览视图" aria-haspopup="true">📚 知识视图</button>
+          <div class="topbar-menu-list">
+            <button class="topbar-btn" data-portal="panorama" title="全景总览（整体认识入口）">🗺️ 全景</button>
+            <button class="topbar-btn" data-portal="framework" title="知识框架（主题词）">📚 知识框架</button>
+            <button class="topbar-btn" data-portal="caselibrary" title="案例库（如何开展）">🧭 案例库</button>
+            <button class="topbar-btn" data-portal="mindmap" title="药品注册与质量管理思维导图：32 个药品子类的分类、术语、全生命周期与申报资料要求">🧠 思维导图</button>
+          </div>
+        </div>
+
+        <!-- 体系 · 分类 -->
+        <div class="topbar-menu">
+          <button class="topbar-btn topbar-menu-btn" title="体系与药品分类视图" aria-haspopup="true">🏭 体系·分类</button>
+          <div class="topbar-menu-list">
+            <button class="topbar-btn" id="classifyBtn" title="药品分类布局（化药/生物制品/中药）">🗂️ 药品分类</button>
+            <button class="topbar-btn" data-portal="manufacture" title="生产工艺 ↔ 药品分类体系（融合视图）：类型×剂型×技术路线 + 研发/生产要点综述 · 术语穿透">🏭 生产工艺·分类</button>
+            <button class="topbar-btn" id="matrixToggleBtn" title="切换矩阵视图 (Ctrl+M)">📊 矩阵视图</button>
+          </div>
+        </div>
+
+        <!-- 法规 · 资源 -->
+        <div class="topbar-menu">
+          <button class="topbar-btn topbar-menu-btn" title="法规原文与质量管理资源" aria-haspopup="true">📖 法规·资源</button>
+          <div class="topbar-menu-list">
+            <button class="topbar-btn" id="regLibBtn" title="法规原文库（识林式穿透阅读）">📖 法规原文</button>
+            <button class="topbar-btn" data-portal="flightchecks" title="药品飞行检查通报：国家局+重点省份药品生产飞检，可按省份/年份/药品类型/缺陷类型筛选并与药品分类关联">✈️ 飞行检查</button>
+            <a class="topbar-btn" href="quality-management.html" target="_self"
+               title="药品研发生产·质量管理知识库：GMP / GLP / GCP / ICH-Q / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回"
+               style="text-decoration:none;color:inherit;">🧪 质量管理</a>
+            <a class="topbar-btn" href="gmp-glossary-network.html" target="_self"
+               title="GMP 核心术语知识网络：112 个核心术语的可交互知识图谱，贯通质量体系/厂房设备/QC/验证/偏差CAPA/供应商等概念与跳转"
+               style="text-decoration:none;color:inherit;">🔗 术语网络</a>
+          </div>
+        </div>
       </div>
 
       <div id="topbarStats" class="topbar-stats"></div>
@@ -332,5 +321,30 @@
   <script src="js/flight-checks.js?v=20260816a"></script>
   <script src="js/mindmap-results.js?v=20260821a"></script>
   <script src="js/mindmap-portal.js?v=20260821a"></script>
+  <!-- 顶部导航分组下拉交互 -->
+  <script>
+  (function () {
+    var menus = Array.prototype.slice.call(document.querySelectorAll('.topbar-menu'));
+    if (!menus.length) return;
+    function closeAll() { menus.forEach(function (m) { m.classList.remove('open'); }); }
+    menus.forEach(function (m) {
+      var btn = m.querySelector('.topbar-menu-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var wasOpen = m.classList.contains('open');
+        closeAll();
+        if (!wasOpen) m.classList.add('open');
+      });
+      // 点击菜单内条目后收起（不阻止冒泡，保证 data-portal 委托仍生效）
+      m.querySelectorAll('.topbar-menu-list .topbar-btn').forEach(function (b) {
+        b.addEventListener('click', closeAll);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('.topbar-menu')) closeAll();
+    });
+  })();
+  </script>
 </body>
 </html>
