@@ -303,8 +303,11 @@ def _load_llm_cfg():
             raw = {}
     if not isinstance(raw, dict):
         raw = {}
-    provider = (os.environ.get("LLM_PROVIDER") or raw.get("provider") or "").strip()
-    # 文件中的 base_url / model 优先于（可能存在的）隐式环境默认值；真实环境变量仍会胜出
+    # 与 base_url / model 保持一致：llm_config.json（用户在「AI 模型设置」里显式保存的
+    # 运行时选择）优先于环境变量里的静态默认值，否则用户在页面上换的服务商/模型会在
+    # 每次重新部署后被环境变量覆盖回去。
+    provider = (raw.get("provider") or os.environ.get("LLM_PROVIDER") or "").strip()
+    # 文件中的 base_url / model 优先于（可能存在的）隐式环境默认值
     base_url = (raw.get("base_url") or os.environ.get("LLM_BASE_URL") or "").strip()
     model = (raw.get("model") or os.environ.get("LLM_MODEL") or "").strip()
     # 每个服务商独立的 API Key
