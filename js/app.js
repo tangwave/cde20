@@ -4241,8 +4241,26 @@ Object.assign(App, {
   },
 
   // 法规阅读器中的「🤖 AI 拓展解读」
+  // 结果容器：按 id 取；取不到时在原文面板/阅读器内查找，最后兜底新建。
+  // 目的：杜绝「点击后无任何反应」（旧实现在找不到 #regAiBox 时静默 return）。
+  _regAiBoxEl() {
+    let box = document.getElementById('regAiBox');
+    if (box) return box;
+    const reader = document.getElementById('regReader');
+    if (!reader) return null;
+    const host = reader.querySelector('#regTabOrigin')
+      || reader.querySelector('.reg-reader-inner')
+      || reader;
+    box = document.createElement('div');
+    box.className = 'reg-ai-box';
+    box.id = 'regAiBox';
+    host.appendChild(box);
+    return box;
+  },
+
   async _regAiExpand(reg) {
-    const box = document.getElementById('regAiBox'); if (!box) return;
+    const box = this._regAiBoxEl();
+    if (!box) { console.warn('[regAiExpand] 未找到可挂载的 AI 结果容器'); return; }
     if (box.dataset.loading === '1') return;
     box.dataset.loading = '1';
     box.style.display = 'block';
@@ -4251,7 +4269,8 @@ Object.assign(App, {
     try {
       const resp = await this.explainText(reg.title, ctx);
       if (resp && resp.fallback) {
-        box.innerHTML = '<div class="reg-ai-res">⚠️ 当前未配置 AI 模型或调用受限，无法生成拓展解读。请在「AI 模型设置」中配置后重试。</div>';
+        const why = resp.error ? ('（' + Penetrator.esc(String(resp.error)) + '）') : '';
+        box.innerHTML = '<div class="reg-ai-res">⚠️ 当前未配置 AI 模型或调用受限，无法生成拓展解读' + why + '。请在「AI 模型设置」中配置后重试。</div>';
       } else if (resp && resp.explain) {
         box.innerHTML = '<div class="reg-ai-res"><div class="reg-ai-res-h">🤖 AI 拓展解读</div>' + this.mdToHtml(resp.explain) + '</div>';
         const el = box.querySelector('.reg-ai-res'); if (el) this.penetrateDom(el);
