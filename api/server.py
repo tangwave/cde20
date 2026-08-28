@@ -806,14 +806,16 @@ _RAG_CACHE = {}            # (q, only_valid) -> (timestamp, answer)
 _RAG_CACHE_TTL = 3600     # 1 小时
 
 
-def _build_llm_request(system, user, strip_json, max_tokens=None):
+def _build_llm_request(system, user, strip_json, max_tokens=None, model=None):
     """构造 OpenAI 兼容 chat/completions 请求。strip_json=True 时去掉
     response_format / temperature（部分免费模型不支持，会返回 400）。
     max_tokens 可显式限定输出长度（仅作安全上限，不强制填满）；
-    缺省取 LLM_MAX_TOKENS 环境变量（默认 1800），避免 8 段式冗长拖慢响应。"""
+    缺省取 LLM_MAX_TOKENS 环境变量（默认 1800），避免 8 段式冗长拖慢响应。
+    model 为空时沿用全局配置，非空时按指定模型构造（供 fallback 链复用同一 base_url/Key）。"""
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
-    model = LLM_CFG.get("model", "").strip()
+    if not model:
+        model = LLM_CFG.get("model", "").strip()
     url = base.rstrip("/") + "/chat/completions"
     # 部分推理模型（deepseek-reasoner / o1 / r1 等）不支持 response_format 与自定义 temperature
     no_json = bool(re.search(r"reasoner|o1|o3|o4|r1|deepseek-reasoner", model, re.I))
@@ -846,7 +848,7 @@ def _call_llm(system, user, attempts=2, max_tokens=None, strip_json=False):
     model = LLM_CFG.get("model", "").strip()
     if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None
-        return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens, strip_json=strip_json)[0]
+    return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens, strip_json=strip_json)[0]
 
 
 def _extract_llm_content(j):
@@ -909,10 +911,32 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None, strip_json=False):
     model = LLM_CFG.get("model", "").strip()
     if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None, []
-    req = _build_llm_request(system, user, strip_json, max_tokens=max_tokens)
+    content, cites = _try_llm_model(system, user, model, strip_json, max_tokens, attempts)
+    if content:
+        return content, cites
+    # 主模型拿不到正文（超大/推理型模型超时、不支持 response_format 而静默返回空、
+    # 或免费额度异常）：按 fallback 链用同一 base_url + Key 依次换模型重试。
+    for fm in _fallback_models(model):
+        c2, ci2 = _try_llm_model(system, user, fm, strip_json, max_tokens, 1)
+        if c2:
+            print("[llm] 主模型 %s 返回空，已回退到 %s" % (model, fm), flush=True)
+            return c2, ci2
+    return (content if content is not None else ""), cites
+
+
+def _try_llm_model(system, user, model, strip_json, max_tokens, attempts):
+    """用指定模型调用一次（含重试）。返回 (content_or_'' / None, [citations])。
+
+    兼容策略：
+    - 限流（429）抛 _RateLimited；
+    - 不支持 response_format/temperature 的模型：HTTP 400 时去掉后重试；
+    - 返回 200 但正文为空：再以「纯文本模式」重试一次（避免静默空响应）。"""
     timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
-    retried = False
-    for attempt in range(attempts):
+    plain = strip_json          # 是否以纯文本模式（去掉 response_format/temperature）
+    retried = False             # 是否已因 400 去掉 json 模式重试过
+    empty_retried = False       # 是否已因空正文改用纯文本模式重试过
+    for attempt in range(max(1, attempts)):
+        req = _build_llm_request(system, user, plain, max_tokens=max_tokens, model=model)
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 raw = r.read().decode("utf-8")
@@ -923,8 +947,12 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None, strip_json=False):
                 cites = []
             if content:
                 return content, [str(c) for c in cites if c]
-            # 内容为空：推理模型偶发只返回思考过程，稍等后重试一次
-            if attempt < attempts - 1:
+            if not plain and not empty_retried:
+                # 200 但正文为空：很可能是不支持 json_object，改纯文本再试一次
+                empty_retried = True
+                plain = True
+                continue
+            if attempt < max(1, attempts) - 1:
                 time.sleep(2)
                 continue
             return "", [str(c) for c in cites if c]
@@ -938,14 +966,36 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None, strip_json=False):
             # 部分免费模型不支持 response_format/temperature：去掉后重试一次
             if e.code == 400 and not retried:
                 retried = True
-                req = _build_llm_request(system, user, True, max_tokens=max_tokens)
+                plain = True
                 continue
-            if attempt < attempts - 1:
+            if attempt < max(1, attempts) - 1:
                 time.sleep(6)
         except Exception:
-            if attempt < attempts - 1:
+            if attempt < max(1, attempts) - 1:
                 time.sleep(6)
-    return None, []
+    return "", []
+
+
+def _fallback_models(primary):
+    """主模型无正文时依次尝试的备用模型（同 base_url + 同 Key）。
+
+    可用 LLM_FALLBACK_MODELS 环境变量覆盖（逗号分隔）；置 "0"/"none" 可关闭回退。
+    默认列表为 OpenRouter 免费档常见可用模型，逐个尝试、任一成功即返回。"""
+    env = (os.environ.get("LLM_FALLBACK_MODELS") or "").strip()
+    if env.lower() in ("0", "none", "off", "false"):
+        return []
+    if env:
+        cands = [m.strip() for m in env.split(",") if m.strip()]
+    else:
+        cands = [
+            "openai/gpt-oss-20b:free",
+            "nvidia/nemotron-nano-9b-v2:free",
+            "z-ai/glm-5.2:free",
+            "liquid/lfm-2.5-2.6b:free",
+            "openrouter/free",
+        ]
+    prim = (primary or "").strip()
+    return [m for m in cands if m and m != prim]
 
 
 def _test_llm_connection(base_url, api_key, model):
