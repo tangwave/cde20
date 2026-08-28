@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="light"/>
+<title>计算机化系统验证(CSV) · 落地清单 | 药品GMP指南</title>
+<style>
+:root{--bg:#f4f8fa;--card:#fff;--bd:#d9e6ec;--tx:#1f2a37;--mut:#6b7280;--acc:#0891b2;--acc2:#0e7490;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.62}
+header{background:linear-gradient(120deg,#0e7490,#06b6d4);color:#fff;padding:26px 20px 20px}
+header .wrap{max-width:1180px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:23px}
+header p{margin:0;opacity:.93;font-size:13.5px}
+header a.back{color:#cffafe;text-decoration:none;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.intro{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--acc);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:#334}
+.intro b{color:var(--acc2)}
+section{margin:22px 0}
+section h2{font-size:18px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 12px}
+section h2 .cnt{color:var(--mut);font-size:13px;font-weight:400;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.card h3{margin:0 0 7px;font-size:14.5px;color:var(--acc2)}
+.card .no{display:inline-block;background:var(--acc);color:#fff;font-size:11px;border-radius:8px;padding:1px 8px;margin-right:6px}
+.card ul{margin:0;padding-left:18px;font-size:12.5px;color:#3a4654}
+.card ul li{margin:3px 0}
+.card .ref{margin-top:8px;font-size:11.5px;color:var(--mut)}
+.card .ref a{color:var(--acc);text-decoration:none}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:12.5px;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--bd);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#e0f4fa;color:var(--acc2);font-weight:600}
+td a{color:var(--acc);text-decoration:none}
+td a:hover{text-decoration:underline}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:#e0f4fa;color:var(--acc2);white-space:nowrap}
+.refs{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+.refs h3{margin:0 0 8px;font-size:14px;color:var(--acc2)}
+.refs li{font-size:12.5px;margin:4px 0;color:#3a4654}
+.refs a{color:var(--acc);text-decoration:none}
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+.note{font-size:11.5px;color:var(--mut);margin-top:6px}
+.quote{background:#f8fafc;border-left:3px solid var(--bd);padding:8px 12px;margin:8px 0;font-size:12.5px;color:#41506a}
+/* GMP 体系统一导航（跨专题页互链 + 回主站，避免死胡同） */
+.gmpnav{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 2px}
+.gmpnav a{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;
+  font-size:12.5px;text-decoration:none;color:#cffafe;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22)}
+.gmpnav a:hover{background:rgba(255,255,255,.3);color:#fff}
+.gmpnav a[aria-current="page"]{background:#fff;color:var(--acc2,#0e7490);font-weight:700;border-color:#fff}
+.gmpnav-sep{width:1px;height:18px;background:rgba(255,255,255,.3);margin:0 3px}
+</style>
+<meta name="qa-api-base" content="same-origin">
+<link rel="stylesheet" href="css/qa9.css" />
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="quality-management.html">← 返回「质量管理知识库」</a>
+  <nav class="gmpnav" aria-label="GMP 体系导航">
+    <a href="index.html">🏠 主站全景</a>
+    <a href="qa-workbench.html">✅ QA 工作台</a>
+    <a href="quality-management.html">🧪 质量管理</a>
+    <span class="gmpnav-sep" aria-hidden="true"></span>
+    <a href="gmp-ccs-sterile.html">🦠 无菌 CCS</a>
+    <a href="gmp-cleaning-osd.html">🧼 清洁验证</a>
+    <a href="gmp-viral-clearance.html">🧬 病毒清除</a>
+    <a href="gmp-process-validation.html">⚙️ 工艺验证</a>
+    <a href="gmp-csv.html" aria-current="page">💻 CSV 计算机化系统</a>
+    <a href="gmp-glossary-network.html">🔗 术语网络</a>
+  </nav>
+  <h1>💻 计算机化系统验证(CSV) · 落地清单</h1>
+  <p>依据：《药品生产质量管理规范(2010年修订)》第一百六十三条 ·《计算机化系统》附录（2015年第54号公告，2015-12-01 施行）·《药品记录与数据管理要求（试行）》（2020年第74号公告，2020-12-01 施行）· ISPE GAMP 5（第二版）· EU GMP 附录11 / 21 CFR Part 11</p>
+</div></header>
+
+<main>
+<div class="intro">
+  <b>计算机化系统(Computerized System)</b> 由<b>计算机系统</b>与其所<b>控制的功能或流程</b>共同组成。附录的核心思想是三句话：<strong>基于风险</strong>（风险管理贯穿系统全生命周期，验证的范围和程度由风险评估确定）、<strong>基于生命周期</strong>（在整个生命周期内保持验证受控状态）、<strong>基于质量体系</strong>（在有效质量体系下管理计算机化系统及其电子数据）。
+  <div class="quote">GMP 第一百六十三条：使用电子数据处理系统的，只有<b>经授权的人员</b>方可输入或更改数据，<b>更改和删除情况应当有记录</b>；应当使用密码或其他方式来控制系统的登录；关键数据输入后，应当由他人<b>独立进行复核</b>。</div>
+</div>
+
+<section>
+  <h2>一、法规依据与附录结构 <span class="cnt">计算机化系统附录 · 六章</span></h2>
+  <table>
+    <thead><tr><th style="width:20%">附录章节</th><th style="width:26%">主题</th><th>落地要点</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag">第一章</span> 范围</td><td>适用对象与系统定义</td><td>适用于药品生产质量管理过程中应用的计算机化系统；系统由一系列硬件和软件组成以满足特定功能</td></tr>
+      <tr><td><span class="tag">第二章</span> 原则</td><td>风险管理 · 供应商管理</td><td>风险管理贯穿全生命周期；自动化不得增加总体风险；验证范围和程度基于风险评估结果确定</td></tr>
+      <tr><td><span class="tag">第三章</span> 人员</td><td>职责与培训</td><td>明确系统所有者、业务负责人、QA、IT 等角色职责；相关人员须经培训并具备相应能力</td></tr>
+      <tr><td><span class="tag">第四章</span> 验证</td><td>生命周期验证</td><td>验证应贯穿从需求到退役的全过程；采用<b>软件分级</b>策略；保持验证状态并定期回顾</td></tr>
+      <tr><td><span class="tag">第五章</span> 系统</td><td>权限 · 审计追踪 · 数据</td><td>物理与逻辑防护；权限分级管理；审计追踪；电子数据备份与恢复；应急与突发事件管理</td></tr>
+      <tr><td><span class="tag">第六章</span> 术语</td><td>关键概念</td><td>计算机化系统、审计追踪、电子签名、数据、元数据等定义</td></tr>
+      <tr><td><span class="tag">GMP 第一百六十三条</span></td><td>电子数据处理系统</td><td>须有系统操作规程；记录准确性经过核对；授权访问+更改留痕+登录控制+独立复核；电子批记录须备份且便于查阅</td></tr>
+      <tr><td><span class="tag">2020年第74号</span></td><td>记录与数据管理（试行）</td><td><a href="https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20200701110301645.html" target="_blank" rel="noopener">药品记录与数据管理要求（试行）</a>，2020-12-01 施行，数据可靠性管理的基础文件</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>二、CSV 生命周期（V 模型） <span class="cnt">需求 → 设计 → 测试 → 运行 → 退役</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">1</span>计划与风险评估</h3>
+      <ul>
+        <li>建立系统清单与<b>系统分级</b>（影响产品质量/数据可靠性/患者安全的程度）</li>
+        <li>开展风险评估，确定验证的<b>范围与程度</b>（附录原则）</li>
+        <li>关键系统编制验证计划(VP)；低风险系统可简化，但须有依据</li>
+        <li>明确角色：系统所有者、业务流程负责人、QA、IT/工程</li>
+      </ul>
+      <div class="ref">依据：附录 第二章 原则 · 第三章 人员</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">2</span>用户需求说明(URS)</h3>
+      <ul>
+        <li>需求应<b>可测试、可追溯</b>，避免"友好界面"这类不可验证表述</li>
+        <li>明确功能需求、性能需求、<b>数据/记录与合规需求</b>（审计追踪、权限、备份）</li>
+        <li>URS 是后续所有测试追溯的源头，须经审核批准</li>
+        <li>需求变更须走变更控制并重新评估影响</li>
+      </ul>
+      <div class="ref">依据：GAMP 5 · 附录 第四章 验证</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">3</span>供应商评估与审计</h3>
+      <ul>
+        <li>基于风险开展<b>供应商审计</b>（附录原则明确要求）</li>
+        <li>评估其质量管理体系、开发生命周期、变更与缺陷管理</li>
+        <li>可采信供应商提供的合格文档（如已完成的结构化测试），但须<b>评估其适用性</b></li>
+        <li>签订质量协议/服务水平协议(SLA)，明确变更告知与技术支持</li>
+      </ul>
+      <div class="ref">依据：附录 第二章 原则 · GAMP 5 供应商活动</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">4</span>设计、配置与分级</h3>
+      <ul>
+        <li>采用<b>软件分级</b>策略（如 GAMP 5 的 1/3/4/5 类）确定活动强度</li>
+        <li>配置类软件(4类)重点验证<b>配置项的准确性</b>与需求覆盖</li>
+        <li>定制开发(5类)须覆盖设计说明、代码审核、单元/集成测试</li>
+        <li>记录版本号与配置项清单，保证可重建</li>
+      </ul>
+      <div class="ref">依据：GAMP 5（第二版）· 附录 第四章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">5</span>测试与确认（IQ/OQ/PQ）</h3>
+      <ul>
+        <li>建立<b>需求追溯矩阵(RTM)</b>：URS 每条需求 → 对应测试 → 结果</li>
+        <li>IQ：安装与版本、环境、配置项确认；OQ：功能与边界/异常测试</li>
+        <li>PQ：在实际业务流程与负载下运行，含与其他系统的接口</li>
+        <li>审计追踪、权限、时间/日期不可篡改、备份恢复等须<b>单独测试</b></li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十条 · 附录 第四章/第五章</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">6</span>报告、放行与持续维护</h3>
+      <ul>
+        <li>验证报告汇总结果、偏差与结论，经审核批准后方可<b>系统放行</b></li>
+        <li>建立 SOP：操作、权限管理、备份与恢复、变更、事件与应急</li>
+        <li>保持验证状态：变更/升级/补丁/退役均须评估并再验证</li>
+        <li>定期回顾：系统清单、权限复核、审计追踪抽查、备份恢复演练</li>
+      </ul>
+      <div class="ref">依据：附录 第四章（生命周期内保持验证状态）</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">7</span>退役与数据迁移</h3>
+      <ul>
+        <li>退役计划须明确<b>数据迁移与可读性</b>保障（保存期内可查阅）</li>
+        <li>迁移须验证：完整性、准确性、迁移前后一致性与可追溯</li>
+        <li>GMP 相关记录在保存期内的可获取性不因系统退役而丧失</li>
+        <li>退役报告与归档记录存档备查</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百六十二条/一百六十三条（保存期与便于查阅）</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">8</span>电子签名与电子记录</h3>
+      <ul>
+        <li>附录<b>认可电子数据与电子签名</b>，电子签名与手写签名具有同等效力须有规则支撑</li>
+        <li>签名须唯一绑定个人、不可复用/转让，并与记录不可分离</li>
+        <li>签名含义（编制/审核/批准）应可识别</li>
+        <li>参考：21 CFR Part 11 · EU GMP 附录11 · PIC/S PI 011-3</li>
+      </ul>
+      <div class="ref">依据：计算机化系统附录 · 国际通行要求</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>三、数据可靠性：ALCOA+ <span class="cnt">审计追踪 · 元数据 · 复核</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">9</span>ALCOA 五要素</h3>
+      <ul>
+        <li><b>可归属(Attributable)</b>：谁产生/修改，可追溯到人</li>
+        <li><b>清晰(Legible)</b>：可读、不可擦除、持久</li>
+        <li><b>同步(Contemporaneous)</b>：操作时即时记录，不补记不倒签</li>
+        <li><b>原始(Original)</b>：保留第一手数据与元数据</li>
+        <li><b>准确(Accurate)</b>：无错误，修改留痕并说明原因</li>
+      </ul>
+      <div class="ref">依据：2020年第74号 · WHO TRS 1033 附录4</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">10</span>ALCOA+ 补充要素</h3>
+      <ul>
+        <li><b>完整(Complete)</b>：含全部数据（含失败、重复、重处理数据）</li>
+        <li><b>一致(Consistent)</b>：时序合理、编号连续、无矛盾</li>
+        <li><b>持久(Enduring)</b>：保存在经验证/受控的介质上，不因系统故障丢失</li>
+        <li><b>可获取(Available)</b>：保存期内可随时调阅与呈现</li>
+      </ul>
+      <div class="ref">依据：数据可靠性通行要求 · 2020年第74号</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">11</span>审计追踪(Audit Trail)</h3>
+      <ul>
+        <li>记录<b>何时、由谁、因何原因、做了什么</b>的更改/删除动作</li>
+        <li>关键 GMP 系统应具备审计追踪功能，且<b>不可关闭、不可被用户修改</b></li>
+        <li>审计追踪须<b>定期抽查</b>并与偏差/数据修改流程联动，而非只存不看</li>
+        <li>审计追踪本身属于原始数据，须一并保存并可检索</li>
+      </ul>
+      <div class="ref">依据：附录 第五章 · GMP 第一百六十三条（更改删除有记录）</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">12</span>权限、备份与应急</h3>
+      <ul>
+        <li><b>权限分级</b>：按最小必要原则授权，定期复核，离职/调岗及时回收</li>
+        <li>禁止共用账号；管理员权限须受控并留痕</li>
+        <li><b>备份</b>：定期备份 + <b>恢复演练</b>（未经验证的备份等于没有备份）</li>
+        <li><b>应急</b>：故障与突发事件的应急方案与业务连续性安排</li>
+      </ul>
+      <div class="ref">依据：附录 第五章（物理和逻辑防护、备份与恢复、应急管理）</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>四、现场检查常见缺陷（高频） <span class="cnt">对照自查</span></h2>
+  <table>
+    <thead><tr><th style="width:34%">常见缺陷</th><th>正确做法</th></tr></thead>
+    <tbody>
+      <tr><td>无系统清单，或清单与实际不一致</td><td>建立并维护 GMP 相关计算机化系统清单，明确分级与验证状态</td></tr>
+      <tr><td>验证仅做 IQ/OQ，无需求追溯矩阵</td><td>建立 RTM，覆盖每条 URS 需求，关键合规需求单独测试</td></tr>
+      <tr><td>未测试审计追踪/权限/备份恢复</td><td>这些是<b>必测项</b>，且备份须做恢复演练并留存记录</td></tr>
+      <tr><td>共用账号、管理员账号泛滥</td><td>唯一账号、最小权限、定期复核，管理员权限受控留痕</td></tr>
+      <tr><td>审计追踪长期不查，形同虚设</td><td>SOP 规定抽查频次与责任人，抽查发现异常启动调查</td></tr>
+      <tr><td>系统时间/日期可被用户修改</td><td>时间源受控、修改权限受限，时间戳作为关键元数据保护</td></tr>
+      <tr><td>系统升级/打补丁未评估影响</td><td>任何变更进入变更控制，评估后按需再验证并更新文档</td></tr>
+      <tr><td>供应商审计缺失或以"品牌"代替审计</td><td>基于风险开展供应商审计，评估其 QMS 与开发流程</td></tr>
+      <tr><td>电子数据无备份或备份从未恢复验证</td><td>定期备份 + 定期恢复演练，记录保存期内可查阅</td></tr>
+      <tr><td>数据修改无原因说明（或可随意删除）</td><td>修改须经授权、留痕并说明原因；删除功能受控/禁用</td></tr>
+      <tr><td>系统退役后原数据无法读取</td><td>退役前完成数据迁移与可读性验证，保障保存期内可获取</td></tr>
+      <tr><td>CSV 与工艺/设备验证脱节</td><td>CSV、设备确认、工艺验证在 VMP 下统筹，接口与依赖一致</td></tr>
+    </tbody>
+  </table>
+  <p class="note">注：《计算机化系统》《确认与验证》两附录由原国家食品药品监督管理总局 <b>2015年第54号公告</b>发布（2015-05-26 发布、2015-12-01 施行），依据 GMP(2010) 第三百一十条制定。GAMP 5、21 CFR Part 11、EU GMP 附录11、PIC/S PI 011-3 为方法学与国际参考，非中国强制文件。</p>
+</section>
+
+<section class="refs">
+  <h3>📚 权威来源</h3>
+  <ul>
+    <li>《药品生产质量管理规范(2010年修订)》第一百六十三条（电子数据处理系统）、第七章 确认与验证 — <a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">原文</a></li>
+    <li>总局关于发布《计算机化系统》和《确认与验证》两个附录的公告（<b>2015年第54号</b>，2015-12-01 施行）</li>
+    <li>国家药监局关于发布《药品记录与数据管理要求（试行）》的公告（<b>2020年第74号</b>，2020-12-01 施行）— <a href="https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20200701110301645.html" target="_blank" rel="noopener">NMPA</a></li>
+    <li>ISPE GAMP 5（第二版）— 基于风险的合规计算机化系统方法</li>
+    <li>EU GMP 附录11《计算机化系统》· 21 CFR Part 11 · PIC/S PI 011-3 · WHO TRS 1033 附录4（数据完整性）</li>
+  </ul>
+</section>
+</main>
+<footer>
+  本页为「药品研发生产 · 质量管理知识库」专题页，内容据国家药监局/核查中心公开权威文件整理，供学习参考，不作为合规判定依据。
+</footer>
+<script src="js/qa9-chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="light"/>
+<title>工艺验证 · 全生命周期落地清单 | 药品GMP指南</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--bd:#dde5f0;--tx:#1f2a37;--mut:#6b7280;--acc:#2563eb;--acc2:#1e40af;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.62}
+header{background:linear-gradient(120deg,#1e3a8a,#2563eb);color:#fff;padding:26px 20px 20px}
+header .wrap{max-width:1180px;margin:0 auto}
+header h1{margin:0 0 6px;font-size:23px}
+header p{margin:0;opacity:.93;font-size:13.5px}
+header a.back{color:#dbeafe;text-decoration:none;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.intro{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--acc);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:#334}
+.intro b{color:var(--acc2)}
+section{margin:22px 0}
+section h2{font-size:18px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 12px}
+section h2 .cnt{color:var(--mut);font-size:13px;font-weight:400;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.card h3{margin:0 0 7px;font-size:14.5px;color:var(--acc2)}
+.card .no{display:inline-block;background:var(--acc);color:#fff;font-size:11px;border-radius:8px;padding:1px 8px;margin-right:6px}
+.card ul{margin:0;padding-left:18px;font-size:12.5px;color:#3a4654}
+.card ul li{margin:3px 0}
+.card .ref{margin-top:8px;font-size:11.5px;color:var(--mut)}
+.card .ref a{color:var(--acc);text-decoration:none}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:12.5px;border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+th,td{border:1px solid var(--bd);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#e8effd;color:var(--acc2);font-weight:600}
+td a{color:var(--acc);text-decoration:none}
+td a:hover{text-decoration:underline}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:#e8effd;color:var(--acc2);white-space:nowrap}
+.refs{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+.refs h3{margin:0 0 8px;font-size:14px;color:var(--acc2)}
+.refs li{font-size:12.5px;margin:4px 0;color:#3a4654}
+.refs a{color:var(--acc);text-decoration:none}
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+.note{font-size:11.5px;color:var(--mut);margin-top:6px}
+.quote{background:#f8fafc;border-left:3px solid var(--bd);padding:8px 12px;margin:8px 0;font-size:12.5px;color:#41506a}
+/* GMP 体系统一导航（跨专题页互链 + 回主站，避免死胡同） */
+.gmpnav{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 2px}
+.gmpnav a{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;
+  font-size:12.5px;text-decoration:none;color:#dbeafe;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22)}
+.gmpnav a:hover{background:rgba(255,255,255,.3);color:#fff}
+.gmpnav a[aria-current="page"]{background:#fff;color:var(--acc2,#1e40af);font-weight:700;border-color:#fff}
+.gmpnav-sep{width:1px;height:18px;background:rgba(255,255,255,.3);margin:0 3px}
+</style>
+<meta name="qa-api-base" content="same-origin">
+<link rel="stylesheet" href="css/qa9.css" />
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="quality-management.html">← 返回「质量管理知识库」</a>
+  <nav class="gmpnav" aria-label="GMP 体系导航">
+    <a href="index.html">🏠 主站全景</a>
+    <a href="qa-workbench.html">✅ QA 工作台</a>
+    <a href="quality-management.html">🧪 质量管理</a>
+    <span class="gmpnav-sep" aria-hidden="true"></span>
+    <a href="gmp-ccs-sterile.html">🦠 无菌 CCS</a>
+    <a href="gmp-cleaning-osd.html">🧼 清洁验证</a>
+    <a href="gmp-viral-clearance.html">🧬 病毒清除</a>
+    <a href="gmp-process-validation.html" aria-current="page">⚙️ 工艺验证</a>
+    <a href="gmp-csv.html">💻 CSV 计算机化系统</a>
+    <a href="gmp-glossary-network.html">🔗 术语网络</a>
+  </nav>
+  <h1>⚙️ 工艺验证 · 全生命周期落地清单</h1>
+  <p>依据：《药品生产质量管理规范(2010年修订)》第七章 确认与验证（第一百三十八~一百四十九条）·《确认与验证》附录（2015年第54号公告）· CFDI《工艺验证检查指南》（2025-04-07 发布）· ICH Q8~Q12</p>
+</div></header>
+
+<main>
+<div class="intro">
+  <b>工艺验证(Process Validation)</b> 要证明的是：一个生产工艺按照规定的工艺参数，<strong>能够持续稳定地</strong>生产出符合预定用途和注册要求的产品（GMP 第一百四十条第五项）。它不是"做三批"这一件事，而是覆盖<b>工艺设计 → 工艺确认 → 持续工艺核实</b>的<strong>全生命周期</strong>活动，且验证状态必须持续保持（第一百三十九条"保持持续的验证状态"、第一百四十四条"确认和验证不是一次性的行为"）。
+</div>
+
+<section>
+  <h2>一、法规与指南依据 <span class="cnt">GMP 第七章 · 条款对照</span></h2>
+  <table>
+    <thead><tr><th style="width:26%">要求事项</th><th style="width:22%">条款依据</th><th>要点</th></tr></thead>
+    <tbody>
+      <tr><td>确认/验证范围与程度</td><td><span class="tag">GMP 第一百三十八条</span></td><td>由<b>风险评估</b>确定——不是一律做满，也不是随意减免</td></tr>
+      <tr><td>保持持续验证状态</td><td><span class="tag">GMP 第一百三十九条</span></td><td>厂房/设施/设备/检验仪器须确认；工艺、规程、检验方法须验证</td></tr>
+      <tr><td>DQ/IQ/OQ/PQ 与工艺验证</td><td><span class="tag">GMP 第一百四十条</span></td><td>五项预定目标须以文件和记录证明；工艺验证单列于第(五)项</td></tr>
+      <tr><td>新工艺/新处方前验证</td><td><span class="tag">GMP 第一百四十一条</span></td><td>采用前须验证其<b>常规生产的适用性</b>（非仅实验室可行）</td></tr>
+      <tr><td>变更触发再验证</td><td><span class="tag">GMP 第一百四十二条</span></td><td>原辅料、内包材、设备、环境、工艺、检验方法变更须确认或验证</td></tr>
+      <tr><td>清洁验证</td><td><span class="tag">GMP 第一百四十三条</span></td><td>综合考量设备使用、清洁剂、取样方法与回收率、残留限度、方法灵敏度</td></tr>
+      <tr><td>非一次性行为</td><td><span class="tag">GMP 第一百四十四条</span></td><td>据产品质量回顾分析情况再确认/再验证；关键工艺定期再验证</td></tr>
+      <tr><td>验证总计划(VMP)</td><td><span class="tag">GMP 第一百四十五条</span></td><td>以文件形式说明确认与验证工作的关键信息</td></tr>
+      <tr><td>方案与报告</td><td><span class="tag">GMP 第一百四十七/一百四十八条</span></td><td>方案经审核批准、明确职责；按方案实施，完成后出报告并存档</td></tr>
+      <tr><td>验证结果固化</td><td><span class="tag">GMP 第一百四十九条</span></td><td>据验证结果<b>确认工艺规程和操作规程</b>（闭环到文件）</td></tr>
+      <tr><td>商业规模工艺验证</td><td><span class="tag">CFDI 工艺验证检查指南</span></td><td><a href="https://www.cfdi.org.cn/cfdi/resource/news/16373.html" target="_blank" rel="noopener">2025-04-07 发布 · CFDI 16373</a></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>二、工艺验证生命周期三阶段 <span class="cnt">工艺设计 → 工艺确认 → 持续工艺核实</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">1</span>第一阶段 · 工艺设计(Process Design)</h3>
+      <ul>
+        <li>基于产品开发与放大研究建立<b>工艺知识</b>，界定商业化生产工艺</li>
+        <li>识别 <b>CQA</b>(关键质量属性) 与 <b>CPP</b>(关键工艺参数)，建立控制策略</li>
+        <li>常用工具：风险评估(ICH Q9)、DoE 实验设计、先验知识/平台工艺</li>
+        <li>输出：工艺描述、控制策略、CQA/CPP 清单与可接受范围</li>
+      </ul>
+      <div class="ref">依据：ICH Q8(R2) 开发 · Q9 质量风险管理 · Q11 原料药开发与生产</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">2</span>第二阶段 · 工艺确认(Process Qualification)</h3>
+      <ul>
+        <li>① <b>设施设备确认</b>：DQ→IQ→OQ→PQ（GMP 第一百四十条一至四项）</li>
+        <li>② <b>工艺性能确认(PPQ)</b>：在商业规模下、由经培训人员、用商业化物料与设备执行</li>
+        <li>PPQ 前须完成：设备确认、分析方法验证、清洁验证、人员培训</li>
+        <li>取样计划与可接受标准<b>预先批准</b>，显著偏离须调查并评估影响</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十条 · CFDI《工艺验证检查指南》(2025)</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">3</span>第三阶段 · 持续工艺核实(CPV)</h3>
+      <ul>
+        <li>日常生产中<b>持续收集与评价</b>工艺数据，证明工艺处于受控状态</li>
+        <li>与年度产品质量回顾(APQR)联动，识别不良趋势与漂移</li>
+        <li>统计工具：控制图、过程能力指数(Cpk/Ppk)、趋势分析</li>
+        <li>发现异常须启动偏差调查，必要时回到第一阶段重新设计</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十四条 · GMP 第二百六十六条 产品质量回顾分析</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">4</span>验证总计划(VMP)与主计划文件</h3>
+      <ul>
+        <li>VMP 说明验证方针、组织架构与职责、对象清单、进度与可接受原则</li>
+        <li>验证矩阵：明确每个系统/工艺"验证到什么程度"，并说明理由（风险依据）</li>
+        <li>关键工艺与操作规程须规定<b>定期再验证</b>周期</li>
+        <li>VMP 应定期审核更新，与变更/偏差/CAPA 状态联动</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十五/一百四十六条</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>三、验证方案与实施要点 <span class="cnt">检查高频关注项</span></h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3><span class="no">5</span>方案(Protocol)必备要素</h3>
+      <ul>
+        <li>目的与范围、职责分工（GMP 第一百四十七条"明确职责"）</li>
+        <li>设备/物料/批号、工艺参数与设定点、取样点与取样量</li>
+        <li>检验项目、分析方法（须已验证/确认）与<b>预先设定的可接受标准</b></li>
+        <li>偏差处理与数据统计评价方法；方案须经审核批准后方可实施</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十七/一百四十八条</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">6</span>批次数与取样策略</h3>
+      <ul>
+        <li>批次数应<b>基于风险与工艺知识论证</b>，而非简单套用"三批"</li>
+        <li>考虑：工艺复杂性、产品历史数据、批间与批内变异来源</li>
+        <li>取样须覆盖<b>批内不同位置</b>(如混合均匀度：上/中/下、不同时间点)</li>
+        <li>增加取样量与额外批次可提升置信度，但须说明理由</li>
+      </ul>
+      <div class="ref">依据：CFDI《工艺验证检查指南》(2025) · 基于科学与风险的论证要求</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">7</span>可接受标准与结果评价</h3>
+      <ul>
+        <li>标准须预先设定并<b>合理性论证</b>（注册要求 + 历史能力 + 分析变异）</li>
+        <li>不仅看"是否合格"，还要看<b>数据的均一性与趋势</b>（批内/批间）</li>
+        <li>结果超标或异常趋势须调查，不得"剔除后重算"掩盖</li>
+        <li>结论应明确：工艺是否被确认为受控、是否需追加研究</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十八条（结果与结论存档）</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="no">8</span>验证→文件的闭环</h3>
+      <ul>
+        <li>验证结果用于<b>确认工艺规程和操作规程</b>（GMP 第一百四十九条）</li>
+        <li>CPP 的控制范围须写入工艺规程与批记录，作业现场可执行</li>
+        <li>培训已完成且可追溯（相关人员理解变更后的操作要求）</li>
+        <li>验证报告含评价与建议，建议项须有跟踪闭环记录</li>
+      </ul>
+      <div class="ref">依据：GMP 第一百四十八/一百四十九条</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>四、再验证 / 持续工艺确认的触发条件 <span class="cnt">非一次性行为</span></h2>
+  <table>
+    <thead><tr><th style="width:30%">触发情形</th><th style="width:20%">条款/依据</th><th>处置要点</th></tr></thead>
+    <tbody>
+      <tr><td>原辅料/内包材供应商或质量变更</td><td><span class="tag">GMP 第一百四十二条</span></td><td>评估对 CQA 的影响；必要时进行工艺确认或追加验证批次</td></tr>
+      <tr><td>设备更换/改造/重大维修</td><td><span class="tag">GMP 第八十一条</span></td><td>改造或重大维修后须<b>再确认</b>，合格后方可用于生产</td></tr>
+      <tr><td>生产环境/厂房变更</td><td><span class="tag">GMP 第一百四十二条</span></td><td>洁净级别、布局、公用系统变更均需评估并再确认</td></tr>
+      <tr><td>工艺参数/处方/批量变更</td><td><span class="tag">GMP 第一百四十二条</span></td><td>变更分级管理；重大变更须经批准（必要时报药监部门）</td></tr>
+      <tr><td>检验方法变更</td><td><span class="tag">GMP 第二百二十三条</span></td><td>新方法须<b>验证</b>；非新法须<b>确认</b>，确保数据准确可靠</td></tr>
+      <tr><td>产品质量回顾发现不良趋势</td><td><span class="tag">GMP 第一百四十四条</span></td><td>据回顾分析情况发起再确认/再验证，并评估已上市产品</td></tr>
+      <tr><td>反复偏差/CAPA 显示工艺能力不足</td><td><span class="tag">GMP 第二百五十二条</span></td><td>经 CAPA 有效性评估后决定是否重新进行工艺验证</td></tr>
+      <tr><td>关键工艺定期再验证到期</td><td><span class="tag">GMP 第一百四十四条</span></td><td>"关键的生产工艺和操作规程应当定期进行再验证"</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>五、现场检查常见缺陷（高频） <span class="cnt">对照自查</span></h2>
+  <table>
+    <thead><tr><th style="width:34%">常见缺陷</th><th>正确做法</th></tr></thead>
+    <tbody>
+      <tr><td>验证批次数仅写"三批"，无论证</td><td>基于风险与工艺知识论证批次数，留存决策依据</td></tr>
+      <tr><td>可接受标准事后补充或修改</td><td>方案与标准<b>预先批准</b>；修改须走变更并有合理性说明</td></tr>
+      <tr><td>取样点未覆盖批内变异（只取一点）</td><td>识别变异来源，设计覆盖上/中/下、不同时间点的取样计划</td></tr>
+      <tr><td>验证用物料/设备与商业化不一致</td><td>PPQ 应使用商业化物料、设备与经培训人员，商业规模执行</td></tr>
+      <tr><td>验证报告只有"合格"结论，无评价与趋势分析</td><td>含数据统计、批内/批间均一性评价、结论与建议</td></tr>
+      <tr><td>验证结果未回写到工艺规程/批记录</td><td>按第一百四十九条闭环，CPP 范围写入受控文件并培训</td></tr>
+      <tr><td>变更后未评估验证影响就放行生产</td><td>变更控制与验证联动，变更前明确验证要求并完成后实施</td></tr>
+      <tr><td>无持续工艺核实数据，验证后"一劳永逸"</td><td>建立 CPV 计划，持续收集数据并与 APR 联动</td></tr>
+      <tr><td>验证方案未明确职责</td><td>按第一百四十七条在方案中明确各方职责并签名批准</td></tr>
+      <tr><td>清洁验证与工艺验证脱节（残留限度无依据）</td><td>限度基于毒理/日剂量/10ppm 等科学计算并论证</td></tr>
+    </tbody>
+  </table>
+  <p class="note">注：条款号以《药品生产质量管理规范(2010年修订)》(卫生部令第79号)为准。CFDI《工艺验证检查指南》为检查员现场检查与企业自查的实操依据，发布日 2025-04-07。</p>
+</section>
+
+<section class="refs">
+  <h3>📚 权威来源</h3>
+  <ul>
+    <li>《药品生产质量管理规范(2010年修订)》(卫生部令第79号) 第七章 确认与验证 第一百三十八~一百四十九条 — <a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_d5e1dbaa8f284277a5f6c3e2fc840d00.html" target="_blank" rel="noopener">原文</a></li>
+    <li>总局关于发布《计算机化系统》和《确认与验证》两个附录的公告（<b>2015年第54号</b>，2015-05-26 发布、2015-12-01 施行）</li>
+    <li>国家药监局食品药品审核查验中心《工艺验证检查指南》— <a href="https://www.cfdi.org.cn/cfdi/resource/news/16373.html" target="_blank" rel="noopener">CFDI 通告 (2025-04-07)</a></li>
+    <li>ICH Q8(R2) 药物开发 · Q9 质量风险管理 · Q10 药品质量体系 · Q11 原料药开发和生产 · Q12 生命周期管理</li>
+    <li>2023版《药品GMP指南》（第二版）质量管理体系 / 口服固体制剂 / 无菌制剂 / 原料药 等分册</li>
+  </ul>
+</section>
+</main>
+<footer>
+  本页为「药品研发生产 · 质量管理知识库」专题页，内容据国家药监局/核查中心公开权威文件整理，供学习参考，不作为合规判定依据。
+</footer>
+<script src="js/qa9-chat.js"></script>
+</body>
+</html>
