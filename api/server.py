@@ -839,17 +839,17 @@ def _build_llm_request(system, user, strip_json, max_tokens=None):
     return urllib.request.Request(url, data=data, headers=headers)
 
 
-def _call_llm(system, user, attempts=2, max_tokens=None):
+def _call_llm(system, user, attempts=2, max_tokens=None, strip_json=False):
     """调用 OpenAI 兼容 chat/completions。未配置返回 None；限流抛 _RateLimited。"""
     base = LLM_CFG.get("base_url", "").strip()
     key = LLM_CFG.get("api_key", "").strip()
     model = LLM_CFG.get("model", "").strip()
     if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None
-    return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens)[0]
+    return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens, strip_json=strip_json)[0]
 
 
-def _call_llm_ex(system, user, attempts=2, max_tokens=None):
+def _call_llm_ex(system, user, attempts=2, max_tokens=None, strip_json=False):
     """同 _call_llm，但额外返回 citations（Perplexity 等会返回联网引用 URL 列表）。
 
     返回 (content_or_None, [citation_url, ...])。兼容策略：
@@ -861,7 +861,7 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None):
     model = LLM_CFG.get("model", "").strip()
     if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None, []
-    req = _build_llm_request(system, user, False, max_tokens=max_tokens)
+    req = _build_llm_request(system, user, strip_json, max_tokens=max_tokens)
     timeout = int(os.environ.get("LLM_TIMEOUT", "60") or "60")
     retried = False
     for attempt in range(attempts):
@@ -2461,6 +2461,80 @@ def api_reg(path: str = ""):
          "source_url", "status", "category", "topic", "doc_no", "summary"], row))
     body = _read_kb_body(p, cap=20000)
     return JSONResponse({"meta": meta, "body": body, "source": "kb"})
+
+
+# ---------------------------------------------------------------- /api/kb-search（管理台选文件：知识库检索）
+@app.get("/api/kb-search")
+def api_kb_search(q: str = "", n: int = 20):
+    """供管理台「文件审阅 / 记录·申报资料核查」选择相关文件：按标题/正文检索知识库文档。"""
+    if not q or not q.strip():
+        return JSONResponse({"results": []})
+    rows = _kb_fts(q.strip(), only_valid=False, n=min(int(n) or 20, 50))
+    out = [{
+        "path": r.get("本地路径", ""), "title": r.get("标题", ""),
+        "category": r.get("分类", ""), "issuer": r.get("发布机构", ""),
+        "publish_date": r.get("发布日期", ""), "status": r.get("状态", ""),
+        "doc_no": r.get("文号", ""),
+    } for r in rows]
+    return JSONResponse({"results": out})
+
+
+# ---------------------------------------------------------------- /api/verify（AI 文档/记录核查）
+_VERIFY_SYSTEM = """你是中国药品研发质量（QA）与注册核查领域的资深专家，熟悉 NMPA/CDE/CFDI 核查要求、GMP、《药品注册核查要点》、ICH 指南（Q8~Q14、E6 等）及数据可靠性（ALCOA+）原则。
+用户会提交一份「文件审阅」或「记录/申报资料核查」任务，包含：目标文档、相关附件/资料（可含知识库已收录法规正文）、所选核查原则、以及已记录的不一致项或冲突描述。
+请基于这些信息，以 QA 专业视角给出结构化核查意见：
+1. 核查结论概要（一致 / 存在不一致 / 需补充材料 / 建议重做）；
+2. 逐条核对要点（针对所选原则，指出已覆盖与遗漏项）；
+3. 风险研判（高/中/低，并说明依据）；
+4. 整改建议（可操作、可闭环，指明责任与验证方式）。
+要求：只依据所提供的材料与公认法规框架；严禁编造文号、条款、日期；无法判定时明确说明「需补充 XXX 佐证」。直接输出中文结构化文本，可用「·」分点，不要使用 JSON 或代码块包裹。"""
+
+
+@app.post("/api/verify")
+async def api_verify(request: Request):
+    """管理台 AI 核查：把目标文档 + 附件（可含 KB 正文）+ 核查原则 + 已知不一致项发给 LLM，返回结构化核查意见。"""
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"ok": False, "error": "invalid json"}, status_code=400)
+    target = (body.get("target_doc") or "").strip()
+    attachments = body.get("attachments") or []
+    principles = body.get("principles") or []
+    findings = (body.get("findings") or "").strip()
+    doc_type = (body.get("doc_type") or "记录/申报资料核查").strip()
+    if not _llm_configured():
+        return JSONResponse({"ok": False, "configured": False,
+            "message": "后端 LLM 未配置，请先在「设置」中填写 API 地址与 Key，或使用「复制核查提示词」在外部 AI 中执行。"})
+    ctx_parts = []
+    for att in attachments:
+        if not isinstance(att, dict):
+            continue
+        src = att.get("src", "text")
+        name = att.get("name") or att.get("path") or "未命名"
+        if src == "kb" and att.get("path"):
+            b = _read_kb_body(att["path"], cap=6000)
+            ctx_parts.append(f"【知识库资料】{name}（{att['path']}）\n{(b or '（正文暂未取到）')[:6000]}")
+        elif att.get("content"):
+            ctx_parts.append(f"【附件】{name}\n{str(att['content'])[:4000]}")
+        else:
+            ctx_parts.append(f"【附件引用】{name}（{att.get('path') or ''}）")
+    attach_ctx = "\n\n".join(ctx_parts)
+    user = f"任务类型：{doc_type}\n目标文档：{target or '（未填写）'}\n"
+    if principles:
+        user += "所选核查原则：\n" + "\n".join("· " + p for p in principles) + "\n"
+    if attach_ctx:
+        user += f"\n相关附件/资料内容：\n{attach_ctx}\n"
+    if findings:
+        user += f"\n已知不一致项/冲突描述：\n{findings}\n"
+    user += "\n请按系统要求给出结构化核查意见。"
+    try:
+        result = _call_llm(_VERIFY_SYSTEM, user, attempts=2, max_tokens=2000, strip_json=True)
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
+    if not result:
+        return JSONResponse({"ok": False, "configured": True,
+            "message": "LLM 调用未返回结果（可能未配置或限流），请稍后重试或使用「复制核查提示词」。"})
+    return JSONResponse({"ok": True, "configured": True, "result": result})
 
 
 # ---------------------------------------------------------------- /api/explain（AI 拓展解释 / 术语解释）

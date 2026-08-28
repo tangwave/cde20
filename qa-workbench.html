@@ -113,6 +113,34 @@
   .cloud-badge .sync{font-size:10px;margin-left:6px;opacity:.8}
   .cloud-badge .sub{font-size:11px}
   @media(max-width:760px){.sidebar{display:none}.form-grid{grid-template-columns:1fr}.field.full{grid-column:1}.content{padding:14px}}
+  /* file picker */
+  .file-pick-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+  .file-txt{border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:12px;flex:1;min-width:150px}
+  .file-list{display:flex;flex-direction:column;gap:5px;max-height:200px;overflow:auto;border:1px dashed var(--line);border-radius:8px;padding:8px;background:#fafcff}
+  .file-empty{color:var(--muted);font-size:12px;padding:6px 2px}
+  .file-row{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 8px}
+  .fb{display:inline-block;font-size:10px;border-radius:6px;padding:1px 6px;color:#fff}
+  .fb.kb{background:#2d7dd2}.fb.lo{background:#2e8b57}.fb.tx{background:#888}
+  .fn{flex:1;min-width:0;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fm{font-size:11px;color:var(--muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kb-panel{margin-top:8px;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fafcff}
+  .kb-input{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;width:100%}
+  .kb-res{margin-top:8px;max-height:220px;overflow:auto}
+  .kb-row{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-bottom:6px;cursor:pointer}
+  .kb-row:hover{border-color:var(--brand2);background:var(--soft)}
+  .kb-t{font-size:13px;font-weight:600}.kb-m{font-size:11px;color:var(--muted);margin-top:2px}
+  /* AI verify */
+  .ai-verify{display:flex;flex-direction:column;gap:8px}
+  .ai-row{font-size:13px}.ai-lab{font-size:12px;color:var(--muted);font-weight:600}
+  .ai-prompt{border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:13px;font-family:inherit;min-height:160px;resize:vertical}
+  .ai-result{margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:12px;background:#fafcff}
+  .ai-out{white-space:normal;font-size:13px;line-height:1.6}
+  .ai-warn{color:var(--warn);font-size:13px;line-height:1.6}
+  .ai-sec{margin-bottom:10px}
+  .ai-k{font-weight:700;color:var(--brand);font-size:13px;margin-bottom:3px}
+  .ai-v{color:var(--ink)}
+  .ai-ul{margin:4px 0 4px 18px;padding:0}
+  .ai-ul li{margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -162,6 +190,23 @@ function getA(key){try{return JSON.parse(localStorage.getItem(PREFIX+key)||'[]')
 function setA(key,arr){localStorage.setItem(PREFIX+key,JSON.stringify(arr));}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 const BASIS=['NMPA GMP(2010修订)','NMPA GLP','ICH Q8','ICH Q9(R1)','ICH Q10','ICH Q11','ICH Q12','ICH Q14','FDA 21CFR','EMA','OECD GLP','中国药典','药品注册核查要点','GMP指南2023'];
+/* 核查原则：供「文件审阅」「记录/申报资料核查」的核查方法选择，使核查有据可依 */
+const VERIFY_PRINCIPLES_DOC=[
+ '法规符合性（对照NMPA/GMP/ICH等适用性）','文件间冲突检查（编号/版本/数据互不一致）',
+ '格式规范性（体例/签章/日期/页码）','数据准确性（数值/单位/小数点/范围）',
+ '内容完整性（章节齐全/无缺失）','版本一致性（正文与附件同源）','签署与审批完整性'];
+const VERIFY_PRINCIPLES_CHK=[
+ '数据可靠性 ALCOA+（可追溯/原始/同步/准确/完整/一致/持久/可用）','注册核查要点（NMPA 注册核查实施原则）',
+ 'CTD模块间一致性（M2摘要与M3/M4/M5对应）','申报资料与实验记录一致性',
+ '数值/单位/日期三核对','纸质与电子记录一致','原始数据可溯（原始图谱/台账）',
+ '结论合理性（与数据支撑匹配）','ICH E6(R2/R3) 临床试验数据','药典/标准符合性'];
+/* AI 核查后端地址：留空=同源 /api/verify（部署在知识库网页后端时即用） */
+const AI_URL_KEY=PREFIX+'aiurl';
+function getAiUrl(){try{return (localStorage.getItem(AI_URL_KEY)||'').trim();}catch(e){return'';}}
+function setAiUrl(v){try{localStorage.setItem(AI_URL_KEY,v.trim());}catch(e){}}
+function aiVerifyUrl(){const u=getAiUrl();if(u)return u.replace(/\/+$/,'').replace(/\/api\/verify\/?$/,'')+'/api/verify';return (location.origin||'')+'/api/verify';}
+/* 文件选择临时缓冲（每次打开表单时初始化） */
+let _fileBuf=[];let _fileBufKey='';
 
 /* ============ 云端同步层（多端实时同步 · FastAPI后端）============ */
 const CLOUD_KEY='wb_qa_rd_qms_cloud_';
@@ -242,7 +287,8 @@ function openCloudModal(){
     <div class="field full"><label>后端服务地址</label><input type="text" id="cUrl" placeholder="同域部署填 / 或留空（如知识库网页自带后端）；独立后端填 https://... 或 http://IP:8000" value="${esc(CLOUD.url||'')}"></div>
     <div class="field"><label>工作区名称</label><input type="text" id="cWs" placeholder="自定义工作区名" value="${esc(CLOUD.workspace||'')}"></div>
     <div class="field"><label>密码</label><input type="password" id="cPw" placeholder="工作区密码（≥4位）"></div>
-    <div class="field full" style="font-size:12px;color:var(--muted);line-height:1.7">说明：<b>工作区</b>是一个共享空间。多人/多设备使用<b>相同的工作区名称+密码</b>即可访问同一份数据，实现实时同步。密码不可找回，请牢记。后端服务需自行部署（见随附的部署文档）。</div>
+    <div class="field full"><label>AI 核查后端地址（可选）</label><input type="text" id="cAi" placeholder="留空=同源 /api/verify；独立部署填 https://你的后端（需提供 /api/verify）" value="${esc(getAiUrl())}"></div>
+    <div class="field full" style="font-size:12px;color:var(--muted);line-height:1.7">说明：<b>工作区</b>是一个共享空间。多人/多设备使用<b>相同的工作区名称+密码</b>即可访问同一份数据，实现实时同步。密码不可找回，请牢记。后端服务需自行部署（见随附的部署文档）。<b>AI 核查</b>调用后端 LLM（需配置 API Key），未配置时可用「复制提示词」在外部 AI 执行。</div>
   </div>`;
   $('#modalBody').innerHTML=h;
   $('#modalFoot').innerHTML=
@@ -254,9 +300,9 @@ function openCloudModal(){
   showMask();
 }
 async function cloudAuth(mode){
-  const url=$('#cUrl').value.trim(),ws=$('#cWs').value.trim(),pw=$('#cPw').value;
+  const url=$('#cUrl').value.trim(),ws=$('#cWs').value.trim(),pw=$('#cPw').value,ai=$('#cAi').value.trim();
   if(!url||!ws||pw.length<4){toast('请填写地址、工作区名，密码≥4位');return;}
-  CLOUD.url=url;CLOUD.workspace=ws;saveCloud();
+  CLOUD.url=url;CLOUD.workspace=ws;if(ai)setAiUrl(ai);saveCloud();
   $('#modalFoot').innerHTML='<span class="sub">连接中…</span>';
   const [st,res]=await api('POST','/'+(mode==='register'?'api/register':'api/login'),{name:ws,password:pw});
   if(st!==200){toast(mode==='register'?'注册失败（可能已存在，请改用登录）':'登录失败：名称或密码错误');return;}
@@ -293,7 +339,8 @@ function F(k,l,t,o){const f={key:k,label:l,type:t||'text'};if(o)f.options=o;retu
 M.doc_review={name:'文件审阅',ic:'📋',done:['已完成'],
  fields:[F('code','文件编号','text'),F('name','文件名称','text'),F('type','文件类型','select',['IND申报资料','NDA申报资料','研究报告','质量文件','实验记录','SOP/方案','其他']),
   F('reviewType','审阅类型','multiselect',['合规审阅','冲突检查','格式审阅','数据审阅','内容审阅']),
-  F('basis','法规依据','multiselect',BASIS),F('relatedFiles','关联文件','textarea'),
+  F('basis','法规依据','multiselect',BASIS),F('principles','核查原则','multiselect',VERIFY_PRINCIPLES_DOC),
+  F('relatedFiles','关联文件/资料','files'),
   F('conflict','冲突检查结果','select',['无冲突','有冲突']),F('conflictDesc','冲突描述','textarea'),
   F('conclusion','审阅结论','select',['通过','有条件通过','不通过']),F('rectify','整改要求','textarea'),
   F('owner','审阅人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['待处理','进行中','已完成']),F('remark','备注','textarea')],
@@ -301,9 +348,10 @@ M.doc_review={name:'文件审阅',ic:'📋',done:['已完成'],
  cols:['code','name','type','conflict','conclusion','status','dueDate']};
 
 M.record_check={name:'记录/申报资料核查',ic:'🔍',done:['已完成'],
- fields:[F('code','核查编号','text'),F('name','核查名称','text'),F('targetDoc','目标文档','text'),F('attach','附件名称','textarea'),
-  F('basis','核查依据','multiselect',['法规','SOP','指导原则(如ICH E6)','药典']),F('risk','风险等级','select',['高','中','低']),
-  F('method','核查方法','select',['人工比对','工具辅助','组合']),F('items','不一致项清单','textarea'),
+ fields:[F('code','核查编号','text'),F('name','核查名称','text'),F('targetDoc','目标文档','text'),F('attach','附件/资料','files'),
+  F('basis','核查依据','multiselect',['法规','SOP','指导原则(如ICH E6)','药典']),F('principles','核查原则','multiselect',VERIFY_PRINCIPLES_CHK),
+  F('risk','风险等级','select',['高','中','低']),
+  F('method','核查方法','select',['人工比对','工具辅助','组合','AI智能核查']),F('items','不一致项清单','textarea'),
   F('consistency','一致性状态','select',['一致','不一致','待核查']),F('rectifyStatus','整改跟进','select',['整改中','已整改','无法整改']),
   F('owner','核查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['待核查','进行中','已完成']),F('remark','备注','textarea')],
  stats:[['总数','count'],['待核查','where',{status:'待核查'}],['高风险','where',{risk:'高'}],['不一致','where',{consistency:'不一致'}],['逾期','overdue']],
@@ -608,6 +656,7 @@ function renderTable(){
     h+=`<tr><td><button class="btn btn-sm" onclick="openForm('${r.id}')">编辑</button> <button class="btn btn-sm" onclick="showDetail('${r.id}')">详情</button> <button class="btn btn-sm btn-danger" onclick="delRec('${r.id}')">删</button></td>`;
     cols.forEach(c=>{const f=fmap[c];let v=r[c];
       if(f&&f.type==='multiselect')v=Array.isArray(v)?v.map(x=>`<span class="tag">${esc(x)}</span>`).join(''):esc(v);
+      else if(f&&f.type==='files')v=fmtFilesHtml(v);
       else if(f&&f.options){const cls=(c==='status'||c==='severity'||c==='risk'||c==='level'||c==='conclusion'||c==='consistency')?(v==='严重'||v==='高'||v==='重大'||v==='不通过'||v==='不一致'||v==='不放行'?'r':(v==='已关闭'||v==='已放行'||v==='合格'||v==='通过'||v==='一致'?'g':(v==='有条件通过'||v==='中等'||v==='中'||v==='次要'||v==='微小'?'o':''))):'';
         v=`<span class="tag ${cls}">${esc(v)}</span>`;}
       else v=esc(v);
@@ -624,9 +673,23 @@ function openForm(id){
   $('#modalTitle').textContent=(rec?'编辑':'新增')+' · '+m.name;
   let h=`<div class="form-grid">`;
   m.fields.forEach(f=>{
-    const val=rec?rec[f.key]:'';const full=(f.type==='textarea'||f.key==='remark'||['conflictDesc','rectify','items','impact','rootCause','ca','pa','scope','content','measure','method'===f.key?'':''].includes(f.key));
-    h+=`<div class="field ${full?'full':''}"><label>${esc(f.label)}${f.type!=='textarea'&&false?'':'<span class="req"></span>'}</label>`;
+    const val=rec?rec[f.key]:'';const full=(f.type==='textarea'||f.type==='files'||f.key==='remark'||['conflictDesc','rectify','items','impact','rootCause','ca','pa','scope','content','measure'].includes(f.key));
+    h+=`<div class="field ${full?'full':''}"><label>${esc(f.label)}</label>`;
     if(f.type==='textarea'){h+=`<textarea data-k="${f.key}">${esc(val)}</textarea>`;}
+    else if(f.type==='files'){
+      _fileBufKey=f.key;_fileBuf=parseFiles(val);
+      h+=`<div class="file-pick-bar">
+        <button type="button" class="btn btn-sm" onclick="pickLocalFiles()">📁 本机文件</button>
+        <button type="button" class="btn btn-sm" onclick="pickLocalFolder()">📂 文件夹</button>
+        <button type="button" class="btn btn-sm" onclick="toggleKbPanel()">🔎 知识库检索</button>
+        <input id="txtRef" class="file-txt" placeholder="或输入文本引用后回车" onkeydown="if(event.key==='Enter'){addTextRef(this.value);this.value='';}">
+      </div>
+      <div id="kbPanel" class="kb-panel" style="display:none">
+        <input id="kbQ" class="kb-input" placeholder="输入法规/指导原则/资料关键词检索知识库（需后端在线）…" oninput="kbSearchDo(this.value)">
+        <div id="kbRes" class="kb-res"></div>
+      </div>
+      <div id="fileList" class="file-list"></div>`;
+    }
     else if(f.type==='select'){h+=`<select data-k="${f.key}"><option value="">—请选择—</option>${f.options.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select>`;}
     else if(f.type==='multiselect'){const arr=Array.isArray(val)?val:[];
       h+=`<div class="checks">${f.options.map(o=>`<label><input type="checkbox" data-m="${f.key}" value="${esc(o)}" ${arr.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div>`;}
@@ -636,6 +699,7 @@ function openForm(id){
   });
   h+=`</div>`;
   $('#modalBody').innerHTML=h;
+  if(_fileBufKey)renderFileList();
   $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveForm('${id||''}')">保存</button>`;
   showMask();
 }
@@ -643,6 +707,7 @@ function saveForm(id){
   const m=M[curMod];const rec={};let ok=true;
   m.fields.forEach(f=>{
     if(f.type==='multiselect'){rec[f.key]=[...document.querySelectorAll(`input[data-m="${f.key}"]:checked`)].map(x=>x.value);}
+    else if(f.type==='files'){rec[f.key]=Array.isArray(_fileBuf)?_fileBuf:[];}
     else{const el=document.querySelector(`[data-k="${f.key}"]`);rec[f.key]=el?el.value.trim():'';}
   });
   if(!rec.code){toast('请填写编号');return;}
@@ -662,10 +727,12 @@ function showDetail(id){
   let h='<div class="detail"><dl>';
   m.fields.forEach(f=>{let v=rec[f.key];
     if(f.type==='multiselect')v=Array.isArray(v)?v.join('、'):(v||'');
+    else if(f.type==='files')v=fmtFilesText(v);
     h+=`<dt>${esc(f.label)}</dt><dd>${esc(v)||'-'}</dd>`;});
   h+='</dl></div>';
   $('#modalBody').innerHTML=h;
-  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button><button class="btn btn-primary" onclick="openForm('${id}')">编辑</button>`;
+  const aiBtn=(curMod==='doc_review'||curMod==='record_check')?`<button class="btn" onclick="openAiVerify('${id}')">🤖 AI 核查</button>`:'';
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button>${aiBtn}<button class="btn btn-primary" onclick="openForm('${id}')">编辑</button>`;
   showMask();
 }
 function delRec(id){
@@ -673,6 +740,115 @@ function delRec(id){
   let arr=getA(curMod);arr=arr.filter(r=>r.id!==id);setA(curMod,arr);
   cloudDelete(curMod,id);
   renderNav();renderModule();toast('已删除');
+}
+
+/* ============ 文件/资料选择（本机文件 / 文件夹 / 知识库检索）============ */
+function parseFiles(v){
+  if(Array.isArray(v))return v.map(x=>({src:x.src||'text',name:x.name||x.path||'',path:x.path||'',size:x.size||0}));
+  if(typeof v==='string'&&v.trim())return [{src:'text',name:v.trim(),path:'',size:0}];
+  return [];
+}
+function fmtSize(n){if(!n)return'';if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB';}
+function fmtFilesHtml(v){
+  const a=parseFiles(v);
+  if(!a.length)return '<span style="color:var(--muted)">-</span>';
+  const names=a.map(x=>x.name).join('、');
+  return `<span class="tag" title="${esc(names)}">${a.length} 个文件/资料</span>`;
+}
+function fmtFilesText(v){
+  const a=parseFiles(v);
+  if(!a.length)return '';
+  return a.map(x=>`[${x.src==='kb'?'库':(x.src==='local'?'本':'文')}] ${x.name}`).join('；');
+}
+function renderFileList(){
+  const box=$('#fileList');if(!box)return;
+  if(!_fileBuf.length){box.innerHTML='<div class="file-empty">尚未选择文件/资料（本机 / 文件夹 / 知识库均可）</div>';return;}
+  box.innerHTML=_fileBuf.map((f,i)=>{
+    const badge=f.src==='kb'?'<span class="fb kb">库</span>':(f.src==='local'?'<span class="fb lo">本</span>':'<span class="fb tx">文</span>');
+    const meta=f.src==='kb'?(f.path||''):(f.size?fmtSize(f.size):(f.path||''));
+    return `<div class="file-row"><span class="fb-w">${badge}</span><span class="fn" title="${esc(f.path||f.name)}">${esc(f.name)}</span><span class="fm">${esc(meta)}</span><button type="button" class="btn btn-sm btn-danger" onclick="removeFile(${i})">×</button></div>`;
+  }).join('');
+}
+function removeFile(i){_fileBuf.splice(i,1);renderFileList();}
+function addTextRef(t){t=(t||'').trim();if(!t)return;_fileBuf.push({src:'text',name:t,path:'',size:0});renderFileList();}
+function pickLocalFiles(){const inp=document.createElement('input');inp.type='file';inp.multiple=true;inp.onchange=e=>{[...e.target.files].forEach(f=>_fileBuf.push({src:'local',name:f.name,path:f.name,size:f.size||0}));renderFileList();};inp.click();}
+function pickLocalFolder(){const inp=document.createElement('input');inp.type='file';inp.setAttribute('webkitdirectory','');inp.setAttribute('multiple','');inp.multiple=true;inp.onchange=e=>{[...e.target.files].forEach(f=>_fileBuf.push({src:'local',name:f.name,path:(f.webkitRelativePath||f.name),size:f.size||0}));renderFileList();};inp.click();}
+function toggleKbPanel(){const p=$('#kbPanel');if(!p)return;p.style.display=(p.style.display==='none'?'block':'none');if(p.style.display==='block')kbSearchDo($('#kbQ')?$('#kbQ').value:'');}
+let _kbRows=[];
+async function kbSearchDo(q){
+  const box=$('#kbRes');if(!box)return;
+  q=(q||'').trim();_kbRows=[];
+  if(!q){box.innerHTML='<div class="file-empty">输入关键词检索知识库（需后端在线）</div>';return;}
+  box.innerHTML='<div class="file-empty">检索中…</div>';
+  try{
+    const r=await fetch(aiBase()+'/api/kb-search?q='+encodeURIComponent(q)+'&n=20',{headers:{'Authorization':'Bearer '+(CLOUD.token||'')}});
+    const j=await r.json();
+    const rows=j.results||[];_kbRows=rows;
+    if(!rows.length){box.innerHTML='<div class="file-empty">未检索到相关文档</div>';return;}
+    box.innerHTML=rows.map((x,i)=>`<div class="kb-row" onclick="addKbFile(${i})"><div class="kb-t">${esc(x.title)}</div><div class="kb-m">${esc(x.category||'')} · ${esc(x.issuer||'')} · ${esc(x.publish_date||'')}</div></div>`).join('');
+  }catch(e){box.innerHTML='<div class="file-empty">检索失败（后端未连接？）</div>';}
+}
+function addKbFile(i){const x=_kbRows[i];if(!x)return;if(_fileBuf.some(f=>f.src==='kb'&&f.path===x.path)){toast('已添加');return;}_fileBuf.push({src:'kb',name:x.title,path:x.path,size:0});renderFileList();}
+function aiBase(){const u=getAiUrl();if(u)return u.replace(/\/api\/verify\/?$/,'');return (location.origin||'');}
+function aiVerifyUrl(){return aiBase()+'/api/verify';}
+let _aiPayload=null;
+function openAiVerify(id){
+  const m=M[curMod];const rec=getA(curMod).find(r=>r.id===id);if(!rec)return;
+  const filesKey=curMod==='doc_review'?'relatedFiles':'attach';
+  const files=parseFiles(rec[filesKey]);
+  const target=curMod==='record_check'?(rec.targetDoc||''):(rec.name||'');
+  const principles=Array.isArray(rec.principles)?rec.principles:[];
+  const findings=curMod==='record_check'?(rec.items||''):(rec.conflictDesc||'');
+  const attLines=files.map(f=>`· [${f.src==='kb'?'知识库':(f.src==='local'?'本机':'文本')}] ${f.name}${f.path&&f.src!=='text'?('（'+f.path+'）'):''}`).join('\n')||'（无）';
+  const prinLines=principles.map(p=>'· '+p).join('\n')||'（无）';
+  const prompt=`任务类型：${m.name}\n目标文档：${target||'（未填写）'}\n\n相关文件/资料：\n${attLines}\n\n所选核查原则：\n${prinLines}\n\n${findings?('已知不一致项/冲突：\n'+findings+'\n\n'):''}请基于上述材料，按核查要点（结论概要 / 逐条核对 / 风险研判 / 整改建议）给出结构化核查意见。`;
+  $('#modalTitle').textContent='🤖 AI 核查 · '+m.name;
+  $('#modalBody').innerHTML=`<div class="ai-verify">
+    <div class="ai-row"><b>目标文档</b>：${esc(target||'（未填写）')}</div>
+    <div class="ai-row"><b>相关文件</b>：${esc(files.length+' 个')}</div>
+    <div class="ai-row"><b>核查原则</b>：${esc(principles.join('、')||'（未选）')}</div>
+    <label class="ai-lab">发送给 AI 的核查提示词（可编辑）</label>
+    <textarea id="aiPrompt" class="ai-prompt">${esc(prompt)}</textarea>
+    <div id="aiResult" class="ai-result" style="display:none"></div>
+  </div>`;
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button><button class="btn" onclick="copyAiPrompt()">📋 复制提示词</button><button class="btn btn-primary" onclick="runAiVerify()">🤖 运行 AI 核查</button>`;
+  showMask();
+  _aiPayload={target_doc:target,attachments:files.map(f=>({src:f.src,name:f.name,path:f.path})),principles:principles,findings:findings,doc_type:m.name};
+}
+async function runAiVerify(){
+  const box=$('#aiResult');const pr=$('#aiPrompt');if(!box)return;
+  const prompt=pr?pr.value:'';
+  box.style.display='block';box.innerHTML='<div class="file-empty">AI 核查中…（通常 10~40 秒）</div>';
+  const payload=Object.assign({},_aiPayload,{prompt:prompt});
+  try{
+    const r=await fetch(aiVerifyUrl(),{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+(CLOUD.token||'')},body:JSON.stringify(payload)});
+    const j=await r.json();
+    if(j.ok&&j.result){box.innerHTML='<div class="ai-out">'+fmtAiResult(j.result)+'</div>';}
+    else{box.innerHTML='<div class="ai-warn">'+esc(j.message||j.error||'AI 核查未返回结果')+'<br>请改用「复制提示词」在外部 AI 中执行。</div>';}
+  }catch(e){box.innerHTML='<div class="ai-warn">调用失败：'+esc(e&&e.message?e.message:e)+'<br>请改用「复制提示词」在外部 AI 中执行。</div>';}
+}
+function copyAiPrompt(){const pr=$('#aiPrompt');if(!pr)return;const v=pr.value;
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(()=>toast('已复制核查提示词')).catch(()=>fallbackCopy(v));}
+  else fallbackCopy(v);
+}
+function fallbackCopy(v){const ta=document.createElement('textarea');ta.value=v;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('已复制核查提示词');}catch(e){toast('复制失败，请手动选择');}document.body.removeChild(ta);}
+/* 把 AI 返回（JSON 或纯文本）渲染为可读结构 */
+function fmtAiResult(raw){
+  let s=(raw||'').trim();
+  if(s.startsWith('```')){s=s.replace(/^```[a-zA-Z]*\n?/,'').replace(/\n?```$/,'')}
+  let obj=null;
+  try{obj=JSON.parse(s);}catch(e){}
+  if(obj && typeof obj==='object')return renderAiObj(obj);
+  return esc(raw).replace(/\n/g,'<br>');
+}
+function renderAiObj(o){
+  if(Array.isArray(o))return '<ul class="ai-ul">'+o.map(x=>'<li>'+renderAiVal(x)+'</li>').join('')+'</ul>';
+  if(o && typeof o==='object')return Object.entries(o).map(([k,v])=>`<div class="ai-sec"><div class="ai-k">${esc(k)}</div>${renderAiVal(v)}</div>`).join('');
+  return esc(String(o));
+}
+function renderAiVal(v){
+  if(v && typeof v==='object')return renderAiObj(v);
+  return '<div class="ai-v">'+esc(String(v)).replace(/\n/g,'<br>')+'</div>';
 }
 
 /* ============ 备份 ============ */
