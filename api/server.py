@@ -92,6 +92,9 @@ LLM_PRESETS_DEFAULT = [
         "thinkingmachines/inkling-small:free",              # 真免费，Thinking Machines Lab Inkling Small
         "cohere/north-mini-code:free",                      # 真免费，代码生成小模型
         "liquid/lfm-2.5-2.6b:free",                         # 真免费，LiquidAI LFM2.5 2.6B 轻量
+        "minimax/minimax-m3:free",                          # 真免费（2026-08-28 新增，MiniMax 中文大模型 1M 上下文）
+        "minimax/minimax-m2.7:free",                        # 真免费（2026-08-28 新增，MiniMax 中文大模型）
+        "z-ai/glm-5.2:free",                                # 真免费（2026-08-28 新增，智谱 GLM-5.2 中文大模型）
         "stealth/ox-alpha",                                  # 真免费（2026-08-24 新增，OpenRouter 目录 pricing 双0）
         "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档）
      ],

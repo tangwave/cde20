@@ -64,8 +64,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-24 核验：OpenRouter 目录中 pricing 双 0 的免费模型共 **19** 个（含 `openrouter/free` 路由器及 `google/lyria-3-*` 音频模型）。其中**已内置 11 个文本对话免费模型 + `openrouter/free` 路由器**（均纳入 `llm_presets.json` / `LLM_PRESETS_DEFAULT`），默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳）。
-> ⚠️ 2026-08-24 处置说明：① 移除 2 个已从 OpenRouter 目录下线的模型——`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-nano-9b-v2:free`（目录已无此 ID，调用将 404）；② 新增 1 个目录新晋免费模型 `stealth/ox-alpha`；③ 此前（2026-08-21）实测不可用的 `google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`z-ai/glm-5.2:free`、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free` 因地区/提供方限制仍**保持剔除**，由 `openrouter/free` 路由器兜底免费档。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-28 核验：OpenRouter 目录中 pricing 双 0 的免费模型共 **21** 个（含 `openrouter/free` 路由器及 `google/lyria-3-*` 音频模型）。其中**已内置 14 个文本对话免费模型 + `openrouter/free` 路由器（共 15 个）**（均纳入 `llm_presets.json` / `LLM_PRESETS_DEFAULT`），默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳）。
+> ⚠️ 2026-08-24 处置说明：① 移除 2 个已从 OpenRouter 目录下线的模型——`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-nano-9b-v2:free`（目录已无此 ID，调用将 404）；② 新增 1 个目录新晋免费模型 `stealth/ox-alpha`；③ 此前（2026-08-21）实测不可用的 `google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free` 因地区/提供方限制仍**保持剔除**，由 `openrouter/free` 路由器兜底免费档。
+> ✅ 2026-08-28 新增 3 个中国友好免费模型（OpenRouter 目录 pricing 双 0，已纳入）：`minimax/minimax-m3:free`（MiniMax 中文大模型 1M 上下文）、`minimax/minimax-m2.7:free`（MiniMax 中文大模型）、`z-ai/glm-5.2:free`（智谱 GLM-5.2 中文大模型；此前因地区限制剔除，现官方重新开放为免费档，重新纳入以补强中文药学问答能力）。三者均无需付费 Key，用户只需在设置中粘贴自己的 OpenRouter Key 即可选用。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
@@ -77,6 +78,9 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 | `nvidia/nemotron-3.5-content-safety:free` | Nemotron 3.5 内容安全 | 安全过滤场景 | 专项 |
 | `cohere/north-mini-code:free` | 代码生成模型 | 代码片段生成 | 偏代码 |
 | `liquid/lfm-2.5-2.6b:free` | LiquidAI LFM2.5 2.6B 轻量模型 | 低延迟、轻量问答 | 轻量 |
+| `minimax/minimax-m3:free` | MiniMax 中文大模型（1M 上下文） | 中文长文、法规综述、深度问答 | 中文友好 |
+| `minimax/minimax-m2.7:free` | MiniMax 中文大模型 | 中文通用问答、轻量场景 | 中文友好 |
+| `z-ai/glm-5.2:free` | 智谱 GLM-5.2 中文大模型 | 中文药学问答、专业术语理解 | 中文友好 |
 | `stealth/ox-alpha` | 2026-08-24 新晋免费模型 | 通用对话（目录 pricing 双 0） | 未做连通性实测 |
 | `openrouter/free` | OpenRouter 免费模型路由器 | 自动分发到免费档（支持图文输入） | 免指定具体模型 |
 
@@ -94,7 +98,7 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 | # | 服务商 | `base_url`（已内置） | 免费模型（**加粗=默认**） | 免费形态 | 备注 |
 |---|--------|----------------------|---------------------------|----------|------|
-| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`nvidia/nemotron-3-ultra-550b-a55b:free`**(默认)、`nvidia/nemotron-3-super-120b-a12b:free`、`openai/gpt-oss-20b:free`、`dots-studio/dots-3-note-preview:free`、`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`、`nvidia/nemotron-3.5-lightning:free`、`nvidia/nemotron-3.5-content-safety:free`、`nvidia/nemotron-nano-9b-v2:free`、`cohere/north-mini-code:free`、`liquid/lfm-2.5-2.6b:free`、`openrouter/free`（共 12 个，均 :free） | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0）；2026-08-21 实测剔除 6 个地区/提供方受限模型（Gemma 4 系列、GLM 5.2、Poolside、Nemotron Nano 12B 视觉），保留 12 个已验证可用 |
+| 1 | OpenRouter | `https://openrouter.ai/api/v1` | **`nvidia/nemotron-3-ultra-550b-a55b:free`**(默认)、`nvidia/nemotron-3-super-120b-a12b:free`、`openai/gpt-oss-20b:free`、`dots-studio/dots-3-note-preview:free`、`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`、`nvidia/nemotron-3.5-lightning:free`、`nvidia/nemotron-3.5-content-safety:free`、`nvidia/nemotron-nano-9b-v2:free`、`cohere/north-mini-code:free`、`liquid/lfm-2.5-2.6b:free`、`openrouter/free`（共 15 个，均 :free） | 真免费·无需付费 Key | 免费目录随官方调整（pricing 双 0）；2026-08-28 在 12 个已验证可用基础上新增 3 个中国友好模型（MiniMax M3/M2.7、智谱 GLM-5.2），共 15 个 |
 | 2 | ChatAnywhere | `https://api.chatanywhere.tech/v1` | **`gpt-4o-mini`**、`gpt-3.5-turbo`、`gpt-4.1-mini`、`gpt-5-mini`、`gpt-5-nano`、`deepseek-r1` | GitHub 免费 Key·每日额度 | 绑定 GitHub 领 Key；gpt-4o-mini/3.5/4.1-mini/5-mini/5-nano 各 100 次/天，deepseek-r1 30 次/天，gpt-5/4.1 仅 5 次/天；国内 `api.chatanywhere.tech`，国外 `api.chatanywhere.org` |
 | 3 | 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | **`glm-4.7-flash`**（永久免费）、`glm-4-flash`（永久免费）、`glm-5.1` | glm-4.7/4-flash 永久免费 | 新用户赠 2000 万 token |
 | 4 | 通义千问 Qwen | `https://dashscope.aliyuncs.com/compatible-mode/v1` | **`qwen-plus`**（每日 100 万免费）、`qwen-turbo`（永久免费）、`qwen-long`、`qwen2.5-72b-instruct` | qwen-turbo 永久免费 | 阿里云百炼 |

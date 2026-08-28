@@ -4,20 +4,25 @@
     "name": "OpenRouter（免费模型聚合 · 无需付费 Key）",
     "base_url": "https://openrouter.ai/api/v1",
     "models": [
-      "nvidia/nemotron-3-ultra-550b-a55b:free",
-      "nvidia/nemotron-3-super-120b-a12b:free",
-      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-      "nvidia/nemotron-3.5-lightning:free",
-      "nvidia/nemotron-3.5-content-safety:free",
-      "nvidia/nemotron-nano-9b-v2:free",
-      "dots-studio/dots-3-note-preview:free",
-      "thinkingmachines/inkling:free",
-      "thinkingmachines/inkling-small:free",
-      "cohere/north-mini-code:free",
       "liquid/lfm-2.5-2.6b:free",
-      "openrouter/free"
+      "minimax/minimax-m3:free",
+      "minimax/minimax-m2.7:free",
+      "z-ai/glm-5.2:free",
+      "dots-studio/dots-3-note-preview:free",
+      "thinkingmachines/inkling-small:free",
+      "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "nvidia/nemotron-nano-9b-v2:free",
+      "nvidia/nemotron-3-super-120b-a12b:free",
+      "cohere/north-mini-code:free",
+      "nvidia/nemotron-3.5-content-safety:free",
+      "openrouter/free",
+      "thinkingmachines/inkling:free",
+      "nvidia/nemotron-3.5-lightning:free",
+      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "stealth/ox-alpha"
     ],
-    "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free"
+    "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "custom": false
   },
   {
     "id": "chatanywhere",
@@ -31,7 +36,8 @@
       "gpt-5-nano",
       "deepseek-r1"
     ],
-    "default_model": "gpt-4o-mini"
+    "default_model": "gpt-4o-mini",
+    "custom": false
   },
   {
     "id": "zhipu",
@@ -42,7 +48,8 @@
       "glm-4-flash",
       "glm-5.1"
     ],
-    "default_model": "glm-4.7-flash"
+    "default_model": "glm-4.7-flash",
+    "custom": false
   },
   {
     "id": "qwen",
@@ -54,7 +61,8 @@
       "qwen-long",
       "qwen2.5-72b-instruct"
     ],
-    "default_model": "qwen-plus"
+    "default_model": "qwen-plus",
+    "custom": false
   },
   {
     "id": "kimi",
@@ -65,7 +73,8 @@
       "kimi-k2.7-code",
       "kimi-k2.6"
     ],
-    "default_model": "kimi-k2.6"
+    "default_model": "kimi-k2.6",
+    "custom": false
   },
   {
     "id": "volcengine",
@@ -76,7 +85,8 @@
       "doubao-pro-32k",
       "doubao-pro-128k"
     ],
-    "default_model": "doubao-lite-32k"
+    "default_model": "doubao-lite-32k",
+    "custom": false
   },
   {
     "id": "hunyuan",
@@ -87,7 +97,8 @@
       "hunyuan-turbo-s",
       "hunyuan-t1"
     ],
-    "default_model": "hunyuan-lite"
+    "default_model": "hunyuan-lite",
+    "custom": false
   },
   {
     "id": "qianfan",
@@ -99,7 +110,8 @@
       "ernie-3.5-8k",
       "ernie-4.5-turbo-128k"
     ],
-    "default_model": "ernie-speed-8k"
+    "default_model": "ernie-speed-8k",
+    "custom": false
   },
   {
     "id": "siliconflow",
@@ -110,7 +122,8 @@
       "deepseek-ai/DeepSeek-V3",
       "deepseek-ai/DeepSeek-R1"
     ],
-    "default_model": "Qwen/Qwen2.5-7B-Instruct"
+    "default_model": "Qwen/Qwen2.5-7B-Instruct",
+    "custom": false
   },
   {
     "id": "deepseek",
@@ -121,7 +134,8 @@
       "deepseek-v4-flash",
       "deepseek-v4-pro"
     ],
-    "default_model": "deepseek-v3-lite"
+    "default_model": "deepseek-v3-lite",
+    "custom": false
   },
   {
     "id": "gemini",
@@ -132,7 +146,8 @@
       "gemini-2.5-flash-lite",
       "gemma-3-12b-it"
     ],
-    "default_model": "gemini-2.5-flash"
+    "default_model": "gemini-2.5-flash",
+    "custom": false
   },
   {
     "id": "groq",
@@ -144,7 +159,8 @@
       "qwen3-32b",
       "gpt-oss-120b"
     ],
-    "default_model": "llama-3.3-70b-versatile"
+    "default_model": "llama-3.3-70b-versatile",
+    "custom": false
   },
   {
     "id": "mistral",
@@ -158,7 +174,8 @@
       "codestral",
       "ministral-8b"
     ],
-    "default_model": "mistral-small-4"
+    "default_model": "mistral-small-4",
+    "custom": false
   },
   {
     "id": "ollama",
@@ -169,7 +186,8 @@
       "llama3.1",
       "deepseek-r1:7b"
     ],
-    "default_model": "qwen2.5:7b"
+    "default_model": "qwen2.5:7b",
+    "custom": false
   },
   {
     "id": "githubmodels",
@@ -184,7 +202,8 @@
       "Meta-Llama-3.3-70B-Instruct",
       "Phi-4"
     ],
-    "default_model": "gpt-4.1"
+    "default_model": "gpt-4.1",
+    "custom": false
   },
   {
     "id": "nvidia_nim",
@@ -198,7 +217,8 @@
       "minimaxai/minimax-m2.7",
       "z-ai/glm-5.1"
     ],
-    "default_model": "deepseek-ai/deepseek-v4-flash"
+    "default_model": "deepseek-ai/deepseek-v4-flash",
+    "custom": false
   },
   {
     "id": "cerebras",
@@ -211,7 +231,8 @@
       "qwen-3-32b",
       "gemma-4-31b"
     ],
-    "default_model": "llama-3.3-70b"
+    "default_model": "llama-3.3-70b",
+    "custom": false
   },
   {
     "id": "agnes",
@@ -221,7 +242,8 @@
       "agnes-2.5-flash",
       "agnes-2.0-flash"
     ],
-    "default_model": "agnes-2.5-flash"
+    "default_model": "agnes-2.5-flash",
+    "custom": false
   },
   {
     "id": "together",
@@ -235,7 +257,7 @@
       "Qwen/Qwen2.5-72B-Instruct-Turbo"
     ],
     "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
-    "note": "注册即送 $1 试用额度；模型 ID 以 -Free 结尾的可无限调用（限速但不失效）。无需信用卡。"
+    "custom": false
   },
   {
     "id": "cohere",
@@ -248,7 +270,7 @@
       "command-light"
     ],
     "default_model": "command-r-plus",
-    "note": "开发者免费试用 Key（约 1000 次/月），适合 RAG/重排序/嵌入场景，dev/eval 用途。"
+    "custom": false
   },
   {
     "id": "reka",
@@ -260,7 +282,7 @@
       "reka-edge-3"
     ],
     "default_model": "reka-flash-3",
-    "note": "每月自动刷新 $10 免费额度，为多模态（图文）模型，适合需要视觉理解的场景。"
+    "custom": false
   },
   {
     "id": "huggingface",
@@ -274,7 +296,7 @@
       "microsoft/Phi-4"
     ],
     "default_model": "meta-llama/Llama-3.3-70B-Instruct",
-    "note": "HF Token 登录即用，免费月度额度；模型 ID 追加 :fastest/:cheapest 后缀可自动选最快/最便宜后端（Groq/Cerebras/Together/SambaNova 等）。无需信用卡。"
+    "custom": false
   },
   {
     "id": "cloudflare",
@@ -286,7 +308,7 @@
       "@cf/qwen/qwen2.5-7b-instruct"
     ],
     "default_model": "@cf/meta/llama-3.3-70b-instruct",
-    "note": "边缘节点低延迟，每日 1 万次请求永久免费；base_url 需把 {account_id} 替换为你的 Cloudflare 账户 ID。适合低频 Web 工具。"
+    "custom": false
   },
   {
     "id": "modelscope",
@@ -299,7 +321,7 @@
       "ZhipuAI/GLM-4-9B"
     ],
     "default_model": "Qwen/Qwen2.5-72B-Instruct",
-    "note": "国内网络直连、免翻墙；每日 2000 次免费（DeepSeek-R1 限 200 次/日），支持多模态与图像生成。需 ModelScope Token。"
+    "custom": false
   },
   {
     "id": "xfyun",
@@ -311,7 +333,7 @@
       "spark-max"
     ],
     "default_model": "spark-lite",
-    "note": "spark-lite 永久免费、QPS=2，中文理解强；需讯飞开放平台 API Key（APPID/APISecret/APIKey）。"
+    "custom": false
   },
   {
     "id": "custom",

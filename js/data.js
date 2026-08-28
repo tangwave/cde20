@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-08-27",
-    "totalDocs": 2209,
+    "lastUpdated": "2026-08-28",
+    "totalDocs": 2211,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -20298,6 +20298,11 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
+                    "title": "关于公开征求《中药饮片/配方颗粒不良反应个例报告填报指南（征求意见稿）》意见的通知",
+                    "path": "04_技术指导原则/NMPA_指导原则/中药饮片配方颗粒不良反应个例报告填报指南（征求意见稿）.md",
+                    "url": "https://www.cdr-adr.org.cn/tzgg_home/202608/t20260828_51717.html"
+                  },
+{
                     "title": "国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定（征求意见稿）",
                     "path": "03_部门规章/国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售使用管理规定征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260820180509158.html"
