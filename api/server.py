@@ -846,7 +846,55 @@ def _call_llm(system, user, attempts=2, max_tokens=None, strip_json=False):
     model = LLM_CFG.get("model", "").strip()
     if not (base and model):  # 本地模型（Ollama 等）允许空 Key
         return None
-    return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens, strip_json=strip_json)[0]
+        return _call_llm_ex(system, user, attempts=attempts, max_tokens=max_tokens, strip_json=strip_json)[0]
+
+
+def _extract_llm_content(j):
+    """从 OpenAI 兼容响应中提取正文，兼容推理型 / 非标准模型。
+
+    背景：部分模型（如 nvidia nemotron 系列、各类 reasoning 模型）会把输出放在
+    reasoning_content / reasoning 字段，而 content 为空字符串或 null。旧实现只读
+    content，导致 /api/explain 直接返回 "empty response"（表现为「AI 拓展解读点击无效」）。
+    这里按优先级回填，覆盖常见字段与 content 为分块数组的情形。"""
+    try:
+        msg = (((j.get("choices") or [{}])[0] or {}).get("message") or {})
+    except Exception:
+        msg = {}
+    if not isinstance(msg, dict):
+        msg = {}
+    content = msg.get("content")
+    if isinstance(content, list):
+        # 部分接口 content 为 [{"type":"text","text":"..."}, ...]
+        parts = []
+        for p in content:
+            if isinstance(p, dict):
+                t = p.get("text") or p.get("content")
+                if isinstance(t, str):
+                    parts.append(t)
+            elif isinstance(p, str):
+                parts.append(p)
+        content = "".join(parts)
+    if content and str(content).strip():
+        return str(content)
+    # 推理型模型：输出在 reasoning_content / reasoning
+    for alt in ("reasoning_content", "reasoning", "output_text", "text"):
+        v = msg.get(alt)
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+    # completions 风格：choices[].text / 顶层 output_text
+    try:
+        ch = (j.get("choices") or [{}])[0] or {}
+        if isinstance(ch, dict):
+            for alt in ("text", "output_text"):
+                v = ch.get(alt)
+                if isinstance(v, str) and v.strip():
+                    return v.strip()
+    except Exception:
+        pass
+    v = j.get("output_text")
+    if isinstance(v, str) and v.strip():
+        return v.strip()
+    return ""
 
 
 def _call_llm_ex(system, user, attempts=2, max_tokens=None, strip_json=False):
@@ -869,11 +917,17 @@ def _call_llm_ex(system, user, attempts=2, max_tokens=None, strip_json=False):
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 raw = r.read().decode("utf-8")
             j = json.loads(raw)
-            content = j["choices"][0]["message"]["content"]
+            content = _extract_llm_content(j)
             cites = j.get("citations") or []
             if not isinstance(cites, list):
                 cites = []
-            return content, [str(c) for c in cites if c]
+            if content:
+                return content, [str(c) for c in cites if c]
+            # 内容为空：推理模型偶发只返回思考过程，稍等后重试一次
+            if attempt < attempts - 1:
+                time.sleep(2)
+                continue
+            return "", [str(c) for c in cites if c]
         except urllib.error.HTTPError as e:
             try:
                 body = e.read().decode("utf-8", "ignore")
