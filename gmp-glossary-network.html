@@ -88,12 +88,31 @@
   footer{color:var(--muted);font-size:12px;text-align:center;padding:24px;border-top:1px solid var(--line);margin-top:30px}
   a.back{color:var(--proc);text-decoration:none;font-size:13px}
   .countbar{font-size:12.5px;color:var(--muted);margin:4px 4px 0}
+
+/* GMP 体系统一导航（跨专题页互链 + 回主站，避免死胡同） */
+.gmpnav{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 2px}
+.gmpnav a{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;
+  font-size:12.5px;text-decoration:none;color:#d6f5ec;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22)}
+.gmpnav a:hover{background:rgba(255,255,255,.3);color:#fff}
+.gmpnav a[aria-current="page"]{background:#fff;color:var(--acc2,#0b6e5a);font-weight:700;border-color:#fff}
+.gmpnav-sep{width:1px;height:18px;background:rgba(255,255,255,.3);margin:0 3px}
 </style>
 <meta name="qa-api-base" content="same-origin">
 <link rel="stylesheet" href="css/qa9.css" />
 </head>
 <body>
 <header>
+  <nav class="gmpnav" aria-label="GMP 体系导航">
+    <a href="index.html">🏠 主站全景</a>
+    <a href="qa-workbench.html">✅ QA 工作台</a>
+    <a href="quality-management.html">🧪 质量管理</a>
+    <span class="gmpnav-sep" aria-hidden="true"></span>
+    <a href="gmp-ccs-sterile.html">🦠 无菌 CCS</a>
+    <a href="gmp-cleaning-osd.html">🧼 清洁验证</a>
+    <a href="gmp-viral-clearance.html">🧬 病毒清除</a>
+    <a href="gmp-glossary-network.html" aria-current="page">🔗 术语网络</a>
+  </nav>
   <h1>📖 药品质量管理术语知识网络</h1>
   <p>对质量管理网页（物料 / 工艺 / 关键工艺参数CPP / 关键质量属性CQA / GMP指南 / 典型案例 / 三大GMP专页）中出现的全部核心术语，提供权威详细解释，并以知识网络呈现术语之间的归属、支撑与关联关系。点击网络节点或下方词条卡片可查看详情；关系边表示术语间的逻辑关联。<b style="color:#fde68a">38 个 ICH 指导原则 / GMP 附录条目已深化为「定义 + 条款对照 + 示例」</b>（ICH Q2/Q8/Q9/Q11/Q12/Q13/Q14、Q1A、Q3A/B/C、M7、Q3D，以及无菌/原料药/生物/血液/中药/放射性药品/中药饮片/医用氧/制药用水/计算机化系统/确认与验证/物料/取样/QC实验室/生产管理等 GMP 附录均逐条对照）；下方<b style="color:#fde68a">「分品种子图」</b>可按药品类型聚类，并进一步拆为<b style="color:#fde68a">「工艺 / 质量」二级子网</b>与<b style="color:#fde68a">「厂房/设备/人员/监测」三级细拆</b>。</p>
 </header>

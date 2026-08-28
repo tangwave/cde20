@@ -327,14 +327,19 @@ async function cloudUploadLocal(){
 }
 
 /* ============ 模块配置（22个，对标GMP指南2023研发体系）============ */
+/* 导航分组按 GMP(2010年修订) 章节顺序组织，便于按体系主线定位：
+   质量体系 → 人员 → 设备/数据 → 物料/供应商 → 确认与验证 → 文件记录
+   → 生产/放行/实验室 → 变更·偏差·CAPA → 投诉/自检（共 22 个模块，与原集合一致） */
 const GROUPS=[
- {g:'质量管理系统',mods:['doc_review','record_check','change','deviation','capa','qrm']},
- {g:'物料与供应商',mods:['supplier','audit','outsourcing']},
- {g:'实验室与分析方法',mods:['oos','method','stability']},
- {g:'设备与数据',mods:['equip','di']},
- {g:'人员与知识',mods:['training','knowledge']},
- {g:'生产与技术',mods:['pv','tech_transfer','release']},
- {g:'监督与改进',mods:['complaint','self_inspect','mgmt_review']},
+ {g:'① 质量体系与风险 · GMP 第二章',mods:['qrm','mgmt_review']},
+ {g:'② 机构与人员 · GMP 第三章',mods:['training','knowledge']},
+ {g:'③ 设备与数据 · GMP 第五·八章',mods:['equip','di']},
+ {g:'④ 物料·供应商·委托 · 第六·十·十一章',mods:['supplier','audit','outsourcing']},
+ {g:'⑤ 确认与验证 · GMP 第七章',mods:['pv','tech_transfer']},
+ {g:'⑥ 文件与记录核查 · GMP 第八章',mods:['doc_review','record_check']},
+ {g:'⑦ 生产·放行·实验室 · 第九·十章',mods:['release','oos','method','stability']},
+ {g:'⑧ 变更·偏差·CAPA · GMP 第十章',mods:['change','deviation','capa']},
+ {g:'⑨ 投诉·自检 · 第十·十三章',mods:['complaint','self_inspect']},
 ];
 const M={};
 function F(k,l,t,o){const f={key:k,label:l,type:t||'text'};if(o)f.options=o;return f;}

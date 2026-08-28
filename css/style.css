@@ -280,6 +280,21 @@ a:hover {
 }
 .topbar-menu-list .topbar-btn:hover { background: rgba(255, 255, 255, .12); border-color: transparent; }
 .topbar-menu-list .topbar-btn.active { background: rgba(99, 140, 255, .32); border-color: transparent; }
+/* 下拉内分组标签（标注对应 GMP 章节，便于按体系定位） */
+.topbar-menu-sep {
+  padding: 8px 12px 4px; margin-top: 4px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .6px;
+  color: rgba(232, 237, 247, .5); text-transform: none;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.topbar-menu-list .topbar-menu-sep:first-child { margin-top: 0; border-top: none; }
+.topbar-menu-list .topbar-btn:first-of-type { margin-top: 0; }
+/* 菜单项内快捷键提示 */
+.topbar-kbd {
+  margin-left: auto; padding: 1px 6px; border-radius: 5px;
+  font-size: 10px; font-weight: 600; letter-spacing: .3px;
+  background: rgba(255, 255, 255, .14); color: rgba(232, 237, 247, .8);
+}
 .topbar-primary { font-weight: 600; background: rgba(255, 255, 255, .18); }
 
 /* ============================================

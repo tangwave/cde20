@@ -40,6 +40,15 @@ td a:hover{text-decoration:underline}
 .refs a{color:var(--acc);text-decoration:none}
 footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
 .note{font-size:11.5px;color:var(--mut);margin-top:6px}
+
+/* GMP 体系统一导航（跨专题页互链 + 回主站，避免死胡同） */
+.gmpnav{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 2px}
+.gmpnav a{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;
+  font-size:12.5px;text-decoration:none;color:#d6f5ec;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22)}
+.gmpnav a:hover{background:rgba(255,255,255,.3);color:#fff}
+.gmpnav a[aria-current="page"]{background:#fff;color:var(--acc2,#0b6e5a);font-weight:700;border-color:#fff}
+.gmpnav-sep{width:1px;height:18px;background:rgba(255,255,255,.3);margin:0 3px}
 </style>
 <meta name="qa-api-base" content="same-origin">
 <link rel="stylesheet" href="css/qa9.css" />
@@ -47,6 +56,16 @@ footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut)
 <body>
 <header><div class="wrap">
   <a class="back" href="quality-management.html">← 返回「质量管理知识库」</a>
+  <nav class="gmpnav" aria-label="GMP 体系导航">
+    <a href="index.html">🏠 主站全景</a>
+    <a href="qa-workbench.html">✅ QA 工作台</a>
+    <a href="quality-management.html">🧪 质量管理</a>
+    <span class="gmpnav-sep" aria-hidden="true"></span>
+    <a href="gmp-ccs-sterile.html" aria-current="page">🦠 无菌 CCS</a>
+    <a href="gmp-cleaning-osd.html">🧼 清洁验证</a>
+    <a href="gmp-viral-clearance.html">🧬 病毒清除</a>
+    <a href="gmp-glossary-network.html">🔗 术语网络</a>
+  </nav>
   <h1>🔬 无菌制剂 · 污染控制策略(CCS)落地清单</h1>
   <p>依据：2023版《药品GMP指南·无菌制剂（上/下册）》·《药品生产质量管理规范(2010年修订)》无菌药品附录 · ICH Q9 质量风险管理</p>
 </div></header>

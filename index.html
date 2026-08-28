@@ -45,36 +45,58 @@
           <span>✅</span>
           <span>QA 工作台</span>
         </a>
-        <!-- 知识视图 -->
+        <!-- ① 质量体系：GMP 第二章 质量管理（质量保证 / 质量控制 / 质量风险管理） -->
         <div class="topbar-menu">
-          <button class="topbar-btn topbar-menu-btn" title="知识浏览与总览视图" aria-haspopup="true">📚 知识视图</button>
+          <button class="topbar-btn topbar-menu-btn" title="GMP 第二章 · 质量管理：质量保证(QA) / 质量控制(QC) / 质量风险管理(QRM) 与持续改进" aria-haspopup="true">🛡️ 质量体系</button>
           <div class="topbar-menu-list">
-            <button class="topbar-btn" data-portal="panorama" title="全景总览（整体认识入口）">🗺️ 全景</button>
-            <button class="topbar-btn" data-portal="framework" title="知识框架（主题词）">📚 知识框架</button>
-            <button class="topbar-btn" data-portal="caselibrary" title="案例库（如何开展）">🧭 案例库</button>
-            <button class="topbar-btn" data-portal="mindmap" title="药品注册与质量管理思维导图：32 个药品子类的分类、术语、全生命周期与申报资料要求">🧠 思维导图</button>
-          </div>
-        </div>
-
-        <!-- 体系 · 分类 -->
-        <div class="topbar-menu">
-          <button class="topbar-btn topbar-menu-btn" title="体系与药品分类视图" aria-haspopup="true">🏭 体系·分类</button>
-          <div class="topbar-menu-list">
-            <button class="topbar-btn" id="classifyBtn" title="药品分类布局（化药/生物制品/中药）">🗂️ 药品分类</button>
-            <button class="topbar-btn" data-portal="manufacture" title="生产工艺 ↔ 药品分类体系（融合视图）：类型×剂型×技术路线 + 研发/生产要点综述 · 术语穿透">🏭 生产工艺·分类</button>
-            <button class="topbar-btn" id="matrixToggleBtn" title="切换矩阵视图 (Ctrl+M)">📊 矩阵视图</button>
-          </div>
-        </div>
-
-        <!-- 法规 · 资源 -->
-        <div class="topbar-menu">
-          <button class="topbar-btn topbar-menu-btn" title="法规原文与质量管理资源" aria-haspopup="true">📖 法规·资源</button>
-          <div class="topbar-menu-list">
-            <button class="topbar-btn" id="regLibBtn" title="法规原文库（识林式穿透阅读）">📖 法规原文</button>
-            <button class="topbar-btn" data-portal="flightchecks" title="药品飞行检查通报：国家局+重点省份药品生产飞检，可按省份/年份/药品类型/缺陷类型筛选并与药品分类关联">✈️ 飞行检查</button>
+            <div class="topbar-menu-sep">GMP 第二章 · 质量管理</div>
+            <button class="topbar-btn" data-portal="panorama" title="药品研发生产质量体系全景总览（整体认识入口）">🗺️ 体系全景</button>
+            <button class="topbar-btn" data-portal="framework" title="质量管理知识框架（按主题词组织的质量体系要点）">📚 知识框架</button>
             <a class="topbar-btn" href="quality-management.html" target="_self"
                title="药品研发生产·质量管理知识库：GMP / GLP / GCP / ICH-Q / CMC / 数据完整性 / 质量风险 / 偏差变更 / 工艺验证 / 供应商审计 / 放行回顾 / 投诉召回"
                style="text-decoration:none;color:inherit;">🧪 质量管理</a>
+          </div>
+        </div>
+
+        <!-- ② 生产要素：GMP 第四~六章 厂房与设施 · 设备 · 物料与产品 -->
+        <div class="topbar-menu">
+          <button class="topbar-btn topbar-menu-btn" title="GMP 第四~六章 · 厂房与设施 / 设备 / 物料与产品：人、机、料、法、环的体系化组织" aria-haspopup="true">🏭 生产要素</button>
+          <div class="topbar-menu-list">
+            <div class="topbar-menu-sep">GMP 第四~六/九章 · 机·料·法</div>
+            <button class="topbar-btn" id="classifyBtn" title="药品分类布局（化药/生物制品/中药）——先界定对象，再谈控制要求">🗂️ 药品分类</button>
+            <button class="topbar-btn" data-portal="manufacture" title="生产工艺 ↔ 药品分类体系（融合视图）：类型×剂型×技术路线 + 研发/生产要点综述 · 术语穿透">🏭 生产工艺·分类</button>
+            <button class="topbar-btn" id="matrixToggleBtn" title="切换矩阵视图 (Ctrl+M)：品种 × 控制维度交叉对照">📊 矩阵视图<span class="topbar-kbd">Ctrl+M</span></button>
+          </div>
+        </div>
+
+        <!-- ③ 确认与验证：GMP 第七章 + 各附录 -->
+        <div class="topbar-menu">
+          <button class="topbar-btn topbar-menu-btn" title="GMP 第七章 · 确认与验证，及无菌药品 / 清洁验证 / 生物制品等附录落地专题" aria-haspopup="true">✅ 确认与验证</button>
+          <div class="topbar-menu-list">
+            <div class="topbar-menu-sep">GMP 第七章 · 验证专题</div>
+            <a class="topbar-btn" href="gmp-ccs-sterile.html" target="_self"
+               title="无菌制剂 · 污染控制策略(CCS)落地清单（无菌药品附录）"
+               style="text-decoration:none;color:inherit;">🦠 无菌 CCS</a>
+            <a class="topbar-btn" href="gmp-cleaning-osd.html" target="_self"
+               title="口服固体制剂 · 清洁验证与交叉污染控制"
+               style="text-decoration:none;color:inherit;">🧼 清洁验证</a>
+            <a class="topbar-btn" href="gmp-viral-clearance.html" target="_self"
+               title="生物制品 · 病毒清除/灭活验证策略"
+               style="text-decoration:none;color:inherit;">🧬 病毒清除</a>
+          </div>
+        </div>
+
+        <!-- ④ 法规·监管·方法：GMP 第八章 文件管理 + 第十三章 自检 -->
+        <div class="topbar-menu">
+          <button class="topbar-btn topbar-menu-btn" title="法规依据、监管实践与工作方法：GMP 第八章 文件管理 · 第十三章 自检" aria-haspopup="true">📖 法规·方法</button>
+          <div class="topbar-menu-list">
+            <div class="topbar-menu-sep">法规依据 · GMP 第八章</div>
+            <button class="topbar-btn" id="regLibBtn" title="法规原文库（识林式穿透阅读）：3096 篇法规原文，支持术语穿透与 AI 拓展解读">📖 法规原文</button>
+            <div class="topbar-menu-sep">监管实践</div>
+            <button class="topbar-btn" data-portal="flightchecks" title="药品飞行检查通报：国家局+重点省份药品生产飞检，可按省份/年份/药品类型/缺陷类型筛选并与药品分类关联">✈️ 飞行检查</button>
+            <button class="topbar-btn" data-portal="caselibrary" title="案例库（典型缺陷与如何开展）">🧭 案例库</button>
+            <div class="topbar-menu-sep">方法工具 · 自检与改进</div>
+            <button class="topbar-btn" data-portal="mindmap" title="药品注册与质量管理思维导图：32 个药品子类的分类、术语、全生命周期与申报资料要求">🧠 思维导图</button>
             <a class="topbar-btn" href="gmp-glossary-network.html" target="_self"
                title="GMP 核心术语知识网络：112 个核心术语的可交互知识图谱，贯通质量体系/厂房设备/QC/验证/偏差CAPA/供应商等概念与跳转"
                style="text-decoration:none;color:inherit;">🔗 术语网络</a>
@@ -326,6 +348,7 @@
     var menus = Array.prototype.slice.call(document.querySelectorAll('.topbar-menu'));
     if (!menus.length) return;
     function closeAll() { menus.forEach(function (m) { m.classList.remove('open'); }); }
+    function items(m) { return Array.prototype.slice.call(m.querySelectorAll('.topbar-menu-list .topbar-btn')); }
     menus.forEach(function (m) {
       var btn = m.querySelector('.topbar-menu-btn');
       if (!btn) return;
@@ -335,13 +358,32 @@
         closeAll();
         if (!wasOpen) m.classList.add('open');
       });
-      // 点击菜单内条目后收起（不阻止冒泡，保证 data-portal 委托仍生效）
-      m.querySelectorAll('.topbar-menu-list .topbar-btn').forEach(function (b) {
+      // 分组按钮：↓ 展开并聚焦首项，Esc 收起
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          if (e.key === 'ArrowDown') e.preventDefault();
+          if (!m.classList.contains('open')) { closeAll(); m.classList.add('open'); }
+          var it = items(m); if (it.length) it[0].focus();
+        } else if (e.key === 'Escape') { closeAll(); }
+      });
+      items(m).forEach(function (b) {
+        // 点击后收起（不阻止冒泡，保证 data-portal 委托仍生效）
         b.addEventListener('click', closeAll);
+        // 菜单内 ↑↓ 移动焦点、Esc 收起并回焦分组按钮、Tab 移出即收起
+        b.addEventListener('keydown', function (e) {
+          var it = items(m), idx = it.indexOf(b);
+          if (e.key === 'ArrowDown') { e.preventDefault(); if (it[idx + 1]) it[idx + 1].focus(); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); if (idx > 0) it[idx - 1].focus(); else btn.focus(); }
+          else if (e.key === 'Escape') { e.stopPropagation(); closeAll(); btn.focus(); }
+          else if (e.key === 'Tab') { closeAll(); }
+        });
       });
     });
     document.addEventListener('click', function (e) {
       if (!e.target.closest || !e.target.closest('.topbar-menu')) closeAll();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAll();
     });
   })();
   </script>
