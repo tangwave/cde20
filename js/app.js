@@ -1613,6 +1613,36 @@ const App = {
       const sub = h.closest('.class-sub');
       if (sub) this.openClassReq(sub.dataset.cat, sub.dataset.code || '');
     }));
+    // 注册分类：▼ 就地展开 / 收起详情（不触发下钻）
+    c.querySelectorAll('.class-sub-toggle').forEach(t => t.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const sub = t.closest('.class-sub');
+      if (sub) sub.classList.toggle('open');
+    }));
+    // 注册分类：折叠导航
+    c.querySelectorAll('[data-cls-reg-nav-toggle]').forEach(b => b.addEventListener('click', () => {
+      const nav = document.getElementById('clsRegNav');
+      if (nav) nav.classList.toggle('collapsed');
+    }));
+    // 注册分类：导航跳转 + 就地展开子类
+    c.querySelectorAll('.cls-reg-nav-sub, .cls-reg-nav-cat-link').forEach(a => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cat = a.dataset.navCat, code = a.dataset.navCode;
+      const c2 = document.getElementById('content');
+      const sc = c2 ? c2.parentElement : null;
+      if (code) {
+        const sub = c2 && c2.querySelector('[data-subid="' + cat + '-' + code + '"]');
+        if (sub) {
+          sub.classList.add('open');
+          if (sc) { const r = sub.getBoundingClientRect(), sr = sc.getBoundingClientRect(); sc.scrollTop += (r.top - sr.top) - 14; }
+          c.querySelectorAll('.cls-reg-nav-sub').forEach(x => x.classList.remove('active'));
+          a.classList.add('active');
+        }
+      } else {
+        const sec = c2 && c2.querySelector('#cat-' + cat);
+        if (sec && sc) { const r = sec.getBoundingClientRect(), sr = sc.getBoundingClientRect(); sc.scrollTop += (r.top - sr.top) - 14; }
+      }
+    }));
     c.querySelectorAll('.class-sub .reg-link').forEach(a => a.addEventListener('click', (e) => {
       e.preventDefault();
       if (a.dataset.rid) this.openRegulation(a.dataset.rid);
@@ -2046,9 +2076,30 @@ const App = {
   /* ---- 镜头一：按注册分类（化药/生物/中药 子类 + 特殊要求/考量/申报资料/法规） ---- */
   _renderClassRegLens(DC, focusCat, focusCode) {
     let html = '<div class="cls-reg-lens">';
-    html += '<div class="cls-lens-tip">📋 按国家药监局 2020 年注册分类梳理：每一子类给出<strong>特殊要求 / 考量 / 申报资料清单 / 关联法规</strong>；点击子类标题可下钻「研发要求体系」（各阶段工艺·质量·GMP）。右下「🏭 查看生产工艺」可跳到产品分类视角看对应生产工艺。</div>';
+
+    /* 左侧可折叠导航（TOC）*/
+    let nav = '<nav class="cls-reg-nav" id="clsRegNav">';
+    nav += '<div class="cls-reg-nav-head"><span class="cls-reg-nav-title">📑 注册分类导航</span><button class="cls-reg-nav-toggle" data-cls-reg-nav-toggle title="折叠 / 展开导航" aria-label="折叠导航">«</button></div>';
+    nav += '<div class="cls-reg-nav-body">';
     DC.categories.forEach(cat => {
-      html += '<section class="class-cat cat-' + cat.accent + '">';
+      const _cnt = cat.groups ? cat.groups.reduce((n, g) => n + (g.items ? g.items.length : 0), 0) : (cat.items ? cat.items.length : 0);
+      nav += '<div class="cls-reg-nav-cat nav-cat-' + cat.accent + '">';
+      nav += '<a class="cls-reg-nav-cat-link" href="#cat-' + cat.id + '" data-nav-cat="' + cat.id + '"><span class="cls-reg-nav-ico">' + cat.icon + '</span><span class="cls-reg-nav-cat-name">' + this.pen(cat.name) + '</span><span class="cls-reg-nav-count">' + _cnt + '</span></a>';
+      const _groups = cat.groups || [{ name: '', items: cat.items || [] }];
+      nav += '<div class="cls-reg-nav-subs">';
+      _groups.forEach(g => { (g.items || []).forEach(sub => {
+        nav += '<a class="cls-reg-nav-sub" href="#sub-' + cat.id + '-' + sub.code + '" data-nav-cat="' + cat.id + '" data-nav-code="' + sub.code + '" title="' + this.pen(sub.name) + '"><span class="cls-reg-nav-code">' + this.pen(sub.code) + '</span><span class="cls-reg-nav-sub-name">' + this.pen(sub.name) + '</span></a>';
+      }); });
+      nav += '</div></div>';
+    });
+    nav += '</div></nav>';
+
+    html += '<div class="cls-lens-tip">📋 按国家药监局 2020 年注册分类梳理：每一子类给出<strong>特殊要求 / 考量 / 申报资料清单 / 关联法规</strong>；点击子类标题可下钻「研发要求体系」（各阶段工艺·质量·GMP）。右下「🏭 查看生产工艺」可跳到产品分类视角看对应生产工艺。<strong>左侧导航可快速定位</strong>，点击 ▼ 可就地展开 / 收起详情。</div>';
+    html += '<div class="cls-reg-layout">';
+    html += nav;
+    html += '<div class="cls-reg-content">';
+    DC.categories.forEach(cat => {
+      html += '<section class="class-cat cat-' + cat.accent + '" id="cat-' + cat.id + '">';
       html += '<div class="class-cat-head">';
       html += '<span class="class-cat-icon">' + cat.icon + '</span>';
       html += '<div class="class-cat-titles"><h2>' + this.pen(cat.name) + '</h2>';
@@ -2062,7 +2113,7 @@ const App = {
         html += '<div class="class-subs">';
         (g.items || []).forEach(sub => {
           const isOpen = (focusCode && sub.code === focusCode) ? ' open focus' : '';
-          html += '<div class="class-sub' + isOpen + '" data-cat="' + cat.id + '" data-code="' + sub.code + '">';
+          html += '<div class="class-sub' + isOpen + '" id="sub-' + cat.id + '-' + sub.code + '" data-subid="' + cat.id + '-' + sub.code + '" data-cat="' + cat.id + '" data-code="' + sub.code + '">';
           html += '<div class="class-sub-head">';
           html += '<span class="class-sub-code">' + this.pen(sub.code) + '</span>';
           html += '<span class="class-sub-name">' + this.pen(sub.name) + '</span>';
@@ -2115,6 +2166,7 @@ const App = {
       });
       html += '</section>';
     });
+    html += '</div></div>'; // .cls-reg-content + .cls-reg-layout
     html += '</div>';
     return html;
   },
