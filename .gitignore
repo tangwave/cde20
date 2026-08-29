@@ -35,10 +35,3 @@ api/qa_workbench.db
 api/qa_workbench.db-wal
 api/qa_workbench.db-shm
 wb_server.log
-
-# 用户登录模块运行时数据库（含口令散列，绝不入库）
-# 生产环境请配置 DATABASE_URL 走外部 Postgres；本文件仅为本地回退。
-users.db
-users.db-wal
-users.db-shm
-*.db-journal

@@ -33,8 +33,8 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
-from fastapi import FastAPI, Query, Request, Response
-from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi import FastAPI, Query, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -401,68 +401,6 @@ app.add_middleware(
     allow_methods=["GET", "OPTIONS", "POST"],
     allow_headers=["*"],
 )
-
-# ---- 用户登录模块（全站鉴权）--------------------------------------------
-# 注意：api/ 不是包（无 __init__.py）且不在 sys.path 上，直接 `import auth` 会失败，
-# 这里沿用本文件加载 qa_workbench.py 的方式，按文件路径显式加载。
-try:
-    import importlib.util as _ilu_auth
-    _auth_path = os.path.join(HERE, "auth.py")
-    _auth_spec = _ilu_auth.spec_from_file_location("kb_auth", _auth_path)
-    _auth = _ilu_auth.module_from_spec(_auth_spec)
-    _auth_spec.loader.exec_module(_auth)
-    if _auth.using_db_users():
-        _auth.init_db()
-    _src_label = {"postgres": "PostgreSQL", "sqlite": "SQLite(本地)",
-                  "env": "环境变量 AUTH_USERS_JSON", "none": "无账号"}
-    print("[boot] 用户登录模块已加载 | 用户源：%s | 会话：%s | 鉴权：%s"
-          % (_src_label.get(_auth.user_source(), _auth.user_source()),
-             "无状态签名(跨部署保持)" if _auth.using_env_users() else "存库会话",
-             "开启" if _auth.auth_enabled() else "关闭"), flush=True)
-except Exception as _e:                       # pragma: no cover
-    _auth = None
-    print("[boot] auth 模块加载失败，全站鉴权已关闭：", repr(_e), flush=True)
-
-# 无需登录即可访问的路径（注意："/" 不在其中，首页同样需要登录）
-AUTH_PUBLIC_EXACT = {"/login.html", "/api/health", "/favicon.ico"}
-AUTH_PUBLIC_PREFIX = ("/css/", "/js/", "/img/", "/assets/", "/api/auth/")
-
-
-def _is_public(path):
-    if path in AUTH_PUBLIC_EXACT:
-        return True
-    return any(path.startswith(p) for p in AUTH_PUBLIC_PREFIX)
-
-
-@app.middleware("http")
-async def auth_middleware(request: Request, call_next):
-    """全站鉴权：页面跳登录页，接口返回 401 JSON。
-
-    未配置 DATABASE_URL 时 auth 仍会以 SQLite 回退运行（仅适合本地），
-    AUTH_ENABLED=0 可临时整体关闭（排障用）。
-    """
-    if _auth is None or not _auth.auth_enabled():
-        request.state.user = None
-        return await call_next(request)
-
-    path = request.url.path or "/"
-    if _is_public(path):
-        request.state.user = None
-        return await call_next(request)
-
-    token = request.cookies.get(_auth.SESSION_COOKIE, "")
-    user = _auth.get_session_user(token) if token else None
-    if user:
-        request.state.user = user
-        return await call_next(request)
-
-    # 未登录
-    if path.startswith("/api/"):
-        return JSONResponse({"error": "未登录", "need_login": True},
-                            status_code=401)
-    nxt = path + (("?" + request.url.query) if request.url.query else "")
-    return RedirectResponse(url="/login.html?next=" + urllib.parse.quote(nxt),
-                            status_code=302)
 
 # ---- 药品研发QA合规管理台 · 云端同步（独立 router，按文件加载，失败不影响主服务）----
 try:
@@ -2970,140 +2908,6 @@ async def llm_test_post(request: Request):
     if ok:
         return {"ok": True, "provider": provider, "model": mdl, "latency_ms": latency}
     return JSONResponse({"ok": False, "error": err or "连接失败"}, status_code=200)
-
-
-# ---------------------------------------------------------------- 用户认证接口
-# 说明：全站鉴权由 auth_middleware 统一拦截，这里只暴露登录/登出/自助改密
-#       与管理员账号管理。所有接口本身都在 /api/auth/ 前缀下（白名单，免鉴权），
-#       但除 login 外的操作仍需凭有效会话，由各接口自行校验。
-
-def _client_ip(request: Request):
-    fwd = request.headers.get("x-forwarded-for", "")
-    if fwd:
-        return fwd.split(",")[0].strip()
-    return (request.client.host if request.client else "") or ""
-
-
-def _require_user(request: Request):
-    if _auth is None:
-        return None
-    token = request.cookies.get(_auth.SESSION_COOKIE, "")
-    return _auth.get_session_user(token) if token else None
-
-
-@app.post("/api/auth/login")
-async def auth_login(request: Request):
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-    username = (body.get("username") or "").strip()
-    password = body.get("password") or ""
-    if _auth is None:
-        return JSONResponse({"ok": False, "error": "认证模块不可用"}, status_code=500)
-    if not username or not password:
-        return JSONResponse({"ok": False, "error": "请填写用户名与口令"}, status_code=400)
-    user = _auth.authenticate(username, password, ip=_client_ip(request),
-                              ua=request.headers.get("user-agent", ""))
-    if not user:
-        # 不区分「用户不存在」与「口令错误」，避免账号枚举
-        return JSONResponse({"ok": False, "error": "用户名或口令不正确"},
-                            status_code=401)
-    resp = JSONResponse({"ok": True, "user": {
-        "username": user["username"],
-        "display_name": user["display_name"],
-        "role": user["role"],
-        "expires_at": user["expires_at"],
-    }})
-    # Secure 默认开启（Render 全站 HTTPS，防明文传输）。
-    # 本地以 http:// 调试时浏览器不会写入 Secure Cookie，可设 AUTH_COOKIE_SECURE=0 关闭。
-    _secure = os.environ.get("AUTH_COOKIE_SECURE", "1").strip().lower() not in (
-        "0", "false", "no", "off")
-    resp.set_cookie(
-        _auth.SESSION_COOKIE, user["token"],
-        max_age=_auth.SESSION_TTL_HOURS * 3600,
-        httponly=True, samesite="lax",
-        secure=_secure,
-        path="/",
-    )
-    return resp
-
-
-@app.post("/api/auth/logout")
-async def auth_logout(request: Request):
-    token = request.cookies.get(_auth.SESSION_COOKIE, "") if _auth else ""
-    if _auth:
-        _auth.destroy_session(token)
-    resp = JSONResponse({"ok": True})
-    resp.delete_cookie(_auth.SESSION_COOKIE if _auth else "kb_session", path="/")
-    return resp
-
-
-@app.get("/api/auth/me")
-def auth_me(request: Request):
-    user = _require_user(request)
-    if not user:
-        return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
-    return {"ok": True, "user": user}
-
-
-@app.post("/api/auth/change-password")
-async def auth_change_password(request: Request):
-    user = _require_user(request)
-    if not user:
-        return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-    old = body.get("old_password") or ""
-    new = body.get("new_password") or ""
-    if _auth is None:
-        return JSONResponse({"ok": False, "error": "认证模块不可用"}, status_code=500)
-    # 改密前必须复核旧口令，防止会话被劫持后直接改密
-    if not _auth.authenticate(user["username"], old):
-        return JSONResponse({"ok": False, "error": "原口令不正确"}, status_code=400)
-    ok, msg = _auth.set_password(user["username"], new)
-    return JSONResponse({"ok": ok, "error": None if ok else msg},
-                        status_code=200 if ok else 400)
-
-
-@app.get("/api/auth/users")
-def auth_list_users(request: Request):
-    """管理员：查看账号列表。"""
-    user = _require_user(request)
-    if not user or user.get("role") != "admin":
-        return JSONResponse({"ok": False, "error": "需要管理员权限"}, status_code=403)
-    return {"ok": True, "users": _auth.list_users()}
-
-
-@app.post("/api/auth/users")
-async def auth_create_user(request: Request):
-    """管理员：开通账号。"""
-    user = _require_user(request)
-    if not user or user.get("role") != "admin":
-        return JSONResponse({"ok": False, "error": "需要管理员权限"}, status_code=403)
-    try:
-        body = await request.json()
-    except Exception:
-        body = {}
-    ok, msg = _auth.create_user(body.get("username"), body.get("password"),
-                                body.get("display_name"), body.get("role") or "user")
-    # 开通账号后使该账号已有会话失效？不必；但记录操作人便于审计
-    if ok and _auth:
-        _auth.log_action(user["username"], "admin_create_user",
-                         "target=%s" % body.get("username"), _client_ip(request))
-    return JSONResponse({"ok": ok, "error": None if ok else msg},
-                        status_code=200 if ok else 400)
-
-
-@app.get("/api/auth/audit")
-def auth_audit(request: Request, limit: int = 100):
-    """管理员：查看登录/操作审计日志（QA 追溯用）。"""
-    user = _require_user(request)
-    if not user or user.get("role") != "admin":
-        return JSONResponse({"ok": False, "error": "需要管理员权限"}, status_code=403)
-    return {"ok": True, "logs": _auth.recent_audit(min(int(limit or 100), 500))}
 
 
 # ---------------------------------------------------------------- SPA 回退
