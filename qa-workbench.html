@@ -150,6 +150,13 @@
   .ai-v{color:var(--ink)}
   .ai-ul{margin:4px 0 4px 18px;padding:0}
   .ai-ul li{margin-bottom:4px}
+  /* 首次使用 / 无数据引导 */
+  .empty-guide{background:var(--panel);border:1px dashed var(--brand2);border-radius:12px;padding:22px 24px;text-align:center;box-shadow:var(--shadow)}
+  .eg-ic{font-size:34px;line-height:1}
+  .eg-t{font-size:16px;font-weight:600;color:var(--brand);margin:8px 0 6px}
+  .eg-d{font-size:13px;color:var(--muted);max-width:660px;margin:0 auto 14px;line-height:1.7}
+  .eg-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .eg-tip{margin-top:12px;font-size:12px;color:var(--warn)}
 </style>
 <meta name="qa-api-base" content="same-origin">
 <link rel="stylesheet" href="css/qa9.css" />
@@ -570,6 +577,18 @@ function renderHome(){
     total+=a.length;open+=o;ov+=vo;due+=du;up+=upc;modStats[m]={t:a.length,o,vo,du,upc};});
 
   let h='';
+  if(total===0){
+    h+=`<div class="section"><div class="empty-guide">
+      <div class="eg-ic">🧭</div>
+      <div class="eg-t">工作台暂无数据</div>
+      <div class="eg-d">这是<strong>纯本地</strong>质量管理台：22 个模块的记录只保存在当前浏览器本机，不会上传服务器。可先载入一套演示示例快速了解用法，或导入此前导出的备份继续工作。</div>
+      <div class="eg-btns">
+        <button class="btn btn-primary" onclick="loadSamples()">✨ 载入示例数据</button>
+        <button class="btn" onclick="importAll()">⬆ 导入备份</button>
+      </div>
+      <div class="eg-tip">提示：更换浏览器 / 清理缓存 / 换设备后本地数据会丢失，建议定期用右上角「⬇ 导出备份」保存。</div>
+    </div></div>`;
+  }
   h+=`<div class="grid cards">
     <div class="stat"><div class="k">记录总数</div><div class="v">${total}</div></div>
     <div class="stat"><div class="k">进行中/未关闭</div><div class="v">${open}</div></div>
