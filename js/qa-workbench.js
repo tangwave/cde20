@@ -1,0 +1,764 @@
+
+/* ============ 基础工具 ============ */
+const PREFIX='wb_qa_rd_qms_v1_';
+const $=(s,r=document)=>r.querySelector(s);
+function esc(s){if(s==null)return'';return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function today(){const d=new Date();return d.toISOString().slice(0,10);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function getA(key){try{return JSON.parse(localStorage.getItem(PREFIX+key)||'[]');}catch(e){return[];}}
+function setA(key,arr){localStorage.setItem(PREFIX+key,JSON.stringify(arr));}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+const BASIS=['NMPA GMP(2010修订)','NMPA GLP','ICH Q8','ICH Q9(R1)','ICH Q10','ICH Q11','ICH Q12','ICH Q14','FDA 21CFR','EMA','OECD GLP','中国药典','药品注册核查要点','GMP指南2023'];
+/* 核查原则：供「文件审阅」「记录/申报资料核查」的核查方法选择，使核查有据可依 */
+const VERIFY_PRINCIPLES_DOC=[
+ '法规符合性（对照NMPA/GMP/ICH等适用性）','文件间冲突检查（编号/版本/数据互不一致）',
+ '格式规范性（体例/签章/日期/页码）','数据准确性（数值/单位/小数点/范围）',
+ '内容完整性（章节齐全/无缺失）','版本一致性（正文与附件同源）','签署与审批完整性'];
+const VERIFY_PRINCIPLES_CHK=[
+ '数据可靠性 ALCOA+（可追溯/原始/同步/准确/完整/一致/持久/可用）','注册核查要点（NMPA 注册核查实施原则）',
+ 'CTD模块间一致性（M2摘要与M3/M4/M5对应）','申报资料与实验记录一致性',
+ '数值/单位/日期三核对','纸质与电子记录一致','原始数据可溯（原始图谱/台账）',
+ '结论合理性（与数据支撑匹配）','ICH E6(R2/R3) 临床试验数据','药典/标准符合性'];
+/* AI 核查后端地址：留空=同源 /api/verify（部署在知识库网页后端时即用） */
+const AI_URL_KEY=PREFIX+'aiurl';
+function getAiUrl(){try{return (localStorage.getItem(AI_URL_KEY)||'').trim();}catch(e){return'';}}
+function setAiUrl(v){try{localStorage.setItem(AI_URL_KEY,v.trim());}catch(e){}}
+function aiVerifyUrl(){const u=getAiUrl();if(u)return u.replace(/\/+$/,'').replace(/\/api\/verify\/?$/,'')+'/api/verify';return (location.origin||'')+'/api/verify';}
+/* 文件选择临时缓冲（每次打开表单时初始化） */
+let _fileBuf=[];let _fileBufKey='';
+
+/* ============ 云端同步层（多端实时同步 · FastAPI后端）============ */
+const CLOUD_KEY='wb_qa_rd_qms_cloud_';
+let CLOUD={enabled:false,url:'',token:'',workspace:'',lastSync:'0'};
+let _syncTimer=null;
+function loadCloud(){try{const o=JSON.parse(localStorage.getItem(CLOUD_KEY)||'{}');CLOUD=Object.assign(CLOUD,o);}catch(e){}}
+function saveCloud(){try{localStorage.setItem(CLOUD_KEY,JSON.stringify(CLOUD));}catch(e){}}
+function stripMeta(rec){const c=Object.assign({},rec);delete c._v;delete c._uat;return c;}
+async function api(method,path,body){
+  let base=(CLOUD.url||'').trim();
+  if(!base||base==='/')base=''; else base=base.replace(/\/+$/,'');
+  try{
+    const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+(CLOUD.token||'')},body:(body!==undefined)?JSON.stringify(body):undefined});
+    const t=await r.text();
+    return[r.status,t?JSON.parse(t):{}];
+  }catch(e){return[0,{}];}
+}
+async function cloudBootstrap(){
+  const [st,res]=await api('GET','/api/bootstrap');
+  if(st!==200){toast('拉取云端数据失败');return false;}
+  (res.records||[]).forEach(rec=>{
+    const key=rec.module;const obj=JSON.parse(rec.data);obj._v=rec.version;obj._uat=rec.updated_at;
+    const a=getA(key);const i=a.findIndex(r=>r.id===obj.id);
+    if(i<0)a.push(obj);else if(rec.version>(a[i]._v||0))a[i]=obj;
+    setA(key,a);
+  });
+  CLOUD.lastSync=res.server_time;saveCloud();renderCloudBadge();
+  return true;
+}
+async function pullSync(){
+  if(!CLOUD.enabled||!CLOUD.token)return;
+  const [st,res]=await api('GET','/api/sync?since='+encodeURIComponent(CLOUD.lastSync||'0'));
+  if(st!==200)return;
+  let changed=false;
+  (res.changes||[]).forEach(ch=>{
+    const key=ch.module;const obj=JSON.parse(ch.data);obj._v=ch.version;obj._uat=ch.updated_at;
+    const a=getA(key);const i=a.findIndex(r=>r.id===ch.id);
+    if(ch.deleted){if(i>=0){a.splice(i,1);changed=true;}}
+    else{if(i<0){a.push(obj);changed=true;}else if(ch.version>(a[i]._v||0)){a[i]=obj;changed=true;}}
+    setA(key,a);
+  });
+  if((res.changes||[]).length)CLOUD.lastSync=res.server_time;saveCloud();
+  if(changed){renderNav();if(!curMod||curMod==='__home')renderHome();else renderModule();}
+}
+function startSync(){if(_syncTimer)clearInterval(_syncTimer);_syncTimer=setInterval(pullSync,15000);pullSync();}
+function stopSync(){if(_syncTimer){clearInterval(_syncTimer);_syncTimer=null;}}
+async function apiPersist(mod,rec){
+  if(!CLOUD.enabled||!CLOUD.token)return;
+  const isNew=!rec._v;
+  const body={record:stripMeta(rec),baseVersion:rec._v||null};
+  let st,res;
+  if(isNew){[st,res]=await api('POST','/api/'+mod+'/records',body);}
+  else{[st,res]=await api('PUT','/api/'+mod+'/records/'+rec.id,body);}
+  if(st===404&&!isNew){[st,res]=await api('POST','/api/'+mod+'/records',body);}
+  if(st===409){toast('⚠ 该记录已被他人修改，已自动刷新为最新');pullSync();return;}
+  if(st!==200){toast('⚠ 云端保存失败，已保留本地副本');return;}
+  rec._v=res.version;rec._uat=res.updated_at;
+  const a=getA(mod);const i=a.findIndex(r=>r.id===rec.id);if(i>=0){a[i]=rec;setA(mod,a);}
+}
+async function cloudDelete(mod,id){
+  if(!CLOUD.enabled||!CLOUD.token)return;
+  const [st]=await api('DELETE','/api/'+mod+'/records/'+id);
+  if(st!==200)toast('⚠ 云端删除失败，本地已删除');
+}
+function renderCloudBadge(){
+  const b=$('#cloudBadge');if(!b)return;
+  if(CLOUD.enabled&&CLOUD.token){
+    b.className='cloud-badge on';
+    b.innerHTML='<span class="dot"></span>☁ 云端已连接 · '+esc(CLOUD.workspace||'')+'<span class="sync">↻15s</span>';
+  }else{
+    b.className='cloud-badge';
+    b.innerHTML='<span class="dot"></span>☁ 本地模式（点此连接云端）';
+  }
+}
+function openCloudModal(){
+  $('#modalTitle').textContent='☁ 云端同步设置';
+  let h=`<div class="form-grid">
+    <div class="field full"><label>后端服务地址</label><input type="text" id="cUrl" placeholder="同域部署填 / 或留空（如知识库网页自带后端）；独立后端填 https://... 或 http://IP:8000" value="${esc(CLOUD.url||'')}"></div>
+    <div class="field"><label>工作区名称</label><input type="text" id="cWs" placeholder="自定义工作区名" value="${esc(CLOUD.workspace||'')}"></div>
+    <div class="field"><label>密码</label><input type="password" id="cPw" placeholder="工作区密码（≥4位）"></div>
+    <div class="field full"><label>AI 核查后端地址（可选）</label><input type="text" id="cAi" placeholder="留空=同源 /api/verify；独立部署填 https://你的后端（需提供 /api/verify）" value="${esc(getAiUrl())}"></div>
+    <div class="field full" style="font-size:12px;color:var(--muted);line-height:1.7">说明：<b>工作区</b>是一个共享空间。多人/多设备使用<b>相同的工作区名称+密码</b>即可访问同一份数据，实现实时同步。密码不可找回，请牢记。后端服务需自行部署（见随附的部署文档）。<b>AI 核查</b>调用后端 LLM（需配置 API Key），未配置时可用「复制提示词」在外部 AI 执行。</div>
+  </div>`;
+  $('#modalBody').innerHTML=h;
+  $('#modalFoot').innerHTML=
+    `<button class="btn" onclick="closeModal()">取消</button>`+
+    (CLOUD.enabled?`<button class="btn btn-danger" onclick="cloudDisconnect()">断开并切回本地</button>`:'')+
+    (CLOUD.enabled?`<button class="btn" onclick="cloudUploadLocal()">⬆ 上传本地数据到云端</button>`:'')+
+    `<button class="btn" onclick="cloudAuth('login')">登录</button>`+
+    `<button class="btn btn-primary" onclick="cloudAuth('register')">注册并连接</button>`;
+  showMask();
+}
+async function cloudAuth(mode){
+  const url=$('#cUrl').value.trim(),ws=$('#cWs').value.trim(),pw=$('#cPw').value,ai=$('#cAi').value.trim();
+  if(!url||!ws||pw.length<4){toast('请填写地址、工作区名，密码≥4位');return;}
+  CLOUD.url=url;CLOUD.workspace=ws;if(ai)setAiUrl(ai);saveCloud();
+  $('#modalFoot').innerHTML='<span class="sub">连接中…</span>';
+  const [st,res]=await api('POST','/'+(mode==='register'?'api/register':'api/login'),{name:ws,password:pw});
+  if(st!==200){toast(mode==='register'?'注册失败（可能已存在，请改用登录）':'登录失败：名称或密码错误');return;}
+  CLOUD.token=res.token;CLOUD.enabled=true;CLOUD.lastSync='0';saveCloud();
+  const ok=await cloudBootstrap();
+  closeModal();
+  if(ok){toast('☁ 已连接云端，开始同步');startSync();}
+  else{CLOUD.enabled=false;CLOUD.token='';saveCloud();toast('云端连接失败，请检查地址');}
+  renderCloudBadge();renderNav();renderHome();
+}
+function cloudDisconnect(){
+  stopSync();CLOUD.enabled=false;CLOUD.token='';saveCloud();
+  closeModal();renderCloudBadge();toast('已断开，切回本地模式');
+}
+async function cloudUploadLocal(){
+  if(!CLOUD.enabled||!CLOUD.token){toast('请先连接云端');return;}
+  let n=0;
+  for(const m of ORDER){getA(m).forEach(r=>{const c=Object.assign({},r);if(!c.id)c.id=uid();apiPersist(m,c);n++;});}
+  toast('已提交 '+n+' 条本地数据到云端（后台同步中）');
+}
+
+/* ============ 模块配置（22个，对标GMP指南2023研发体系）============ */
+/* 导航分组按 GMP(2010年修订) 章节顺序组织，便于按体系主线定位：
+   质量体系 → 人员 → 设备/数据 → 物料/供应商 → 确认与验证 → 文件记录
+   → 生产/放行/实验室 → 变更·偏差·CAPA → 投诉/自检（共 22 个模块，与原集合一致） */
+const GROUPS=[
+ {g:'① 质量体系与风险 · GMP 第二章',mods:['qrm','mgmt_review']},
+ {g:'② 机构与人员 · GMP 第三章',mods:['training','knowledge']},
+ {g:'③ 设备与数据 · GMP 第五·八章',mods:['equip','di']},
+ {g:'④ 物料·供应商·委托 · 第六·十·十一章',mods:['supplier','audit','outsourcing']},
+ {g:'⑤ 确认与验证 · GMP 第七章',mods:['pv','tech_transfer']},
+ {g:'⑥ 文件与记录核查 · GMP 第八章',mods:['doc_review','record_check']},
+ {g:'⑦ 生产·放行·实验室 · 第九·十章',mods:['release','oos','method','stability']},
+ {g:'⑧ 变更·偏差·CAPA · GMP 第十章',mods:['change','deviation','capa']},
+ {g:'⑨ 投诉·自检 · 第十·十三章',mods:['complaint','self_inspect']},
+];
+const M={};
+function F(k,l,t,o){const f={key:k,label:l,type:t||'text'};if(o)f.options=o;return f;}
+M.doc_review={name:'文件审阅',ic:'📋',done:['已完成'],
+ fields:[F('code','文件编号','text'),F('name','文件名称','text'),F('type','文件类型','select',['IND申报资料','NDA申报资料','研究报告','质量文件','实验记录','SOP/方案','其他']),
+  F('reviewType','审阅类型','multiselect',['合规审阅','冲突检查','格式审阅','数据审阅','内容审阅']),
+  F('basis','法规依据','multiselect',BASIS),F('principles','核查原则','multiselect',VERIFY_PRINCIPLES_DOC),
+  F('relatedFiles','关联文件/资料','files'),
+  F('conflict','冲突检查结果','select',['无冲突','有冲突']),F('conflictDesc','冲突描述','textarea'),
+  F('conclusion','审阅结论','select',['通过','有条件通过','不通过']),F('rectify','整改要求','textarea'),
+  F('owner','审阅人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['待处理','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待处理','where',{status:'待处理'}],['有冲突','where',{conflict:'有冲突'}],['不通过','where',{conclusion:'不通过'}],['逾期','overdue']],
+ cols:['code','name','type','conflict','conclusion','status','dueDate']};
+
+M.record_check={name:'记录/申报资料核查',ic:'🔍',done:['已完成'],
+ fields:[F('code','核查编号','text'),F('name','核查名称','text'),F('targetDoc','目标文档','text'),F('attach','附件/资料','files'),
+  F('basis','核查依据','multiselect',['法规','SOP','指导原则(如ICH E6)','药典']),F('principles','核查原则','multiselect',VERIFY_PRINCIPLES_CHK),
+  F('risk','风险等级','select',['高','中','低']),
+  F('method','核查方法','select',['人工比对','工具辅助','组合','AI智能核查']),F('items','不一致项清单','textarea'),
+  F('consistency','一致性状态','select',['一致','不一致','待核查']),F('rectifyStatus','整改跟进','select',['整改中','已整改','无法整改']),
+  F('owner','核查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['待核查','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待核查','where',{status:'待核查'}],['高风险','where',{risk:'高'}],['不一致','where',{consistency:'不一致'}],['逾期','overdue']],
+ cols:['code','name','risk','consistency','rectifyStatus','status','dueDate']};
+
+M.change={name:'变更管理',ic:'🔄',done:['已关闭','已实施'],
+ fields:[F('code','变更编号','text'),F('title','变更标题','text'),F('type','变更类型','select',['方法变更','设备变更','文件变更','物料变更','人员变更','工艺变更','场地变更']),
+  F('level','变更级别','select',['重大','中等','微小']),F('phase','研发阶段','select',['早期开发','I期','II期','III期','申报/上市']),
+  F('reason','变更原因','textarea'),F('impact','影响评估维度','multiselect',['产品质量','法规合规','验证状态','培训需求','文件更新','注册申报']),
+  F('ccb','CCB审批意见','textarea'),F('approver','审批人','text'),F('approveDate','批准日期','date'),
+  F('impl','实施计划','textarea'),F('relatedSys','关联系统/文件','text'),
+  F('owner','负责人','text'),F('dueDate','计划完成','date'),F('status','状态','select',['待审批','已批准','已实施','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待审批','where',{status:'待审批'}],['重大变更','where',{level:'重大'}],['已完成','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','title','level','phase','status','dueDate']};
+
+M.deviation={name:'偏差管理',ic:'⚠️',done:['已关闭'],
+ fields:[F('code','偏差编号','text'),F('title','偏差描述','text'),F('category','偏差分类','select',['实验室偏差','数据偏差','系统偏差','文件偏差','生产偏差']),
+  F('severity','严重程度','select',['严重','重要','次要']),F('immediate','即时措施','textarea'),F('impact','影响评估','textarea'),
+  F('method','调查方法','select',['鱼骨图','5Why','流程图','其他']),F('rootCause','根本原因','textarea'),
+  F('ca','纠正措施(CA)','textarea'),F('pa','预防措施(PA)','textarea'),F('capaOwner','CAPA责任人','text'),F('capaDue','CAPA计划日期','date'),
+  F('owner','调查人','text'),F('dueDate','关闭期限','date'),F('status','状态','select',['待调查','调查中','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['调查中','where',{status:'调查中'}],['严重偏差','where',{severity:'严重'}],['已逾期','overdue'],['逾期','overdue']],
+ cols:['code','title','category','severity','status','dueDate']};
+
+M.capa={name:'CAPA台账',ic:'🛠',done:['已关闭'],
+ fields:[F('code','CAPA编号','text'),F('source','来源','select',['偏差','审计','投诉','自检','管理评审','回顾']),F('ref','关联编号','text'),
+  F('desc','问题描述','textarea'),F('type','类型','select',['纠正措施CA','预防措施PA','综合']),F('responsible','责任人','text'),
+  F('planDate','计划完成','date'),F('effect','有效性评估','textarea'),F('closeDate','关闭日期','date'),
+  F('owner','跟踪人','text'),F('dueDate','跟踪日期','date'),F('status','状态','select',['进行中','已延期','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已延期','where',{status:'已延期'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','source','type','responsible','status','dueDate']};
+
+M.qrm={name:'质量风险管理',ic:'🎯',done:['已完成','已关闭'],
+ fields:[F('code','评估编号','text'),F('subject','评估对象','text'),F('method','评估方法','select',['FMEA','HACCP','故障树','风险排序筛选','初步危害分析','鱼骨图']),
+  F('scope','评估范围','textarea'),F('risk','风险等级','select',['高','中','低']),F('result','评估结论','textarea'),F('control','控制措施','textarea'),
+  F('reviewDate','回顾日期','date'),F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['高风险','where',{risk:'高'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','subject','method','risk','status','dueDate']};
+
+M.supplier={name:'供应商管理',ic:'🏭',done:['淘汰'],
+ fields:[F('code','供应商编号','text'),F('name','供应商名称','text'),F('material','供应物料/服务','text'),
+  F('type','供应商类型','select',['物料供应商','CMO','CDMO','检验机构','CRO','包材/标签']),F('risk','风险等级','select',['高','中','低']),
+  F('qualify','资质评估方式','select',['问卷','现场审计','问卷+审计']),F('result','评估结果','select',['合格','不合格','有条件合格']),
+  F('approveDate','批准日期','date'),F('reevalCycle','再评估周期','text'),F('reevalDate','再评估日期','date'),
+  F('owner','管理人','text'),F('dueDate','跟踪日期','date'),F('status','状态','select',['候选','已批准','暂停','淘汰']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['已批准','where',{status:'已批准'}],['待再评估','open'],['高风险','where',{risk:'高'}],['逾期','overdue']],
+ cols:['code','name','type','risk','result','status','dueDate']};
+
+M.audit={name:'审计管理',ic:'🧾',done:['已完成','已出报告'],
+ fields:[F('code','审计编号','text'),F('name','审计名称','text'),F('auditType','审计类型','select',['内部审计','供应商审计','监管检查','飞行检查','委托审计']),
+  F('target','被审计方','text'),F('scope','审计范围','textarea'),F('planDate','计划日期','date'),F('execDate','实施日期','date'),
+  F('findings','发现项数','text'),F('major','严重项','text'),F('reportRef','报告编号','text'),
+  F('owner','审计组长','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成','已出报告']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['计划中','where',{status:'计划中'}],['已出报告','where',{status:'已出报告'}],['逾期','overdue']],
+ cols:['code','name','auditType','target','status','dueDate']};
+
+M.outsourcing={name:'委托生产/检验',ic:'🤝',done:['已结束'],
+ fields:[F('code','委托编号','text'),F('partner','受托方','text'),F('service','服务内容','select',['委托生产','委托检验','委托研发','CMO/CDMO']),
+  F('agreement','质量协议','text'),F('auditRef','审计编号','text'),F('phase','研发阶段','select',['早期开发','I期','II期','III期','申报']),
+  F('owner','负责人','text'),F('dueDate','结束日期','date'),F('status','状态','select',['进行中','已结束']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已结束','where',{status:'已结束'}],['逾期','overdue']],
+ cols:['code','partner','service','phase','status','dueDate']};
+
+M.oos={name:'实验室异常结果调查',ic:'🧪',done:['已关闭','无效OOS'],
+ fields:[F('code','调查编号','text'),F('sample','样品/批号','text'),F('item','检验项目','text'),
+  F('rtype','结果类型','select',['OOS','OOT','AD(异常数据)','其他']),F('initial','初始结果','text'),F('retest','复测结果','text'),
+  F('phase1','阶段1(实验室评估)','textarea'),F('phase2','阶段2(全面调查)','textarea'),F('rootCause','根本原因','textarea'),
+  F('conclusion','调查结论','select',['实验室错误','生产问题','无效OOS','待定']),F('capaRef','CAPA编号','text'),
+  F('owner','调查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['调查中','已关闭','无效OOS']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['调查中','where',{status:'调查中'}],['OOS','where',{rtype:'OOS'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','sample','item','rtype','conclusion','status','dueDate']};
+
+M.method={name:'分析方法管理',ic:'📈',done:['已批准','已转移'],
+ fields:[F('code','方法编号','text'),F('name','方法名称','text'),F('type','方法类型','select',['含量','有关物质','溶出度','鉴别','微生物','生物活性','残留溶剂']),
+  F('stage','方法阶段','select',['开发','确认','验证','转移','再验证']),
+  F('params','验证参数','multiselect',['专属性','准确度','精密度','线性','范围','耐用性','检测限','定量限']),
+  F('equip','仪器设备','text'),F('validation','验证状态','select',['未验证','进行中','已验证']),F('reportRef','验证报告','text'),
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['开发中','确认中','验证中','已批准','已转移']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','open'],['已验证','where',{validation:'已验证'}],['已批准','where',{status:'已批准'}],['逾期','overdue']],
+ cols:['code','name','type','stage','validation','status','dueDate']};
+
+M.stability={name:'稳定性研究管理',ic:'⏳',done:['已完成'],
+ fields:[F('code','研究编号','text'),F('product','产品/批号','text'),F('condition','考察条件','select',['长期','加速','中间','强降解','其他']),
+  F('timePoint','时间点计划','text'),F('donePoint','已完成时间点','text'),F('spec','质量标准','textarea'),
+  F('conclusion','稳定性结论','textarea'),F('nextPoint','下一时间点','date'),
+  F('owner','负责人','text'),F('dueDate','下次取样','date'),F('status','状态','select',['进行中','已完成','已暂停']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['已暂停','where',{status:'已暂停'}],['逾期','overdue']],
+ cols:['code','product','condition','donePoint','status','dueDate']};
+
+M.equip={name:'设备设施与CSV',ic:'⚙️',done:[],
+ fields:[F('code','编号','text'),F('name','设备/系统名称','text'),F('category','类别','select',['生产设备','检验仪器','计算机化系统','厂房设施']),
+  F('model','型号/规格','text'),F('cycle','校准/确认周期','text'),F('lastCal','上次校准','date'),F('nextCal','下次校准','date'),
+  F('confirm','确认类型','select',['IQ','OQ','PQ','校准','无']),F('csv','CSV状态','select',['未验证','进行中','已验证']),
+  F('owner','责任人','text'),F('dueDate','到期日期','date'),F('status','状态','select',['正常','待校准','待确认','偏差']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待校准','where',{status:'待校准'}],['待确认','where',{status:'待确认'}],['CSV进行中','where',{csv:'进行中'}],['逾期','overdue']],
+ cols:['code','name','category','nextCal','status','dueDate']};
+
+M.di={name:'数据可靠性',ic:'🔐',done:['已关闭'],
+ fields:[F('code','编号','text'),F('area','业务区域','select',['实验室','生产','QC','CSV','仓储','其他']),
+  F('principle','ALCOA+要素','multiselect',['完整性','一致性','准确性','及时性','原始性','可用性','可追溯']),
+  F('finding','发现项','textarea'),F('risk','风险等级','select',['高','中','低']),F('measure','整改措施','textarea'),
+  F('owner','责任人','text'),F('dueDate','整改期限','date'),F('status','状态','select',['评估中','整改中','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['整改中','where',{status:'整改中'}],['高风险','where',{risk:'高'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','area','principle','risk','status','dueDate']};
+
+M.training={name:'培训管理',ic:'🎓',done:['已完成','已评估'],
+ fields:[F('code','培训编号','text'),F('subject','培训主题','text'),F('content','培训内容','textarea'),F('target','培训对象','text'),
+  F('trainer','讲师','text'),F('trainDate','培训日期','date'),F('check','考核方式','select',['笔试','实操','提问','免考']),
+  F('passRate','合格率','text'),F('reTrain','需再培训','select',['是','否']),
+  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成','已评估']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['计划中','where',{status:'计划中'}],['已评估','where',{status:'已评估'}],['需再培训','where',{reTrain:'是'}],['逾期','overdue']],
+ cols:['code','subject','target','trainDate','status','dueDate']};
+
+M.knowledge={name:'知识管理',ic:'📚',done:['已归档','已应用'],
+ fields:[F('code','编号','text'),F('title','知识点','text'),F('category','知识类别','select',['QTPP','CQA','CPP','经验教训','工艺知识','产品知识','法规更新']),
+  F('project','所属项目','text'),F('source','来源','select',['偏差','变更','审计','文献','试验','其他']),F('content','内容','textarea'),
+  F('value','价值等级','select',['高','中','低']),F('owner','维护人','text'),F('dueDate','更新日期','date'),F('status','状态','select',['采集中','已归档','已应用']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['采集中','where',{status:'采集中'}],['已归档','where',{status:'已归档'}],['已应用','where',{status:'已应用'}],['逾期','overdue']],
+ cols:['code','title','category','value','status','dueDate']};
+
+M.pv={name:'工艺验证',ic:'🏗',done:['已完成','已批准'],
+ fields:[F('code','验证编号','text'),F('product','产品/工艺','text'),F('stage','验证阶段','select',['工艺设计','PPQ','持续工艺确认']),
+  F('protocol','验证方案','text'),F('batch','验证批','text'),F('cqa','CQA/CPP','textarea'),F('result','验证结果','textarea'),
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成','已批准']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['已批准','where',{status:'已批准'}],['逾期','overdue']],
+ cols:['code','product','stage','batch','status','dueDate']};
+
+M.tech_transfer={name:'技术转移',ic:'🔁',done:['已完成'],
+ fields:[F('code','转移编号','text'),F('project','转移项目','text'),F('from','转出方','text'),F('to','接收方','text'),
+  F('content','转移内容','multiselect',['工艺','分析方法','清洁方法','包装','其他']),F('risk','风险评估','textarea'),
+  F('protocol','转移方案','text'),F('report','转移报告','text'),
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','project','from','to','status','dueDate']};
+
+M.release={name:'放行管理',ic:'✅',done:['已放行','不放行'],
+ fields:[F('code','放行编号','text'),F('batch','批号','text'),F('product','产品','text'),F('type','样品类型','select',['临床样品','毒理批','申报批','稳定性批']),
+  F('qaReview','QA审核','textarea'),F('decision','放行结论','select',['待审核','放行','不放行','有条件放行']),
+  F('releasePerson','放行责任人','text'),F('releaseDate','放行日期','date'),
+  F('owner','跟踪人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['待审核','已放行','不放行']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['待审核','where',{status:'待审核'}],['已放行','where',{status:'已放行'}],['不放行','where',{status:'不放行'}],['逾期','overdue']],
+ cols:['code','batch','product','type','decision','status','dueDate']};
+
+M.complaint={name:'投诉与召回',ic:'📞',done:['已关闭'],
+ fields:[F('code','编号','text'),F('source','投诉来源','text'),F('product','产品/批号','text'),F('content','投诉内容','textarea'),
+  F('type','投诉类型','select',['质量投诉','不良反应','疑似造假','其他']),F('severity','严重程度','select',['严重','一般']),
+  F('action','处理措施','select',['调查','召回','答复','关闭']),F('recallLevel','召回级别','select',['无','I级','II级','III级']),
+  F('closeDate','关闭日期','date'),F('owner','处理人','text'),F('dueDate','处理期限','date'),F('status','状态','select',['处理中','已关闭']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['处理中','where',{status:'处理中'}],['需召回','where',{recallLevel:['I级','II级','III级']}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
+ cols:['code','product','type','recallLevel','status','dueDate']};
+
+M.self_inspect={name:'自检',ic:'🔎',done:['已完成'],
+ fields:[F('code','自检编号','text'),F('plan','自检计划/区域','text'),F('scope','自检范围','textarea'),F('team','检查组','text'),
+  F('date','实施日期','date'),F('findings','发现项','text'),F('track','整改追踪','textarea'),F('reportRef','报告编号','text'),
+  F('owner','负责人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['进行中','where',{status:'进行中'}],['计划中','where',{status:'计划中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','plan','scope','date','status','dueDate']};
+
+M.mgmt_review={name:'管理评审',ic:'📊',done:['已完成'],
+ fields:[F('code','评审编号','text'),F('period','评审周期','text'),
+  F('topics','评审主题','multiselect',['质量目标','风险趋势','变更','CAPA','审计','资源','投诉','有效性']),F('inputs','评审输入','textarea'),
+  F('outputs','评审输出/决议','textarea'),F('decision','决议事项','textarea'),F('date','评审日期','date'),
+  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成']),F('remark','备注','textarea')],
+ stats:[['总数','count'],['计划中','where',{status:'计划中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
+ cols:['code','period','topics','date','status','dueDate']};
+
+const ORDER=[];GROUPS.forEach(g=>g.mods.forEach(m=>ORDER.push(m)));
+
+/* ============ 状态判断 ============ */
+function isOpen(mod,rec){const d=M[mod].done;return !d.includes(rec.status);}
+function isOverdue(mod,rec){return isOpen(mod,rec)&&rec.dueDate&&rec.dueDate<today();}
+function isDueToday(mod,rec){return isOpen(mod,rec)&&rec.dueDate===today();}
+function isUpcoming(mod,rec){if(!isOpen(mod,rec)||!rec.dueDate)return false;const t=today();return rec.dueDate>t&&rec.dueDate<=addDays(t,7);}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x.toISOString().slice(0,10);}
+
+/* ============ 导航 ============ */
+function renderNav(){
+  let h='<div class="nav-item" data-mod="__home"><span class="ic">🏠</span>工作台首页</div>';
+  GROUPS.forEach(g=>{
+    h+=`<div class="nav-group">${g.g}</div>`;
+    g.mods.forEach(m=>{
+      const arr=getA(m);let open=0,ov=0;
+      arr.forEach(r=>{if(isOpen(m,r))open++;if(isOverdue(m,r))ov++;});
+      h+=`<div class="nav-item" data-mod="${m}"><span class="ic">${M[m].ic}</span>${M[m].name}`+
+         `<span class="cnt ${ov?'alert':''}">${open}${ov?'·'+ov:''}</span></div>`;
+    });
+  });
+  $('#nav').innerHTML=h;
+  document.querySelectorAll('.nav-item').forEach(el=>el.onclick=()=>openMod(el.dataset.mod));
+}
+
+/* ============ 首页 ============ */
+function renderHome(){
+  $('#pageTitle').textContent='工作台首页';
+  $('#pageSub').textContent='研发全生命周期质量管理系统 · 对标《药品GMP指南（2023版）》第七章';
+  let total=0,open=0,ov=0,due=0,up=0;
+  const modStats={};
+  ORDER.forEach(m=>{const a=getA(m);let o=0,vo=0,du=0,upc=0;
+    a.forEach(r=>{if(isOpen(m,r))o++;if(isOverdue(m,r))vo++;if(isDueToday(m,r))du++;if(isUpcoming(m,r))upc++;});
+    total+=a.length;open+=o;ov+=vo;due+=du;up+=upc;modStats[m]={t:a.length,o,vo,du,upc};});
+
+  let h='';
+  if(total===0){
+    h+=`<div class="section"><div class="empty-guide">
+      <div class="eg-ic">🧭</div>
+      <div class="eg-t">工作台暂无数据</div>
+      <div class="eg-d">这是<strong>纯本地</strong>质量管理台：22 个模块的记录只保存在当前浏览器本机，不会上传服务器。可先载入一套演示示例快速了解用法，或导入此前导出的备份继续工作。</div>
+      <div class="eg-btns">
+        <button class="btn btn-primary" onclick="loadSamples()">✨ 载入示例数据</button>
+        <button class="btn" onclick="importAll()">⬆ 导入备份</button>
+      </div>
+      <div class="eg-tip">提示：更换浏览器 / 清理缓存 / 换设备后本地数据会丢失，建议定期用右上角「⬇ 导出备份」保存。</div>
+    </div></div>`;
+  }
+  h+=`<div class="grid cards">
+    <div class="stat"><div class="k">记录总数</div><div class="v">${total}</div></div>
+    <div class="stat"><div class="k">进行中/未关闭</div><div class="v">${open}</div></div>
+    <div class="stat"><div class="k">今日到期</div><div class="v warn">${due}</div></div>
+    <div class="stat"><div class="k">逾期未处理</div><div class="v ${ov?'danger':''}">${ov}</div></div>
+    <div class="stat"><div class="k">7日内到期</div><div class="v warn">${up}</div></div>
+  </div>`;
+
+  h+=`<div class="section"><h3>📌 今天要处理 <span class="badge">逾期 + 今日到期 + 7日内</span></h3><div id="todayList"></div></div>`;
+
+  h+=`<div class="section"><h3>🧩 全部模块 <span class="badge">22个 · 点击进入</span></h3><div class="grid cards" style="margin-top:6px">`;
+  ORDER.forEach(m=>{const s=modStats[m];
+    h+=`<div class="mod-card" onclick="openMod('${m}')">
+      <span class="mopen ${s.vo?'alert':''}">${s.o} 进行中${s.vo?' / '+s.vo+'逾期':''}</span>
+      <div class="mic">${M[m].ic}</div><div class="mname">${M[m].name}</div>
+      <div class="mstat">共 ${s.t} 条 · 今日 ${s.du} · 7日内 ${s.upc}</div></div>`;});
+  h+=`</div></div>`;
+  $('#content').innerHTML=h;
+  renderToday();
+}
+
+function renderToday(){
+  const items=[];
+  ORDER.forEach(m=>{getA(m).forEach(r=>{
+    if(!isOpen(m,r)||!r.dueDate)return;
+    const ov=isOverdue(m,r),du=isDueToday(m,r);
+    if(ov||du||isUpcoming(m,r))items.push({mod:m,ov,du,rec:r});
+  });});
+  items.sort((a,b)=>{
+    if(a.ov!==b.ov)return a.ov?-1:1;
+    return a.rec.dueDate.localeCompare(b.rec.dueDate);
+  });
+  const box=$('#todayList');
+  if(!items.length){box.innerHTML='<div class="empty">暂无需要处理的事项 🎉</div>';return;}
+  box.innerHTML=items.map(it=>{
+    const t=it.ov?'逾期':(it.du?'今日到期':'即将到期');
+    return `<div class="today-item ${it.ov?'alert':''}">
+      <div class="dot"></div>
+      <div class="tc">
+        <div class="tt">${M[it.mod].ic} ${esc(it.rec.code||'')} ${esc(it.rec.name||it.rec.title||it.rec.subject||'')}</div>
+        <div class="tm">${M[it.mod].name} · ${t} · 截止 ${it.rec.dueDate} · 责任人 ${esc(it.rec.owner||'-')}</div>
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="openMod('${it.mod}')">查看</button>
+    </div>`;}).join('');
+}
+
+/* ============ 模块视图 ============ */
+let curMod=null,curFilter='';
+function openMod(mod){
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.toggle('active',e.dataset.mod===mod));
+  if(mod==='__home'){renderHome();return;}
+  curMod=mod;curFilter='';
+  const m=M[mod];
+  $('#pageTitle').textContent=m.ic+' '+m.name;
+  $('#pageSub').textContent='研发质量管理体系模块';
+  renderModule();
+}
+
+function renderModule(){
+  const m=M[curMod];const arr=getA(curMod);
+  // stats
+  function cnt(kind,where){
+    if(kind==='count')return arr.length;
+    if(kind==='open')return arr.filter(r=>isOpen(curMod,r)).length;
+    if(kind==='overdue')return arr.filter(r=>isOverdue(curMod,r)).length;
+    if(kind==='where'){return arr.filter(r=>{
+      return Object.entries(where).every(([k,v])=>Array.isArray(v)?v.includes(r[k]):r[k]===v);}).length;}
+    return 0;
+  }
+  let statHtml='<div class="grid cards" style="margin-bottom:4px">';
+  m.stats.forEach(s=>{const v=cnt(s[1],s[2]);const cls=(s[1]==='overdue'&&v)?'danger':(s[1]==='overdue'||s[0].includes('逾期')?'':'');
+    statHtml+=`<div class="stat"><div class="k">${s[0]}</div><div class="v ${cls}">${v}</div></div>`;});
+  statHtml+='</div>';
+
+  // toolbar
+  let tb=`<div class="toolbar">
+    <button class="btn btn-primary" onclick="openForm()">＋ 新增</button>
+    <input id="flt" placeholder="搜索编号/名称…" value="${esc(curFilter)}" oninput="curFilter=this.value;renderTable()" style="min-width:200px">
+    <select onchange="curFilter=this.value;renderTable()">
+      <option value="">全部状态</option>${m.fields.find(f=>f.key==='status')?.options.map(o=>`<option ${curFilter===o?'selected':''}>${o}</option>`).join('')||''}</select>
+    <div class="spacer"></div>
+    <span class="sub" style="color:var(--muted)">共 ${arr.length} 条</span>
+  </div>`;
+
+  $('#content').innerHTML=`<div class="section" style="margin-top:0">${statHtml}${tb}<div id="tblBox"></div></div>`;
+  renderTable();
+}
+
+function renderTable(){
+  const m=M[curMod];let arr=getA(curMod);
+  if(curFilter){const q=curFilter.toLowerCase();
+    arr=arr.filter(r=>JSON.stringify(Object.values(r)).toLowerCase().includes(q));}
+  const cols=m.cols;
+  const fmap={};m.fields.forEach(f=>fmap[f.key]=f);
+  let h=`<table><thead><tr><th>操作</th>`;
+  cols.forEach(c=>{const f=fmap[c];h+=`<th>${f?f.label:c}</th>`;});
+  h+=`</tr></thead><tbody>`;
+  if(!arr.length){h+=`<tr><td colspan="${cols.length+1}" class="empty">暂无记录，点击"新增"开始</td></tr>`;}
+  arr.forEach(r=>{
+    h+=`<tr><td><button class="btn btn-sm" onclick="openForm('${r.id}')">编辑</button> <button class="btn btn-sm" onclick="showDetail('${r.id}')">详情</button> <button class="btn btn-sm btn-danger" onclick="delRec('${r.id}')">删</button></td>`;
+    cols.forEach(c=>{const f=fmap[c];let v=r[c];
+      if(f&&f.type==='multiselect')v=Array.isArray(v)?v.map(x=>`<span class="tag">${esc(x)}</span>`).join(''):esc(v);
+      else if(f&&f.type==='files')v=fmtFilesHtml(v);
+      else if(f&&f.options){const cls=(c==='status'||c==='severity'||c==='risk'||c==='level'||c==='conclusion'||c==='consistency')?(v==='严重'||v==='高'||v==='重大'||v==='不通过'||v==='不一致'||v==='不放行'?'r':(v==='已关闭'||v==='已放行'||v==='合格'||v==='通过'||v==='一致'?'g':(v==='有条件通过'||v==='中等'||v==='中'||v==='次要'||v==='微小'?'o':''))):'';
+        v=`<span class="tag ${cls}">${esc(v)}</span>`;}
+      else v=esc(v);
+      h+=`<td>${v||'<span style="color:var(--muted)">-</span>'}</td>`;});
+    h+=`</tr>`;
+  });
+  h+=`</tbody></table>`;
+  $('#tblBox').innerHTML=h;
+}
+
+/* ============ 表单 ============ */
+function openForm(id){
+  const m=M[curMod];const rec=id?getA(curMod).find(r=>r.id===id):null;
+  $('#modalTitle').textContent=(rec?'编辑':'新增')+' · '+m.name;
+  let h=`<div class="form-grid">`;
+  m.fields.forEach(f=>{
+    const val=rec?rec[f.key]:'';const full=(f.type==='textarea'||f.type==='files'||f.key==='remark'||['conflictDesc','rectify','items','impact','rootCause','ca','pa','scope','content','measure'].includes(f.key));
+    h+=`<div class="field ${full?'full':''}"><label>${esc(f.label)}</label>`;
+    if(f.type==='textarea'){h+=`<textarea data-k="${f.key}">${esc(val)}</textarea>`;}
+    else if(f.type==='files'){
+      _fileBufKey=f.key;_fileBuf=parseFiles(val);
+      h+=`<div class="file-pick-bar">
+        <button type="button" class="btn btn-sm" onclick="pickLocalFiles()">📁 本机文件</button>
+        <button type="button" class="btn btn-sm" onclick="pickLocalFolder()">📂 文件夹</button>
+        <button type="button" class="btn btn-sm" onclick="toggleKbPanel()">🔎 知识库检索</button>
+        <input id="txtRef" class="file-txt" placeholder="或输入文本引用后回车" onkeydown="if(event.key==='Enter'){addTextRef(this.value);this.value='';}">
+      </div>
+      <div id="kbPanel" class="kb-panel" style="display:none">
+        <input id="kbQ" class="kb-input" placeholder="输入法规/指导原则/资料关键词检索知识库（需后端在线）…" oninput="kbSearchDo(this.value)">
+        <div id="kbRes" class="kb-res"></div>
+      </div>
+      <div id="fileList" class="file-list"></div>`;
+    }
+    else if(f.type==='select'){h+=`<select data-k="${f.key}"><option value="">—请选择—</option>${f.options.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select>`;}
+    else if(f.type==='multiselect'){const arr=Array.isArray(val)?val:[];
+      h+=`<div class="checks">${f.options.map(o=>`<label><input type="checkbox" data-m="${f.key}" value="${esc(o)}" ${arr.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}</div>`;}
+    else if(f.type==='date'){h+=`<input type="date" data-k="${f.key}" value="${esc(val)}">`;}
+    else{h+=`<input type="text" data-k="${f.key}" value="${esc(val)}">`;}
+    h+=`</div>`;
+  });
+  h+=`</div>`;
+  $('#modalBody').innerHTML=h;
+  if(_fileBufKey)renderFileList();
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveForm('${id||''}')">保存</button>`;
+  showMask();
+}
+function saveForm(id){
+  const m=M[curMod];const rec={};let ok=true;
+  m.fields.forEach(f=>{
+    if(f.type==='multiselect'){rec[f.key]=[...document.querySelectorAll(`input[data-m="${f.key}"]:checked`)].map(x=>x.value);}
+    else if(f.type==='files'){rec[f.key]=Array.isArray(_fileBuf)?_fileBuf:[];}
+    else{const el=document.querySelector(`[data-k="${f.key}"]`);rec[f.key]=el?el.value.trim():'';}
+  });
+  if(!rec.code){toast('请填写编号');return;}
+  rec.id=id||uid();
+  const arr=getA(curMod);
+  if(id){const i=arr.findIndex(r=>r.id===id);if(i>=0)arr[i]=rec;else arr.push(rec);}
+  else arr.push(rec);
+  setA(curMod,arr);
+  apiPersist(curMod,rec);
+  closeModal();renderNav();renderModule();toast('已保存');
+}
+
+/* ============ 详情 ============ */
+function showDetail(id){
+  const m=M[curMod];const rec=getA(curMod).find(r=>r.id===id);if(!rec)return;
+  $('#modalTitle').textContent=m.name+' · 详情';
+  let h='<div class="detail"><dl>';
+  m.fields.forEach(f=>{let v=rec[f.key];
+    if(f.type==='multiselect')v=Array.isArray(v)?v.join('、'):(v||'');
+    else if(f.type==='files')v=fmtFilesText(v);
+    h+=`<dt>${esc(f.label)}</dt><dd>${esc(v)||'-'}</dd>`;});
+  h+='</dl></div>';
+  $('#modalBody').innerHTML=h;
+  const aiBtn=(curMod==='doc_review'||curMod==='record_check')?`<button class="btn" onclick="openAiVerify('${id}')">🤖 AI 核查</button>`:'';
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button>${aiBtn}<button class="btn btn-primary" onclick="openForm('${id}')">编辑</button>`;
+  showMask();
+}
+function delRec(id){
+  if(!confirm('确认删除该记录？'))return;
+  let arr=getA(curMod);arr=arr.filter(r=>r.id!==id);setA(curMod,arr);
+  cloudDelete(curMod,id);
+  renderNav();renderModule();toast('已删除');
+}
+
+/* ============ 文件/资料选择（本机文件 / 文件夹 / 知识库检索）============ */
+function parseFiles(v){
+  if(Array.isArray(v))return v.map(x=>({src:x.src||'text',name:x.name||x.path||'',path:x.path||'',size:x.size||0}));
+  if(typeof v==='string'&&v.trim())return [{src:'text',name:v.trim(),path:'',size:0}];
+  return [];
+}
+function fmtSize(n){if(!n)return'';if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB';}
+function fmtFilesHtml(v){
+  const a=parseFiles(v);
+  if(!a.length)return '<span style="color:var(--muted)">-</span>';
+  const names=a.map(x=>x.name).join('、');
+  return `<span class="tag" title="${esc(names)}">${a.length} 个文件/资料</span>`;
+}
+function fmtFilesText(v){
+  const a=parseFiles(v);
+  if(!a.length)return '';
+  return a.map(x=>`[${x.src==='kb'?'库':(x.src==='local'?'本':'文')}] ${x.name}`).join('；');
+}
+function renderFileList(){
+  const box=$('#fileList');if(!box)return;
+  if(!_fileBuf.length){box.innerHTML='<div class="file-empty">尚未选择文件/资料（本机 / 文件夹 / 知识库均可）</div>';return;}
+  box.innerHTML=_fileBuf.map((f,i)=>{
+    const badge=f.src==='kb'?'<span class="fb kb">库</span>':(f.src==='local'?'<span class="fb lo">本</span>':'<span class="fb tx">文</span>');
+    const meta=f.src==='kb'?(f.path||''):(f.size?fmtSize(f.size):(f.path||''));
+    return `<div class="file-row"><span class="fb-w">${badge}</span><span class="fn" title="${esc(f.path||f.name)}">${esc(f.name)}</span><span class="fm">${esc(meta)}</span><button type="button" class="btn btn-sm btn-danger" onclick="removeFile(${i})">×</button></div>`;
+  }).join('');
+}
+function removeFile(i){_fileBuf.splice(i,1);renderFileList();}
+function addTextRef(t){t=(t||'').trim();if(!t)return;_fileBuf.push({src:'text',name:t,path:'',size:0});renderFileList();}
+function pickLocalFiles(){const inp=document.createElement('input');inp.type='file';inp.multiple=true;inp.onchange=e=>{[...e.target.files].forEach(f=>_fileBuf.push({src:'local',name:f.name,path:f.name,size:f.size||0}));renderFileList();};inp.click();}
+function pickLocalFolder(){const inp=document.createElement('input');inp.type='file';inp.setAttribute('webkitdirectory','');inp.setAttribute('multiple','');inp.multiple=true;inp.onchange=e=>{[...e.target.files].forEach(f=>_fileBuf.push({src:'local',name:f.name,path:(f.webkitRelativePath||f.name),size:f.size||0}));renderFileList();};inp.click();}
+function toggleKbPanel(){const p=$('#kbPanel');if(!p)return;p.style.display=(p.style.display==='none'?'block':'none');if(p.style.display==='block')kbSearchDo($('#kbQ')?$('#kbQ').value:'');}
+let _kbRows=[];
+async function kbSearchDo(q){
+  const box=$('#kbRes');if(!box)return;
+  q=(q||'').trim();_kbRows=[];
+  if(!q){box.innerHTML='<div class="file-empty">输入关键词检索知识库（需后端在线）</div>';return;}
+  box.innerHTML='<div class="file-empty">检索中…</div>';
+  try{
+    const r=await fetch(aiBase()+'/api/kb-search?q='+encodeURIComponent(q)+'&n=20',{headers:{'Authorization':'Bearer '+(CLOUD.token||'')}});
+    const j=await r.json();
+    const rows=j.results||[];_kbRows=rows;
+    if(!rows.length){box.innerHTML='<div class="file-empty">未检索到相关文档</div>';return;}
+    box.innerHTML=rows.map((x,i)=>`<div class="kb-row" onclick="addKbFile(${i})"><div class="kb-t">${esc(x.title)}</div><div class="kb-m">${esc(x.category||'')} · ${esc(x.issuer||'')} · ${esc(x.publish_date||'')}</div></div>`).join('');
+  }catch(e){box.innerHTML='<div class="file-empty">检索失败（后端未连接？）</div>';}
+}
+function addKbFile(i){const x=_kbRows[i];if(!x)return;if(_fileBuf.some(f=>f.src==='kb'&&f.path===x.path)){toast('已添加');return;}_fileBuf.push({src:'kb',name:x.title,path:x.path,size:0});renderFileList();}
+function aiBase(){const u=getAiUrl();if(u)return u.replace(/\/api\/verify\/?$/,'');return (location.origin||'');}
+function aiVerifyUrl(){return aiBase()+'/api/verify';}
+let _aiPayload=null;
+function openAiVerify(id){
+  const m=M[curMod];const rec=getA(curMod).find(r=>r.id===id);if(!rec)return;
+  const filesKey=curMod==='doc_review'?'relatedFiles':'attach';
+  const files=parseFiles(rec[filesKey]);
+  const target=curMod==='record_check'?(rec.targetDoc||''):(rec.name||'');
+  const principles=Array.isArray(rec.principles)?rec.principles:[];
+  const findings=curMod==='record_check'?(rec.items||''):(rec.conflictDesc||'');
+  const attLines=files.map(f=>`· [${f.src==='kb'?'知识库':(f.src==='local'?'本机':'文本')}] ${f.name}${f.path&&f.src!=='text'?('（'+f.path+'）'):''}`).join('\n')||'（无）';
+  const prinLines=principles.map(p=>'· '+p).join('\n')||'（无）';
+  const prompt=`任务类型：${m.name}\n目标文档：${target||'（未填写）'}\n\n相关文件/资料：\n${attLines}\n\n所选核查原则：\n${prinLines}\n\n${findings?('已知不一致项/冲突：\n'+findings+'\n\n'):''}请基于上述材料，按核查要点（结论概要 / 逐条核对 / 风险研判 / 整改建议）给出结构化核查意见。`;
+  $('#modalTitle').textContent='🤖 AI 核查 · '+m.name;
+  $('#modalBody').innerHTML=`<div class="ai-verify">
+    <div class="ai-row"><b>目标文档</b>：${esc(target||'（未填写）')}</div>
+    <div class="ai-row"><b>相关文件</b>：${esc(files.length+' 个')}</div>
+    <div class="ai-row"><b>核查原则</b>：${esc(principles.join('、')||'（未选）')}</div>
+    <label class="ai-lab">发送给 AI 的核查提示词（可编辑）</label>
+    <textarea id="aiPrompt" class="ai-prompt">${esc(prompt)}</textarea>
+    <div id="aiResult" class="ai-result" style="display:none"></div>
+  </div>`;
+  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button><button class="btn" onclick="copyAiPrompt()">📋 复制提示词</button><button class="btn btn-primary" onclick="runAiVerify()">🤖 运行 AI 核查</button>`;
+  showMask();
+  _aiPayload={target_doc:target,attachments:files.map(f=>({src:f.src,name:f.name,path:f.path})),principles:principles,findings:findings,doc_type:m.name};
+}
+async function runAiVerify(){
+  const box=$('#aiResult');const pr=$('#aiPrompt');if(!box)return;
+  const prompt=pr?pr.value:'';
+  box.style.display='block';box.innerHTML='<div class="file-empty">AI 核查中…（通常 10~40 秒）</div>';
+  const payload=Object.assign({},_aiPayload,{prompt:prompt});
+  try{
+    const r=await fetch(aiVerifyUrl(),{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+(CLOUD.token||'')},body:JSON.stringify(payload)});
+    const j=await r.json();
+    if(j.ok&&j.result){box.innerHTML='<div class="ai-out">'+fmtAiResult(j.result)+'</div>';}
+    else{box.innerHTML='<div class="ai-warn">'+esc(j.message||j.error||'AI 核查未返回结果')+'<br>请改用「复制提示词」在外部 AI 中执行。</div>';}
+  }catch(e){box.innerHTML='<div class="ai-warn">调用失败：'+esc(e&&e.message?e.message:e)+'<br>请改用「复制提示词」在外部 AI 中执行。</div>';}
+}
+function copyAiPrompt(){const pr=$('#aiPrompt');if(!pr)return;const v=pr.value;
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(()=>toast('已复制核查提示词')).catch(()=>fallbackCopy(v));}
+  else fallbackCopy(v);
+}
+function fallbackCopy(v){const ta=document.createElement('textarea');ta.value=v;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('已复制核查提示词');}catch(e){toast('复制失败，请手动选择');}document.body.removeChild(ta);}
+/* 把 AI 返回（JSON 或纯文本）渲染为可读结构 */
+function fmtAiResult(raw){
+  let s=(raw||'').trim();
+  if(s.startsWith('```')){s=s.replace(/^```[a-zA-Z]*\n?/,'').replace(/\n?```$/,'')}
+  let obj=null;
+  try{obj=JSON.parse(s);}catch(e){}
+  if(obj && typeof obj==='object')return renderAiObj(obj);
+  return esc(raw).replace(/\n/g,'<br>');
+}
+function renderAiObj(o){
+  if(Array.isArray(o))return '<ul class="ai-ul">'+o.map(x=>'<li>'+renderAiVal(x)+'</li>').join('')+'</ul>';
+  if(o && typeof o==='object')return Object.entries(o).map(([k,v])=>`<div class="ai-sec"><div class="ai-k">${esc(k)}</div>${renderAiVal(v)}</div>`).join('');
+  return esc(String(o));
+}
+function renderAiVal(v){
+  if(v && typeof v==='object')return renderAiObj(v);
+  return '<div class="ai-v">'+esc(String(v)).replace(/\n/g,'<br>')+'</div>';
+}
+
+/* ============ 备份 ============ */
+function exportAll(){
+  const data={};ORDER.forEach(m=>data[m]=getA(m));
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='研发QA工作台备份_'+today()+'.json';a.click();toast('已导出备份');
+}
+function importAll(){ $('#fileInput').click(); }
+function doImport(e){
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=ev=>{try{const d=JSON.parse(ev.target.result);
+    ORDER.forEach(m=>{if(d[m]){d[m].forEach(r=>{if(!r.id)r.id=uid();});setA(m,d[m]);}});
+    if(CLOUD.enabled&&CLOUD.token){
+      ORDER.forEach(m=>{(d[m]||[]).forEach(r=>apiPersist(m,r));});
+      renderNav();renderHome();toast('导入成功，正在同步云端');
+    }else{
+      renderNav();renderHome();toast('导入成功');
+    }
+  }catch(err){toast('导入失败：文件格式错误');}};
+  rd.readAsText(f);e.target.value='';
+}
+function clearAll(){
+  if(!confirm('将清空全部 22 个模块的所有数据，且不可恢复！确认？'))return;
+  ORDER.forEach(m=>localStorage.removeItem(PREFIX+m));
+  renderNav();renderHome();toast('已清空全部数据');
+}
+function loadSamples(){
+  if(!confirm('将载入演示示例数据（不影响已有数据，仅追加）。继续？'))return;
+  const S={
+   doc_review:[{code:'DR-001',name:'XZB-2026 IND申报资料V2.0审阅',type:'IND申报资料',reviewType:['合规审阅','冲突检查'],basis:['NMPA GMP(2010修订)','ICH M4'],relatedFiles:'实验记录EXP-001~006',conflict:'有冲突',conflictDesc:'3.2.S.4.2 质量标准与EXP-003检测方法不一致',conclusion:'有条件通过',rectify:'修订质量标准中有关物质限度',owner:'唐海云',dueDate:addDays(today(),2),status:'进行中',remark:''}],
+   record_check:[{code:'RC-001',name:'申报资料与实验记录一致性核查',targetDoc:'IND申报资料V2.0',attach:'EXP-001~006',basis:['SOP'],risk:'高',method:'组合',items:'批号XZB-2026-01含量：申报99.8% vs 记录99.6%',consistency:'不一致',rectifyStatus:'整改中',owner:'唐海云',dueDate:addDays(today(),1),status:'进行中',remark:''}],
+   change:[{code:'CH-001',title:'有关物质色谱方法变更',type:'方法变更',level:'中等',phase:'III期',reason:'优化分离度',impact:['产品质量','验证状态'],ccb:'同意',approver:'QA',approveDate:today(),impl:'按变更计划执行',relatedSys:'Empower',owner:'张工',dueDate:addDays(today(),5),status:'已批准',remark:''}],
+   deviation:[{code:'DV-001',title:'HPLC系统积分异常',category:'系统偏差',severity:'重要',immediate:'冻结数据',impact:'可能影响批次放行',method:'5Why',rootCause:'软件升级参数丢失',ca:'恢复参数',pa:'升级审批流程',capaOwner:'李工',capaDue:addDays(today(),10),owner:'李工',dueDate:addDays(today(),8),status:'调查中',remark:''}],
+   capa:[{code:'CA-001',source:'偏差',ref:'DV-001',desc:'积分参数管理缺陷',type:'预防措施PA',responsible:'李工',planDate:addDays(today(),10),effect:'',closeDate:'',owner:'唐海云',dueDate:addDays(today(),10),status:'进行中',remark:''}],
+   qrm:[{code:'QR-001',subject:'共线生产交叉污染',method:'FMEA',scope:'临床样品车间',risk:'高',result:'需阶段性生产',control:'专用设备+清洁确认',reviewDate:addDays(today(),30),owner:'唐海云',dueDate:addDays(today(),3),status:'进行中',remark:''}],
+   supplier:[{code:'SP-001',name:'XX原料药有限公司',material:'原料药API',type:'物料供应商',risk:'中',qualify:'现场审计',result:'合格',approveDate:today(),reevalCycle:'每年',reevalDate:addDays(today(),200),owner:'王工',dueDate:addDays(today(),200),status:'已批准',remark:''}],
+   audit:[{code:'AU-001',name:'2026年度内部自检',auditType:'内部审计',target:'QC实验室',scope:'数据可靠性/偏差/CAPA',planDate:today(),execDate:addDays(today(),15),findings:'',major:'',reportRef:'',owner:'唐海云',dueDate:addDays(today(),15),status:'计划中',remark:''}],
+   oos:[{code:'OO-001',sample:'XZB-2026-03',item:'含量',rtype:'OOS',initial:'88.2%',retest:'99.5%',phase1:'复核称样',phase2:'',rootCause:'称样量错误',conclusion:'实验室错误',capaRef:'',owner:'赵工',dueDate:addDays(today(),4),status:'调查中',remark:''}],
+   method:[{code:'MT-001',name:'有关物质HPLC法',type:'有关物质',stage:'验证',params:['专属性','准确度','精密度'],equip:'HPLC-01',validation:'进行中',reportRef:'',owner:'赵工',dueDate:addDays(today(),6),status:'验证中',remark:''}],
+   stability:[{code:'ST-001',product:'XZB-2026 中试批',condition:'加速',timePoint:'0,1,2,3,6M',donePoint:'0,1M',spec:'符合草案',conclusion:'',nextPoint:addDays(today(),20),owner:'钱工',dueDate:addDays(today(),20),status:'进行中',remark:''}],
+   equip:[{code:'EQ-001',name:'HPLC-01',category:'检验仪器',model:'Agilent',cycle:'年',lastCal:addDays(today(),-340),nextCal:addDays(today(),25),confirm:'OQ',csv:'已验证',owner:'赵工',dueDate:addDays(today(),25),status:'正常',remark:''}],
+   di:[{code:'DI-001',area:'实验室',principle:['完整性','可追溯'],finding:'部分手工记录未签注时间',risk:'中',measure:'启用电子记录',owner:'唐海云',dueDate:addDays(today(),7),status:'整改中',remark:''}],
+   training:[{code:'TR-001',subject:'数据可靠性培训',content:'ALCOA+原则',target:'QC全员',trainer:'唐海云',trainDate:addDays(today(),-5),check:'提问',passRate:'100%',reTrain:'否',owner:'唐海云',dueDate:addDays(today(),-5),status:'已评估',remark:''}],
+   knowledge:[{code:'KM-001',title:'XZB-2026 CQA确定',category:'CQA',project:'XZB-2026',source:'试验',content:'关键质量属性：含量、有关物质、溶出',value:'高',owner:'唐海云',dueDate:addDays(today(),-10),status:'已归档',remark:''}],
+   pv:[{code:'PV-001',product:'XZB-2026 工艺',stage:'PPQ',protocol:'P-001',batch:'PPQ-01/02/03',cqa:'含量、溶出',result:'',owner:'孙工',dueDate:addDays(today(),40),status:'计划中',remark:''}],
+   tech_transfer:[{code:'TT-001',project:'分析方法转移至QC',from:'研发',to:'QC',content:['分析方法'],risk:'中',protocol:'TT-P01',report:'',owner:'赵工',dueDate:addDays(today(),12),status:'进行中',remark:''}],
+   release:[{code:'RL-001',batch:'XZB-2026-03',product:'XZB-2026片',type:'临床样品',qaReview:'审核通过',decision:'待审核',releasePerson:'唐海云',releaseDate:'',owner:'唐海云',dueDate:addDays(today(),1),status:'待审核',remark:''}],
+   complaint:[{code:'CM-001',source:'研究者',product:'XZB-2026-02',content:'包装标签信息疑问',type:'其他',severity:'一般',action:'答复',recallLevel:'无',closeDate:'',owner:'唐海云',dueDate:addDays(today(),6),status:'处理中',remark:''}],
+   self_inspect:[{code:'SI-001',plan:'季度自检-生产',scope:'厂房/设备/物料',team:'QA+生产',date:addDays(today(),15),findings:'',track:'',reportRef:'',owner:'唐海云',dueDate:addDays(today(),15),status:'计划中',remark:''}],
+   mgmt_review:[{code:'MR-001',period:'2026Q3',topics:['质量目标','风险趋势','CAPA'],inputs:'质量指标汇总',outputs:'',decision:'',date:addDays(today(),25),owner:'唐海云',dueDate:addDays(today(),25),status:'计划中',remark:''}],
+   outsourcing:[{code:'OS-001',partner:'XX CDMO',service:'CMO/CDMO',agreement:'QA-2026-01',auditRef:'AU-000',phase:'III期',owner:'周工',dueDate:addDays(today(),60),status:'进行中',remark:''}],
+  };
+  ORDER.forEach(m=>{if(S[m]){const a=getA(m);S[m].forEach(r=>{r.id=r.id||uid();if(!a.find(x=>x.code===r.code))a.push(r);});setA(m,a);}});
+  renderNav();renderHome();toast('已载入示例数据');
+}
+
+/* ============ 弹窗 ============ */
+function showMask(){$('#mask').classList.add('show');}
+function closeModal(){$('#mask').classList.remove('show');}
+$('#mask').onclick=e=>{if(e.target.id==='mask')closeModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ============ 启动 ============ */
+loadCloud();renderCloudBadge();
+try{renderNav();}catch(e){
+  const _n=$('#nav');if(_n)_n.innerHTML='<div class="nav-item" style="color:#c0392b">⚠ 导航加载失败：'+esc(e&&e.message||e)+'</div>';
+  console.error('[qa-workbench] renderNav error:',e);
+}
+try{renderHome();}catch(e){
+  const _c=$('#content');if(_c)_c.innerHTML='<div class="section" style="border:1px solid #c0392b;background:#fde8e4"><h3 style="color:#c0392b;margin:0 0 8px">⚠ 工作台首页加载失败</h3><div style="font-size:12px;color:#1f2a44;margin-bottom:8px">可能是浏览器版本过旧、扩展拦截、或脚本执行被中断。请按 F12 打开控制台查看完整错误。</div><pre style="white-space:pre-wrap;font-size:12px;background:#fff;padding:10px;border-radius:6px;margin:0">'+esc((e&&e.stack)||String(e))+'</pre></div>';
+  console.error('[qa-workbench] renderHome error:',e);
+}
+if(CLOUD.enabled&&CLOUD.token){
+  (async()=>{const ok=await cloudBootstrap();if(ok){toast('☁ 已自动同步云端数据');startSync();}else{CLOUD.enabled=false;CLOUD.token='';saveCloud();renderCloudBadge();}})();
+}
