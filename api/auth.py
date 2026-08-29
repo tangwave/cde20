@@ -36,8 +36,18 @@ SESSION_COOKIE = (os.environ.get("SESSION_COOKIE") or "kb_session").strip()
 
 
 def auth_enabled():
-    return (os.environ.get("AUTH_ENABLED", "1").strip().lower()
-            not in ("0", "false", "no", "off"))
+    """是否启用全站鉴权。
+
+    显式配置 AUTH_ENABLED 时以其为准；未配置时按「有没有接外部数据库」推断：
+    没配 DATABASE_URL 就说明账号只能落在易失的本地 SQLite 上（部署即丢、且初始无账号），
+    此时默认**关闭**鉴权，避免把所有人（包括管理员）挡在登录页外导致站点不可用。
+    """
+    v = (os.environ.get("AUTH_ENABLED") or "").strip().lower()
+    if v in ("0", "false", "no", "off"):
+        return False
+    if v in ("1", "true", "yes", "on"):
+        return True
+    return using_postgres()        # 未显式配置：接了外部库才默认开启
 
 
 def using_postgres():
