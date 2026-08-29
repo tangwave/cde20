@@ -3,20 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="海云AI · 药品研发生产 QA 专家 — 精通全生命周期法规与注册申报要求，提供专业质量合规顾问服务">
-  <!-- 实时后端地址：
-       留空 ""            = 静态快照模式（随站分发 3096 篇元数据，客户端检索）
-       填 "/" 或 same-origin = 同域实时：前端与 api/server.py 由同一后端托管，
-                               fetch 相对 /api/qa，免 CORS（推荐 Render/VPS 同域部署）
-       填完整 URL（如 https://kb.example.com）= 跨域实时（后端已开 CORS *） -->
+  <meta name="description" content="海云AI · 药品研发生产 QA 专家 — 精通全生命周期法规与注册申报要求，提供专业质量合规顾问服务。收录NMPA/CDE/ICH/FDA/EMA/OECD法规原文与问答，支持FTS5全文检索。">
+  <meta name="theme-color" content="#0c447c" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#042c53" media="(prefers-color-scheme: dark)">
+  <!-- 实时后端地址： -->
   <meta name="qa-api-base" content="/">
   <title>海云AI · 药品研发生产 QA 专家 · 法规与注册申报顾问</title>
+  <link rel="canonical" href="https://pharma-qa-9527.onrender.com/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="stylesheet" href="css/style.css?v=20260816d">
   <link rel="stylesheet" href="css/portal.css?v=20260806g">
   <link rel="stylesheet" href="css/qa9.css?v=20260813a">
   <link rel="stylesheet" href="css/manufacture.css?v=20260813d">
   <link rel="stylesheet" href="css/flight-checks.css?v=20260816a">
+  <!-- Open Graph -->
+  <meta property="og:title" content="海云AI · 药品研发生产 QA 专家">
+  <meta property="og:description" content="药品法规与注册申报顾问。收录NMPA/CDE/ICH/FDA/EMA/OECD法规原文，支持FTS5全文检索与QA问答。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pharma-qa-9527.onrender.com/">
+  <meta property="og:site_name" content="海云AI">
+  <meta property="og:locale" content="zh_CN">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="海云AI · 药品研发生产 QA 专家">
+  <meta name="twitter:description" content="药品法规与注册申报顾问，收录NMPA/CDE/ICH/FDA/EMA/OECD法规原文，支持FTS5全文检索。">
+  <!-- JSON-LD: WebSite + SearchAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "海云AI · 药品研发生产 QA 专家",
+    "url": "https://pharma-qa-9527.onrender.com/",
+    "description": "药品法规与注册申报顾问，收录NMPA/CDE/ICH/FDA/EMA/OECD法规原文，支持FTS5全文检索。",
+    "inLanguage": "zh-CN",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://pharma-qa-9527.onrender.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="app">
@@ -397,5 +424,13 @@
     });
   })();
   </script>
+  <div class="site-footer">
+    <p class="site-footer-text">海云AI · 药品研发生产 QA 专家</p>
+    <p class="site-footer-disclaimer">
+      本库数据来源于 NMPA、CDE、CFDI 等官方公开文件，仅供学习与参考，
+      不构成注册、合规或法律意见。用药/申报请以官方原文为准，使用前请核实时效性。
+    </p>
+    <p class="site-footer-meta">© 2026 海云AI · 由 CDE20 + FastAPI 驱动 · <a href="/sitemap.xml">站点地图</a></p>
+  </div>
 </body>
 </html>

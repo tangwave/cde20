@@ -402,6 +402,50 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---------------------------------------------------------------- 全局安全响应头
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """为所有响应补充商用级安全头。"""
+
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        # CSP：只允许自站脚本/CSS/图片，禁止表单提交目标（_blank 保留），严格 referrer
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js; "
+            "script-src-elem 'self' https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js; "
+            "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js; "
+            "img-src 'self' data: https:; "
+            "font-src 'self' https://cdnjs.cloudflare.com/ajax/libs/; "
+            "connect-src 'self'; "
+            "media-src 'self'; "
+            "object-src 'none'; "
+            "frame-ancestors 'none'; "
+            "base-uri 'self'; "
+            "form-action 'self'; "
+            "upgrade-insecure-requests"
+        )
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = (
+            "accelerometer=(), camera=(), geolocation=(), "
+            "gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+        )
+        # HSTS：1 年，含子域名，pre-load 友好
+        response.headers["Strict-Transport-Security"] = (
+            "max-age=31536000; includeSubDomains; preload"
+        )
+        response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+        response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+        return response
+
+
+app.add_middleware(SecurityHeadersMiddleware)
+
 # ---- 药品研发QA合规管理台 · 云端同步（独立 router，按文件加载，失败不影响主服务）----
 try:
     import importlib.util as _ilu
@@ -2953,9 +2997,11 @@ def spa(full_path: str):
     # 避免回退成 index.html 被前端当成“法规原文”渲染成网页源码。
     if os.path.splitext(full_path)[1]:
         return JSONResponse({"error": "not found"}, status_code=404)
+    # 其他所有未知路由 → 返回 404.html（带 HTTP 404），避免 SPA 回退首页造成搜索引擎误收录
     return FileResponse(
-        os.path.join(STATIC, "index.html"),
-        headers={"Cache-Control": "public, max-age=0, must-revalidate"},
+        os.path.join(STATIC, "404.html"),
+        status_code=404,
+        headers={"Cache-Control": "public, max-age=3600"},
     )
 
 
