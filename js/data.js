@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-08-28",
-    "totalDocs": 2211,
+    "lastUpdated": "2026-08-29",
+    "totalDocs": 2225,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -237,6 +237,16 @@ const KB_DATA = {
                     "title": "药物非临床研究质量管理规范",
                     "path": "03_部门规章/GLP.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -415,6 +425,16 @@ const KB_DATA = {
                     "title": "药物非临床研究质量管理规范",
                     "path": "03_部门规章/GLP.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -595,6 +615,16 @@ const KB_DATA = {
                     "title": "药物非临床研究质量管理规范",
                     "path": "03_部门规章/GLP.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -793,6 +823,16 @@ const KB_DATA = {
                     "title": "药物非临床研究质量管理规范",
                     "path": "03_部门规章/GLP.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -1136,11 +1176,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录1：无菌药品",
-                    "path": "03_部门规章/GMP附录1_无菌药品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "化学药品注射剂灭菌工艺研究和验证指导原则",
                     "path": "04_技术指导原则/注射剂灭菌工艺.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -1184,6 +1219,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -1525,11 +1570,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录：临床试验用药品（试行）",
-                    "path": "03_部门规章/GMP附录_临床试验用药品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -1548,6 +1588,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -1849,6 +1899,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -2118,6 +2178,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -2382,6 +2452,16 @@ const KB_DATA = {
                     "title": "药品年度报告管理规定",
                     "path": "03_部门规章/年度报告.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)无菌药品附录",
+                    "path": "03_部门规章/国家药监局综合司公开征求药品生产质量管理规范(2010年修订)无菌药品附录(征求意见稿)意见.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16349.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -2616,6 +2696,16 @@ const KB_DATA = {
                     "title": "化学药品原料药制备和结构确证研究技术指导原则",
                     "path": "04_技术指导原则/原料药制备.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -2797,6 +2887,16 @@ const KB_DATA = {
                     "title": "化学药品原料药制备和结构确证研究技术指导原则",
                     "path": "04_技术指导原则/原料药制备.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -2994,6 +3094,16 @@ const KB_DATA = {
                     "title": "化学药品原料药制备和结构确证研究技术指导原则",
                     "path": "04_技术指导原则/原料药制备.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -3197,6 +3307,16 @@ const KB_DATA = {
                     "title": "化学药品原料药制备和结构确证研究技术指导原则",
                     "path": "04_技术指导原则/原料药制备.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -3524,11 +3644,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录2：原料药",
-                    "path": "03_部门规章/GMP附录2_原料药.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "化学药品原料药质量控制研究技术指导原则",
                     "path": "04_技术指导原则/原料药质控.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -3567,6 +3682,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -3886,16 +4011,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录2：原料药",
-                    "path": "03_部门规章/GMP附录2_原料药.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
-                    "title": "GMP附录：临床试验用药品（试行）",
-                    "path": "03_部门规章/GMP附录_临床试验用药品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -3914,6 +4029,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -4165,11 +4290,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录2：原料药",
-                    "path": "03_部门规章/GMP附录2_原料药.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "化学原料药登记主体变更管理规定（征求意见稿）",
                     "path": "03_部门规章/化学原料药登记主体变更管理规定征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260723165054110.html"
@@ -4193,6 +4313,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -4427,6 +4557,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -4653,6 +4793,16 @@ const KB_DATA = {
                     "title": "药品年度报告管理规定",
                     "path": "03_部门规章/年度报告.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)原料药附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)原料药附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -4889,6 +5039,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -5081,6 +5241,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -5279,6 +5449,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -5488,6 +5668,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -5894,6 +6084,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -6292,6 +6492,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -6611,6 +6821,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -6908,6 +7128,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -7169,6 +7399,16 @@ const KB_DATA = {
                     "title": "国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）",
                     "path": "03_部门规章/国家药监局关于同意山东省食品药品检验研究院作为锝标记及正电子类放射性药品检验机构的通告（2026年第28号）.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260811173220100.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)放射性药品附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)放射性药品附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20121206120001755.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -7428,6 +7668,21 @@ const KB_DATA = {
                   {
                     "title": "药品注册管理办法",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -7561,7 +7816,23 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -7699,7 +7970,23 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -7845,7 +8132,23 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -8099,6 +8402,21 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -8330,6 +8648,21 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -8537,6 +8870,21 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -8711,6 +9059,21 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -8882,7 +9245,23 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)确认与验证附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)确认与验证附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)药用辅料附录(药包材附录)",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)药用辅料附录药包材附录的公告(2025年第1号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/16275.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  }
+                ]
               },
               "international": {
                 "requirements": [
@@ -9068,6 +9447,16 @@ const KB_DATA = {
                     "title": "细胞株质量控制和评价指导原则",
                     "path": "04_技术指导原则/细胞株质控.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -9252,6 +9641,16 @@ const KB_DATA = {
                     "title": "细胞株质量控制和评价指导原则",
                     "path": "04_技术指导原则/细胞株质控.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -9454,6 +9853,16 @@ const KB_DATA = {
                     "title": "细胞株质量控制和评价指导原则",
                     "path": "04_技术指导原则/细胞株质控.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -9650,6 +10059,16 @@ const KB_DATA = {
                     "title": "细胞株质量控制和评价指导原则",
                     "path": "04_技术指导原则/细胞株质控.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -10005,11 +10424,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3_生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "生物制品生产工艺过程变更管理技术指导原则",
                     "path": "04_技术指导原则/生物制品变更.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -10048,6 +10462,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -10361,16 +10785,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3_生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
-                    "title": "GMP附录：临床试验用药品（试行）",
-                    "path": "03_部门规章/GMP附录_临床试验用药品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "轮状病毒疫苗临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/轮状病毒疫苗临床试验技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/f3fc73599f728274a77b59336c563065"
@@ -10394,6 +10808,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -10645,11 +11069,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3_生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -10668,6 +11087,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -10902,6 +11331,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -11144,6 +11583,16 @@ const KB_DATA = {
                     "title": "生物制品生产工艺过程变更管理技术指导原则",
                     "path": "04_技术指导原则/生物制品变更.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -11357,6 +11806,16 @@ const KB_DATA = {
                     "title": "单采血浆站管理办法",
                     "path": "03_部门规章/单采血浆站管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -11509,6 +11968,16 @@ const KB_DATA = {
                     "title": "单采血浆站管理办法",
                     "path": "03_部门规章/单采血浆站管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -11663,6 +12132,16 @@ const KB_DATA = {
                     "title": "单采血浆站管理办法",
                     "path": "03_部门规章/单采血浆站管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -11837,6 +12316,16 @@ const KB_DATA = {
                     "title": "单采血浆站管理办法",
                     "path": "03_部门规章/单采血浆站管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -12135,11 +12624,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录4：血液制品",
-                    "path": "03_部门规章/GMP附录4_血液制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "血液制品病毒灭活/去除验证技术指导原则",
                     "path": "04_技术指导原则/血液制品病毒验证.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -12168,6 +12652,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -12420,11 +12914,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录4：血液制品",
-                    "path": "03_部门规章/GMP附录4_血液制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -12443,6 +12932,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -12667,11 +13166,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录4：血液制品",
-                    "path": "03_部门规章/GMP附录4_血液制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -12690,6 +13184,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -12917,6 +13421,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -13138,6 +13652,16 @@ const KB_DATA = {
                     "title": "药品不良反应报告和监测管理办法",
                     "path": "03_部门规章/ADR管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -13332,13 +13856,18 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
+                    "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "药典三部-疫苗通则",
-                    "url": "https://www.nmpa.gov.cn/"
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -13485,13 +14014,18 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
+                    "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "药典三部-疫苗通则",
-                    "url": "https://www.nmpa.gov.cn/"
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -13628,13 +14162,18 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
+                    "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "药典三部-疫苗通则",
-                    "url": "https://www.nmpa.gov.cn/"
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -13781,13 +14320,18 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
+                    "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "药典三部-疫苗通则",
-                    "url": "https://www.nmpa.gov.cn/"
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -14082,11 +14626,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
@@ -14109,6 +14648,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -14341,11 +14890,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
@@ -14368,6 +14912,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -14587,11 +15141,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
@@ -14614,6 +15163,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -14805,11 +15364,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
@@ -14827,6 +15381,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -15033,13 +15597,18 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录3：生物制品",
-                    "path": "03_部门规章/GMP附录3-生物制品.pdf",
+                    "title": "药典三部-疫苗通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "药典三部-疫苗通则",
-                    "url": "https://www.nmpa.gov.cn/"
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -15208,6 +15777,21 @@ const KB_DATA = {
                   {
                     "title": "基因治疗产品药学研究与评价技术指导原则",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -15331,6 +15915,21 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -15440,6 +16039,21 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -15579,6 +16193,21 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -15832,10 +16461,6 @@ const KB_DATA = {
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
                   },
                   {
-                    "title": "GMP附录-细胞治疗产品",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药典三部-生物制品通则",
                     "url": "https://www.nmpa.gov.cn/"
                   },
@@ -15858,6 +16483,21 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -16097,6 +16737,21 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -16320,6 +16975,21 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -16498,6 +17168,21 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -16685,6 +17370,21 @@ const KB_DATA = {
                   {
                     "title": "细胞与基因治疗药品“先锐计划”（CDE，2026-08-19 征求意见）",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a8ef5a0f7ae2e6dfca8cf3851841b1a"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)生物制品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)生物制品附录修订稿的公告(2020年第58号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/12268.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)计算机化系统附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)计算机化系统附录.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20150526120001509.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -16855,6 +17555,16 @@ const KB_DATA = {
                     "title": "中药注册管理专门规定",
                     "path": "03_部门规章/中药注册.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -17014,6 +17724,16 @@ const KB_DATA = {
                     "title": "中药注册管理专门规定",
                     "path": "03_部门规章/中药注册.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -17165,6 +17885,16 @@ const KB_DATA = {
                     "title": "中药注册管理专门规定",
                     "path": "03_部门规章/中药注册.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -17346,6 +18076,16 @@ const KB_DATA = {
                     "title": "中药注册管理专门规定",
                     "path": "03_部门规章/中药注册.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -17615,11 +18355,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录5：中药制剂",
-                    "path": "03_部门规章/GMP附录5_中药制剂.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "中药质量标准研究技术指导原则",
                     "path": "04_技术指导原则/中药质量标准.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -17648,6 +18383,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -17898,11 +18643,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录5：中药制剂",
-                    "path": "03_部门规章/GMP附录5_中药制剂.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -17921,6 +18661,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -18136,11 +18886,6 @@ const KB_DATA = {
                     "url": "https://www.nmpa.gov.cn/"
                   },
                   {
-                    "title": "GMP附录5：中药制剂",
-                    "path": "03_部门规章/GMP附录5_中药制剂.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -18159,6 +18904,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -18364,6 +19119,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -18581,6 +19346,16 @@ const KB_DATA = {
                     "title": "国家药监局关于修订感冒灵口服制剂说明书的公告（2026年第66号）",
                     "path": "03_部门规章/国家药监局关于修订感冒灵口服制剂说明书的公告2026年第66号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260720095207120.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药制剂附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药制剂附录.md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/5346.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -18771,6 +19546,16 @@ const KB_DATA = {
                     "title": "中药饮片质量管理规范",
                     "path": "03_部门规章/中药饮片质量管理.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -18925,6 +19710,16 @@ const KB_DATA = {
                     "title": "中药饮片质量管理规范",
                     "path": "03_部门规章/中药饮片质量管理.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -19071,6 +19866,16 @@ const KB_DATA = {
                     "title": "中药饮片质量管理规范",
                     "path": "03_部门规章/中药饮片质量管理.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -19235,6 +20040,16 @@ const KB_DATA = {
                     "title": "中药饮片质量管理规范",
                     "path": "03_部门规章/中药饮片质量管理.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -19463,11 +20278,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录6：中药饮片",
-                    "path": "03_部门规章/GMP附录6_中药饮片.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "中国药典炮制通则",
                     "path": "04_技术指导原则/药典炮制通则.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -19496,6 +20306,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -19686,11 +20506,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录6：中药饮片",
-                    "path": "03_部门规章/GMP附录6_中药饮片.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -19709,6 +20524,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -19892,11 +20717,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录6：中药饮片",
-                    "path": "03_部门规章/GMP附录6_中药饮片.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -19915,6 +20735,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -20099,6 +20929,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -20302,7 +21142,7 @@ const KB_DATA = {
                     "path": "04_技术指导原则/NMPA_指导原则/中药饮片配方颗粒不良反应个例报告填报指南（征求意见稿）.md",
                     "url": "https://www.cdr-adr.org.cn/tzgg_home/202608/t20260828_51717.html"
                   },
-{
+                  {
                     "title": "国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定（征求意见稿）",
                     "path": "03_部门规章/国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售使用管理规定征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260820180509158.html"
@@ -20311,6 +21151,16 @@ const KB_DATA = {
                     "title": "药品上市后变更管理办法（试行）",
                     "path": "03_部门规章/变更管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)中药饮片附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)中药饮片附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -20486,6 +21336,16 @@ const KB_DATA = {
                     "title": "药品注册管理办法",
                     "path": "03_部门规章/药品注册管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -20623,6 +21483,16 @@ const KB_DATA = {
                     "title": "药品注册管理办法",
                     "path": "03_部门规章/药品注册管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -20762,6 +21632,16 @@ const KB_DATA = {
                     "title": "药品注册管理办法",
                     "path": "03_部门规章/药品注册管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -20909,6 +21789,16 @@ const KB_DATA = {
                     "title": "药品注册管理办法",
                     "path": "03_部门规章/药品注册管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -21141,11 +22031,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录7：医用气体",
-                    "path": "03_部门规章/GMP附录7_医用气体.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册管理办法",
                     "path": "03_部门规章/药品注册管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
@@ -21169,6 +22054,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -21376,11 +22271,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录7：医用气体",
-                    "path": "03_部门规章/GMP附录7_医用气体.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -21399,6 +22289,16 @@ const KB_DATA = {
                     "title": "ICH M15：模型引导的药物研发（实施建议和中文翻译稿·征求意见）",
                     "path": "04_技术指导原则/ICH_转化/ICH-M15模型引导的药物研发实施建议及中文翻译稿征求意见.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e195b0414c7fd0c3ae88635ee186145"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -21570,11 +22470,6 @@ const KB_DATA = {
                 ],
                 "regulations": [
                   {
-                    "title": "GMP附录7：医用气体",
-                    "path": "03_部门规章/GMP附录7_医用气体.pdf",
-                    "url": "https://www.nmpa.gov.cn/"
-                  },
-                  {
                     "title": "药品注册核查工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册核查工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
@@ -21593,6 +22488,16 @@ const KB_DATA = {
                     "title": "药物临床试验生物样品分析实验室合规性回顾报告（2026年第42号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验生物样品分析实验室合规性回顾报告2026年第42号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a0a6727013b8c545df6f114f3f8dad1f"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -21788,6 +22693,16 @@ const KB_DATA = {
                     "title": "药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序（试行）",
                     "path": "04_技术指导原则/CFDI_检查指南/药品注册生产现场核查和上市前药品生产质量管理规范检查衔接工作程序试行.md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14200.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -21978,6 +22893,16 @@ const KB_DATA = {
                     "title": "药品上市后变更管理办法（试行）",
                     "path": "03_部门规章/变更管理办法.pdf",
                     "url": "https://www.nmpa.gov.cn/"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)医用氧附录",
+                    "path": "03_部门规章/药品生产质量管理规范(2010年修订)医用氧附录.md",
+                    "url": "http://www.sda.gov.cn/WS01/CL0087/102260.html"
+                  },
+                  {
+                    "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
+                    "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
+                    "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
                   }
                 ]
               },
@@ -22107,7 +23032,6 @@ const KB_DATA = {
     }
   ]
 };
-
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = KB_DATA;
 }

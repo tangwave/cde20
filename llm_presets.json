@@ -19,7 +19,11 @@
       "thinkingmachines/inkling:free",
       "nvidia/nemotron-3.5-lightning:free",
       "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-      "stealth/ox-alpha"
+      "inclusionai/ling-3.0-flash-fin:free",
+      "poolside/laguna-s-2.1:free",
+      "poolside/laguna-xs-2.1:free",
+      "google/gemma-4-26b-a4b-it:free",
+      "google/gemma-4-31b-it:free"
     ],
     "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free",
     "custom": false

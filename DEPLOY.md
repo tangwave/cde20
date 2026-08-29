@@ -64,9 +64,10 @@ Render 读 `render.yaml` 后会显示要创建的服务 `pharma-qa-9527`，并�
 
 ### OpenRouter 真·免费模型一览（手动切换对照）
 
-> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-28 核验：OpenRouter 目录中 pricing 双 0 的免费模型共 **21** 个（含 `openrouter/free` 路由器及 `google/lyria-3-*` 音频模型）。其中**已内置 14 个文本对话免费模型 + `openrouter/free` 路由器（共 15 个）**（均纳入 `llm_presets.json` / `LLM_PRESETS_DEFAULT`），默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳）。
+> 免费目录随官方调整，**以 [openrouter.ai/api/v1/models](https://openrouter.ai/api/v1/models) 实时列表（pricing 双 0）为准**。以下为 2026-08-29 核验：OpenRouter 目录中 pricing 双 0 的免费模型共 **21** 个（含 `openrouter/free` 路由器及 `google/lyria-3-*` 音频模型）。其中**已内置 19 个文本对话免费模型 + `openrouter/free` 路由器（共 20 个）**（均纳入 `llm_presets.json` / `LLM_PRESETS_DEFAULT`），默认 `nvidia/nemotron-3-ultra-550b-a55b:free`（中文药学质量最佳）。
 > ⚠️ 2026-08-24 处置说明：① 移除 2 个已从 OpenRouter 目录下线的模型——`nvidia/nemotron-3-nano-30b-a3b:free`、`nvidia/nemotron-nano-9b-v2:free`（目录已无此 ID，调用将 404）；② 新增 1 个目录新晋免费模型 `stealth/ox-alpha`；③ 此前（2026-08-21）实测不可用的 `google/gemma-4-31b-it:free`、`google/gemma-4-26b-a4b-it:free`、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free` 因地区/提供方限制仍**保持剔除**，由 `openrouter/free` 路由器兜底免费档。
 > ✅ 2026-08-28 新增 3 个中国友好免费模型（OpenRouter 目录 pricing 双 0，已纳入）：`minimax/minimax-m3:free`（MiniMax 中文大模型 1M 上下文）、`minimax/minimax-m2.7:free`（MiniMax 中文大模型）、`z-ai/glm-5.2:free`（智谱 GLM-5.2 中文大模型；此前因地区限制剔除，现官方重新开放为免费档，重新纳入以补强中文药学问答能力）。三者均无需付费 Key，用户只需在设置中粘贴自己的 OpenRouter Key 即可选用。
+> 🔄 2026-08-29 目录更新：① 移除已从 OpenRouter 目录下线的 `stealth/ox-alpha`（目录已无此 ID，调用将 404）；② 重新纳入此前因地区/提供方限制剔除、现官方列为免费档的 `google/gemma-4-26b-a4b-it:free`、`google/gemma-4-31b-it:free`、`poolside/laguna-s-2.1:free`、`poolside/laguna-xs-2.1:free`；③ 新增目录新晋免费模型 `inclusionai/ling-3.0-flash-fin:free`（Ling 3.0 Flash Fin 中文/金融优化）。当前内置 OpenRouter 文本对话免费模型 **19 个 + `openrouter/free` 路由器（共 20 个）**；音频类 `google/lyria-3-*` 仍不纳入对话模型。
 
 | 模型 ID（填进 `LLM_MODEL`） | 类型 / 定位 | 适合场景 | 备注 |
 |---|---|---|---|
