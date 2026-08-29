@@ -2570,6 +2570,22 @@ def api_reg(path: str = ""):
     return JSONResponse({"meta": meta, "body": body, "source": "kb"})
 
 
+# ---------------------------------------------------------------- /api/reg-count（轻量计数，避免首屏下载全量索引）
+@app.get("/api/reg-count")
+def api_reg_count():
+    """仅返回法规原文总条数，供顶栏统计展示；体量极小，无需下载 2.5MB 的 reg-kb-full.js。"""
+    db = _db_path()
+    if not os.path.isfile(db):
+        return {"count": 0}
+    try:
+        con = sqlite3.connect(db)
+        n = con.execute("SELECT COUNT(*) FROM docs").fetchone()[0]
+        con.close()
+        return {"count": n}
+    except Exception:
+        return {"count": 0}
+
+
 # ---------------------------------------------------------------- /api/kb-search（管理台选文件：知识库检索）
 @app.get("/api/kb-search")
 def api_kb_search(q: str = "", n: int = 20):
@@ -2918,12 +2934,29 @@ def spa(full_path: str):
         return JSONResponse({"error": "not found"}, status_code=404)
     f = os.path.join(STATIC, full_path)
     if os.path.isfile(f):
-        return FileResponse(f)
+        ext = os.path.splitext(full_path)[1].lower()
+        # 带 ?v= 版本号的静态资源（JS/CSS/图片/字体）内容不可变 → 长缓存 + immutable；
+        # 改版时只需更新 HTML 里的 ?v= 查询串即可让浏览器取新版本（旧版本仍按 URL 缓存）。
+        immutable = ext in {
+            ".js", ".css", ".png", ".jpg", ".jpeg", ".gif", ".ico",
+            ".svg", ".webp", ".avif", ".woff", ".woff2", ".ttf", ".eot",
+        }
+        if immutable:
+            return FileResponse(
+                f, headers={"Cache-Control": "public, max-age=31536000, immutable"}
+            )
+        # HTML / JSON 等可能变化的资源：每次重新校验，避免用户看到陈旧页面。
+        return FileResponse(
+            f, headers={"Cache-Control": "public, max-age=0, must-revalidate"}
+        )
     # 对明显带扩展名的静态资源（.md/.json/.txt 等）缺失时返回真 404，
     # 避免回退成 index.html 被前端当成“法规原文”渲染成网页源码。
     if os.path.splitext(full_path)[1]:
         return JSONResponse({"error": "not found"}, status_code=404)
-    return FileResponse(os.path.join(STATIC, "index.html"))
+    return FileResponse(
+        os.path.join(STATIC, "index.html"),
+        headers={"Cache-Control": "public, max-age=0, must-revalidate"},
+    )
 
 
 if __name__ == "__main__":

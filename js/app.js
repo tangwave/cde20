@@ -327,11 +327,18 @@ const App = {
     const statsEl = document.getElementById('topbarStats');
     if (!statsEl) return;
     const varietyCount = this.getAllVarieties().length;
-    const regCount = (globalThis.REG_KB_FULL || []).length;
+    // 法规原文总条数较大（全量索引约 350KB），改为轻量接口异步取，避免首屏下载。
     statsEl.innerHTML =
-      '<span class="topbar-stats-item">📄 法规原文: ' + regCount + '</span>' +
+      '<span class="topbar-stats-item" id="topbarRegCount">📄 法规原文: …</span>' +
       '<span class="topbar-stats-item">💊 品种: ' + varietyCount + '</span>' +
       '<span class="topbar-stats-item">📅 更新: ' + (KB_DATA.meta.lastUpdated || '') + '</span>';
+    fetch('/api/reg-count', { cache: 'no-cache' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        const el = document.getElementById('topbarRegCount');
+        if (el && d && typeof d.count === 'number') el.textContent = '📄 法规原文: ' + d.count;
+      })
+      .catch(() => {});
   },
 
   /* ============ 侧边栏（2级：分类 → 品种） ============ */
@@ -2571,6 +2578,18 @@ const App = {
       else this.openClassification();
     });
 
+    // 移动端：侧栏抽屉开关 + 点击遮罩关闭
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    if (sidebarToggle) sidebarToggle.addEventListener('click', () => {
+      const app = document.querySelector('.app');
+      if (app) app.classList.toggle('sidebar-open');
+    });
+    const sidebarBackdrop = document.querySelector('.sidebar-backdrop');
+    if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', () => {
+      const app = document.querySelector('.app');
+      if (app) app.classList.remove('sidebar-open');
+    });
+
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
@@ -3912,16 +3931,52 @@ Object.assign(App, {
     const st = document.getElementById('stageTabs'); if (st) st.style.display = '';
   },
 
-  openRegulationLibrary() {
+  // 法规原文全量索引（reg-kb-full.js，约 350KB）体积较大，改为按需懒加载：
+  // 仅当用户打开「法规原文」库时才异步注入该脚本，不再阻塞首屏渲染。
+  ensureRegFull() {
+    if (globalThis.REG_KB_FULL) return Promise.resolve(globalThis.REG_KB_FULL);
+    if (this._regFullPromise) return this._regFullPromise;
+    const self = this;
+    this._regFullPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'js/reg-kb-full.js?v=20260806g';
+      s.async = true;
+      s.onload = () => resolve(globalThis.REG_KB_FULL || []);
+      s.onerror = () => reject(new Error('reg-kb-full.js 加载失败'));
+      document.head.appendChild(s);
+    });
+    return this._regFullPromise;
+  },
+
+  _showRegulationLibrary() {
     this.state.regLibOpen = true;
     ['breadcrumb', 'stageTabs', 'detailLayout', 'matrixView'].forEach(id => {
       const e = document.getElementById(id); if (e) e.style.display = 'none';
     });
     const lib = document.getElementById('regulationLibrary'); if (lib) lib.style.display = 'flex';
     const btn = document.getElementById('regLibBtn'); if (btn) btn.classList.add('active');
+    this._regListCache = null;
     this.renderRegCatFilters();
     this.renderRegDocList();
     if (this.state.currentRegId) this.openRegulation(this.state.currentRegId);
+  },
+
+  openRegulationLibrary() {
+    // 已加载：直接展示
+    if (globalThis.REG_KB_FULL) { this._showRegulationLibrary(); return; }
+    // 未加载：先开库显示 loading，再异步拉取全量索引
+    this.state.regLibOpen = true;
+    const lib = document.getElementById('regulationLibrary'); if (lib) lib.style.display = 'flex';
+    const btn = document.getElementById('regLibBtn'); if (btn) btn.classList.add('active');
+    ['breadcrumb', 'stageTabs', 'detailLayout', 'matrixView'].forEach(id => {
+      const e = document.getElementById(id); if (e) e.style.display = 'none';
+    });
+    const reader = document.getElementById('regReader');
+    if (reader) reader.innerHTML = '<div class="reg-loading">📦 正在加载法规原文索引（约 350KB）…</div>';
+    const self = this;
+    this.ensureRegFull().then(() => self._showRegulationLibrary()).catch(() => {
+      if (reader) reader.innerHTML = '<div class="reg-loading">⚠ 法规原文索引加载失败，请刷新页面重试</div>';
+    });
   },
 
   closeRegulationLibrary() {
@@ -4000,6 +4055,7 @@ Object.assign(App, {
 
   openRegulation(idOrPath, lang) {
     if (typeof lang === 'string') this.state.regLang = lang;
+    const run = () => {
     if (!this.state.regLibOpen) this.openRegulationLibrary();
     this._regList();
     const reg = this._resolveRegId(idOrPath) || (this._regByPath && this._regByPath[idOrPath]) || null;
@@ -4080,6 +4136,15 @@ Object.assign(App, {
         reader.innerHTML = '<div class="reg-reader-loading">载入失败（' + Penetrator.esc(String(err)) + '）。' +
           (reg.url ? '可点击 <a href="' + Penetrator.esc(reg.url) + '" target="_blank" rel="noopener">官方来源</a> 查看。' : '') + '</div>';
       });
+    };
+    if (!globalThis.REG_KB_FULL) {
+      this.ensureRegFull().then(run).catch(() => {
+        const reader = document.getElementById('regReader');
+        if (reader) reader.innerHTML = '<div class="reg-loading">⚠ 法规原文索引加载失败，请刷新页面重试</div>';
+      });
+      return;
+    }
+    run();
   },
 
   // 在法规正文中查找命中的穿透术语（去重）

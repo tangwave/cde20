@@ -3763,3 +3763,95 @@ th.mx-rowhead {
 @media (max-width: 880px) {
   .qs-qms-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================
+   移动端适配（2026-08 增补）：侧栏抽屉化 + 顶栏自适配
+   —— 对标商用站必备的移动可用性，覆盖平板与手机
+   ============================================ */
+.sidebar-toggle {
+  display: none;                 /* 桌面端隐藏，仅 ≤1024px 显示 */
+  align-items: center;
+  justify-content: center;
+  width: 38px; height: 38px;
+  margin-right: 6px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, .1);
+  color: var(--text-inverse);
+  font-size: 18px; cursor: pointer; flex-shrink: 0;
+}
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, .42);
+  z-index: 89;
+}
+
+/* 平板：侧栏改为抽屉（默认收起，点 📑 滑出），主区占满 */
+@media (max-width: 1024px) {
+  .sidebar-toggle { display: inline-flex; }
+  .sidebar {
+    position: fixed;
+    top: var(--topbar-height);
+    bottom: 0; left: 0;
+    width: 264px;
+    z-index: 90;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: 4px 0 18px rgba(0, 0, 0, .2);
+  }
+  .app.sidebar-open .sidebar { transform: translateX(0); }
+  .app.sidebar-open .sidebar-backdrop { display: block; }
+}
+
+/* 手机：顶栏换行（搜索框独占一行）、操作按钮可横向滚动 */
+@media (max-width: 768px) {
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px var(--spacing-md);
+    gap: 8px;
+  }
+  .topbar-brand { order: 1; margin-right: auto; }
+  .topbar-actions {
+    order: 2;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: none;
+    padding-bottom: 2px;
+  }
+  .topbar > #qaAiBtn { order: 2; }
+  .topbar-search {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
+    position: relative;
+  }
+  .topbar-stats { display: none; }
+  .sidebar { width: 82vw; max-width: 300px; }
+  .main { padding: var(--spacing-sm); }
+  .content { padding: var(--spacing-md); }
+  .stage-tabs { flex-wrap: wrap; }
+}
+
+/* 小屏手机：进一步收紧间距，避免横向溢出 */
+@media (max-width: 480px) {
+  .topbar-brand-title { font-size: 15px; }
+  .topbar-btn { padding: 0 11px; font-size: 12px; }
+  .topbar-primary span:last-child { display: none; }  /* 仅留图标 */
+  .content { padding: var(--spacing-sm); }
+}
+
+/* 法规原文库懒加载占位（reg-kb-full.js 按需注入时显示） */
+.reg-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 240px;
+  padding: 24px;
+  color: var(--text-muted, #6b7280);
+  font-size: 14px;
+  text-align: center;
+}

@@ -11,6 +11,7 @@
        填完整 URL（如 https://kb.example.com）= 跨域实时（后端已开 CORS *） -->
   <meta name="qa-api-base" content="/">
   <title>海云AI · 药品研发生产 QA 专家 · 法规与注册申报顾问</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20260816d">
   <link rel="stylesheet" href="css/portal.css?v=20260806g">
   <link rel="stylesheet" href="css/qa9.css?v=20260813a">
@@ -20,8 +21,9 @@
 <body>
   <div class="app">
     <!-- 顶部栏 -->
-    <header class="topbar">
-      <div class="topbar-brand">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="切换侧边栏导航">📑</button>
+    <div class="topbar-brand">
         <span class="topbar-brand-icon">💊</span>
         <div>
           <div class="topbar-brand-title">海云AI</div>
@@ -148,6 +150,7 @@
         <div id="matrixView" class="matrix-view" style="display: none;"></div>
       </main>
     </div>
+    <div class="sidebar-backdrop"></div>
   </div>
 
   <!-- 法规快速链接面板 -->
@@ -336,12 +339,13 @@
   <script src="js/preclinical-steps.js?v=20260806g"></script>
   <script src="js/class-req-process-addon.js?v=20260806g"></script>
   <script src="js/stage-qm-addon.js?v=20260806g"></script>
-  <script src="js/reg-kb-full.js?v=20260806g"></script>
   <script src="js/reg-relations.js?v=20260810c"></script>
   <script src="js/reg-products.js?v=20260810c"></script>
   <script src="js/reg-qa-faq.js?v=20260806g"></script>
+  <!-- 法规原文全量索引（约 350KB）改为按需懒加载：由 app.js 在用户打开「法规原文」库时动态注入，
+       不再阻塞首屏渲染（见 js/app.js 的 ensureRegFull / openRegulationLibrary）。 -->
   <script src="js/qs-gmp-detail.js?v=20260816b"></script>
-  <script src="js/app.js?v=20260816e"></script>
+  <script src="js/app.js?v=20260816f"></script>
   <script src="js/knowledge-portal.js?v=20260806g"></script>
   <script src="js/manufacture-kb.js?v=20260813d"></script>
   <script src="js/manufacture-detail.js?v=20260816a"></script>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a5298"/>
+      <stop offset="1" stop-color="#1e3c72"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- 药丸 -->
+  <g transform="rotate(-45 32 32)">
+    <rect x="18" y="26" width="28" height="12" rx="6" fill="#ffffff"/>
+    <path d="M32 26 h8 a6 6 0 0 1 6 6 v0 a6 6 0 0 1 -6 6 h-8 z" fill="#4fd1c5"/>
+  </g>
+  <!-- 书页角标 -->
+  <path d="M14 46 q8 -6 16 0 q8 6 16 0 v4 q-8 6 -16 0 q-8 -6 -16 0 z" fill="#ffffff" opacity="0.92"/>
+</svg>
