@@ -53,6 +53,23 @@ services:
       # 也可在网页 UI 里随时切换，此项仅决定初始默认
       - key: QA_DEFAULT_MODE
         value: local
+      # === 用户登录模块（全站鉴权）===
+      # 【必配】外部 Postgres 连接串。Render 文件系统易失，不配则每次部署账号表被清空！
+      #   免费额度推荐 Supabase / Neon，格式：postgresql://user:pass@host:5432/db
+      #   建库后在 Render 控制台填入本项（sync:false 不进仓库）。
+      - key: DATABASE_URL
+        sync: false
+      # 会话有效期（小时）
+      - key: SESSION_TTL_HOURS
+        value: "72"
+      # 【启用开关】当前为 0（关闭），避免「配好 DATABASE_URL 并建管理员之前」把所有人
+      #   挡在登录页外导致站点不可用。启用登录请按序操作：
+      #     ① 在 Render 控制台填 DATABASE_URL（外部 Postgres），触发一次部署
+      #     ② 本地执行  python scripts/create_user.py init  建首个管理员
+      #        （需本机同样设置 DATABASE_URL 环境变量）
+      #     ③ 确认能登录后，再把本项改成 "1" 并重新部署
+      - key: AUTH_ENABLED
+        value: "0"
       # === 切换 DeepSeek（取消注释下方 4 行，并注释上方 LLM_* 4 行）===
       # - key: LLM_PROVIDER
       #   value: deepseek

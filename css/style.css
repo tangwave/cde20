@@ -289,6 +289,19 @@ a:hover {
 }
 .topbar-menu-list .topbar-menu-sep:first-child { margin-top: 0; border-top: none; }
 .topbar-menu-list .topbar-btn:first-of-type { margin-top: 0; }
+/* 当前登录用户 chip（全站登录后显示，含登出入口） */
+.user-chip{display:flex;align-items:center;gap:8px;margin-left:10px;
+  height:38px;padding:0 6px 0 12px;border-radius:var(--radius-md);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  font-size:12.5px;color:#eaf2fb;white-space:nowrap}
+.user-chip .who{display:flex;flex-direction:column;line-height:1.25}
+.user-chip .nm{font-weight:600}
+.user-chip .rl{font-size:10px;opacity:.72}
+.user-chip .out{cursor:pointer;height:26px;padding:0 9px;border-radius:7px;border:0;
+  background:rgba(255,255,255,.2);color:#fff;font-size:11.5px;font-weight:600}
+.user-chip .out:hover{background:rgba(255,255,255,.36)}
+@media (max-width:900px){ .user-chip .who{display:none} }
+
 /* 菜单项内快捷键提示 */
 .topbar-kbd {
   margin-left: auto; padding: 1px 6px; border-radius: 5px;
