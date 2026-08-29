@@ -177,11 +177,11 @@
         <div class="sub" id="pageSub">研发全生命周期质量管理系统</div>
       </div>
       <div class="spacer"></div>
-      <span id="cloudBadge" class="cloud-badge" onclick="openCloudModal()"><span class="dot"></span>☁ 本地模式（点此连接云端）</span>
-      <button class="btn" onclick="exportAll()">⬇ 导出备份</button>
-      <button class="btn" onclick="importAll()">⬆ 导入恢复</button>
-      <button class="btn btn-danger" onclick="clearAll()">🗑 清空数据</button>
-      <button class="btn" onclick="loadSamples()">✨ 载入示例</button>
+      <span id="cloudBadge" class="cloud-badge" data-act="openCloudModal"><span class="dot"></span>☁ 本地模式（点此连接云端）</span>
+      <button class="btn" data-act="exportAll">⬇ 导出备份</button>
+      <button class="btn" data-act="importAll">⬆ 导入恢复</button>
+      <button class="btn btn-danger" data-act="clearAll">🗑 清空数据</button>
+      <button class="btn" data-act="loadSamples">✨ 载入示例</button>
     </div>
     <div class="content" id="content"></div>
   </main>
@@ -189,12 +189,12 @@
 
 <div class="mask" id="mask">
   <div class="modal">
-    <div class="modal-head"><h3 id="modalTitle"></h3><span class="x" onclick="closeModal()">×</span></div>
+    <div class="modal-head"><h3 id="modalTitle"></h3><span class="x" data-act="closeModal">×</span></div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot" id="modalFoot"></div>
   </div>
 </div>
-<input type="file" id="fileInput" accept=".json" style="display:none" onchange="doImport(event)">
+<input type="file" id="fileInput" accept=".json" style="display:none">
 <div class="toast" id="toast"></div>
 
 <script src="js/qa-workbench.js" defer></script>

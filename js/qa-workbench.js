@@ -111,11 +111,11 @@ function openCloudModal(){
   </div>`;
   $('#modalBody').innerHTML=h;
   $('#modalFoot').innerHTML=
-    `<button class="btn" onclick="closeModal()">取消</button>`+
-    (CLOUD.enabled?`<button class="btn btn-danger" onclick="cloudDisconnect()">断开并切回本地</button>`:'')+
-    (CLOUD.enabled?`<button class="btn" onclick="cloudUploadLocal()">⬆ 上传本地数据到云端</button>`:'')+
-    `<button class="btn" onclick="cloudAuth('login')">登录</button>`+
-    `<button class="btn btn-primary" onclick="cloudAuth('register')">注册并连接</button>`;
+    `<button class="btn" data-act="closeModal">取消</button>`+
+    (CLOUD.enabled?`<button class="btn btn-danger" data-act="cloudDisconnect">断开并切回本地</button>`:'')+
+    (CLOUD.enabled?`<button class="btn" data-act="cloudUploadLocal">⬆ 上传本地数据到云端</button>`:'')+
+    `<button class="btn" data-act="cloudLogin">登录</button>`+
+    `<button class="btn btn-primary" data-act="cloudRegister">注册并连接</button>`;
   showMask();
 }
 async function cloudAuth(mode){
@@ -220,7 +220,7 @@ M.supplier={name:'供应商管理',ic:'🏭',done:['淘汰'],
   F('type','供应商类型','select',['物料供应商','CMO','CDMO','检验机构','CRO','包材/标签']),F('risk','风险等级','select',['高','中','低']),
   F('qualify','资质评估方式','select',['问卷','现场审计','问卷+审计']),F('result','评估结果','select',['合格','不合格','有条件合格']),
   F('approveDate','批准日期','date'),F('reevalCycle','再评估周期','text'),F('reevalDate','再评估日期','date'),
-  F('owner','管理人','text'),F('dueDate','跟踪日期','date'),F('status','状态','select',['候选','已批准','暂停','淘汰']),F('remark','备注','textarea')],
+  F('owner','管理人','text'),F('dueDate','跟踪日期','date'),F('status','状态','select',['候选','已批准','暂停','淘汰']),F('remark','textarea')],
  stats:[['总数','count'],['已批准','where',{status:'已批准'}],['待再评估','open'],['高风险','where',{risk:'高'}],['逾期','overdue']],
  cols:['code','name','type','risk','result','status','dueDate']};
 
@@ -228,14 +228,14 @@ M.audit={name:'审计管理',ic:'🧾',done:['已完成','已出报告'],
  fields:[F('code','审计编号','text'),F('name','审计名称','text'),F('auditType','审计类型','select',['内部审计','供应商审计','监管检查','飞行检查','委托审计']),
   F('target','被审计方','text'),F('scope','审计范围','textarea'),F('planDate','计划日期','date'),F('execDate','实施日期','date'),
   F('findings','发现项数','text'),F('major','严重项','text'),F('reportRef','报告编号','text'),
-  F('owner','审计组长','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成','已出报告']),F('remark','备注','textarea')],
+  F('owner','审计组长','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成','已出报告']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','where',{status:'进行中'}],['计划中','where',{status:'计划中'}],['已出报告','where',{status:'已出报告'}],['逾期','overdue']],
  cols:['code','name','auditType','target','status','dueDate']};
 
 M.outsourcing={name:'委托生产/检验',ic:'🤝',done:['已结束'],
  fields:[F('code','委托编号','text'),F('partner','受托方','text'),F('service','服务内容','select',['委托生产','委托检验','委托研发','CMO/CDMO']),
   F('agreement','质量协议','text'),F('auditRef','审计编号','text'),F('phase','研发阶段','select',['早期开发','I期','II期','III期','申报']),
-  F('owner','负责人','text'),F('dueDate','结束日期','date'),F('status','状态','select',['进行中','已结束']),F('remark','备注','textarea')],
+  F('owner','负责人','text'),F('dueDate','结束日期','date'),F('status','状态','select',['进行中','已结束']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已结束','where',{status:'已结束'}],['逾期','overdue']],
  cols:['code','partner','service','phase','status','dueDate']};
 
@@ -244,7 +244,7 @@ M.oos={name:'实验室异常结果调查',ic:'🧪',done:['已关闭','无效OOS
   F('rtype','结果类型','select',['OOS','OOT','AD(异常数据)','其他']),F('initial','初始结果','text'),F('retest','复测结果','text'),
   F('phase1','阶段1(实验室评估)','textarea'),F('phase2','阶段2(全面调查)','textarea'),F('rootCause','根本原因','textarea'),
   F('conclusion','调查结论','select',['实验室错误','生产问题','无效OOS','待定']),F('capaRef','CAPA编号','text'),
-  F('owner','调查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['调查中','已关闭','无效OOS']),F('remark','备注','textarea')],
+  F('owner','调查人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['调查中','已关闭','无效OOS']),F('remark','textarea')],
  stats:[['总数','count'],['调查中','where',{status:'调查中'}],['OOS','where',{rtype:'OOS'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
  cols:['code','sample','item','rtype','conclusion','status','dueDate']};
 
@@ -253,7 +253,7 @@ M.method={name:'分析方法管理',ic:'📈',done:['已批准','已转移'],
   F('stage','方法阶段','select',['开发','确认','验证','转移','再验证']),
   F('params','验证参数','multiselect',['专属性','准确度','精密度','线性','范围','耐用性','检测限','定量限']),
   F('equip','仪器设备','text'),F('validation','验证状态','select',['未验证','进行中','已验证']),F('reportRef','验证报告','text'),
-  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['开发中','确认中','验证中','已批准','已转移']),F('remark','备注','textarea')],
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['开发中','确认中','验证中','已批准','已转移']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','open'],['已验证','where',{validation:'已验证'}],['已批准','where',{status:'已批准'}],['逾期','overdue']],
  cols:['code','name','type','stage','validation','status','dueDate']};
 
@@ -261,7 +261,7 @@ M.stability={name:'稳定性研究管理',ic:'⏳',done:['已完成'],
  fields:[F('code','研究编号','text'),F('product','产品/批号','text'),F('condition','考察条件','select',['长期','加速','中间','强降解','其他']),
   F('timePoint','时间点计划','text'),F('donePoint','已完成时间点','text'),F('spec','质量标准','textarea'),
   F('conclusion','稳定性结论','textarea'),F('nextPoint','下一时间点','date'),
-  F('owner','负责人','text'),F('dueDate','下次取样','date'),F('status','状态','select',['进行中','已完成','已暂停']),F('remark','备注','textarea')],
+  F('owner','负责人','text'),F('dueDate','下次取样','date'),F('status','状态','select',['进行中','已完成','已暂停']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['已暂停','where',{status:'已暂停'}],['逾期','overdue']],
  cols:['code','product','condition','donePoint','status','dueDate']};
 
@@ -269,7 +269,7 @@ M.equip={name:'设备设施与CSV',ic:'⚙️',done:[],
  fields:[F('code','编号','text'),F('name','设备/系统名称','text'),F('category','类别','select',['生产设备','检验仪器','计算机化系统','厂房设施']),
   F('model','型号/规格','text'),F('cycle','校准/确认周期','text'),F('lastCal','上次校准','date'),F('nextCal','下次校准','date'),
   F('confirm','确认类型','select',['IQ','OQ','PQ','校准','无']),F('csv','CSV状态','select',['未验证','进行中','已验证']),
-  F('owner','责任人','text'),F('dueDate','到期日期','date'),F('status','状态','select',['正常','待校准','待确认','偏差']),F('remark','备注','textarea')],
+  F('owner','责任人','text'),F('dueDate','到期日期','date'),F('status','状态','select',['正常','待校准','待确认','偏差']),F('remark','textarea')],
  stats:[['总数','count'],['待校准','where',{status:'待校准'}],['待确认','where',{status:'待确认'}],['CSV进行中','where',{csv:'进行中'}],['逾期','overdue']],
  cols:['code','name','category','nextCal','status','dueDate']};
 
@@ -277,7 +277,7 @@ M.di={name:'数据可靠性',ic:'🔐',done:['已关闭'],
  fields:[F('code','编号','text'),F('area','业务区域','select',['实验室','生产','QC','CSV','仓储','其他']),
   F('principle','ALCOA+要素','multiselect',['完整性','一致性','准确性','及时性','原始性','可用性','可追溯']),
   F('finding','发现项','textarea'),F('risk','风险等级','select',['高','中','低']),F('measure','整改措施','textarea'),
-  F('owner','责任人','text'),F('dueDate','整改期限','date'),F('status','状态','select',['评估中','整改中','已关闭']),F('remark','备注','textarea')],
+  F('owner','责任人','text'),F('dueDate','整改期限','date'),F('status','状态','select',['评估中','整改中','已关闭']),F('remark','textarea')],
  stats:[['总数','count'],['整改中','where',{status:'整改中'}],['高风险','where',{risk:'高'}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
  cols:['code','area','principle','risk','status','dueDate']};
 
@@ -285,21 +285,21 @@ M.training={name:'培训管理',ic:'🎓',done:['已完成','已评估'],
  fields:[F('code','培训编号','text'),F('subject','培训主题','text'),F('content','培训内容','textarea'),F('target','培训对象','text'),
   F('trainer','讲师','text'),F('trainDate','培训日期','date'),F('check','考核方式','select',['笔试','实操','提问','免考']),
   F('passRate','合格率','text'),F('reTrain','需再培训','select',['是','否']),
-  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成','已评估']),F('remark','备注','textarea')],
+  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成','已评估']),F('remark','textarea')],
  stats:[['总数','count'],['计划中','where',{status:'计划中'}],['已评估','where',{status:'已评估'}],['需再培训','where',{reTrain:'是'}],['逾期','overdue']],
  cols:['code','subject','target','trainDate','status','dueDate']};
 
 M.knowledge={name:'知识管理',ic:'📚',done:['已归档','已应用'],
  fields:[F('code','编号','text'),F('title','知识点','text'),F('category','知识类别','select',['QTPP','CQA','CPP','经验教训','工艺知识','产品知识','法规更新']),
   F('project','所属项目','text'),F('source','来源','select',['偏差','变更','审计','文献','试验','其他']),F('content','内容','textarea'),
-  F('value','价值等级','select',['高','中','低']),F('owner','维护人','text'),F('dueDate','更新日期','date'),F('status','状态','select',['采集中','已归档','已应用']),F('remark','备注','textarea')],
+  F('value','价值等级','select',['高','中','低']),F('owner','维护人','text'),F('dueDate','更新日期','date'),F('status','状态','select',['采集中','已归档','已应用']),F('remark','textarea')],
  stats:[['总数','count'],['采集中','where',{status:'采集中'}],['已归档','where',{status:'已归档'}],['已应用','where',{status:'已应用'}],['逾期','overdue']],
  cols:['code','title','category','value','status','dueDate']};
 
 M.pv={name:'工艺验证',ic:'🏗',done:['已完成','已批准'],
  fields:[F('code','验证编号','text'),F('product','产品/工艺','text'),F('stage','验证阶段','select',['工艺设计','PPQ','持续工艺确认']),
   F('protocol','验证方案','text'),F('batch','验证批','text'),F('cqa','CQA/CPP','textarea'),F('result','验证结果','textarea'),
-  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成','已批准']),F('remark','备注','textarea')],
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成','已批准']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['已批准','where',{status:'已批准'}],['逾期','overdue']],
  cols:['code','product','stage','batch','status','dueDate']};
 
@@ -307,7 +307,7 @@ M.tech_transfer={name:'技术转移',ic:'🔁',done:['已完成'],
  fields:[F('code','转移编号','text'),F('project','转移项目','text'),F('from','转出方','text'),F('to','接收方','text'),
   F('content','转移内容','multiselect',['工艺','分析方法','清洁方法','包装','其他']),F('risk','风险评估','textarea'),
   F('protocol','转移方案','text'),F('report','转移报告','text'),
-  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','备注','textarea')],
+  F('owner','负责人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','where',{status:'进行中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
  cols:['code','project','from','to','status','dueDate']};
 
@@ -315,7 +315,7 @@ M.release={name:'放行管理',ic:'✅',done:['已放行','不放行'],
  fields:[F('code','放行编号','text'),F('batch','批号','text'),F('product','产品','text'),F('type','样品类型','select',['临床样品','毒理批','申报批','稳定性批']),
   F('qaReview','QA审核','textarea'),F('decision','放行结论','select',['待审核','放行','不放行','有条件放行']),
   F('releasePerson','放行责任人','text'),F('releaseDate','放行日期','date'),
-  F('owner','跟踪人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['待审核','已放行','不放行']),F('remark','备注','textarea')],
+  F('owner','跟踪人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['待审核','已放行','不放行']),F('remark','textarea')],
  stats:[['总数','count'],['待审核','where',{status:'待审核'}],['已放行','where',{status:'已放行'}],['不放行','where',{status:'不放行'}],['逾期','overdue']],
  cols:['code','batch','product','type','decision','status','dueDate']};
 
@@ -323,14 +323,14 @@ M.complaint={name:'投诉与召回',ic:'📞',done:['已关闭'],
  fields:[F('code','编号','text'),F('source','投诉来源','text'),F('product','产品/批号','text'),F('content','投诉内容','textarea'),
   F('type','投诉类型','select',['质量投诉','不良反应','疑似造假','其他']),F('severity','严重程度','select',['严重','一般']),
   F('action','处理措施','select',['调查','召回','答复','关闭']),F('recallLevel','召回级别','select',['无','I级','II级','III级']),
-  F('closeDate','关闭日期','date'),F('owner','处理人','text'),F('dueDate','处理期限','date'),F('status','状态','select',['处理中','已关闭']),F('remark','备注','textarea')],
+  F('closeDate','关闭日期','date'),F('owner','处理人','text'),F('dueDate','处理期限','date'),F('status','状态','select',['处理中','已关闭']),F('remark','textarea')],
  stats:[['总数','count'],['处理中','where',{status:'处理中'}],['需召回','where',{recallLevel:['I级','II级','III级']}],['已关闭','where',{status:'已关闭'}],['逾期','overdue']],
  cols:['code','product','type','recallLevel','status','dueDate']};
 
 M.self_inspect={name:'自检',ic:'🔎',done:['已完成'],
  fields:[F('code','自检编号','text'),F('plan','自检计划/区域','text'),F('scope','自检范围','textarea'),F('team','检查组','text'),
   F('date','实施日期','date'),F('findings','发现项','text'),F('track','整改追踪','textarea'),F('reportRef','报告编号','text'),
-  F('owner','负责人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','备注','textarea')],
+  F('owner','负责人','text'),F('dueDate','完成日期','date'),F('status','状态','select',['计划中','进行中','已完成']),F('remark','textarea')],
  stats:[['总数','count'],['进行中','where',{status:'进行中'}],['计划中','where',{status:'计划中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
  cols:['code','plan','scope','date','status','dueDate']};
 
@@ -338,7 +338,7 @@ M.mgmt_review={name:'管理评审',ic:'📊',done:['已完成'],
  fields:[F('code','评审编号','text'),F('period','评审周期','text'),
   F('topics','评审主题','multiselect',['质量目标','风险趋势','变更','CAPA','审计','资源','投诉','有效性']),F('inputs','评审输入','textarea'),
   F('outputs','评审输出/决议','textarea'),F('decision','决议事项','textarea'),F('date','评审日期','date'),
-  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成']),F('remark','备注','textarea')],
+  F('owner','组织人','text'),F('dueDate','计划日期','date'),F('status','状态','select',['计划中','已完成']),F('remark','textarea')],
  stats:[['总数','count'],['计划中','where',{status:'计划中'}],['已完成','where',{status:'已完成'}],['逾期','overdue']],
  cols:['code','period','topics','date','status','dueDate']};
 
@@ -384,8 +384,8 @@ function renderHome(){
       <div class="eg-t">工作台暂无数据</div>
       <div class="eg-d">这是<strong>纯本地</strong>质量管理台：22 个模块的记录只保存在当前浏览器本机，不会上传服务器。可先载入一套演示示例快速了解用法，或导入此前导出的备份继续工作。</div>
       <div class="eg-btns">
-        <button class="btn btn-primary" onclick="loadSamples()">✨ 载入示例数据</button>
-        <button class="btn" onclick="importAll()">⬆ 导入备份</button>
+        <button class="btn btn-primary" data-act="loadSamples">✨ 载入示例数据</button>
+        <button class="btn" data-act="importAll">⬆ 导入备份</button>
       </div>
       <div class="eg-tip">提示：更换浏览器 / 清理缓存 / 换设备后本地数据会丢失，建议定期用右上角「⬇ 导出备份」保存。</div>
     </div></div>`;
@@ -402,7 +402,7 @@ function renderHome(){
 
   h+=`<div class="section"><h3>🧩 全部模块 <span class="badge">22个 · 点击进入</span></h3><div class="grid cards" style="margin-top:6px">`;
   ORDER.forEach(m=>{const s=modStats[m];
-    h+=`<div class="mod-card" onclick="openMod('${m}')">
+    h+=`<div class="mod-card" data-act="openMod" data-arg="${m}">
       <span class="mopen ${s.vo?'alert':''}">${s.o} 进行中${s.vo?' / '+s.vo+'逾期':''}</span>
       <div class="mic">${M[m].ic}</div><div class="mname">${M[m].name}</div>
       <div class="mstat">共 ${s.t} 条 · 今日 ${s.du} · 7日内 ${s.upc}</div></div>`;});
@@ -432,7 +432,7 @@ function renderToday(){
         <div class="tt">${M[it.mod].ic} ${esc(it.rec.code||'')} ${esc(it.rec.name||it.rec.title||it.rec.subject||'')}</div>
         <div class="tm">${M[it.mod].name} · ${t} · 截止 ${it.rec.dueDate} · 责任人 ${esc(it.rec.owner||'-')}</div>
       </div>
-      <button class="btn btn-sm btn-primary" onclick="openMod('${it.mod}')">查看</button>
+      <button class="btn btn-sm btn-primary" data-act="openMod" data-arg="${it.mod}">查看</button>
     </div>`;}).join('');
 }
 
@@ -466,15 +466,19 @@ function renderModule(){
 
   // toolbar
   let tb=`<div class="toolbar">
-    <button class="btn btn-primary" onclick="openForm()">＋ 新增</button>
-    <input id="flt" placeholder="搜索编号/名称…" value="${esc(curFilter)}" oninput="curFilter=this.value;renderTable()" style="min-width:200px">
-    <select onchange="curFilter=this.value;renderTable()">
+    <button class="btn btn-primary" data-act="openForm">＋ 新增</button>
+    <input id="flt" placeholder="搜索编号/名称…" value="${esc(curFilter)}" style="min-width:200px">
+    <select id="fltStatus">
       <option value="">全部状态</option>${m.fields.find(f=>f.key==='status')?.options.map(o=>`<option ${curFilter===o?'selected':''}>${o}</option>`).join('')||''}</select>
     <div class="spacer"></div>
     <span class="sub" style="color:var(--muted)">共 ${arr.length} 条</span>
   </div>`;
 
   $('#content').innerHTML=`<div class="section" style="margin-top:0">${statHtml}${tb}<div id="tblBox"></div></div>`;
+  // 绑定搜索/筛选输入（替代内联 oninput/onchange，兼容严格 CSP）
+  const flt=document.getElementById('flt'), st=document.getElementById('fltStatus');
+  if(flt)flt.addEventListener('input',e=>{curFilter=e.target.value;renderTable();});
+  if(st)st.addEventListener('change',e=>{curFilter=e.target.value;renderTable();});
   renderTable();
 }
 
@@ -489,7 +493,7 @@ function renderTable(){
   h+=`</tr></thead><tbody>`;
   if(!arr.length){h+=`<tr><td colspan="${cols.length+1}" class="empty">暂无记录，点击"新增"开始</td></tr>`;}
   arr.forEach(r=>{
-    h+=`<tr><td><button class="btn btn-sm" onclick="openForm('${r.id}')">编辑</button> <button class="btn btn-sm" onclick="showDetail('${r.id}')">详情</button> <button class="btn btn-sm btn-danger" onclick="delRec('${r.id}')">删</button></td>`;
+    h+=`<tr><td><button class="btn btn-sm" data-act="openForm" data-arg="${r.id}">编辑</button> <button class="btn btn-sm" data-act="showDetail" data-arg="${r.id}">详情</button> <button class="btn btn-sm btn-danger" data-act="delRec" data-arg="${r.id}">删</button></td>`;
     cols.forEach(c=>{const f=fmap[c];let v=r[c];
       if(f&&f.type==='multiselect')v=Array.isArray(v)?v.map(x=>`<span class="tag">${esc(x)}</span>`).join(''):esc(v);
       else if(f&&f.type==='files')v=fmtFilesHtml(v);
@@ -515,13 +519,13 @@ function openForm(id){
     else if(f.type==='files'){
       _fileBufKey=f.key;_fileBuf=parseFiles(val);
       h+=`<div class="file-pick-bar">
-        <button type="button" class="btn btn-sm" onclick="pickLocalFiles()">📁 本机文件</button>
-        <button type="button" class="btn btn-sm" onclick="pickLocalFolder()">📂 文件夹</button>
-        <button type="button" class="btn btn-sm" onclick="toggleKbPanel()">🔎 知识库检索</button>
-        <input id="txtRef" class="file-txt" placeholder="或输入文本引用后回车" onkeydown="if(event.key==='Enter'){addTextRef(this.value);this.value='';}">
+        <button type="button" class="btn btn-sm" data-act="pickLocalFiles">📁 本机文件</button>
+        <button type="button" class="btn btn-sm" data-act="pickLocalFolder">📂 文件夹</button>
+        <button type="button" class="btn btn-sm" data-act="toggleKbPanel">🔎 知识库检索</button>
+        <input id="txtRef" class="file-txt" placeholder="或输入文本引用后回车">
       </div>
       <div id="kbPanel" class="kb-panel" style="display:none">
-        <input id="kbQ" class="kb-input" placeholder="输入法规/指导原则/资料关键词检索知识库（需后端在线）…" oninput="kbSearchDo(this.value)">
+        <input id="kbQ" class="kb-input" placeholder="输入法规/指导原则/资料关键词检索知识库（需后端在线）…">
         <div id="kbRes" class="kb-res"></div>
       </div>
       <div id="fileList" class="file-list"></div>`;
@@ -536,7 +540,12 @@ function openForm(id){
   h+=`</div>`;
   $('#modalBody').innerHTML=h;
   if(_fileBufKey)renderFileList();
-  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveForm('${id||''}')">保存</button>`;
+  // 绑定文件引用输入（替代内联 onkeydown/oninput）
+  const txtRef=document.getElementById('txtRef');
+  if(txtRef)txtRef.addEventListener('keydown',e=>{if(e.key==='Enter'){addTextRef(e.target.value);e.target.value='';}});
+  const kbQ=document.getElementById('kbQ');
+  if(kbQ)kbQ.addEventListener('input',e=>kbSearchDo(e.target.value));
+  $('#modalFoot').innerHTML=`<button class="btn" data-act="closeModal">取消</button><button class="btn btn-primary" data-act="saveForm" data-arg="${id||''}">保存</button>`;
   showMask();
 }
 function saveForm(id){
@@ -567,8 +576,8 @@ function showDetail(id){
     h+=`<dt>${esc(f.label)}</dt><dd>${esc(v)||'-'}</dd>`;});
   h+='</dl></div>';
   $('#modalBody').innerHTML=h;
-  const aiBtn=(curMod==='doc_review'||curMod==='record_check')?`<button class="btn" onclick="openAiVerify('${id}')">🤖 AI 核查</button>`:'';
-  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button>${aiBtn}<button class="btn btn-primary" onclick="openForm('${id}')">编辑</button>`;
+  const aiBtn=(curMod==='doc_review'||curMod==='record_check')?`<button class="btn" data-act="openAiVerify" data-arg="${id}">🤖 AI 核查</button>`:'';
+  $('#modalFoot').innerHTML=`<button class="btn" data-act="closeModal">关闭</button>${aiBtn}<button class="btn btn-primary" data-act="openForm" data-arg="${id}">编辑</button>`;
   showMask();
 }
 function delRec(id){
@@ -602,7 +611,7 @@ function renderFileList(){
   box.innerHTML=_fileBuf.map((f,i)=>{
     const badge=f.src==='kb'?'<span class="fb kb">库</span>':(f.src==='local'?'<span class="fb lo">本</span>':'<span class="fb tx">文</span>');
     const meta=f.src==='kb'?(f.path||''):(f.size?fmtSize(f.size):(f.path||''));
-    return `<div class="file-row"><span class="fb-w">${badge}</span><span class="fn" title="${esc(f.path||f.name)}">${esc(f.name)}</span><span class="fm">${esc(meta)}</span><button type="button" class="btn btn-sm btn-danger" onclick="removeFile(${i})">×</button></div>`;
+    return `<div class="file-row"><span class="fb-w">${badge}</span><span class="fn" title="${esc(f.path||f.name)}">${esc(f.name)}</span><span class="fm">${esc(meta)}</span><button type="button" class="btn btn-sm btn-danger" data-act="removeFile" data-arg="${i}">×</button></div>`;
   }).join('');
 }
 function removeFile(i){_fileBuf.splice(i,1);renderFileList();}
@@ -621,7 +630,7 @@ async function kbSearchDo(q){
     const j=await r.json();
     const rows=j.results||[];_kbRows=rows;
     if(!rows.length){box.innerHTML='<div class="file-empty">未检索到相关文档</div>';return;}
-    box.innerHTML=rows.map((x,i)=>`<div class="kb-row" onclick="addKbFile(${i})"><div class="kb-t">${esc(x.title)}</div><div class="kb-m">${esc(x.category||'')} · ${esc(x.issuer||'')} · ${esc(x.publish_date||'')}</div></div>`).join('');
+    box.innerHTML=rows.map((x,i)=>`<div class="kb-row" data-act="addKbFile" data-arg="${i}"><div class="kb-t">${esc(x.title)}</div><div class="kb-m">${esc(x.category||'')} · ${esc(x.issuer||'')} · ${esc(x.publish_date||'')}</div></div>`).join('');
   }catch(e){box.innerHTML='<div class="file-empty">检索失败（后端未连接？）</div>';}
 }
 function addKbFile(i){const x=_kbRows[i];if(!x)return;if(_fileBuf.some(f=>f.src==='kb'&&f.path===x.path)){toast('已添加');return;}_fileBuf.push({src:'kb',name:x.title,path:x.path,size:0});renderFileList();}
@@ -647,7 +656,7 @@ function openAiVerify(id){
     <textarea id="aiPrompt" class="ai-prompt">${esc(prompt)}</textarea>
     <div id="aiResult" class="ai-result" style="display:none"></div>
   </div>`;
-  $('#modalFoot').innerHTML=`<button class="btn" onclick="closeModal()">关闭</button><button class="btn" onclick="copyAiPrompt()">📋 复制提示词</button><button class="btn btn-primary" onclick="runAiVerify()">🤖 运行 AI 核查</button>`;
+  $('#modalFoot').innerHTML=`<button class="btn" data-act="closeModal">关闭</button><button class="btn" data-act="copyAiPrompt">📋 复制提示词</button><button class="btn btn-primary" data-act="runAiVerify">🤖 运行 AI 核查</button>`;
   showMask();
   _aiPayload={target_doc:target,attachments:files.map(f=>({src:f.src,name:f.name,path:f.path})),principles:principles,findings:findings,doc_type:m.name};
 }
@@ -749,8 +758,32 @@ function closeModal(){$('#mask').classList.remove('show');}
 $('#mask').onclick=e=>{if(e.target.id==='mask')closeModal();};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
+/* ============ 事件委托（替代内联 onclick，兼容严格 CSP script-src 'self'）============ */
+/* 所有可点击元素改用 data-act 属性，由本处统一委托分发，避免被 CSP 拦截内联事件处理器 */
+const ACT={
+  openMod:openMod, openForm:openForm, showDetail:showDetail, delRec:delRec,
+  closeModal:closeModal, saveForm:saveForm, loadSamples:loadSamples, importAll:importAll,
+  exportAll:exportAll, clearAll:clearAll, openCloudModal:openCloudModal,
+  cloudDisconnect:cloudDisconnect, cloudUploadLocal:cloudUploadLocal,
+  cloudLogin:()=>cloudAuth('login'), cloudRegister:()=>cloudAuth('register'),
+  pickLocalFiles:pickLocalFiles, pickLocalFolder:pickLocalFolder, toggleKbPanel:toggleKbPanel,
+  addKbFile:addKbFile, removeFile:removeFile, openAiVerify:openAiVerify,
+  copyAiPrompt:copyAiPrompt, runAiVerify:runAiVerify
+};
+document.addEventListener('click',function(e){
+  const t=e.target.closest('[data-act]'); if(!t)return;
+  const fn=ACT[t.dataset.act]; if(!fn)return;
+  let arg=t.dataset.arg;
+  // 数值型参数（removeFile / addKbFile 的索引）转为 Number
+  if(t.dataset.act==='removeFile'||t.dataset.act==='addKbFile')arg=Number(arg);
+  fn(arg);
+});
+
 /* ============ 启动 ============ */
 loadCloud();renderCloudBadge();
+// 文件导入 input 的 change 事件改为 addEventListener 绑定（替代内联 onchange）
+const _fileInputEl=document.getElementById('fileInput');
+if(_fileInputEl)_fileInputEl.addEventListener('change',doImport);
 try{renderNav();}catch(e){
   const _n=$('#nav');if(_n)_n.innerHTML='<div class="nav-item" style="color:#c0392b">⚠ 导航加载失败：'+esc(e&&e.message||e)+'</div>';
   console.error('[qa-workbench] renderNav error:',e);
