@@ -54,22 +54,41 @@ services:
       - key: QA_DEFAULT_MODE
         value: local
       # === 用户登录模块（全站鉴权）===
-      # 【必配】外部 Postgres 连接串。Render 文件系统易失，不配则每次部署账号表被清空！
-      #   免费额度推荐 Supabase / Neon，格式：postgresql://user:pass@host:5432/db
-      #   建库后在 Render 控制台填入本项（sync:false 不进仓库）。
+      #
+      # 两套账号存储方式，二选一。下方各项均为 sync:false（敏感，不进仓库），
+      # 需要你在 Render 控制台 → Environment 手动添加。
+      #
+      # 【A. 环境变量模式（推荐）】无需外部数据库，零成本、无冷启动。
+      #   账号编码进 AUTH_USERS_JSON，会话改用 HMAC 签名 cookie——两者都跨部署保持，
+      #   因此重新部署既不会丢账号，也不会把已登录的人踢下线。
+      #   生成方式（在本机仓库根目录执行，会打印出待填的值）：
+      #     python scripts/create_user.py env-init            # 首个管理员
+      #     python scripts/create_user.py env-add <用户名> <口令> [--role admin]
+      #   ⚠ AUTH_SECRET 一旦生成就不要再改，重新生成会让所有已登录用户立即掉线。
+      - key: AUTH_USERS_JSON
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
+      #
+      # 【B. 数据库模式】账号存 PostgreSQL，改账号即时生效（不用重新部署），
+      #   审计日志永久保留。填了 DATABASE_URL 就自动切到本模式（优先级高于 A）。
+      #   适合账号较多或需要留存完整审计轨迹的场景。
+      #   注意：Neon 免费层 5 分钟无访问即挂起，低频访问站点慎用。
       - key: DATABASE_URL
         sync: false
+      #
       # 会话有效期（小时）
       - key: SESSION_TTL_HOURS
         value: "72"
-      # 【启用开关】当前为 0（关闭），避免「配好 DATABASE_URL 并建管理员之前」把所有人
-      #   挡在登录页外导致站点不可用。启用登录请按序操作：
-      #     ① 在 Render 控制台填 DATABASE_URL（外部 Postgres），触发一次部署
-      #     ② 本地执行  python scripts/create_user.py init  建首个管理员
-      #        （需本机同样设置 DATABASE_URL 环境变量）
-      #     ③ 确认能登录后，再把本项改成 "1" 并重新部署
+      # 【启用开关】留空 = 自动推断：只有配了 AUTH_USERS_JSON 或 DATABASE_URL 才开启。
+      #   这样在还没配置任何账号时站点保持公开，不会把所有人挡在登录页外。
+      #   显式置 "0" 可临时全站免登录（排障用）；置 "1" 则强制开启（请确认已有账号）。
       - key: AUTH_ENABLED
-        value: "0"
+        sync: false
+      # 【应急吊销】填一个 Unix 时间戳，早于该时刻签发的所有会话立即作废。
+      #   用于 AUTH_SECRET 疑似泄露时强制全员重新登录。平时留空。
+      - key: AUTH_REVOKE_BEFORE
+        sync: false
       # === 切换 DeepSeek（取消注释下方 4 行，并注释上方 LLM_* 4 行）===
       # - key: LLM_PROVIDER
       #   value: deepseek

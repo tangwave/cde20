@@ -411,9 +411,14 @@ try:
     _auth_spec = _ilu_auth.spec_from_file_location("kb_auth", _auth_path)
     _auth = _ilu_auth.module_from_spec(_auth_spec)
     _auth_spec.loader.exec_module(_auth)
-    _auth.init_db()
-    print("[boot] 用户登录模块已启用（后端：%s）"
-          % ("PostgreSQL" if _auth.using_postgres() else "SQLite 回退"), flush=True)
+    if _auth.using_db_users():
+        _auth.init_db()
+    _src_label = {"postgres": "PostgreSQL", "sqlite": "SQLite(本地)",
+                  "env": "环境变量 AUTH_USERS_JSON", "none": "无账号"}
+    print("[boot] 用户登录模块已加载 | 用户源：%s | 会话：%s | 鉴权：%s"
+          % (_src_label.get(_auth.user_source(), _auth.user_source()),
+             "无状态签名(跨部署保持)" if _auth.using_env_users() else "存库会话",
+             "开启" if _auth.auth_enabled() else "关闭"), flush=True)
 except Exception as _e:                       # pragma: no cover
     _auth = None
     print("[boot] auth 模块加载失败，全站鉴权已关闭：", repr(_e), flush=True)
