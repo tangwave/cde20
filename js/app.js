@@ -74,6 +74,7 @@ const App = {
     this.loadNotes();
     Penetrator.init();            // 穿透引擎
     this.renderSidebar();
+    this.restoreSidebarState();   // 恢复桌面端侧栏折叠偏好
     this.renderStageTabs();
     this.renderTopbarStats();
     this.bindEvents();
@@ -2617,6 +2618,22 @@ const App = {
 
   /* ============ 事件绑定 ============ */
 
+  /* ============ 侧栏折叠偏好恢复 ============ */
+  restoreSidebarState() {
+    try {
+      // 移动端走抽屉逻辑，不套用折叠态
+      if (window.matchMedia('(max-width: 1024px)').matches) return;
+      const collapsed = localStorage.getItem('kbSidebarCollapsed') === '1';
+      const app = document.querySelector('.app');
+      const toggle = document.getElementById('sidebarToggle');
+      if (app && collapsed) app.classList.add('sidebar-collapsed');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', String(!collapsed));
+        toggle.title = collapsed ? '展开侧边栏导航' : '收起侧边栏导航';
+      }
+    } catch (e) {}
+  },
+
   bindEvents() {
     const matrixBtn = document.getElementById('matrixToggleBtn');
     if (matrixBtn) matrixBtn.addEventListener('click', () => this.toggleMatrixView());
@@ -2630,11 +2647,21 @@ const App = {
       else this.openClassification();
     });
 
-    // 移动端：侧栏抽屉开关 + 点击遮罩关闭
+    // 侧栏开关：桌面端折叠 / 移动端抽屉
     const sidebarToggle = document.getElementById('sidebarToggle');
     if (sidebarToggle) sidebarToggle.addEventListener('click', () => {
       const app = document.querySelector('.app');
-      if (app) app.classList.toggle('sidebar-open');
+      if (!app) return;
+      if (window.matchMedia('(max-width: 1024px)').matches) {
+        // 移动端：抽屉式滑出 / 收起
+        app.classList.toggle('sidebar-open');
+      } else {
+        // 桌面端：整列折叠 / 展开（所有页面通用）
+        const collapsed = app.classList.toggle('sidebar-collapsed');
+        sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+        sidebarToggle.title = collapsed ? '展开侧边栏导航' : '收起侧边栏导航';
+        try { localStorage.setItem('kbSidebarCollapsed', collapsed ? '1' : '0'); } catch (e) {}
+      }
     });
     const sidebarBackdrop = document.querySelector('.sidebar-backdrop');
     if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', () => {

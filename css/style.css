@@ -3890,7 +3890,7 @@ th.mx-rowhead {
    —— 对标商用站必备的移动可用性，覆盖平板与手机
    ============================================ */
 .sidebar-toggle {
-  display: none;                 /* 桌面端隐藏，仅 ≤1024px 显示 */
+  display: inline-flex;          /* 桌面端常显，用作侧栏折叠开关 */
   align-items: center;
   justify-content: center;
   width: 38px; height: 38px;
@@ -3906,6 +3906,21 @@ th.mx-rowhead {
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, .42);
   z-index: 89;
+}
+
+/* 桌面端：侧栏可折叠（所有页面通用，📑 切换）
+   —— 限制 ≥1025px，避免与 ≤1024px 抽屉逻辑相互干扰 */
+@media (min-width: 1025px) {
+  .sidebar { transition: width .2s ease; }
+  .app.sidebar-collapsed .sidebar {
+    width: 0;
+    min-width: 0;
+    border-right: none;
+    overflow: hidden;
+  }
+  .app.sidebar-collapsed .sidebar > * {
+    visibility: hidden;
+  }
 }
 
 /* 平板：侧栏改为抽屉（默认收起，点 📑 滑出），主区占满 */
