@@ -95,7 +95,11 @@ LLM_PRESETS_DEFAULT = [
         "minimax/minimax-m3:free",                          # 真免费（2026-08-28 新增，MiniMax 中文大模型 1M 上下文）
         "minimax/minimax-m2.7:free",                        # 真免费（2026-08-28 新增，MiniMax 中文大模型）
         "z-ai/glm-5.2:free",                                # 真免费（2026-08-28 新增，智谱 GLM-5.2 中文大模型）
-        "stealth/ox-alpha",                                  # 真免费（2026-08-24 新增，OpenRouter 目录 pricing 双0）
+        "inclusionai/ling-3.0-flash-fin:free",              # 真免费（2026-08-29 新增，Ling 3.0 Flash Fin 中文/金融优化）
+        "poolside/laguna-s-2.1:free",                       # 真免费（2026-08-29 回归，Poolside Laguna S 编码）
+        "poolside/laguna-xs-2.1:free",                      # 真免费（2026-08-29 新增，Poolside Laguna XS 轻量）
+        "google/gemma-4-26b-a4b-it:free",                   # 真免费（2026-08-29 回归，Gemma 4 26B 多语言）
+        "google/gemma-4-31b-it:free",                       # 真免费（2026-08-29 回归，Gemma 4 31B 强模型）
         "openrouter/free",                                   # 真免费，OpenRouter 免费模型路由器（自动分发到免费档）
      ],
      "default_model": "nvidia/nemotron-3-ultra-550b-a55b:free"},
@@ -2976,6 +2980,12 @@ async def llm_test_post(request: Request):
 def spa(full_path: str):
     if full_path.startswith("api/"):
         return JSONResponse({"error": "not found"}, status_code=404)
+    # 根路径直接返回 index.html
+    if full_path == "" or full_path == "/":
+        f = os.path.join(STATIC, "index.html")
+        return FileResponse(
+            f, headers={"Cache-Control": "public, max-age=0, must-revalidate"}
+        )
     f = os.path.join(STATIC, full_path)
     if os.path.isfile(f):
         ext = os.path.splitext(full_path)[1].lower()
