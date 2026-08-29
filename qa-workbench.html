@@ -950,7 +950,14 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
 /* ============ 启动 ============ */
 loadCloud();renderCloudBadge();
-renderNav();renderHome();
+try{renderNav();}catch(e){
+  const _n=$('#nav');if(_n)_n.innerHTML='<div class="nav-item" style="color:#c0392b">⚠ 导航加载失败：'+esc(e&&e.message||e)+'</div>';
+  console.error('[qa-workbench] renderNav error:',e);
+}
+try{renderHome();}catch(e){
+  const _c=$('#content');if(_c)_c.innerHTML='<div class="section" style="border:1px solid #c0392b;background:#fde8e4"><h3 style="color:#c0392b;margin:0 0 8px">⚠ 工作台首页加载失败</h3><div style="font-size:12px;color:#1f2a44;margin-bottom:8px">可能是浏览器版本过旧、扩展拦截、或脚本执行被中断。请按 F12 打开控制台查看完整错误。</div><pre style="white-space:pre-wrap;font-size:12px;background:#fff;padding:10px;border-radius:6px;margin:0">'+esc((e&&e.stack)||String(e))+'</pre></div>';
+  console.error('[qa-workbench] renderHome error:',e);
+}
 if(CLOUD.enabled&&CLOUD.token){
   (async()=>{const ok=await cloudBootstrap();if(ok){toast('☁ 已自动同步云端数据');startSync();}else{CLOUD.enabled=false;CLOUD.token='';saveCloud();renderCloudBadge();}})();
 }
