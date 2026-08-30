@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>变更 · 偏差 · 实验室异常结果 定级导航台</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="药品研发生产 QA 定级导航台：变更分级（重大/中等/微小）、偏差分级（关键/主要/次要）、实验室异常检验结果 OOS/OOT 调查，交互式逐级问诊判定，含判定路径图、速查表与法规条款依据。">
+<meta name="theme-color" content="#1769e0">
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--bd:#e3e8ef;--tx:#1f2a37;--mut:#6b7280;--acc:#1769e0;--acc2:#0e9f6e;
+--lv1:#c0392b;--lv1bg:#fdeceb;--lv2:#c77700;--lv2bg:#fff4e0;--lv3:#0e7a4e;--lv3bg:#e6f6ee;--lv4:#1e5ec8;--lv4bg:#e7f0ff;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);line-height:1.65}
+header{background:linear-gradient(120deg,#0b3d91,#1769e0);color:#fff;padding:26px 20px 22px}
+header .wrap{max-width:1180px;margin:0 auto}
+header a.back{color:#cfe0ff;text-decoration:none;font-size:13px}
+header h1{margin:8px 0 6px;font-size:23px}
+header p{margin:0;opacity:.93;font-size:13.5px;max-width:960px}
+
+.tabs{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--bd)}
+.tabs .wrap{max-width:1180px;margin:0 auto;display:flex;gap:4px;flex-wrap:wrap;padding:8px 20px}
+.tab{border:1px solid var(--bd);background:#fff;color:var(--tx);padding:9px 16px;border-radius:9px;font-size:14px;cursor:pointer;font-weight:600}
+.tab:hover{border-color:var(--acc);color:var(--acc)}
+.tab.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+main{max-width:1180px;margin:18px auto;padding:0 20px}
+.panel{display:none}
+.panel.active{display:block}
+section{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin:0 0 16px}
+h2.sec{font-size:17px;border-left:4px solid var(--acc);padding-left:10px;margin:0 0 14px}
+h2.sec .cnt{color:var(--mut);font-size:12.5px;font-weight:400;margin-left:8px}
+h3.sub{font-size:14.5px;margin:16px 0 8px;color:#0b3d91}
+
+/* 分级卡片 */
+.lvcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.lvc{border:1px solid var(--bd);border-left-width:5px;border-radius:10px;padding:13px 15px;background:#fcfdff}
+.lvc.l1{border-left-color:var(--lv1)} .lvc.l2{border-left-color:var(--lv2)}
+.lvc.l3{border-left-color:var(--lv3)} .lvc.l4{border-left-color:var(--lv4)}
+.lvc .lvname{font-weight:700;font-size:15px;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+.lvc.l1 .lvname{color:var(--lv1)} .lvc.l2 .lvname{color:var(--lv2)}
+.lvc.l3 .lvname{color:var(--lv3)} .lvc.l4 .lvname{color:var(--lv4)}
+.lvc .lven{font-size:11.5px;color:var(--mut);font-weight:400}
+.lvc ul{margin:8px 0 0;padding-left:18px;font-size:13px}
+.lvc li{margin:3px 0}
+.lvc .route{margin-top:9px;padding-top:8px;border-top:1px dashed var(--bd);font-size:12.5px;color:#334}
+.lvc .route b{color:var(--acc)}
+
+/* 问诊 */
+.wiz{background:#fbfcfe;border:1px solid var(--bd);border-radius:10px;padding:16px 18px}
+.wiz-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.wiz-step{font-size:12.5px;color:var(--mut)}
+.btn{border:1px solid var(--bd);background:#fff;color:var(--tx);padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer}
+.btn:hover{border-color:var(--acc);color:var(--acc)}
+.btn.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn.primary:hover{opacity:.9;color:#fff}
+.q{font-size:16px;font-weight:600;line-height:1.6;margin:6px 0 10px}
+.qtag{display:inline-block;font-size:11.5px;background:#e7f0ff;color:var(--lv4);padding:2px 8px;border-radius:10px;margin-right:7px;vertical-align:middle;font-weight:600}
+.tip{background:#fffaf0;border:1px dashed #e5c68a;border-radius:8px;padding:9px 12px;font-size:12.8px;color:#6b5320;margin:0 0 12px}
+.tip b{color:#8a6212}
+.hitlist{margin:0 0 12px;padding:12px 14px 12px 30px;background:#f8fafc;border:1px solid var(--bd);border-radius:8px;font-size:13.2px}
+.hitlist li{margin:4px 0}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;border:1px solid var(--bd);background:#fff;border-radius:9px;padding:11px 14px;font-size:14px;cursor:pointer;transition:all .13s;line-height:1.55}
+.opt:hover{border-color:var(--acc);background:#f3f8ff;transform:translateX(2px)}
+.opt .arrow{color:var(--acc);font-weight:700;margin-right:7px}
+
+/* 结果 */
+.res{border-radius:10px;padding:16px 18px;border:1px solid var(--bd)}
+.res.r1{background:var(--lv1bg);border-color:#f3b7b2}
+.res.r2{background:var(--lv2bg);border-color:#f0d6a8}
+.res.r3{background:var(--lv3bg);border-color:#b3e2cb}
+.res.r4{background:var(--lv4bg);border-color:#b8d0f7}
+.res-badge{display:inline-block;font-size:19px;font-weight:800;padding:6px 16px;border-radius:10px;margin-bottom:10px}
+.res.r1 .res-badge{background:var(--lv1);color:#fff}
+.res.r2 .res-badge{background:var(--lv2);color:#fff}
+.res.r3 .res-badge{background:var(--lv3);color:#fff}
+.res.r4 .res-badge{background:var(--lv4);color:#fff}
+.res .verdict{font-size:15px;font-weight:600;margin-bottom:10px;line-height:1.6}
+.res h4{margin:14px 0 6px;font-size:13.5px;color:#0b3d91}
+.res ul{margin:0;padding-left:19px;font-size:13.5px}
+.res li{margin:4px 0}
+.res .refs{margin-top:12px;padding-top:10px;border-top:1px dashed rgba(0,0,0,.13);font-size:12.3px;color:var(--mut)}
+.res .refs span{display:inline-block;background:#fff;border:1px solid var(--bd);border-radius:6px;padding:2px 8px;margin:3px 5px 0 0}
+.warn{background:#fff3cd;border:1px solid #f0d69a;color:#7a5b00;border-radius:8px;padding:10px 13px;font-size:13px;margin-top:12px}
+.warn b{color:#8a6212}
+
+/* 路径轨迹 */
+.trail{display:flex;flex-direction:column;gap:6px;margin:0 0 14px}
+.trow{display:flex;gap:9px;font-size:12.8px;align-items:flex-start}
+.trow .tn{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--acc);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.trow .tq{flex:1;color:#445}
+.trow .ta{color:var(--acc);font-weight:600}
+
+/* 判定路径图 */
+.map{font-size:13px}
+.mnode{border:1px solid var(--bd);border-radius:9px;margin:0 0 9px;background:#fff;overflow:hidden}
+.mnode.cur{border-color:var(--acc);box-shadow:0 0 0 3px rgba(23,105,224,.13)}
+.mnode.res{border-style:dashed}
+.mh{padding:9px 13px;cursor:pointer;display:flex;gap:9px;align-items:flex-start;background:#fafbfd}
+.mnode.cur .mh{background:#eaf2ff}
+.mcode{flex:0 0 auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;background:#eef2f7;color:#445;padding:1px 7px;border-radius:5px;margin-top:2px}
+.mnode.cur .mcode{background:var(--acc);color:#fff}
+.mtext{flex:1}
+.mopts{padding:4px 13px 10px 13px;border-top:1px solid #f0f3f7;background:#fff}
+.mopt{font-size:12.5px;color:#445;padding:3px 0 3px 4px;display:flex;gap:7px}
+.mopt .to{color:var(--acc);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px}
+.mlv{font-weight:700}
+.mlv.r1{color:var(--lv1)} .mlv.r2{color:var(--lv2)} .mlv.r3{color:var(--lv3)} .mlv.r4{color:var(--lv4)}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f4f7fb;font-weight:600;font-size:12.5px;white-space:nowrap}
+tbody tr:nth-child(even){background:#fcfdff}
+td b{color:var(--acc)}
+.no{color:var(--lv1);font-weight:600}
+
+footer{max-width:1180px;margin:10px auto 40px;padding:14px 20px;color:var(--mut);font-size:12px}
+footer a{color:var(--acc)}
+@media(max-width:640px){
+  .lvcards{grid-template-columns:1fr}
+  table{font-size:12px} th,td{padding:6px 7px}
+  header h1{font-size:19px}
+}
+@media print{
+  .tabs,.btn,.opt{display:none!important}
+  body{background:#fff} section{break-inside:avoid;border-color:#ccc}
+  .panel{display:block!important}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="index.html">← 返回法规问答首页</a>
+  <h1>变更 · 偏差 · 实验室异常检验结果 定级导航台</h1>
+  <p>按图索骥，逐级判定：<b>变更</b>（重大 / 中等 / 微小 · 内部 I/II/III 级）、<b>偏差</b>（关键 / 主要 / 次要）、<b>实验室异常结果</b>（OOS / OOT / OOE，Phase I → Phase II）。每一步都给出判定依据、处置要求、时限与法规条款。定级结论为辅助判断，最终以持有人/企业质量负责人批准为准。</p>
+</div></header>
+
+<div class="tabs"><div class="wrap">
+  <button class="tab active" data-p="change">🔀 变更管理定级</button>
+  <button class="tab" data-p="deviation">⚠️ 偏差调查定级</button>
+  <button class="tab" data-p="oos">🧪 实验室异常结果调查</button>
+</div></div>
+
+<main>
+
+<!-- ============ 变更管理 ============ -->
+<div class="panel active" id="p-change">
+  <section>
+    <h2 class="sec">一、变更分级总览<span class="cnt">依据《药品上市后变更管理办法（试行）》+ ICH Q12</span></h2>
+    <p style="margin:0 0 12px;font-size:13.5px;color:#445">上市后变更按风险分为<b>重大变更 / 中等变更 / 微小变更</b>三级，对应<b>审批 / 备案 / 年度报告</b>三条管理路径；另有不属注册事项的<b>企业内部变更</b>，由企业变更控制系统自行分级（I / II / III 级）。持有人是变更研究与风险评估的<b>责任主体</b>。</p>
+    <div class="lvcards">
+      <div class="lvc l1"><div class="lvname">重大变更 <span class="lven">Major Change · PAS</span></div>
+        <ul><li>对药品安全性、有效性或质量可控性<b>可能产生重大影响</b></li><li>需全面的药学/非临床/临床桥接研究</li><li>通常需 3 批商业规模验证 + 稳定性考察</li></ul>
+        <div class="route">管理路径：<b>国家药监局审批</b>（补充申请）<br/>实施时点：<b>批准后方可实施</b></div></div>
+      <div class="lvc l2"><div class="lvname">中等变更 <span class="lven">Moderate Change · 备案</span></div>
+        <ul><li>对产品质量<b>有一定影响但风险可控</b></li><li>需相应的变更研究与验证/确认</li><li>多数需稳定性承诺或 3 批数据</li></ul>
+        <div class="route">管理路径：<b>省级药监局备案</b><br/>实施时点：<b>备案完成/取得备案号后实施</b></div></div>
+      <div class="lvc l3"><div class="lvname">微小变更 <span class="lven">Minor Change · 年报</span></div>
+        <ul><li>对产品质量<b>基本无影响</b></li><li>以企业变更控制 + 记录为主</li><li>无需事前申报</li></ul>
+        <div class="route">管理路径：<b>年度报告</b>中报告<br/>实施时点：<b>企业评估后即可实施</b></div></div>
+      <div class="lvc l4"><div class="lvname">内部变更 <span class="lven">Internal Change Control</span></div>
+        <ul><li>不属注册/备案事项的企业内部管理变更</li><li>GMP 第二百四十～二百四十三条要求</li><li>由质量管理部门审核批准</li></ul>
+        <div class="route">分级：<b>I 级（重大）/ II 级（中等）/ III 级（微小）</b><br/>实施时点：<b>QA 批准后实施</b></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">二、按图索骥 · 变更分级问诊<span class="cnt">逐级选择，自动输出等级与处置要求</span></h2>
+    <div class="wiz">
+      <div class="wiz-bar">
+        <span class="wiz-step" id="c-step">第 1 步</span>
+        <div><button class="btn" id="c-back">← 上一步</button> <button class="btn" id="c-reset">重置</button></div>
+      </div>
+      <div class="trail" id="c-trail"></div>
+      <div id="c-body"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">三、变更判定路径全图<span class="cnt">点击任意节点可直接跳转 · 蓝色为当前所在</span></h2>
+    <div class="map" id="c-map"></div>
+  </section>
+
+  <section>
+    <h2 class="sec">四、变更分级速查表</h2>
+    <table>
+      <thead><tr><th>等级</th><th>典型情形</th><th>研究/验证要求</th><th>申报路径</th><th>实施时点</th></tr></thead>
+      <tbody>
+        <tr><td><b>重大变更</b></td><td>改剂型/给药途径/规格/适应症；改原料药合成路线（起始物料之后）；关键辅料种类或用量超出已批准范围；无菌灭菌方式变更；放宽或删除注册标准项目/限度；新增或跨省迁移生产场地；可能影响 BE/免疫原性</td><td>全面的药学对比研究，必要时非临床/临床桥接；3 批商业规模验证批；长期+加速稳定性；方法学验证</td><td>国家药监局<b>补充申请审批</b></td><td>取得批准后方可实施</td></tr>
+        <tr><td><b>中等变更</b></td><td>变更辅料/内包材供应商或产地（材质与标准不变）；生产批量超出原批准范围但在已验证范围；收紧质量标准限度/增加质控项目；基于完整稳定性数据延长有效期；中间体合成路线调整（不影响终产品）</td><td>变更前后质量对比；工艺验证或确认；稳定性承诺或 3 个月/6 个月稳定性数据；必要时方法学确认</td><td>省级药监局<b>备案</b></td><td>备案完成/取得备案号后实施</td></tr>
+        <tr><td><b>微小变更</b></td><td>文件性/文字性修订（不改变技术要求）；变更责任人/联系方式/企业名称（主体不变）；同供应商同产地内产线调整；增设备用设备（同型号同原理）；收紧内控（不改注册标准）</td><td>企业变更控制评估与记录；必要时确认性检验</td><td><b>年度报告</b></td><td>企业评估批准后即可实施</td></tr>
+        <tr><td><b>内部 I 级</b></td><td>涉及 GMP 关键系统（HVAC、制药用水、灭菌设备、计算机化系统、无菌工艺）或需再验证/稳定性考察的变更</td><td>再验证/再确认；影响评估；稳定性评估；必要时注册影响评估</td><td>企业内部（质量负责人 + 变更控制委员会）</td><td>批准并完成验证后实施</td></tr>
+        <tr><td><b>内部 II 级</b></td><td>SOP/质量标准/验证方案等受控文件的技术性修订；影响已验证状态但不涉及关键系统；非关键设备更换（原理不同）</td><td>必要的确认/比对；培训；文件修订生效</td><td>企业内部（质量管理部门）</td><td>QA 批准后实施</td></tr>
+        <tr><td><b>内部 III 级</b></td><td>行政性/格式性/文字性变更；记录表格版本更新；岗位职责描述调整（不影响职责履行）</td><td>记录即可；必要时培训</td><td>企业内部（部门负责人 + QA 备案）</td><td>批准后实施</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>存疑从重原则：</b>无法明确归为微小变更的，应按中等变更申报；无法排除重大影响的，应按重大变更申报，或向省级药监局/药审中心沟通咨询。严禁将本应申报的变更拆解为多个微小变更规避监管。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">五、法规依据</h2>
+    <ul style="margin:0;padding-left:19px;font-size:13.5px">
+      <li>《药品上市后变更管理办法（试行）》（国家药监局 2021 年第 21 号公告）—— 变更分类与审批/备案/年报路径</li>
+      <li>《已上市化学药品药学变更研究技术指导原则（试行）》《已上市生物制品药学变更研究技术指导原则（试行）》《已上市中药药学变更研究技术指导原则（试行）》—— 分级情形与研究要求</li>
+      <li>《创新药（化学药）临床试验期间药学变更技术指导原则（试行）》—— 临床期间变更</li>
+      <li>《药品生产质量管理规范（2010 年修订）》<b>第二百四十～二百四十三条</b>—— 变更控制</li>
+      <li>ICH Q12《药品生命周期管理的技术和法规考虑》—— PACMP、EC、既定条件（ECs）与上市后变更管理方案</li>
+      <li>《药品注册管理办法》（2020）—— 补充申请程序</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ============ 偏差调查 ============ -->
+<div class="panel" id="p-deviation">
+  <section>
+    <h2 class="sec">一、偏差分级总览<span class="cnt">依据 GMP(2010) 第二百四十四～二百四十九条 + ICH Q10</span></h2>
+    <p style="margin:0 0 12px;font-size:13.5px;color:#445">偏差指偏离已批准的<b>生产工艺、物料平衡限度、质量标准、检验方法、操作规程</b>等情形。按对产品质量与患者安全的影响程度分为<b>关键 / 主要 / 次要</b>三级。判定须从<b>五个维度</b>综合评估：①产品质量 ②患者安全 ③数据可靠性 ④注册/法规符合性 ⑤是否系统性重复。</p>
+    <div class="lvcards">
+      <div class="lvc l1"><div class="lvname">关键偏差 <span class="lven">Critical</span></div>
+        <ul><li>已/可能影响产品安全性、有效性、质量可控性</li><li>涉及数据可靠性根本缺陷</li><li>偏离注册工艺或已批准质量标准</li><li>导致或可能导致召回、拒收、停药</li></ul>
+        <div class="route">调查：<b>立即启动，QA 牵头跨部门彻底调查</b><br/>时限：<b>24 h 内报告 · 7 日内初步 · 30 日内关闭</b></div></div>
+      <div class="lvc l2"><div class="lvname">主要偏差 <span class="lven">Major</span></div>
+        <ul><li>影响非关键质量属性或非关键工艺参数</li><li>偏离 SOP 但产品经评估可放行</li><li>GMP 体系存在明显缺陷</li><li>12 个月内同类偏差重复出现（系统性）</li></ul>
+        <div class="route">调查：<b>3 个工作日内启动调查</b><br/>时限：<b>30 日内关闭</b>，须有 CAPA</div></div>
+      <div class="lvc l3"><div class="lvname">次要偏差 <span class="lven">Minor</span></div>
+        <ul><li>不影响产品质量、患者安全与数据可靠性</li><li>程序性/文档性偏离，孤立偶发</li><li>可即时纠正，不产生质量风险</li></ul>
+        <div class="route">处置：<b>即时纠正 + 记录</b><br/>回顾：<b>纳入月度/季度趋势分析</b></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">二、按图索骥 · 偏差分级问诊<span class="cnt">逐级选择，自动输出等级与处置要求</span></h2>
+    <div class="wiz">
+      <div class="wiz-bar">
+        <span class="wiz-step" id="d-step">第 1 步</span>
+        <div><button class="btn" id="d-back">← 上一步</button> <button class="btn" id="d-reset">重置</button></div>
+      </div>
+      <div class="trail" id="d-trail"></div>
+      <div id="d-body"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">三、偏差判定路径全图<span class="cnt">点击任意节点可直接跳转 · 蓝色为当前所在</span></h2>
+    <div class="map" id="d-map"></div>
+  </section>
+
+  <section>
+    <h2 class="sec">四、偏差分级速查表</h2>
+    <table>
+      <thead><tr><th>等级</th><th>判定要点</th><th>调查深度</th><th>时限要求</th><th>批准层级</th><th>CAPA</th></tr></thead>
+      <tbody>
+        <tr><td><b>关键偏差</b></td><td>影响产品安全/有效/质量可控；数据可靠性缺陷；偏离注册工艺或注册标准；无菌保证失效；交叉污染/混淆/差错；导致召回或拒收</td><td>彻底调查，须查明<b>根本原因</b>；跨部门（生产/工程/QC/QA）；必要时扩大至相邻批次与产品</td><td>立即（24 h 内报告质量负责人）→ 7 日内完成初步调查 → 30 日内完成根因分析并关闭</td><td>质量负责人（QP/质量受权人）+ 必要时企业负责人</td><td>必须 CAPA，并做<b>有效性检查</b>；可能需报告药监</td></tr>
+        <tr><td><b>主要偏差</b></td><td>影响非 CQA/非 CPP；偏离 SOP 但产品可放行；体系明显缺陷；12 个月内重复发生</td><td>系统调查，查明根本原因；QA 会同责任部门</td><td>3 个工作日内启动 → 30 日内关闭</td><td>质量管理部门</td><td>必须 CAPA；重复的升级为系统性 CAPA</td></tr>
+        <tr><td><b>次要偏差</b></td><td>程序性/文档性偏离；不影响产品质量与安全；孤立偶发</td><td>记录与即时纠正；必要时简短说明</td><td>即时纠正；月度汇总趋势分析</td><td>部门负责人 + QA 确认</td><td>趋势分析后按需；单一事件可不单列 CAPA</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>升级规则：</b>① 同一或同类偏差 12 个月内出现 ≥2 次，自动<b>升一级</b>并按系统性缺陷处理；② 调查中发现数据可靠性问题，无论原定级如何，一律按<b>关键偏差</b>处理；③ 存疑时从重定级，不得为降低定级而弱化事实描述。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">五、法规依据</h2>
+    <ul style="margin:0;padding-left:19px;font-size:13.5px">
+      <li>《药品生产质量管理规范（2010 年修订）》<b>第二百四十四～二百四十九条</b>—— 偏差处理、纠正措施与预防措施（CAPA）</li>
+      <li>ICH Q10《药品质量体系》—— 偏差管理、CAPA 有效性、质量风险管理与知识管理</li>
+      <li>ICH Q9（R1）《质量风险管理》—— 偏差风险评级的方法学依据</li>
+      <li>2023 版《药品 GMP 指南 · 质量管理体系》—— 偏差分级与调查实务</li>
+      <li>EU GMP Chapter 1 / Chapter 8 —— 偏差与质量缺陷管理</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ============ 实验室异常结果 ============ -->
+<div class="panel" id="p-oos">
+  <section>
+    <h2 class="sec">一、异常结果类型辨析<span class="cnt">先分清是哪一类，再决定走哪条路</span></h2>
+    <div class="lvcards">
+      <div class="lvc l1"><div class="lvname">OOS 超标结果 <span class="lven">Out of Specification</span></div>
+        <ul><li>检验结果<b>超出既定质量标准</b>（注册标准/内控标准）限度</li><li>必须启动正式调查，批次<b>不得先行放行</b></li><li>Phase I 未查出原因 → 强制进入 Phase II</li></ul>
+        <div class="route">处置路径：<b>Phase I → Phase II → 合格/不合格裁决</b></div></div>
+      <div class="lvc l2"><div class="lvname">OOT 超趋势结果 <span class="lven">Out of Trend</span></div>
+        <ul><li>结果<b>符合标准</b>但偏离历史趋势或预期范围</li><li>如超出 3σ、连续 7 点位于均值同侧、连续 3 批单向漂移</li><li><b>不自动判不合格</b>，但必须调查</li></ul>
+        <div class="route">处置路径：<b>趋势调查 → 评估工艺/标准合理性 → 加强监测</b></div></div>
+      <div class="lvc l4"><div class="lvname">OOE 超预期结果 <span class="lven">Out of Expectation</span></div>
+        <ul><li>符合标准但不符合方法学预期或历史数据模式</li><li>如含量突然从 99% 降至 92%（限度 90%）</li><li>常为 OOT 的前兆信号</li></ul>
+        <div class="route">处置路径：<b>记录 + 评估 + 趋势跟踪</b></div></div>
+      <div class="lvc l3"><div class="lvname">无效结果 <span class="lven">Invalid / Void</span></div>
+        <ul><li>因<b>已确认的实验室错误或系统适用性失败</b>导致结果不可用</li><li>须有明确证据与书面论证，QA 批准</li><li>原数据<b>必须保留</b>，不得删除</li></ul>
+        <div class="route">处置路径：<b>论证作废 → 按规定复测/重新分析</b></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">二、按图索骥 · 异常结果调查问诊<span class="cnt">逐级选择，自动输出结论与处置要求</span></h2>
+    <div class="wiz">
+      <div class="wiz-bar">
+        <span class="wiz-step" id="o-step">第 1 步</span>
+        <div><button class="btn" id="o-back">← 上一步</button> <button class="btn" id="o-reset">重置</button></div>
+      </div>
+      <div class="trail" id="o-trail"></div>
+      <div id="o-body"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">三、调查判定路径全图<span class="cnt">点击任意节点可直接跳转 · 蓝色为当前所在</span></h2>
+    <div class="map" id="o-map"></div>
+  </section>
+
+  <section>
+    <h2 class="sec">四、Phase I 实验室调查核查清单<span class="cnt">FDA OOS Guidance 2022 Rev.1 列举的明确实验室错误</span></h2>
+    <table>
+      <thead><tr><th style="width:38px">#</th><th>核查项</th><th>典型表现</th><th style="width:96px">可否作无效依据</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>计算错误</td><td>公式套用错误、单位换算错误、稀释倍数错误、有效位数处理错误</td><td><b>可</b>（须有复核记录佐证）</td></tr>
+        <tr><td>2</td><td>称量 / 移取错误</td><td>天平读数错误、称量容器未归零、移液管规格选错、样品转移损失</td><td><b>可</b></td></tr>
+        <tr><td>3</td><td>稀释 / 定容错误</td><td>容量瓶规格错误、定容未至刻度、混匀不充分、逐级稀释级数错误</td><td><b>可</b></td></tr>
+        <tr><td>4</td><td>仪器故障或参数错误</td><td>波长设置错误、流速/柱温偏离、检测器灯能量不足、进样体积错误</td><td><b>可</b>（须有维修/偏差记录）</td></tr>
+        <tr><td>5</td><td>系统适用性不合格</td><td>分离度、拖尾因子、理论塔板数、RSD 不符合方法规定</td><td><b>可</b>（该序列全部无效）</td></tr>
+        <tr><td>6</td><td>标准品 / 对照品问题</td><td>错用标准品、超过有效期、储存条件不当、标定值错误、纯度变化</td><td><b>可</b></td></tr>
+        <tr><td>7</td><td>试剂 / 溶剂问题</td><td>错误试剂、过期、污染、批次不符、流动相配制错误或脱气不足</td><td><b>可</b></td></tr>
+        <tr><td>8</td><td>色谱柱问题</td><td>柱效下降、柱型号错误、柱污染、柱温失控</td><td><b>可</b></td></tr>
+        <tr><td>9</td><td>样品混淆 / 交叉污染</td><td>样品编号错误、进样顺序错误、残留污染、容器未清洗</td><td><b>可</b></td></tr>
+        <tr><td>10</td><td>方法偏离</td><td>未经批准的方法修改、操作步骤遗漏或颠倒、时间控制偏差</td><td><b>可</b>（须同步记录方法偏离）</td></tr>
+        <tr><td>11</td><td>样品制备 / 处理错误</td><td>提取不完全、超声/振荡时间不足、过滤吸附、避光操作缺失</td><td><b>可</b></td></tr>
+        <tr><td>12</td><td>玻璃器皿污染</td><td>清洗不彻底、残留洗涤剂、未干燥</td><td><b>可</b></td></tr>
+        <tr><td>13</td><td>环境条件失控</td><td>温湿度超出方法要求、光照影响、振动干扰</td><td><b>可</b>（须有环境监测记录）</td></tr>
+        <tr><td>14</td><td>数据录入 / 转录错误</td><td>手工抄录错误、积分参数不当导致峰面积错误、报告模板引用错误</td><td><b>可</b>（须有原始数据对照）</td></tr>
+        <tr><td>15</td><td>微生物实验室专项</td><td>无菌操作失误、培养基灭菌/促生长试验失败、培养温度或时间错误、菌种污染</td><td><b>可</b></td></tr>
+        <tr><td>16</td><td>电源 / 中断事件</td><td>停电、仪器中途停机、序列中断</td><td><b>可</b></td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>红线（不可触碰）：</b><br/>
+      ❌ <b>禁止"复测至合格"</b>（testing into compliance）—— 不得反复检测直到得到合格结果后仅报告该结果；<br/>
+      ❌ <b>禁止用平均值报告</b>（averaging）—— 不得以多次结果的平均值代替单个结果判定；<br/>
+      ❌ <b>禁止在完成 Phase I 前擅自复测</b>；<br/>
+      ❌ <b>禁止销毁或丢弃</b>原始溶液、样品、色谱数据与记录（含失败数据）；<br/>
+      ❌ <b>禁止以"原因不明"直接放行</b>—— 无法确定原因时按最保守原则判定。<br/>
+      复测次数与重新取样条件<b>必须事先在 SOP 中明确规定</b>，不得临机决定。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">五、OOS 调查流程与时限速查</h2>
+    <table>
+      <thead><tr><th>阶段</th><th>时限</th><th>责任</th><th>核心动作</th><th>出口结论</th></tr></thead>
+      <tbody>
+        <tr><td><b>结果确认</b></td><td>发现当日</td><td>检验人员 → 实验室主管</td><td>立即停止后续计算与报告；保留原始溶液、样品与色谱数据；报告 QA</td><td>确认为 OOS / OOT / OOE</td></tr>
+        <tr><td><b>Phase I 实验室初步调查</b></td><td>1 个工作日内启动</td><td>实验室主管 + 检验人员</td><td>按核查清单逐项核对；查阅仪器日志、色谱数据、标准品与试剂记录；必要时与检验人员面谈</td><td>①检出明确实验室错误 → 结果无效，规定复测<br/>②未检出 → 进入 Phase II</td></tr>
+        <tr><td><b>Phase II 全面调查</b></td><td>Phase I 结束后立即启动，通常 20～30 日内关闭</td><td>QA 牵头，生产/工程/QC/RA 参与</td><td>批记录与工艺参数回顾；物料与供应商追溯；设备与公用系统历史；留样与稳定性数据；同品种/相邻批次排查；必要时重新取样</td><td>①确认 OOS 成立 → 批次不合格<br/>②归因生产 → 关联生产偏差<br/>③证明原样品不具代表性 → 重新取样（须 QA 批准）</td></tr>
+        <tr><td><b>裁决与处置</b></td><td>调查结束后</td><td>质量受权人 / 质量负责人</td><td>综合判定放行或不合格；不合格批次按程序处理；评估是否影响已放行批次与是否需召回/报告药监</td><td>放行 / 拒收 / 召回 / 药监报告</td></tr>
+        <tr><td><b>CAPA 与趋势分析</b></td><td>关闭后持续</td><td>QA</td><td>根本原因分析（5Why / 鱼骨图 / FMEA）；制定并跟踪 CAPA；OOS 率纳入质量量度与年度回顾</td><td>CAPA 有效性确认</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec">六、法规依据</h2>
+    <ul style="margin:0;padding-left:19px;font-size:13.5px">
+      <li>FDA Guidance for Industry: <i>Investigating Out-of-Specification (OOS) Test Results for Pharmaceutical Production</i>（2022 年 5 月 Rev.1）</li>
+      <li>MHRA <i>Out of Specification Investigations</i>；EU GMP Chapter 6（质量控制系统）6.32–6.35</li>
+      <li>ICH Q7 第 11 章（实验室控制）—— OOS 调查要求</li>
+      <li>《药品生产质量管理规范（2010 年修订）》—— 质量控制实验室管理、持续稳定性考察、偏差与 OOS 关联</li>
+      <li>2023 版《药品 GMP 指南 · 质量控制实验室与物料系统》</li>
+      <li>WHO Technical Report Series No. 1025, Annex 4（OOS 与 OOT 调查指南）</li>
+    </ul>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div>本导航台为质量管理的<b>辅助判定工具</b>，定级结论供参考。实际定级须结合产品特性、注册资料、企业质量体系与最新法规，由质量管理部门/质量受权人最终裁定。</div>
+  <div style="margin-top:6px">相关入口：<a href="quality-management.html">质量管理知识库</a> · <a href="qa-workbench.html">QA 工作台</a> · <a href="gmp-glossary-network.html">术语知识网络</a> · <a href="index.html">法规问答首页</a></div>
+</footer>
+
+<script>
+/* =========================================================
+   三大判定树数据
+   ========================================================= */
+const TREES = {
+
+/* ------------------ 变更分级树 ------------------ */
+change: {
+  start: "c1",
+  nodes: {
+    c1: { q: "本次变更是否属于《药品上市后变更管理办法（试行）》及各变更技术指导原则列明的「注册/备案变更事项」？",
+      tip: "注册变更 = 改变<b>已批准/已登记载明</b>的事项。拿不准时选「不确定」，会带您逐项核对。",
+      opts: [
+        { t: "是，属于注册/备案变更事项", to: "c2" },
+        { t: "否，属企业内部管理事项（文件修订、同型号设备更换等）", to: "c5" },
+        { t: "不确定，逐项核对", to: "c1b" }
+      ]},
+    c1b: { q: "变更是否涉及以下<b>任一</b>事项？", tag: "注册事项核对",
+      hitlist: ["处方或辅料组成 / 用量", "生产工艺或工艺参数范围", "质量标准或检验方法",
+                "规格、包装规格", "生产场地或生产线", "直接接触药品的包装材料 / 容器",
+                "有效期或贮藏条件", "原料药合成路线或起始物料", "生产批量（超出已批准范围）"],
+      opts: [
+        { t: "涉及上述任一项 → 属注册变更", to: "c2" },
+        { t: "均不涉及 → 属内部变更", to: "c5" }
+      ]},
+    c2: { q: "【重大变更筛查】变更是否命中下列<b>任一</b>重大情形？", tag: "第 1 层筛查",
+      hitlist: ["改变剂型、给药途径、规格、适应症或用法用量",
+                "改变原料药合成路线（起始物料之后的反应步骤）",
+                "变更制剂处方中<b>关键辅料</b>的种类或用量，且超出已批准范围",
+                "无菌药品<b>灭菌方式</b>或无菌保证工艺变更",
+                "<b>放宽</b>或<b>删除</b>注册标准中的质控项目或限度",
+                "变更生产场地（新增生产地址 / 跨省迁移）",
+                "变更可能影响<b>生物等效性、免疫原性或体内释放特性</b>",
+                "新增或变更可能引入新的杂质谱 / 新的安全性风险"],
+      opts: [
+        { t: "命中上述任一情形", to: "RC", hit: "命中重大变更情形" },
+        { t: "均未命中", to: "c3" }
+      ]},
+    c3: { q: "【中等变更筛查】变更是否命中下列<b>任一</b>中等情形？", tag: "第 2 层筛查",
+      hitlist: ["变更辅料 / 内包材供应商或产地（材质与质量标准不变）",
+                "生产批量变更（超出原批准范围，但在已验证范围内）",
+                "中间体合成路线调整（不影响终产品质量）",
+                "<b>收紧</b>质量标准限度 / <b>增加</b>质控项目",
+                "基于完整稳定性数据延长有效期或放宽贮藏条件",
+                "变更生产设备（原理不同但工艺参数与产品质量不变）",
+                "变更检验方法（非安全性相关，经方法学验证等效或更优）"],
+      opts: [
+        { t: "命中上述任一情形", to: "RM", hit: "命中中等变更情形" },
+        { t: "均未命中", to: "c4" }
+      ]},
+    c4: { q: "【微小变更确认】变更是否属于下列<b>低风险情形</b>？", tag: "第 3 层筛查",
+      hitlist: ["文件性 / 文字性修订（不改变技术要求）",
+                "变更责任人、联系方式、企业名称（主体不变）",
+                "同一供应商同一产地内产线 / 批次调整",
+                "增设备用设备（同型号、同原理）",
+                "收紧企业内控标准（不改变注册标准）"],
+      opts: [
+        { t: "是，属低风险情形", to: "RN", hit: "属微小变更低风险情形" },
+        { t: "否 / 仍不确定", to: "RX" }
+      ]},
+    c5: { q: "【内部变更分级】该项内部变更影响范围是？", tag: "企业内部变更",
+      opts: [
+        { t: "涉及 GMP 关键系统（HVAC、制药用水、灭菌设备、计算机化系统、无菌工艺），或需再验证 / 稳定性考察", to: "RI" },
+        { t: "涉及 SOP / 质量标准 / 验证方案等受控文件的技术性修订，或影响已验证状态", to: "RII" },
+        { t: "仅为行政性、格式性或文字性变更，不影响已验证状态", to: "RIII" }
+      ]},
+
+    /* ---- 结果节点 ---- */
+    RC: { result:1, level:"重大变更", en:"Major Change · PAS",
+      verdict:"须报<b>国家药品监督管理局审批（补充申请）</b>，<b>取得批准后方可实施</b>。",
+      actions:["开展全面的<b>变更前后质量对比研究</b>，必要时补充非临床或临床桥接研究",
+               "完成 <b>3 批商业规模验证批</b>生产与检验，结果符合标准",
+               "开展<b>长期 + 加速稳定性考察</b>（通常 6 个月加速 + 6 个月长期数据，并承诺继续考察）",
+               "涉及检验方法变更的，完成<b>方法学验证</b>",
+               "完成<b>注册影响评估</b>，确认是否影响其他已批准品种",
+               "变更实施前完成相关<b>文件修订与人员培训</b>",
+               "按补充申请要求提交资料；批准的变更须在<b>年度报告</b>中体现"],
+      warn:"在实施前先行生产或销售，属<b>未经批准的变更</b>，是飞行检查的重点打击对象。",
+      refs:["药品上市后变更管理办法（试行）","已上市化学药品药学变更研究技术指导原则（试行）","GMP(2010) 第二百四十条","ICH Q12"] },
+    RM: { result:2, level:"中等变更", en:"Moderate Change · 备案",
+      verdict:"须报<b>省级药品监督管理局备案</b>，<b>备案完成（取得备案号）后方可实施</b>。",
+      actions:["开展变更前后<b>质量对比研究</b>与必要的工艺验证或确认",
+               "提供<b>稳定性数据或稳定性承诺</b>（通常 3～6 个月数据 + 承诺继续考察）",
+               "涉及检验方法变更的，完成方法学验证或确认",
+               "通过<b>国家药品业务应用系统</b>提交备案资料，取得备案号",
+               "备案后按规定的时间节点完成实施并留存完整记录",
+               "在<b>年度报告</b>中报告该变更及实施情况"],
+      warn:"备案不等于免于研究。备案资料须真实、完整、可追溯；备案后药监可要求补充研究或撤销备案。",
+      refs:["药品上市后变更管理办法（试行）","已上市化学药品药学变更研究技术指导原则（试行）","GMP(2010) 第二百四十二条"] },
+    RN: { result:3, level:"微小变更", en:"Minor Change · 年报",
+      verdict:"无需事前申报，企业完成<b>变更控制评估</b>后即可实施，在<b>年度报告</b>中报告。",
+      actions:["在企业变更控制系统中登记，进行<b>影响评估</b>并记录评估依据",
+               "评估须说明为何判定为微小变更，并<b>引用指导原则对应条款</b>",
+               "必要时进行确认性检验或对比",
+               "完成相关文件修订与培训",
+               "纳入<b>年度报告</b>，接受药监监督检查"],
+      warn:"微小变更≠免评估。若实际影响超出微小变更范围，将被认定为<b>未按规定申报变更</b>。",
+      refs:["药品上市后变更管理办法（试行）","ICH Q12（Annual Report 类变更）"] },
+    RX: { result:4, level:"等级存疑 · 建议升级申报", en:"Escalate",
+      verdict:"无法明确归入微小变更。<b>存疑从重</b>：建议按<b>中等变更</b>申报备案，或向省级药监局 / 药审中心沟通咨询后确定。",
+      actions:["整理变更的技术背景与研究数据，形成<b>书面评估资料</b>",
+               "对照相应品种的变更技术指导原则逐条核对",
+               "通过<b>沟通交流渠道</b>（省局、药审中心）确认分级",
+               "在确认前<b>不得实施</b>该变更",
+               "将沟通结论与依据一并归档"],
+      warn:"严禁将本应一次申报的变更<b>拆解为多个微小变更</b>规避监管——这是注册核查与飞检的重点关注项。",
+      refs:["药品上市后变更管理办法（试行）","ICH Q9(R1) 质量风险管理"] },
+    RI: { result:1, level:"内部 I 级变更", en:"Internal Level I",
+      verdict:"重大内部变更：须<b>再验证 / 再确认</b>，由<b>质量负责人 + 变更控制委员会</b>批准。",
+      actions:["开展<b>影响评估</b>，明确对已验证状态、产品质量与注册文件的影响",
+               "制定并实施<b>再验证 / 再确认方案</b>（IQ/OQ/PQ 或工艺验证、计算机化系统验证）",
+               "评估是否需要进行<b>稳定性考察</b>或额外检验",
+               "评估对<b>已放行产品</b>与在产品的追溯影响",
+               "同步评估是否触发<b>注册变更</b>（若触发，走 RC / RM / RN 路径）",
+               "完成文件修订、培训，QA 批准后方可实施"],
+      refs:["GMP(2010) 第二百四十～二百四十三条","2023版GMP指南·质量管理体系","ICH Q10"] },
+    RII: { result:2, level:"内部 II 级变更", en:"Internal Level II",
+      verdict:"中等内部变更：由<b>质量管理部门</b>审核批准，完成必要的确认后实施。",
+      actions:["开展影响评估，说明对产品质量与已验证状态的影响",
+               "完成必要的<b>确认或比对</b>工作",
+               "完成受控文件修订、发放旧版回收与<b>培训</b>",
+               "QA 批准后实施，实施情况留档"],
+      refs:["GMP(2010) 第二百四十一～二百四十三条"] },
+    RIII: { result:3, level:"内部 III 级变更", en:"Internal Level III",
+      verdict:"微小内部变更：<b>部门负责人批准 + QA 备案</b>，记录即可。",
+      actions:["在变更控制系统中登记变更内容与理由",
+               "完成文件修订与发放（如适用）",
+               "必要时进行简短培训或告知",
+               "归档记录，纳入定期回顾"],
+      refs:["GMP(2010) 第二百四十三条"] }
+  }
+},
+
+/* ------------------ 偏差分级树 ------------------ */
+deviation: {
+  start: "d1",
+  nodes: {
+    d1: { q: "该偏差是否已影响（或极可能影响）产品的<b>安全性、有效性或质量可控性</b>，或已导致/可能导致<b>召回、拒收、停药、放行受阻</b>？",
+      opts:[ { t:"是", to:"DK", hit:"影响产品质量/患者安全或导致召回拒收" }, { t:"否", to:"d2" } ]},
+    d2: { q: "该偏差是否涉及<b>数据可靠性</b>问题？", tag:"关键红线",
+      hitlist:["伪造、篡改、删除或覆盖数据","关闭或无审计追踪（Audit Trail）",
+               "同步记录、事后补记、倒签日期","共用账号 / 共享密码","未经授权修改数据或系统时间",
+               "重复进样后选择性报告结果","原始记录缺失或无法提供"],
+      opts:[ { t:"是，涉及数据可靠性", to:"DK", hit:"涉及数据可靠性缺陷" }, { t:"否", to:"d3" } ]},
+    d3: { q: "该偏差是否<b>偏离已批准的注册工艺、注册标准、处方或申报资料载明内容</b>？",
+      tip:"注册符合性是定级硬门槛：偏离注册文件即属高风险，与是否检出不合格无关。",
+      opts:[ { t:"是，偏离注册文件", to:"DK", hit:"偏离已批准的注册工艺/标准/处方" }, { t:"否", to:"d4" } ]},
+    d4: { q: "该偏差是否涉及<b>无菌保证、交叉污染、混淆或差错</b>？", tag:"关键红线",
+      hitlist:["无菌检查阳性 / 培养基模拟灌装失败","灭菌工艺参数偏离或灭菌设备故障",
+               "洁净区环境监控（悬浮粒子 / 微生物）超标","细菌内毒素或微粒超标",
+               "清场不彻底导致交叉污染风险","物料 / 产品混淆或标识差错"],
+      opts:[ { t:"是", to:"DK", hit:"涉及无菌保证/交叉污染/混淆差错" }, { t:"否", to:"d5" } ]},
+    d5: { q: "该偏差是否导致<b>关键质量属性（CQA）或关键工艺参数（CPP）</b>超出已验证 / 已批准范围？",
+      opts:[ { t:"是，CQA 或 CPP 超范围", to:"DM", hit:"CQA/CPP 超出已验证范围" }, { t:"否", to:"d6" } ]},
+    d6: { q: "该偏差是否为<b>系统性或重复性</b>缺陷？", tag:"升级规则",
+      tip:"判定标准：同一或同类偏差在 <b>12 个月内出现 ≥2 次</b>，或内/外部审计中被重复发现。",
+      opts:[ { t:"是，12 个月内重复发生或审计重复发现", to:"DM", hit:"系统性/重复性缺陷（12个月内≥2次）" }, { t:"否，属首次孤立事件", to:"d7" } ]},
+    d7: { q: "该偏差是否影响<b>非关键质量属性 / 非关键工艺参数</b>，或虽偏离 SOP 但产品经评估可放行？",
+      opts:[ { t:"是", to:"DM", hit:"影响非CQA/非CPP或偏离SOP但可评估放行" }, { t:"否", to:"d8" } ]},
+    d8: { q: "该偏差是否<b>仅为程序性 / 文档性</b>偏离，且不影响产品质量、患者安全与数据可靠性？",
+      hitlist:["记录填写不规范（涂改方式、空白未划线）","签字遗漏或日期填写不全",
+               "非关键时限轻微超期（未影响质量）","文件版本引用错误（内容一致）",
+               "非关键区域的标识/SOP 摆放问题"],
+      opts:[ { t:"是，属孤立的程序性/文档性偏离", to:"DN", hit:"仅程序性/文档性偏离，无质量影响" },
+             { t:"否 / 仍不确定", to:"DM", hit:"存疑从重，按主要偏差处理" } ]},
+
+    DK: { result:1, level:"关键偏差", en:"Critical Deviation",
+      verdict:"必须<b>立即启动调查</b>，由质量管理部门<b>会同相关部门彻底调查</b>，查明根本原因；涉及批次<b>不得放行</b>。",
+      actions:["<b>立即（发现后 24 小时内）</b>报告质量负责人 / 质量受权人",
+               "对受影响批次及<b>相邻批次、同品种其他批次</b>实施控制（隔离、暂停放行、暂停生产）",
+               "成立跨部门调查组（QA 牵头，生产 / 工程 / QC / 注册参与）",
+               "<b>7 日内</b>完成初步调查，<b>30 日内</b>完成根本原因分析并关闭",
+               "评估对<b>已放行产品</b>的影响，必要时启动<b>召回</b>或向药监报告",
+               "制定并实施 <b>CAPA</b>，后续做<b>有效性检查</b>",
+               "涉及数据可靠性的，启动<b>数据可靠性专项调查</b>"],
+      warn:"关键偏差是飞行检查与注册核查的必查项。调查不充分、根本原因未查明即关闭，会被直接开具缺陷项。",
+      refs:["GMP(2010) 第二百四十四～二百四十七条","ICH Q10","ICH Q9(R1)","2023版GMP指南·质量管理体系"] },
+    DM: { result:2, level:"主要偏差", en:"Major Deviation",
+      verdict:"须在<b>3 个工作日内启动调查</b>，查明根本原因，<b>30 日内关闭</b>，并制定 CAPA。",
+      actions:["3 个工作日内启动调查，QA 会同责任部门开展",
+               "评估对产品质量的影响，形成<b>放行影响评估结论</b>",
+               "查明根本原因（5Why / 鱼骨图 / FMEA 等工具）",
+               "制定并实施 <b>CAPA</b>，明确责任人与完成期限",
+               "30 日内关闭；确需延期的须书面说明并获 QA 批准",
+               "纳入<b>季度/年度偏差趋势分析</b>"],
+      warn:"若属 12 个月内重复发生，须<b>升级为系统性缺陷</b>处理：重新评估原 CAPA 的有效性，必要时重新设计控制策略。",
+      refs:["GMP(2010) 第二百四十四～二百四十九条","ICH Q10","ICH Q9(R1)"] },
+    DN: { result:3, level:"次要偏差", en:"Minor Deviation",
+      verdict:"<b>即时纠正 + 完整记录</b>，无需单独展开调查；纳入月度 / 季度趋势分析。",
+      actions:["当场或短期内完成<b>纠正</b>（如补签、更正记录、补充标识）",
+               "在偏差记录中清楚描述事实、纠正措施与<b>不影响的判断依据</b>",
+               "部门负责人确认，QA 备案",
+               "纳入月度偏差台账与<b>趋势分析</b>",
+               "同类问题若呈上升趋势，须<b>升级为主要偏差</b>并启动 CAPA"],
+      warn:"即使定级为次要，也<b>不得</b>因频次高而降低记录质量；高频次要偏差本身就是体系信号。",
+      refs:["GMP(2010) 第二百四十四条","ICH Q10"] }
+  }
+},
+
+/* ------------------ 实验室异常结果树 ------------------ */
+oos: {
+  start: "o1",
+  nodes: {
+    o1: { q: "本次异常结果属于哪一类？", tag:"类型辨析",
+      opts:[
+        { t:"OOS —— 检验结果<b>超出</b>质量标准限度", to:"o2" },
+        { t:"OOT / OOE —— 符合标准但<b>偏离历史趋势或预期</b>", to:"o6" },
+        { t:"系统适用性（SST）不合格 / 仪器故障导致结果不可用", to:"o7" }
+      ]},
+
+    /* OOS 分支 */
+    o2: { q:"【Phase I 前置】是否已<b>立即</b>停止后续处理，并保留原始溶液、样品与原始数据？", tag:"Phase I",
+      tip:"OOS 一经发现，检验人员须<b>立即</b>停止计算与报告，保留<b>原始供试品溶液、对照品溶液、剩余样品、色谱原始数据与仪器日志</b>，并于当日报告实验室主管与 QA。",
+      opts:[
+        { t:"是，已按规定保留并报告", to:"o3" },
+        { t:"否，尚未保留或已继续处理", to:"RP", hit:"未按规定保留原始溶液/样品/数据" }
+      ]},
+    o3: { q:"【Phase I 实验室调查】是否检出<b>明确且可归因的实验室错误</b>？", tag:"Phase I",
+      tip:"须按核查清单逐项核对（计算、称量、稀释、仪器、SST、标准品、试剂、色谱柱、样品混淆、方法偏离、器皿、环境、数据录入等）。<b>「疑似」不等于「确认」</b>——必须有客观证据。",
+      opts:[
+        { t:"是，有明确证据的可归因实验室错误", to:"RL", hit:"Phase I 检出明确实验室错误" },
+        { t:"否，未检出实验室错误（或仅为推测）", to:"o4" }
+      ]},
+    o4: { q:"【Phase II 前置】是否已启动<b>跨部门全面调查</b>？", tag:"Phase II",
+      tip:"Phase I 未查出原因，<b>不得</b>直接以复测结果放行，必须进入 Phase II 全面调查。",
+      opts:[
+        { t:"是，已启动并完成既定调查内容", to:"o5" },
+        { t:"否，尚未启动全面调查", to:"RP2", hit:"Phase I 未查出原因但直接进入复测" }
+      ]},
+    o5: { q:"【Phase II 结论】全面调查的结果是？", tag:"裁决",
+      opts:[
+        { t:"确认存在生产原因（工艺 / 物料 / 设备 / 操作），且影响产品质量", to:"RJ" },
+        { t:"确认 OOS 成立，但<b>根本原因无法确定</b>", to:"RJ" },
+        { t:"经充分调查证明<b>原样品不具代表性</b>或取样错误，重新取样结果合格", to:"RS" }
+      ]},
+
+    /* OOT 分支 */
+    o6: { q:"OOT / OOE 的偏离形态是？", tag:"趋势评估",
+      tip:"OOT <b>不自动判不合格</b>，但必须调查。常用触发规则：超出 3σ、连续 7 点位于均值同侧、连续 3 批单向漂移、超出历史最大值/最小值。",
+      opts:[
+        { t:"趋势性 / 连续性偏离（3σ 外、连续 7 点同侧、连续 3 批漂移）", to:"RT", hit:"趋势性/连续性偏离" },
+        { t:"单次轻微偏离，无连续性", to:"RM2", hit:"单次轻微偏离" }
+      ]},
+
+    /* SST 分支 */
+    o7: { q:"系统适用性失败或仪器故障的处理方式是？", tag:"无效结果",
+      opts:[
+        { t:"该次进样序列整序列作废，查明原因后重新分析", to:"RI2" },
+        { t:"仅挑取合格的部分结果报告", to:"RB", hit:"选择性报告结果" }
+      ]},
+
+    /* ---- 结果节点 ---- */
+    RP: { result:1, level:"程序违规 · 结果暂不可用", en:"Procedure Violation",
+      verdict:"<b>先补正程序，再谈定级。</b>未保留原始溶液 / 样品 / 数据即继续处理，已违反 OOS 调查基本要求，该结果<b>不得用于放行</b>。",
+      actions:["立即封存<b>现存的所有</b>样品、溶液、色谱数据与仪器日志",
+               "书面说明未保留的原因、时间线与责任人，作为<b>数据可靠性缺陷</b>登记偏差",
+               "按关键偏差处理该程序违规（数据可靠性类）",
+               "对检验人员进行 OOS 程序的<b>再培训</b>并评估其历史检验数据",
+               "评估该批次是否需<b>重新取样</b>检验（须 QA 批准并论证）"],
+      warn:"销毁或丢弃原始溶液与数据，在检查中会被认定为<b>数据可靠性造假嫌疑</b>，后果远重于 OOS 本身。",
+      refs:["FDA OOS Guidance (2022 Rev.1)","GMP(2010) 质量控制实验室管理","2023版GMP指南·质量控制实验室与物料系统"] },
+    RL: { result:3, level:"实验室错误 · 原结果无效", en:"Invalidated — Lab Error",
+      verdict:"已确认存在可归因的实验室错误，原 OOS 结果判为<b>无效（Invalid）</b>，可按规定<b>复测</b>。",
+      actions:["将实验室错误的<b>客观证据</b>书面固化（记录、色谱图、维修单、环境监测数据等）",
+               "填写 OOS 调查报告，明确<b>「无效结果」结论及依据</b>，经实验室主管与 QA 审核",
+               "在 SOP 规定的次数范围内<b>复测</b>（次数须事先规定，不得临机增加）",
+               "原 OOS 数据<b>必须保留</b>并一并归档，不得删除或覆盖",
+               "针对该实验室错误启动 <b>CAPA</b>（如天平校准、方法培训、SST 强化）",
+               "统计该实验室错误类型，纳入<b>实验室质量量度</b>与趋势分析"],
+      warn:"「无效」必须有<b>证据</b>，不能靠推测。检查员会重点质疑：为什么恰好在 OOS 时才「发现」这个错误？实验室错误<b>高频出现</b>本身就是体系缺陷。",
+      refs:["FDA OOS Guidance (2022 Rev.1)","MHRA OOS Guidance","ICH Q7 §11"] },
+    RP2: { result:2, level:"必须进入 Phase II", en:"Phase II Required",
+      verdict:"Phase I 未查出实验室原因，<b>不得直接复测放行</b>，必须启动 <b>Phase II 跨部门全面调查</b>。",
+      actions:["由 <b>QA 牵头</b>，组织生产 / 工程 / QC / 注册成立调查组",
+               "回顾<b>批生产记录</b>与全部工艺参数，核查是否偏离既定范围",
+               "追溯<b>物料与供应商</b>：原辅料批号、检验放行、储存与发运",
+               "核查<b>设备与公用系统</b>历史：维护、校准、偏差、变更",
+               "调阅<b>留样与稳定性数据</b>，评估是否存在趋势性变化",
+               "排查<b>同品种相邻批次</b>及共用设备生产的其他产品",
+               "复测次数与条件<b>严格按 SOP 执行</b>，禁止「复测至合格」「用平均值报告」",
+               "通常 <b>20～30 日内</b>完成调查并裁决"],
+      warn:"在完成 Phase II 之前，任何「复测合格即放行」的做法都属于 <b>testing into compliance</b>，是 FDA 483 / 警告信的高频缺陷。",
+      refs:["FDA OOS Guidance (2022 Rev.1)","ICH Q7 §11","EU GMP Chapter 6"] },
+    RJ: { result:1, level:"确认 OOS · 批次不合格", en:"Confirmed OOS — Batch Reject",
+      verdict:"OOS 结果成立，该批次<b>判定不合格</b>，不得放行；须关联<b>生产偏差</b>并评估相邻批次与已放行产品。",
+      actions:["质量受权人 / 质量负责人作出<b>不合格裁决</b>并签署",
+               "不合格批次按程序<b>隔离、标识并按批准方式处理</b>（返工须经批准且不得影响质量；否则销毁）",
+               "关联并启动<b>生产偏差</b>调查，查明根本原因",
+               "开展<b>影响范围评估</b>：同品种相邻批次、共用设备/物料的其他批、已放行批次",
+               "如已放行批次存在风险，启动<b>召回程序</b>并按法规向药监报告",
+               "制定并跟踪 <b>CAPA</b>，做有效性确认",
+               "将 OOS 率纳入<b>质量量度与年度产品质量回顾</b>（APQR）"],
+      warn:"「原因不明」不等于「可以放行」。FDA 明确规定：<b>无法确定原因时，须按最保守原则判定批次不合格</b>。",
+      refs:["FDA OOS Guidance (2022 Rev.1)","ICH Q7 §11","EU GMP Chapter 6","GMP(2010) 质量控制实验室管理"] },
+    RS: { result:4, level:"重新取样 · 须严格论证", en:"Resampling — Conditional",
+      verdict:"仅在<b>证明原样品不具代表性或取样错误</b>，且经 QA 批准后，方可重新取样检验。",
+      actions:["提供<b>客观证据</b>证明原样品不具代表性（如取样器具污染、取样点错误、样品运输/储存失控）",
+               "在 OOS 调查报告中<b>书面论证</b>重新取样的科学必要性与取样方案",
+               "经<b>质量管理部门书面批准</b>后方可重新取样",
+               "原 OOS 结果与全部调查资料<b>一并归档</b>，不得销毁",
+               "重新取样检验仍不合格的，<b>直接判批次不合格</b>",
+               "取样环节若为根本原因，须对<b>取样 SOP 与人员</b>启动 CAPA"],
+      warn:"重新取样<b>不得</b>成为规避 OOS 的通道。FDA 明确：仅因 OOS 而重新取样是不被接受的，必须先证明<b>取样本身</b>有问题。",
+      refs:["FDA OOS Guidance (2022 Rev.1)","MHRA OOS Guidance","WHO TRS 1025 Annex 4"] },
+    RT: { result:2, level:"OOT 趋势调查", en:"OOT Investigation",
+      verdict:"结果<b>符合标准，不判不合格</b>，但必须启动<b>趋势调查</b>，评估工艺与标准的合理性。",
+      actions:["启动 <b>OOT 调查</b>，记录调查过程与结论（与 OOS 分台账管理）",
+               "核查<b>工艺稳定性</b>：CPP 是否有漂移、设备是否异常、物料批次是否变化",
+               "核查<b>方法性能</b>：方法精密度、标准品、仪器状态、人员操作一致性",
+               "评估<b>质量标准限度</b>与工艺能力（Cpk / Ppk）是否仍适用",
+               "纳入<b>年度产品质量回顾（APQR）</b>与持续工艺确认（CPV）",
+               "必要时<b>收紧内控警戒限/行动限</b>，加强后续批次监测",
+               "若预测后续批次可能超出标准，须<b>提前采取纠正措施</b>"],
+      warn:"OOT 常被当作「合格就没事」而忽略。实际上 OOT 是 OOS 的<b>预警信号</b>，忽视趋势漂移会直接导致后续 OOS 与监管质疑。",
+      refs:["WHO TRS 1025 Annex 4","FDA OOS Guidance (2022 Rev.1)","ICH Q10（CPV）","2023版GMP指南·质量控制实验室与物料系统"] },
+    RM2: { result:3, level:"记录并加强监测", en:"Monitor & Document",
+      verdict:"单次轻微偏离，不构成 OOS。记录并纳入趋势跟踪即可。",
+      actions:["在检验记录或 OOT 台账中<b>记录该偏离及初步判断</b>",
+               "将该批次数据纳入<b>趋势图</b>持续跟踪",
+               "下批检验时<b>重点关注</b>该指标",
+               "若连续出现，按<b>趋势性偏离</b>升级处理"],
+      refs:["WHO TRS 1025 Annex 4","ICH Q10"] },
+    RI2: { result:3, level:"无效序列 · 重新分析", en:"SST Failure — Re-analysis",
+      verdict:"系统适用性不合格 → 该进样序列<b>整序列无效</b>，查明原因后可<b>重新分析</b>。",
+      actions:["记录 SST 失败的具体项目与实测值（分离度、拖尾因子、理论塔板数、RSD 等）",
+               "查明原因：色谱柱、流动相、仪器、方法或操作",
+               "采取纠正措施后<b>重新进行系统适用性试验</b>，合格后方可进样",
+               "<b>整序列重新分析</b>，包括对照品与供试品",
+               "原失败序列数据<b>保留归档</b>，并登记偏差或实验室事件",
+               "SST 失败频繁须评估<b>方法的适用性</b>与色谱柱/仪器维护策略"],
+      warn:"SST 不合格意味着<b>此前所有进样结果均不可信</b>，必须对整序列（含标准品与已测供试品）重新分析，不得只重测 OOS 样品。",
+      refs:["FDA OOS Guidance (2022 Rev.1)","ICH Q2(R2)/Q14","药典通则 系统适用性"] },
+    RB: { result:1, level:"严重违规 · 选择性报告", en:"Selective Reporting — Violation",
+      verdict:"<b>禁止</b>在 SST 失败或仪器故障后挑取合格结果报告。此做法属<b>数据可靠性违规</b>。",
+      actions:["立即停止该做法，已报告的结果<b>撤回并作废</b>",
+               "按<b>关键偏差</b>（数据可靠性类）登记并启动专项调查",
+               "整序列<b>重新分析</b>（含标准品与全部供试品）",
+               "追溯评估该做法的<b>历史范围</b>：涉及哪些批次、哪些产品、多长时间",
+               "已放行批次须重新评估，风险不可排除的启动召回",
+               "对相关人员进行<b>数据可靠性专项培训</b>与资质再确认",
+               "评估是否需向药监<b>主动报告</b>"],
+      warn:"选择性报告结果是 FDA 483 与警告信的<b>典型缺陷</b>，一经发现即质疑全部历史数据的可靠性，后果极其严重。",
+      refs:["FDA Data Integrity Guidance (2018)","MHRA GxP Data Integrity (2018)","ICH E6(R2)","GMP(2010) 数据可靠性要求"] }
+  }
+}
+
+};
+
+/* =========================================================
+   渲染引擎
+   ========================================================= */
+const PREFIX = { change:"c", deviation:"d", oos:"o" };
+const state = { change:[], deviation:[], oos:[] };   // 每棵树的历史节点栈
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function render(key){
+  const T = TREES[key], p = PREFIX[key], stack = state[key];
+  const body = document.getElementById(p+"-body");
+  const trail = document.getElementById(p+"-trail");
+  const stepEl = document.getElementById(p+"-step");
+  const node = T.nodes[stack[stack.length-1]];
+
+  // 轨迹
+  let th = "";
+  for(let i=0;i<stack.length-1;i++){
+    const qn = T.nodes[stack[i]];
+    const next = stack[i+1];
+    let ansTxt = "";
+    (qn.opts||[]).forEach(o=>{ if(o.to===next) ansTxt = o.t; });
+    if(!ansTxt) ansTxt = "—";
+    th += `<div class="trow"><span class="tn">${i+1}</span><span><span class="tq">${qn.q}</span> <span class="ta">→ ${ansTxt}</span></span></div>`;
+  }
+  trail.innerHTML = th;
+  stepEl.textContent = stack.length===1 ? "第 1 步" : `第 ${stack.length} 步`;
+
+  if(node.result){
+    let h = `<div class="res r${node.result}">`;
+    h += `<div class="res-badge">${node.level} <span style="font-size:12px;font-weight:400;opacity:.85">${node.en||""}</span></div>`;
+    h += `<div class="verdict">${node.verdict}</div>`;
+    h += `<h4>处置要求</h4><ul>` + node.actions.map(a=>`<li>${a}</li>`).join("") + `</ul>`;
+    if(node.warn) h += `<div class="warn"><b>特别注意：</b>${node.warn}</div>`;
+    if(node.refs) h += `<div class="refs"><b style="color:#445">法规依据：</b>` + node.refs.map(r=>`<span>${esc(r)}</span>`).join("") + `</div>`;
+    h += `<div style="margin-top:14px"><button class="btn primary" onclick="resetTree('${key}')">重新判定</button></div>`;
+    h += `</div>`;
+    body.innerHTML = h;
+  } else {
+    let h = `<div><span class="qtag">${esc(node.tag||"判定")}</span></div>`;
+    h += `<div class="q">${node.q}</div>`;
+    if(node.tip) h += `<div class="tip"><b>提示：</b>${node.tip}</div>`;
+    if(node.hitlist) h += `<ul class="hitlist">` + node.hitlist.map(x=>`<li>${x}</li>`).join("") + `</ul>`;
+    h += `<div class="opts">` + node.opts.map((o,i)=>
+      `<button class="opt" onclick="pick('${key}',${i})"><span class="arrow">▸</span>${o.t}</button>`).join("") + `</div>`;
+    body.innerHTML = h;
+  }
+  renderMap(key);
+}
+
+function pick(key, i){
+  const T = TREES[key], stack = state[key];
+  const node = T.nodes[stack[stack.length-1]];
+  stack.push(node.opts[i].to);
+  render(key);
+  document.getElementById(PREFIX[key]+"-body").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function backTree(key){
+  const stack = state[key];
+  if(stack.length>1){ stack.pop(); render(key); }
+}
+function resetTree(key){
+  state[key] = [TREES[key].start];
+  render(key);
+}
+
+/* 判定路径全图 */
+function renderMap(key){
+  const T = TREES[key], p = PREFIX[key], stack = state[key];
+  const cur = stack[stack.length-1];
+  const visited = new Set(stack);
+  let h = "";
+  Object.keys(T.nodes).forEach(id=>{
+    const n = T.nodes[id];
+    const isCur = (id===cur);
+    if(n.result){
+      h += `<div class="mnode res ${isCur?"cur":""}"><div class="mh" onclick="jump('${key}','${id}')">
+        <span class="mcode">${id}</span><span class="mtext"><span class="mlv r${n.result}">■ ${n.level}</span>
+        <span style="color:#667;font-size:12px;margin-left:6px">${n.en||""}</span></span></div></div>`;
+    } else {
+      h += `<div class="mnode ${isCur?"cur":""}"><div class="mh" onclick="jump('${key}','${id}')">
+        <span class="mcode">${id}</span><span class="mtext">${n.q}</span></div><div class="mopts">` +
+        n.opts.map(o=>{
+          const tgt = T.nodes[o.to];
+          const label = tgt && tgt.result ? `<span class="mlv r${tgt.result}">${tgt.level}</span>` : esc(o.t);
+          return `<div class="mopt">· ${label} <span class="to">→ ${o.to}</span></div>`;
+        }).join("") + `</div></div>`;
+    }
+  });
+  document.getElementById(p+"-map").innerHTML = h;
+}
+function jump(key, id){
+  const stack = state[key];
+  const idx = stack.indexOf(id);
+  if(idx>=0){ stack.length = idx+1; }
+  else { stack.push(id); }
+  render(key);
+}
+
+/* Tab 切换 */
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    document.getElementById("p-"+t.dataset.p).classList.add("active");
+    if(location.hash.slice(1)!==t.dataset.p) history.replaceState(null,"","#"+t.dataset.p);
+  });
+});
+["change","deviation","oos"].forEach(k=>{
+  const p = PREFIX[k];
+  document.getElementById(p+"-back").addEventListener("click",()=>backTree(k));
+  document.getElementById(p+"-reset").addEventListener("click",()=>resetTree(k));
+});
+
+/* init */
+["change","deviation","oos"].forEach(k=>{ state[k] = [TREES[k].start]; render(k); });
+const _h = location.hash.slice(1);
+if(["change","deviation","oos"].includes(_h)){
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active", x.dataset.p===_h));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active", x.id==="p-"+_h));
+}
+</script>
+</body>
+</html>
