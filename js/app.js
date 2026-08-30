@@ -352,7 +352,8 @@ const App = {
 
     // ===== 知识门户（识林式：全景 / 框架 / 案例 / 术语） =====
     html += '<div class="sidebar-portal">';
-    html += '<div class="sidebar-section-title">🧭 知识门户</div>';
+    html += '<div class="sidebar-section-title sidebar-collapsible" data-sb-toggle="portal"><span>🧭 知识门户</span><span class="sb-chevron" data-sb-group="portal">▾</span></div>';
+    html += '<div class="sb-group-body" data-sb-body="portal">';
     const portalItems = [
       { name: '全景总览', icon: '🗺️', key: 'panorama' },
       { name: '知识框架', icon: '📚', key: 'framework' },
@@ -364,6 +365,7 @@ const App = {
       const act = (this.state.view === p.key) ? ' active' : '';
       html += '<div class="sidebar-portal-item' + act + '" data-portal="' + p.key + '">' + p.icon + ' ' + p.name + '</div>';
     });
+    html += '</div>'; /* .sb-group-body portal */
     html += '</div>';
 
     // ===== 合并导航：以 化学药 / 生物制品 / 中药 为根 =====
@@ -376,9 +378,10 @@ const App = {
       const navCfg = CLASS_NAV[mainClass];
       const mainName = (navCfg && navCfg.name) || (CR && CR.mains[mainClass] ? CR.mains[mainClass].name : mainClass);
       html += '<div class="sidebar-category merged-cat">';
-      html += '<div class="sidebar-category-title req-cat-title" data-req-cat="' + mainClass + '">' + MAIN_ICON[mainClass] + ' ' + mainName + '</div>';
+      html += '<div class="sidebar-category-title req-cat-title" data-req-cat="' + mainClass + '"><span class="sb-cat-name">' + MAIN_ICON[mainClass] + ' ' + mainName + '</span><span class="sb-chevron" data-sb-group="' + mainClass + '" title="折叠/展开">▾</span></div>';
 
       // —— 研发要求体系 ——
+      html += '<div class="sb-group-body" data-sb-body="' + mainClass + '">';
       html += '<div class="merged-group">';
       html += '<div class="merged-group-title">研发要求体系</div>';
       html += '<div class="req-node req-node-overview' + (this.state.view === 'classification' && !this.state.currentReqCode ? ' active' : '') + '" data-req-cat="' + mainClass + '" data-req-code="">'
@@ -409,12 +412,15 @@ const App = {
             + '<span class="req-node-badge req-node-badge-3pt">三重点</span></div>';
         });
       }
-      html += '</div>';
+      html += '</div>'; /* .merged-group */
+      html += '</div>'; /* .sb-group-body */
+      html += '</div>'; /* .sidebar-category */
     });
 
     // 书签区
     html += '<div class="sidebar-section">';
-    html += '<div class="sidebar-section-title">📑 书签</div>';
+    html += '<div class="sidebar-section-title sidebar-collapsible" data-sb-toggle="bookmarks"><span>📑 书签</span><span class="sb-chevron" data-sb-group="bookmarks">▾</span></div>';
+    html += '<div class="sb-group-body" data-sb-body="bookmarks">';
     if (this.state.bookmarks.length === 0) {
       html += '<div class="bookmark-empty">暂无书签，点击详情页⭐收藏</div>';
     } else {
@@ -432,11 +438,13 @@ const App = {
         }
       });
     }
-    html += '</div>';
+    html += '</div>'; /* .sb-group-body bookmarks */
+    html += '</div>'; /* .sidebar-section bookmarks */
 
     // 笔记区
     html += '<div class="sidebar-section">';
-    html += '<div class="sidebar-section-title">📝 笔记</div>';
+    html += '<div class="sidebar-section-title sidebar-collapsible" data-sb-toggle="notes"><span>📝 笔记</span><span class="sb-chevron" data-sb-group="notes">▾</span></div>';
+    html += '<div class="sb-group-body" data-sb-body="notes">';
     if (this.state.notes.length === 0) {
       html += '<div class="bookmark-empty">暂无笔记，在详情页添加</div>';
     } else {
@@ -461,9 +469,22 @@ const App = {
         html += `<div class="notes-more-hint">还有 ${this.state.notes.length - 8} 条笔记...</div>`;
       }
     }
-    html += '</div>';
+    html += '</div>'; /* .sb-group-body notes */
+    html += '</div>'; /* .sidebar-section notes */
 
     navEl.innerHTML = html;
+
+    // 侧栏分组折叠：恢复持久化状态
+    const SB_KEYS = ['portal', 'chemo', 'bio', 'tcm', 'bookmarks', 'notes'];
+    SB_KEYS.forEach(key => {
+      if (this._isSbGroupCollapsed(key)) {
+        const body = navEl.querySelector('.sb-group-body[data-sb-body="' + key + '"]');
+        const chev = navEl.querySelector('.sb-chevron[data-sb-group="' + key + '"]');
+        if (body) body.classList.add('sb-collapsed');
+        if (chev) chev.classList.add('sb-chevron-collapsed');
+      }
+    });
+
 
     // 合并导航交互
     navEl.querySelectorAll('.req-cat-title').forEach(t => {
@@ -496,6 +517,17 @@ const App = {
       item.addEventListener('click', () => {
         this.selectVariety(item.dataset.varietyId);
         setTimeout(() => this.selectStage(item.dataset.stageId), 50);
+      });
+    });
+
+    // 侧栏分组折叠交互（标题 / 箭头均可点击，严格 CSP 用事件委托）
+    navEl.querySelectorAll('[data-sb-toggle]').forEach(h => {
+      h.addEventListener('click', () => this.toggleSbGroup(navEl, h.dataset.sbToggle));
+    });
+    navEl.querySelectorAll('.sb-chevron[data-sb-group]').forEach(c => {
+      c.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleSbGroup(navEl, c.dataset.sbGroup);
       });
     });
   },
@@ -2632,6 +2664,30 @@ const App = {
         toggle.title = collapsed ? '展开侧边栏导航' : '收起侧边栏导航';
       }
     } catch (e) {}
+  },
+
+  /* ============ 侧栏分组折叠 ============ */
+  _sbGroupsStore() { return 'kbSidebarGroups'; },
+  _isSbGroupCollapsed(key) {
+    try {
+      const m = JSON.parse(localStorage.getItem(this._sbGroupsStore()) || '{}');
+      return !!m[key];
+    } catch (e) { return false; }
+  },
+  _setSbGroupCollapsed(key, collapsed) {
+    try {
+      const m = JSON.parse(localStorage.getItem(this._sbGroupsStore()) || '{}');
+      m[key] = collapsed;
+      localStorage.setItem(this._sbGroupsStore(), JSON.stringify(m));
+    } catch (e) {}
+  },
+  toggleSbGroup(navEl, key) {
+    const body = navEl.querySelector('.sb-group-body[data-sb-body="' + key + '"]');
+    const chev = navEl.querySelector('.sb-chevron[data-sb-group="' + key + '"]');
+    if (!body) return;
+    const collapsed = body.classList.toggle('sb-collapsed');
+    if (chev) chev.classList.toggle('sb-chevron-collapsed', collapsed);
+    this._setSbGroupCollapsed(key, collapsed);
   },
 
   bindEvents() {

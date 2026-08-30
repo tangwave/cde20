@@ -2802,7 +2802,31 @@ a:hover {
   top: 0;
   background: var(--bg-sidebar, #f7f9fb);
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
+/* 侧栏分组可折叠（点击标题/箭头收起，缓解长列表） */
+.sidebar-collapsible {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.sidebar-collapsible > span:first-child { flex: 1 1 auto; min-width: 0; }
+.sb-chevron {
+  flex-shrink: 0;
+  margin-left: 8px;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: transform .15s ease;
+  user-select: none;
+  cursor: pointer;
+}
+.sb-chevron.sb-chevron-collapsed { transform: rotate(-90deg); }
+.sb-group-body.sb-collapsed { display: none; }
 
 /* --- 三分区（工艺/质量/管理重点） --- */
 .focus-section {
