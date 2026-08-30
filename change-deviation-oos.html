@@ -140,6 +140,7 @@ footer a{color:var(--acc)}
   <button class="tab active" data-p="change">🔀 变更管理定级</button>
   <button class="tab" data-p="deviation">⚠️ 偏差调查定级</button>
   <button class="tab" data-p="oos">🧪 实验室异常结果调查</button>
+  <button class="tab" data-p="capa">🔬 调查·分析·影响范围·CAPA</button>
 </div></div>
 
 <main>
@@ -363,6 +364,186 @@ footer a{color:var(--acc)}
       <li>《药品生产质量管理规范（2010 年修订）》—— 质量控制实验室管理、持续稳定性考察、偏差与 OOS 关联</li>
       <li>2023 版《药品 GMP 指南 · 质量控制实验室与物料系统》</li>
       <li>WHO Technical Report Series No. 1025, Annex 4（OOS 与 OOT 调查指南）</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ============ 调查·分析·影响范围·CAPA（通用方法） ============ -->
+<div class="panel" id="p-capa">
+  <section>
+    <h2 class="sec">一、调查六步法<span class="cnt">变更 / 偏差 / OOS 通用 · 决定调查质量的是过程，不是结论</span></h2>
+    <p style="margin:0 0 12px;font-size:13.5px;color:#445">无论变更评估、偏差调查还是 OOS 调查，底层逻辑都是同一个六步闭环。检查中最常见的缺陷不是"结论错了"，而是<b>过程无法复现</b>——做了什么、基于什么证据、为什么排除其他可能，说不清。</p>
+    <table>
+      <thead><tr><th style="width:90px">步骤</th><th>核心动作</th><th>产出物</th><th style="width:230px">常见错误（高频缺陷）</th></tr></thead>
+      <tbody>
+        <tr><td><b>① 发现与报告</b></td><td>第一时间报告，<b>只描述事实</b>，不下结论；保护现场与原始证据</td><td>偏差/OOS 初始记录、时间线起点</td><td class="no">延迟报告；先下结论再找证据；记录含糊</td></tr>
+        <tr><td><b>② 立即遏制</b></td><td>防止影响扩大：隔离、暂停放行、暂停生产、封存物料与数据</td><td>遏制措施记录、影响批次清单</td><td class="no">只处理当事批次，未评估已放行批次</td></tr>
+        <tr><td><b>③ 证据收集</b></td><td>人、机、料、法、环、测六方面取证；<b>访谈、记录、数据、留样、影像</b>；重建完整时间线</td><td>证据清单、时间线、访谈记录</td><td class="no">只查最可能的原因；未访谈当事人；未保存原始记录</td></tr>
+        <tr><td><b>④ 原因分析</b></td><td>用合适工具分析（见第二节工具箱）；区分<b>直接原因 / 根本原因 / 系统性原因</b>；<b>排除法要有排除依据</b></td><td>根本原因结论 + 排除说明</td><td class="no">直接原因当根本原因；未说明为何排除其他可能</td></tr>
+        <tr><td><b>⑤ 结论与处置</b></td><td>形成影响范围评估结论；作出放行/拒收/召回裁决；制定 CAPA</td><td>影响评估、处置决定、CAPA 计划</td><td class="no">原因不明即放行；CAPA 与根本原因不对应</td></tr>
+        <tr><td><b>⑥ 报告与归档</b></td><td>调查报告经 QA 审核签字；全部证据与数据一并归档；纳入趋势分析</td><td>调查报告、归档记录</td><td class="no">报告事后补写；证据未一并归档；未纳入趋势</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>检查员的判断逻辑：</b>不看你的结论多漂亮，只看三件事——① 时间线是否完整可复现；② 排除的可能性有没有<b>排除依据</b>；③ 根本原因与 CAPA 是否<b>一一对应</b>。这三点说不清，结论再正确也会被开缺陷。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">二、根本原因分析工具箱<span class="cnt">选对工具比用好工具更重要 · 8 种工具对比</span></h2>
+    <table>
+      <thead><tr><th>工具</th><th>适用情形</th><th>团队要求</th><th>输出</th><th style="width:210px">局限性</th></tr></thead>
+      <tbody>
+        <tr><td><b>5 Why</b><br/><span style="color:#667;font-size:12px">五个为什么</span></td><td>因果关系<b>单一、线性</b>，问题相对简单（如某一步操作遗漏）</td><td>1～2 人，熟悉该工序即可</td><td>因果链条 → 根因</td><td class="no">多因素交织时会分叉失控；容易停在"人员疏忽"这类假根因</td></tr>
+        <tr><td><b>鱼骨图</b><br/><span style="color:#667;font-size:12px">石川图 / 6M</span></td><td><b>多因素交织</b>，需头脑风暴穷举可能原因（人/机/料/法/环/测）</td><td>跨部门小组 4～8 人</td><td>结构化候选原因池 → 逐条验证</td><td class="no">只做归类不做验证；容易变成"想到的都画上"而不去证伪</td></tr>
+        <tr><td><b>FMEA</b><br/><span style="color:#667;font-size:12px">失效模式与效应分析</span></td><td>需<b>量化风险优先级</b>、需主动识别潜在失效（设计/工艺/变更前）</td><td>专业小组 + 数据支撑</td><td>RPN 排序 → 优先改进项</td><td class="no">评分主观性强；不擅长事后归因（更适合预防）</td></tr>
+        <tr><td><b>KT 理性思考法</b><br/><span style="color:#667;font-size:12px">Kepner-Tregoe</span></td><td>需精确界定<b>「是什么 / 不是什么」</b>，通过差异点锁定原因</td><td>需专门培训</td><td>IS/IS NOT 矩阵 → 差异与变化</td><td class="no">门槛高；信息不全时难以构建 IS NOT</td></tr>
+        <tr><td><b>故障树 FTA</b></td><td><b>系统性、多层逻辑门</b>耦合的复杂失效（如无菌保证失效）</td><td>专业工程师</td><td>逻辑树 → 最小割集</td><td class="no">耗时长；需要精确的失效机理知识</td></tr>
+        <tr><td><b>变更分析</b><br/><span style="color:#667;font-size:12px">Change Analysis</span></td><td>问题在<b>某个变更后出现</b>，需对比变更前后差异</td><td>熟悉历史状态的人员</td><td>变更清单 → 差异项 → 根因</td><td class="no">依赖完整的变更台账；台账不全则失效</td></tr>
+        <tr><td><b>屏障分析</b><br/><span style="color:#667;font-size:12px">Barrier Analysis</span></td><td>分析<b>为何控制措施没能拦住</b>问题（失控点在哪一层）</td><td>QA + 工艺</td><td>屏障失效点 → 补强措施</td><td class="no">只回答"哪里没拦住"，不直接给根因</td></tr>
+        <tr><td><b>帕累托分析</b></td><td><b>趋势性、高频次</b>问题，需识别主要贡献因素（80/20）</td><td>有足够历史数据</td><td>主因排序图</td><td class="no">需要数据量；不适合单次孤立事件</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>最常见的假根因（须警惕）：</b>「操作人员疏忽」「培训不到位」「人员意识不足」——这些都不是根本原因。
+    追问下去：为什么会疏忽？是 SOP 写得不清楚、还是培训没覆盖、还是操作设计本身易错、还是工作量过大？
+    <b>真正的根因应指向可改变的系统要素</b>（流程、设计、标准、资源配置），落到"人"身上通常意味着分析没做完。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">三、按图索骥 · 分析工具选择向导<span class="cnt">回答几个问题，自动推荐合适的分析工具</span></h2>
+    <div class="wiz">
+      <div class="wiz-bar">
+        <span class="wiz-step" id="rca-step">第 1 步</span>
+        <div><button class="btn" id="rca-back">← 上一步</button> <button class="btn" id="rca-reset">重置</button></div>
+      </div>
+      <div class="trail" id="rca-trail"></div>
+      <div id="rca-body"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">四、工具选择路径全图<span class="cnt">点击任意节点可直接跳转 · 蓝色为当前所在</span></h2>
+    <div class="map" id="rca-map"></div>
+  </section>
+
+  <section>
+    <h2 class="sec">五、影响范围评估<span class="cnt">横向 6 问 + 纵向 4 维 · 决定这只是一个批次，还是一场危机</span></h2>
+    <p style="margin:0 0 12px;font-size:13.5px;color:#445">影响范围评估是最容易做窄的一步。多数企业只评估"当事批次"，而检查员要问的是：<b>你怎么证明只有这一个批次受影响？</b>下面这张清单就是回答这个问题的证据链。</p>
+
+    <h3 class="sub">横向扩展 · 6 问（同一问题还可能波及谁）</h3>
+    <table>
+      <thead><tr><th style="width:34px">#</th><th style="width:210px">排查方向</th><th>具体要查什么</th><th style="width:150px">证据来源</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>同批次内部</b></td><td>同批次的其他取样点、其他包装单元、已放行部分与未放行部分</td><td>取样记录、批包装记录</td></tr>
+        <tr><td>2</td><td><b>相邻批次</b></td><td>同一生产线的前一批与后一批（尤其连续生产、共用中间体/母液）</td><td>生产计划、批序号</td></tr>
+        <tr><td>3</td><td><b>同产品其他批次</b></td><td>效期内全部批次，特别是同一物料批号、同一设备、同一班组生产的批次</td><td>批生产台账、物料台账</td></tr>
+        <tr><td>4</td><td><b>共用设备/系统生产的其他产品</b></td><td>共用生产线、共用 HVAC、共用制药用水、共用清洁方法的其他产品（交叉污染场景必查）</td><td>设备使用日志、共线生产清单</td></tr>
+        <tr><td>5</td><td><b>同供应商/同物料批号</b></td><td>该物料批号还用于哪些产品、哪些批次；同供应商其他物料是否有同类风险</td><td>物料台账、供应商档案</td></tr>
+        <tr><td>6</td><td><b>其他场地/委托方</b></td><td>其他生产场地、委托生产/受托生产方、同一集团内共线产品</td><td>委托协议、场地清单</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">纵向维度 · 4 维（每个维度都要单独给结论）</h3>
+    <table>
+      <thead><tr><th style="width:130px">维度</th><th>要回答的问题</th><th style="width:220px">判定要点</th></tr></thead>
+      <tbody>
+        <tr><td><b>产品质量</b></td><td>是否影响 CQA？是否影响稳定性与有效期？是否影响放行标准符合性？</td><td>CQA 是否受影响；稳定性数据是否支持；是否需重新评估有效期</td></tr>
+        <tr><td><b>患者安全</b></td><td>是否存在实际或潜在的用药风险？风险等级如何？是否需启动召回？</td><td>无菌保证、内毒素、杂质、含量、混淆——任一命中即高风险</td></tr>
+        <tr><td><b>注册符合性</b></td><td>是否偏离注册工艺、注册标准或申报资料？是否需补充申请/备案/报告？</td><td>与注册文件逐条比对；偏离即需走变更或报告程序</td></tr>
+        <tr><td><b>数据可靠性</b></td><td>是否影响相关数据的可信度？是否波及历史数据与已放行结论？</td><td>数据可靠性问题一旦成立，影响范围通常远超单一批次</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>「证明没有影响」也是证据。</b>排查后确认不受影响的，必须在报告中<b>写明排查了什么、依据是什么、结论是什么</b>——没写就等于没查。只写"其他批次无异常"而无数据支撑，是检查中的典型缺陷。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">六、CAPA 制定与有效性检查<span class="cnt">纠正 ≠ 纠正措施 ≠ 预防措施</span></h2>
+
+    <h3 class="sub">6.1 三个概念必须分清</h3>
+    <table>
+      <thead><tr><th style="width:150px">概念</th><th>定义</th><th>举例</th><th style="width:110px">作用时点</th></tr></thead>
+      <tbody>
+        <tr><td><b>Correction</b><br/><span style="color:#667;font-size:12px">纠正</span></td><td>对<b>已发生的不合格</b>本身的处置（"灭火"）</td><td>隔离不合格批次、返工、销毁、更正记录、重新检验</td><td>立即</td></tr>
+        <tr><td><b>Corrective Action</b><br/><span style="color:#667;font-size:12px">纠正措施</span></td><td>消除<b>已发生不合格的根本原因</b>，防止<b>再发生</b></td><td>修改 SOP、增加防错装置、改进设备设计、调整工艺参数</td><td>短期</td></tr>
+        <tr><td><b>Preventive Action</b><br/><span style="color:#667;font-size:12px">预防措施</span></td><td>消除<b>潜在不合格</b>的原因，防止<b>发生</b>（问题尚未出现）</td><td>横向展开到类似产品/工序、修订培训体系、优化变更控制流程</td><td>中长期</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>典型错误：</b>把"培训"当成万金油 CAPA。培训只对"确实不知道怎么做"有效；
+    如果是 SOP 本身有缺陷、操作设计不合理、设备没有防错，培训毫无作用——这也是检查员最常质疑的一点。
+    <b>CAPA 必须与根本原因一一对应</b>，一个根因对应一条措施，不能笼统写"加强管理"。</div>
+
+    <h3 class="sub">6.2 CAPA 要素（缺一不可）</h3>
+    <table>
+      <thead><tr><th style="width:130px">要素</th><th>要求</th><th style="width:250px">不合格示例</th></tr></thead>
+      <tbody>
+        <tr><td><b>S</b> 具体</td><td>明确做什么、在哪做、涉及哪些文件/设备/岗位</td><td class="no">"加强培训""完善管理"</td></tr>
+        <tr><td><b>M</b> 可测量</td><td>有可验证的完成标准，能量化则量化</td><td class="no">"提高意识"（无法验证）</td></tr>
+        <tr><td><b>A</b> 可实现</td><td>在现有资源与权限内可完成，必要时配套资源</td><td class="no">要求一线人员自行改造设备</td></tr>
+        <tr><td><b>R</b> 相关性</td><td>与本次根本原因直接对应，不跑题</td><td class="no">原因是清洁不彻底，措施却是修订采购流程</td></tr>
+        <tr><td><b>T</b> 有时限</td><td>明确完成日期与阶段性节点</td><td class="no">"尽快完成""持续推进"</td></tr>
+        <tr><td><b>责任人</b></td><td>指定到具体岗位/姓名，不是部门</td><td class="no">"生产部"（无到人）</td></tr>
+        <tr><td><b>验证方式</b></td><td>事先约定如何证明这条 CAPA 有效</td><td class="no">只写完成，不写如何验证</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">6.3 CAPA 有效性检查（Effectiveness Check）</h3>
+    <table>
+      <thead><tr><th style="width:120px">层级</th><th>验证什么</th><th>方法</th><th style="width:150px">判定时机</th></tr></thead>
+      <tbody>
+        <tr><td><b>L1 完成性</b></td><td>措施<b>是否按计划做完</b></td><td>查记录、文件修订生效、培训签到、设备改造验收</td><td>到期即查</td></tr>
+        <tr><td><b>L2 有效性</b></td><td>措施<b>是否真的解决了问题</b>（根本原因是否被消除）</td><td>同类事件是否再发；相关指标趋势是否改善；现场观察是否按新方式执行</td><td>完成后 3～6 个月</td></tr>
+        <tr><td><b>L3 系统性</b></td><td>是否<b>横向展开</b>到类似工序/产品/场地；是否产生新的风险</td><td>横向展开清单；变更影响评估；趋势分析</td><td>完成后 6～12 个月</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>CAPA 失效的三个信号：</b>① 同类偏差<b>再次发生</b>（最直接的有效性否定证据）；② CAPA 反复延期；③ 有效性检查只查"做完没有"，不查"有没有用"。
+    其中①出现时，必须<b>重新做根本原因分析</b>，而不是再写一条同样的 CAPA。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">七、调查报告模板<span class="cnt">可直接套用 · 结构完整即通过一半</span></h2>
+    <table>
+      <thead><tr><th style="width:160px">章节</th><th>应包含的内容</th></tr></thead>
+      <tbody>
+        <tr><td><b>1. 基本信息</b></td><td>事件编号、发现时间/地点/发现人、涉及产品/批号/工序/设备、事件类型（变更/偏差/OOS/OOT）</td></tr>
+        <tr><td><b>2. 事件描述</b></td><td><b>只写事实</b>，不写结论与推测。谁、在什么时间、按什么操作、发现了什么、与预期有何不同</td></tr>
+        <tr><td><b>3. 时间线</b></td><td>完整可复现的事件时间轴（含发现前的关联操作），精确到日期时间</td></tr>
+        <tr><td><b>4. 立即措施</b></td><td>遏制措施及实施时间（隔离、暂停、封存），涉及批次的处置状态</td></tr>
+        <tr><td><b>5. 调查过程</b></td><td>查了哪些方面（人/机/料/法/环/测）、访谈了谁、调阅了哪些记录与数据、做了哪些检验/复核</td></tr>
+        <tr><td><b>6. 证据清单</b></td><td>逐一列出支撑结论的证据，及每项证据的来源与获取时间</td></tr>
+        <tr><td><b>7. 原因分析</b></td><td>使用的分析工具、分析过程、<b>直接原因 / 根本原因 / 系统性原因</b>分层结论</td></tr>
+        <tr><td><b>8. 排除说明</b></td><td><b>关键章节</b>：考虑了哪些可能性、逐条排除的依据是什么</td></tr>
+        <tr><td><b>9. 影响范围评估</b></td><td>横向 6 问 + 纵向 4 维逐项结论；对已放行批次/在产批次/其他产品的评估结论</td></tr>
+        <tr><td><b>10. 结论</b></td><td>事件定性（等级）、批次处置决定（放行/拒收/返工/召回）、是否需报告药监</td></tr>
+        <tr><td><b>11. CAPA</b></td><td>纠正 / 纠正措施 / 预防措施分项列出，含责任人、完成期限、验证方式</td></tr>
+        <tr><td><b>12. 审批与归档</b></td><td>调查人、部门负责人、QA、质量受权人签字与日期；证据附件清单</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>最容易被忽略却最被检查员看重的是第 8 章「排除说明」。</b>没有这一章，检查员会认为你只查了一个方向就下结论——
+    这是"调查不充分"缺陷的最常见来源。</div>
+  </section>
+
+  <section>
+    <h2 class="sec">八、三场景调查要点对照</h2>
+    <table>
+      <thead><tr><th style="width:110px">环节</th><th>变更</th><th>偏差</th><th>实验室异常结果</th></tr></thead>
+      <tbody>
+        <tr><td><b>启动</b></td><td>变更申请提出，QA 受理登记</td><td>发现即报，24h 内（关键）报告 QA</td><td>结果确认当日启动，1 个工作日内 Phase I</td></tr>
+        <tr><td><b>核心问题</b></td><td>这个变更<b>会不会</b>改变产品质量？</td><td>这次偏离<b>有没有</b>影响产品质量？</td><td>这个结果<b>是不是</b>真实反映产品质量？</td></tr>
+        <tr><td><b>关键动作</b></td><td>变更前后质量对比研究、工艺验证、稳定性考察</td><td>证据收集、时间线重建、根本原因分析</td><td>Phase I 实验室核查 → Phase II 跨部门调查</td></tr>
+        <tr><td><b>影响范围</b></td><td>是否影响其他已批准品种、是否触发注册变更</td><td>横向 6 问 + 纵向 4 维</td><td>相邻批次、同品种、共用设备产品、留样与稳定性数据</td></tr>
+        <tr><td><b>关闭标准</b></td><td>研究完成、验证通过、按路径获批/备案/年报</td><td>根本原因查明、CAPA 制定并实施</td><td>调查结论明确、批次裁决、CAPA 完成</td></tr>
+        <tr><td><b>后续跟踪</b></td><td>变更效果确认、稳定性承诺批持续考察</td><td>CAPA 有效性检查 L1/L2/L3</td><td>OOS 率纳入质量量度与 APQR</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec">九、法规依据</h2>
+    <ul style="margin:0;padding-left:19px;font-size:13.5px">
+      <li>《药品生产质量管理规范（2010 年修订）》<b>第二百四十四～二百五十二条</b>—— 偏差处理、纠正措施与预防措施（CAPA）、持续改进</li>
+      <li>ICH Q10《药品质量体系》—— 偏差管理、CAPA 有效性检查、质量风险管理、知识管理与质量体系持续改进</li>
+      <li>ICH Q9（R1）《质量风险管理》—— 影响评估与风险评级的工具与方法学</li>
+      <li>2023 版《药品 GMP 指南 · 质量管理体系》—— 偏差调查与 CAPA 实务</li>
+      <li>FDA Guidance <i>Quality Systems Approach to Pharmaceutical CGMP Regulations</i>（2006）—— CAPA 六步模型</li>
+      <li>EU GMP Chapter 1（ Pharmaceutical Quality System）与 Chapter 8（Complaints and Recall）</li>
     </ul>
   </section>
 </div>
@@ -718,6 +899,119 @@ oos: {
       warn:"选择性报告结果是 FDA 483 与警告信的<b>典型缺陷</b>，一经发现即质疑全部历史数据的可靠性，后果极其严重。",
       refs:["FDA Data Integrity Guidance (2018)","MHRA GxP Data Integrity (2018)","ICH E6(R2)","GMP(2010) 数据可靠性要求"] }
   }
+},
+
+/* ------------------ 根本原因分析工具选择树 ------------------ */
+capa: {
+  start: "r1",
+  nodes: {
+    r1: { q:"当前分析任务的性质是什么？", tag:"任务定性",
+      tip:"先分清是<b>事后归因</b>（问题已经发生）、<b>事前预防</b>（问题还没发生）、还是<b>趋势分析</b>（问题反复发生）——这决定了完全不同的工具。",
+      opts:[
+        { t:"事后归因 —— 问题已发生，需要找根本原因", to:"r2", hit:"事后归因" },
+        { t:"事前预防 —— 识别潜在失效、评估变更或设计风险", to:"RF", hit:"事前预防" },
+        { t:"趋势分析 —— 问题高频重复出现，需识别主要贡献因素", to:"RP", hit:"趋势性高频问题" }
+      ]},
+    r2: { q:"问题是否<b>在某个变更之后出现</b>，或可明确追溯到某个变化时点？", tag:"时点判断",
+      tip:"变更包括：工艺参数、设备、物料/供应商、人员、SOP、场地、公用系统、软件升级等。若台账完整，变更分析往往是最快的路径。",
+      opts:[
+        { t:"是，问题紧随某个变更出现，且能界定变更前后的状态", to:"RA", hit:"问题紧随变更后出现" },
+        { t:"否 / 不确定，无法锁定变化时点", to:"r3" }
+      ]},
+    r3: { q:"问题的<b>因果关系形态</b>更接近哪一种？", tag:"复杂度判断",
+      hitlist:["<b>单一线性</b>：一步接一步，像一条链子（如某一步操作遗漏导致后续偏差）",
+               "<b>多因素交织</b>：多个可能原因并存，需要团队一起穷举（如含量波动、可见异物、收率偏低）",
+               "<b>系统性多层耦合</b>：涉及多个逻辑层次与公用系统（如无菌保证失效、交叉污染、数据可靠性缺失）"],
+      opts:[
+        { t:"单一线性 —— 因果链清晰，一步接一步", to:"R5", hit:"因果关系单一线性" },
+        { t:"多因素交织 —— 需要团队穷举可能原因", to:"r4" },
+        { t:"系统性多层耦合 —— 涉及多个逻辑层次或公用系统", to:"RT", hit:"系统性多层逻辑耦合" }
+      ]},
+    r4: { q:"团队当前更需要做的是哪一件？", tag:"方法选择",
+      tip:"两者可以<b>组合使用</b>：先用鱼骨图穷举出候选原因池，再对高风险候选用 KT 精确界定。复杂问题通常都需要组合。",
+      opts:[
+        { t:"穷举并归类所有可能原因（头脑风暴，先不评判）", to:"RH", hit:"需穷举多因素" },
+        { t:"精确界定「是什么 / 不是什么」，通过差异点锁定原因", to:"RK", hit:"需精确界定范围" }
+      ]},
+
+    /* ---- 结果节点：工具 ---- */
+    R5: { result:3, level:"5 Why 五个为什么", en:"5 Whys",
+      verdict:"适合<b>单一线性</b>的因果链。1～2 人即可开展，最快出结论，但多因素场景容易分叉失控。",
+      actions:["用一句话客观描述<b>问题现象</b>（只写事实，不写原因）",
+               "追问「为什么会发生」，答案<b>必须基于事实与证据</b>，不能是推测",
+               "对上一层的答案继续追问「为什么」，逐层深入，通常 5 层",
+               "每一层都要做<b>反向验证</b>：因为 X 所以 Y，反过来成立吗？证据在哪？",
+               "持续深入，直到答案指向<b>可改变的系统要素</b>（流程 / 设计 / 标准 / 资源配置）",
+               "记录完整因果链，每一层标注支撑证据"],
+      warn:"两个高频错误：① <b>停在「人员疏忽」「培训不到位」</b>——这不是根因，必须继续追问为什么会疏忽（SOP 不清楚？操作设计易错？工作量过大？）；② <b>多条因果链混着问</b>——多因素场景应改用鱼骨图，5Why 会分叉失控。",
+      refs:["ICH Q9(R1)","2023版GMP指南·质量管理体系"] },
+    RH: { result:2, level:"鱼骨图（石川图 / 6M）", en:"Ishikawa / Fishbone",
+      verdict:"适合<b>多因素交织</b>的场景。跨部门小组 4～8 人头脑风暴，穷举可能原因后<b>逐条验证</b>。",
+      actions:["在鱼头位置明确<b>定义问题</b>（具体、可测量，如「A 产品含量低于内控限」）",
+               "确定 6 大类主骨：<b>人 Man / 机 Machine / 料 Material / 法 Method / 环 Environment / 测 Measurement</b>",
+               "团队头脑风暴，每类下穷举所有可能原因，此阶段<b>不评判、不反驳</b>",
+               "对每个候选原因标注状态：<b>已验证 / 待验证 / 已排除</b>",
+               "对「待验证」的逐条<b>取证验证</b>——这是最关键也最常被跳过的一步",
+               "收敛到根本原因，并在报告中写清<b>每条被排除的原因及其排除依据</b>",
+               "输出：鱼骨图 + 候选原因验证状态表"],
+      warn:"<b>鱼骨图最大的陷阱是「画完就当分析完了」。</b>它只负责<b>归类与穷举</b>，不负责验证。画完不逐条取证，等于什么都没做——这正是检查员最常质疑的缺陷。",
+      refs:["ICH Q9(R1)","ICH Q10","2023版GMP指南·质量管理体系"] },
+    RK: { result:4, level:"KT 理性思考法", en:"Kepner-Tregoe Problem Analysis",
+      verdict:"适合需要<b>精确界定范围</b>、通过差异点锁定原因的场景。严谨但门槛较高，需专门培训。",
+      actions:["撰写<b>偏差陈述</b>：明确对象与缺陷（如「哪一批、哪个项目、偏离多少」）",
+               "构建 <b>IS / IS NOT 矩阵</b>：从<b>何物、何处、何时、程度</b>四个维度，分别列出「是什么」与「不是什么」",
+               "对比 IS 与 IS NOT，列出所有的<b>区别点</b>（Distinctions）",
+               "列出与该问题相关的所有<b>变化</b>（Changes）",
+               "将「变化」与「区别点」匹配，推导出<b>最可能原因</b>",
+               "<b>验证</b>：确认该原因能<b>同时解释 IS 与 IS NOT</b>——这是 KT 的核心检验",
+               "确认根本原因，进入 CAPA"],
+      warn:"<b>致命检验：</b>如果你的「最可能原因」只能解释 IS（为什么发生了），却解释不了 IS NOT（为什么其他批次没发生），那它就不是根因。信息不全（构建不出 IS NOT）时不宜硬套 KT。",
+      refs:["ICH Q9(R1)","ICH Q10"] },
+    RT: { result:1, level:"故障树分析 FTA", en:"Fault Tree Analysis",
+      verdict:"适合<b>系统性、多层逻辑耦合</b>的严重失效（无菌保证失效、交叉污染、公用系统故障、数据可靠性缺失）。",
+      actions:["明确定义<b>顶事件</b>（不希望发生的失效，须具体可界定）",
+               "自上而下逐层分解，用 <b>AND / OR 逻辑门</b>连接各层原因",
+               "持续分解至<b>基本事件</b>（不可再分、可独立验证）",
+               "<b>定性分析</b>：求解最小割集（能导致顶事件的最小原因组合）",
+               "<b>定量分析</b>（有数据时）：计算顶事件发生概率与重要度",
+               "针对最小割集逐一制定<b>控制措施与屏障</b>",
+               "输出故障树图 + 最小割集清单 + 措施表"],
+      warn:"FTA 耗时长且需要精确的失效机理知识，应由专业工程师主导。<b>不要用它分析简单问题</b>——杀鸡用牛刀反而拖慢响应。若分析的是「控制措施为何没拦住」，建议叠加<b>屏障分析</b>。",
+      refs:["ICH Q9(R1)","2023版GMP指南·质量管理体系"] },
+    RA: { result:2, level:"变更分析", en:"Change Analysis",
+      verdict:"问题<b>紧随某个变更出现</b>时，这是最快的路径。对比变更前后差异，直接锁定嫌疑。",
+      actions:["明确<b>问题出现的时点</b>，向前回溯合理的时间窗口",
+               "列出该窗口内的<b>全部变更</b>：工艺参数、设备、物料/供应商、人员、SOP、场地、公用系统、软件升级",
+               "逐项对比<b>变更前 / 变更后</b>的状态差异",
+               "评估每项差异与问题的<b>关联性</b>（强 / 中 / 弱）",
+               "对高关联项<b>验证因果关系</b>（暂停或回退该变更，看问题是否消失）",
+               "确认后<b>回溯评估</b>：当初的变更控制为何没能识别出这个风险？",
+               "同步更新变更影响评估的方法，防止同类漏评"],
+      warn:"<b>前提是变更台账完整。</b>台账不全（漏登记、事后补记）时此方法直接失效——而这本身就是一个<b>体系缺陷</b>，须一并记录与整改。",
+      refs:["GMP(2010) 第二百四十～二百四十三条","ICH Q10","ICH Q12"] },
+    RF: { result:4, level:"FMEA 失效模式与效应分析", en:"Failure Mode & Effects Analysis",
+      verdict:"<b>事前预防</b>工具：用于识别潜在失效、评估变更或设计风险、量化改进优先级。<b>不擅长事后归因。</b>",
+      actions:["界定<b>分析范围</b>（具体工序 / 产品 / 系统），组建跨职能小组",
+               "列出该范围内所有<b>潜在失效模式</b>（可能怎么失效）",
+               "对每个失效模式评估三参数（通常 1～10 分）<br/>　· <b>S 严重度</b>（Severity）：失效后果有多严重<br/>　· <b>O 发生概率</b>（Occurrence）：发生的可能性<br/>　· <b>D 可探测度</b>（Detection）：能被发现的程度（分越高越难探测）",
+               "计算 <b>RPN = S × O × D</b>，按 RPN 降序排序",
+               "对高 RPN 项制定措施，<b>优先降 S，其次降 O，最后降 D</b>",
+               "措施实施后<b>重新评分</b>，验证 RPN 是否下降",
+               "定期回顾更新（工艺/产品/法规变化时须重评）"],
+      warn:"评分<b>主观性强</b>，须由跨职能小组共同确定并保留评分依据，否则检查时难以自证。另注意：<b>FMEA 是预防工具，不应拿来做事后归因</b>——偏差已经发生了就别再算 RPN 了。",
+      refs:["ICH Q9(R1)","ICH Q10","2023版GMP指南·质量管理体系"] },
+    RP: { result:3, level:"帕累托分析（80/20）", en:"Pareto Analysis",
+      verdict:"适合<b>趋势性、高频次</b>问题：用数据找出主要贡献因素，把资源投在刀刃上。",
+      actions:["收集<b>足够时间段</b>的数据（偏差台账、OOS 记录、投诉记录等）",
+               "按<b>原因 / 类别</b>分类统计频次或损失金额",
+               "按降序排列，计算<b>累计百分比</b>",
+               "绘制帕累托图（柱状 + 累计折线），识别累计约 80% 的<b>主要少数项</b>",
+               "对主要少数项<b>优先投入资源</b>制定改进措施",
+               "措施实施一段时间后<b>重新统计</b>，验证改善效果",
+               "将结论纳入年度产品质量回顾（APQR）与质量量度"],
+      warn:"需要<b>足够数据量</b>才有统计意义，不适合单次孤立事件。另外分类口径必须一致且不重叠，否则分析结论不可靠。",
+      refs:["ICH Q10","ICH Q9(R1)","2023版GMP指南·质量管理体系"] }
+  }
 }
 
 };
@@ -725,8 +1019,9 @@ oos: {
 /* =========================================================
    渲染引擎
    ========================================================= */
-const PREFIX = { change:"c", deviation:"d", oos:"o" };
-const state = { change:[], deviation:[], oos:[] };   // 每棵树的历史节点栈
+const PREFIX = { change:"c", deviation:"d", oos:"o", capa:"rca" };
+const KORDER = ["change","deviation","oos","capa"];
+const state = { change:[], deviation:[], oos:[], capa:[] };   // 每棵树的历史节点栈
 
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
@@ -832,16 +1127,16 @@ document.querySelectorAll(".tab").forEach(t=>{
     if(location.hash.slice(1)!==t.dataset.p) history.replaceState(null,"","#"+t.dataset.p);
   });
 });
-["change","deviation","oos"].forEach(k=>{
+KORDER.forEach(k=>{
   const p = PREFIX[k];
   document.getElementById(p+"-back").addEventListener("click",()=>backTree(k));
   document.getElementById(p+"-reset").addEventListener("click",()=>resetTree(k));
 });
 
 /* init */
-["change","deviation","oos"].forEach(k=>{ state[k] = [TREES[k].start]; render(k); });
+KORDER.forEach(k=>{ state[k] = [TREES[k].start]; render(k); });
 const _h = location.hash.slice(1);
-if(["change","deviation","oos"].includes(_h)){
+if(KORDER.includes(_h)){
   document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active", x.dataset.p===_h));
   document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active", x.id==="p-"+_h));
 }
