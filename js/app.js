@@ -3110,6 +3110,10 @@ const App = {
     if (testBtn) testBtn.addEventListener('click', () => this.testConnection());
     const prov = document.getElementById('qa9Provider');
     if (prov) prov.addEventListener('change', () => this.onProviderChange());
+    const msel = document.getElementById('qa9Model');
+    if (msel) msel.addEventListener('change', () => this.refreshKeyHint());
+    const mt = document.getElementById('qa9ModelText');
+    if (mt) mt.addEventListener('input', () => this.refreshKeyHint());
     const modal = document.getElementById('qa9ModelModal');
     if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) this.closeModelModal(); });
     const inline = document.getElementById('qa9ModelInline');
@@ -3302,9 +3306,53 @@ const App = {
         }
       }
       // 打开弹窗时先清空连接测试态；若已配置则自动复测一次，通过即可直接保存
+      this.refreshKeyHint();   // 同步刷新当前模型的密钥已保存状态（单独保存 / 沿用默认 / 未配置）
       this._resetConnTest();
       if (j.configured) this.testConnection();
     } catch (e) { /* 忽略 */ }
+  },
+
+  // 根据当前弹窗选中的「服务商 / 模型」，向后端查询该模型是否已单独保存密钥，
+  // 并把输入框占位提示刷新为对应状态（方便确认每个模型的密钥都已独立留存，便于后续使用）。
+  async refreshKeyHint() {
+    const prov = document.getElementById('qa9Provider');
+    const customWrap = document.getElementById('qa9CustomWrap');
+    const modelSel = document.getElementById('qa9Model');
+    const mt = document.getElementById('qa9ModelText');
+    if (!prov) return;
+    const provider = prov.value || '';
+    let model = '';
+    if (customWrap && customWrap.style.display !== 'none' && mt) model = mt.value.trim();
+    else if (modelSel) model = modelSel.value || '';
+    if (!provider) return;
+      const key = document.getElementById('qa9ApiKey');
+      if (key) key.placeholder = '粘贴你的 API Key';
+      try {
+        const r = await fetch(this._apiBase() + '/api/llm-config?provider=' +
+          encodeURIComponent(provider) + '&model=' + encodeURIComponent(model));
+        if (!r.ok) return;
+        const j = await r.json();
+        if (key) {
+          key.placeholder = j.key_set
+            ? ('当前已设置：' + (j.api_key_masked || '****') + '（留空则保持不变）')
+            : '粘贴你的 API Key';
+        }
+        // 每次切换服务商/模型都刷新「该模型密钥」状态，确保 key 提示随模型变化，
+        // 并明确区分「本模型单独保存」与「沿用服务商默认」。
+        const status = document.getElementById('qa9ModelStatus');
+        if (status) {
+          if (j.model_key_set) {
+            status.className = 'qa9-model-status ok';
+            status.textContent = '✅ 「' + Penetrator.esc(provider) + ' / ' + Penetrator.esc(model) + '」已单独保存密钥（' + (j.api_key_masked || '****') + '）';
+          } else if (j.key_set) {
+            status.className = 'qa9-model-status ok';
+            status.textContent = '✅ 沿用服务商默认密钥（' + (j.api_key_masked || '****') + '）；如需本模型独立密钥，粘贴后保存即可。';
+          } else {
+            status.className = 'qa9-model-status warn';
+            status.textContent = '⚠️ 「' + Penetrator.esc(provider) + ' / ' + Penetrator.esc(model) + '」尚未配置密钥，请粘贴后保存。';
+          }
+        }
+      } catch (e) { /* 忽略 */ }
   },
 
   onProviderChange() {
@@ -3330,6 +3378,7 @@ const App = {
     }
     // 切换服务商后，之前的连接测试结果失效，需重新测试
     this._resetConnTest();
+    this.refreshKeyHint();   // 同步刷新该服务商下当前模型的密钥已保存状态提示
   },
 
   // 根据是否通过连接测试，启用/禁用「保存并应用」按钮

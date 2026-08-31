@@ -196,6 +196,22 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://spark-api-open.xfyun.cn/v1",
      "models": ["spark-lite", "spark-pro", "spark-max"],
      "default_model": "spark-lite"},  # spark-lite 永久免费 QPS=2；需讯飞开放平台 API Key
+    {"id": "yi", "name": "零一万物 Yi（yi-lightning 永久免费 · OpenAI 兼容）",
+     "base_url": "https://api.lingyiwanwu.com/v1",
+     "models": ["yi-lightning", "yi-large", "yi-medium"],
+     "default_model": "yi-lightning"},                     # yi-lightning 永久免费；yi-large/medium 付费档
+    {"id": "baichuan", "name": "百川智能 Baichuan（新用户 500 万免费 Token · OpenAI 兼容）",
+     "base_url": "https://api.baichuan-ai.com/v1",
+     "models": ["baichuan4-turbo", "baichuan4-air", "baichuan3-turbo"],
+     "default_model": "baichuan4-turbo"},                  # 新用户注册送 500 万通用 Token（Baichuan 全系开源）
+    {"id": "minimax", "name": "MiniMax 官方（M2.7/M2.5 中文大模型 · OpenAI 兼容）",
+     "base_url": "https://api.minimax.chat/v1",
+     "models": ["MiniMax-M2.7", "MiniMax-M2.5", "abab6.5s-chat"],
+     "default_model": "MiniMax-M2.7"},                     # 中文大模型 1M 上下文；亦可在 OpenRouter 走 :free
+    {"id": "longcat", "name": "美团 LongCat（龙猫 · 每日免费额度刷新 · OpenAI 兼容）",
+     "base_url": "https://api.longcat.chat/v1",
+     "models": ["LongCat-Flash-Chat", "LongCat-Flash-Thinking", "LongCat-Flash-Lite"],
+     "default_model": "LongCat-Flash-Chat"},               # 每日免费额度自动刷新（Chat/Thinking 500万、Flash-Lite 5亿 token）
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
@@ -279,7 +295,7 @@ LLM_PRESETS = _load_presets()
 
 LLM_CFG_FILE = os.path.join(APP_DIR, "llm_config.json")
 LLM_CFG = {}            # 运行时生效配置（effective）：{provider, base_url, api_key, model}
-LLM_KEYS = {}           # 每个服务商独立保存的 API Key：{provider_id: api_key}
+LLM_KEYS = {}           # 每个「服务商/模型」独立保存的 API Key：{provider_id::model: api_key}，并保留 provider_id 级默认回退
 LLM_CUSTOM = {}         # 自定义服务商配置：{base_url, model}
 
 
@@ -293,8 +309,9 @@ def _provider_of(base_url):
 
 def _load_llm_cfg():
     """配置优先级：.env / 环境变量  >  llm_config.json（运行时保存，免重启覆盖）。
-    支持『每个服务商独立保存 API Key』（llm_config.json 的 keys 字典），
-    这样在前端下拉框里切换模型/服务商时无需重复粘贴 Key。旧版单 Key 格式自动兼容。"""
+    支持『每个「服务商/模型」独立保存 API Key』（llm_config.json 的 keys 字典，键为
+    provider::model，并保留 provider 级默认回退），这样在前端下拉框里切换模型服务端时
+    无需重复粘贴 Key，且每个模型可单独保存不同密钥。旧版单 Key 格式自动兼容。"""
     global LLM_KEYS, LLM_CUSTOM
     LLM_KEYS = {}
     LLM_CUSTOM = {}
@@ -341,7 +358,8 @@ def _load_llm_cfg():
                 base_url = preset["base_url"]
             if not model:
                 model = preset.get("default_model", "")
-    effective = keys.get(provider, "")
+    # 逐模型独立密钥：优先取 provider::model，再回退服务商级默认
+    effective = keys.get(f"{provider}::{model}", "") or keys.get(provider, "")
     return {"provider": provider, "base_url": base_url,
             "api_key": effective, "model": model}
 
@@ -2854,27 +2872,38 @@ async def llm_presets_delete(request: Request):
 
 
 @app.get("/api/llm-config")
-def llm_config_get():
-    """返回当前生效配置（不回传明文 key，仅给掩码与是否已设置标记）。"""
-    provider = LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", ""))
-    key = LLM_KEYS.get(provider, "")
+def llm_config_get(request: Request = None):
+    """返回当前生效配置（不回传明文 key，仅给掩码与是否已设置标记）。
+    支持查询参数 ?provider=&model= ：返回指定『服务商/模型』各自独立保存的 Key 状态，
+    便于前端在弹窗里逐模型提示『该模型是否已单独保存密钥』。"""
+    qp = (request.query_params if request else {})
+    provider = (qp.get("provider") or "").strip() or LLM_CFG.get("provider", "") or _provider_of(LLM_CFG.get("base_url", ""))
+    model = (qp.get("model") or "").strip() or LLM_CFG.get("model", "")
+    # 逐模型独立密钥：优先取 provider::model，回退到服务商级默认
+    model_key = LLM_KEYS.get(f"{provider}::{model}", "")
+    provider_key = LLM_KEYS.get(provider, "")
+    key = model_key or provider_key
+    uses_default = bool(provider_key) and not bool(model_key)
     masked = (key[:6] + "…" + key[-4:]) if len(key) > 10 else (key or "")
     return {
         "provider": provider,
         "base_url": LLM_CFG.get("base_url", ""),
-        "model": LLM_CFG.get("model", ""),
+        "model": model,
         # 本地模型（Ollama 等）允许空 Key，故 configured 不要求 key
         "configured": bool(LLM_CFG.get("base_url") and LLM_CFG.get("model")),
         "key_set": bool(key),
         "api_key_masked": masked,
+        "model_key_set": bool(model_key),
+        "uses_default": uses_default,
     }
 
 
 @app.post("/api/llm-config")
 async def llm_config_post(request: Request):
     """运行时设置模型：选 provider + 粘贴 API Key 即可；自定义还需填 base_url/model。
-    每个服务商的 Key 独立保存（keys 字典），切换时无需重复粘贴。
-    保存后写入 llm_config.json，立即生效且下次启动保留（免重启）。"""
+    每个「服务商/模型」的 Key 独立保存（keys 字典，键 provider::model），切换时无需重复粘贴；
+    同时写服务商级默认，方便同服务商其它模型复用。保存后写入 llm_config.json，
+    立即生效且下次启动保留（免重启，文件已 gitignore）。"""
     global LLM_KEYS, LLM_CUSTOM
     try:
         body = await request.json()
@@ -2892,7 +2921,12 @@ async def llm_config_post(request: Request):
     # 仅更新当前服务商的 Key；空 Key 表示沿用该服务商已保存的 Key
     keys = dict(LLM_KEYS)
     if api_key:
-        keys[provider] = api_key
+        # 每个模型可单独保存密钥：以 provider::model 为键独立存储；
+        # provider 级默认仅在尚无默认时建立，后续各模型可保留各自独立密钥，
+        # 不被「最后一次保存」覆盖，从而保证切换模型后各模型密钥互不影响。
+        keys[f"{provider}::{model}"] = api_key
+        if not keys.get(provider):
+            keys[provider] = api_key
     if preset.get("custom"):
         if not base_url:
             base_url = (LLM_CUSTOM.get("base_url") or "")
@@ -2902,7 +2936,8 @@ async def llm_config_post(request: Request):
         base_url = preset["base_url"]
         if not model:
             model = preset.get("default_model", "")
-    effective = keys.get(provider, "")
+    # 逐模型独立密钥：优先取 provider::model，再回退服务商级默认
+    effective = keys.get(f"{provider}::{model}", "") or keys.get(provider, "")
     missing = []
     if not effective:
         missing.append("API Key")
@@ -2947,8 +2982,9 @@ async def llm_test_post(request: Request):
         return JSONResponse({"ok": False, "error": "未知的服务商 provider"}, status_code=400)
     # 解析实际要测试的 base_url / key / model（不写盘，不影响当前生效配置）
     keys = dict(LLM_KEYS)
-    if not api_key and provider in keys:
-        api_key = keys[provider]            # 没新填 Key 时，复用已保存的（对「切换后状态提示」更友好）
+    if not api_key:
+        # 没新填 Key 时，复用该「服务商/模型」已单独保存的密钥，再回退服务商级默认
+        api_key = keys.get(f"{provider}::{model}", "") or keys.get(provider, "")
     if preset.get("custom"):
         custom = LLM_CUSTOM or {}
         if not base_url:
