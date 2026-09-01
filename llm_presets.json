@@ -340,11 +340,72 @@
     "custom": false
   },
   {
+    "id": "yi",
+    "name": "零一万物 Yi（yi-lightning 永久免费 · OpenAI 兼容）",
+    "base_url": "https://api.lingyiwanwu.com/v1",
+    "models": [
+      "yi-lightning",
+      "yi-large",
+      "yi-medium"
+    ],
+    "default_model": "yi-lightning",
+    "custom": false
+  },
+  {
+    "id": "baichuan",
+    "name": "百川智能 Baichuan（新用户 500 万免费 Token · OpenAI 兼容）",
+    "base_url": "https://api.baichuan-ai.com/v1",
+    "models": [
+      "baichuan4-turbo",
+      "baichuan4-air",
+      "baichuan3-turbo"
+    ],
+    "default_model": "baichuan4-turbo",
+    "custom": false
+  },
+  {
+    "id": "minimax",
+    "name": "MiniMax 官方（M2.7/M2.5 中文大模型 · OpenAI 兼容）",
+    "base_url": "https://api.minimax.chat/v1",
+    "models": [
+      "MiniMax-M2.7",
+      "MiniMax-M2.5",
+      "abab6.5s-chat"
+    ],
+    "default_model": "MiniMax-M2.7",
+    "custom": false
+  },
+  {
+    "id": "longcat",
+    "name": "美团 LongCat（龙猫 · 每日免费额度刷新 · OpenAI 兼容）",
+    "base_url": "https://api.longcat.chat/v1",
+    "models": [
+      "LongCat-Flash-Chat",
+      "LongCat-Flash-Thinking",
+      "LongCat-Flash-Lite"
+    ],
+    "default_model": "LongCat-Flash-Chat",
+    "custom": false
+  },
+  {
     "id": "custom",
     "name": "自定义（兼容 OpenAI）",
     "base_url": "",
     "models": [],
     "default_model": "",
     "custom": true
+  },
+  {
+    "id": "opencode_zen",
+    "name": "OpenCode Zen（免费模型聚合 · 国内可用 · 无需信用卡）",
+    "base_url": "https://opencode.ai/zen/v1",
+    "models": [
+      "deepseek-v4-flash-free",
+      "minimax-m2.5-free",
+      "ring-2.6-1t-free",
+      "nemotron-3-super-free",
+      "big-pickle"
+    ],
+    "default_model": "deepseek-v4-flash-free"
   }
 ]
