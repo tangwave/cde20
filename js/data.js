@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-09-01",
-    "totalDocs": 2229,
+    "lastUpdated": "2026-09-05",
+    "totalDocs": 2235,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1229,6 +1229,16 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "化学仿制药滴眼剂研究技术指导原则",
+                    "path": "04_技术指导原则/CDE_指导原则/化学仿制药滴眼剂研究技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/att/download/949d5ae39f46a966321b48310367d042"
+                  },
+                  {
+                    "title": "化学仿制药特殊滴眼剂研究技术指导原则",
+                    "path": "04_技术指导原则/CDE_指导原则/化学仿制药特殊滴眼剂研究技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/att/download/cbecd4cc127d05926a7d6dcd91f63dd6"
                   }
                 ]
               },
@@ -1603,6 +1613,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -2472,6 +2492,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -4054,6 +4079,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -4823,6 +4858,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -6527,6 +6567,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -7439,6 +7489,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -8698,6 +8753,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -9300,6 +9365,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -10512,6 +10582,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "单克隆抗体动物试验减少或替代指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/单克隆抗体动物试验减少或替代指导原则(征求意见稿).md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e81316f2640e32c5411061ea7ffea639"
                   }
                 ]
               },
@@ -10863,6 +10938,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -11643,6 +11728,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -12997,6 +13087,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -13722,6 +13822,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -14987,6 +15092,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -15679,6 +15794,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -16827,6 +16947,16 @@ const KB_DATA = {
                     "title": "全身型重症肌无力治疗药物临床试验技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/全身型重症肌无力治疗药物临床试验技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/989de4a6a9bdf38ff60a1f921b2c613f"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -17465,6 +17595,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -18751,6 +18886,16 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -19441,6 +19586,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -20619,6 +20769,16 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -21251,6 +21411,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },
@@ -22389,6 +22554,16 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "药品注册核查要点与判定原则（药物临床试验）（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药品注册核查要点与判定原则(药物临床试验)(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16852.html"
+                  },
+                  {
+                    "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
+                    "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
+                    "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
                   }
                 ]
               },
@@ -22998,6 +23173,11 @@ const KB_DATA = {
                     "title": "关于做好基本药物优先配备使用工作的通知（国卫药政发〔2026〕20号）",
                     "path": "03_部门规章/关于做好基本药物优先配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/wjw/jcjf/"
+                  },
+                  {
+                    "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
+                    "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
                   }
                 ]
               },

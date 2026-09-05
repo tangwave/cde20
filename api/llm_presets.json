@@ -389,5 +389,39 @@
       "big-pickle"
     ],
     "default_model": "deepseek-v4-flash-free"
+  },
+  {
+    "id": "deepinfra",
+    "name": "DeepInfra（开源模型托管 · 200 并发免费 · 免信用卡）",
+    "base_url": "https://api.deepinfra.com/v1",
+    "models": [
+      "deepseek-ai/DeepSeek-V3",
+      "meta-llama/Meta-Llama-3.3-70B-Instruct",
+      "Qwen/Qwen2.5-72B-Instruct",
+      "google/gemma-3-27b-it"
+    ],
+    "default_model": "deepseek-ai/DeepSeek-V3"
+  },
+  {
+    "id": "fireworks",
+    "name": "Fireworks AI（极速 Serverless 推理 · $1 永久免费额度）",
+    "base_url": "https://api.fireworks.ai/v1",
+    "models": [
+      "accounts/fireworks/models/llama-3.3-70b-instruct",
+      "accounts/fireworks/models/deepseek-v3",
+      "accounts/fireworks/models/qwen3-32b"
+    ],
+    "default_model": "accounts/fireworks/models/llama-3.3-70b-instruct"
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity（联网检索增强 · 搜索溯源答案 · 免费额度）",
+    "base_url": "https://api.perplexity.ai",
+    "models": [
+      "sonar",
+      "sonar-pro",
+      "sonar-reasoning"
+    ],
+    "default_model": "sonar"
   }
 ]

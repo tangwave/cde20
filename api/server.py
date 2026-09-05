@@ -212,6 +212,18 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.longcat.chat/v1",
      "models": ["LongCat-Flash-Chat", "LongCat-Flash-Thinking", "LongCat-Flash-Lite"],
      "default_model": "LongCat-Flash-Chat"},               # 每日免费额度自动刷新（Chat/Thinking 500万、Flash-Lite 5亿 token）
+    {"id": "deepinfra", "name": "DeepInfra（开源模型托管 · 200 并发免费 · 免信用卡）",
+     "base_url": "https://api.deepinfra.com/v1",
+     "models": ["deepseek-ai/DeepSeek-V3", "meta-llama/Meta-Llama-3.3-70B-Instruct", "Qwen/Qwen2.5-72B-Instruct", "google/gemma-3-27b-it"],
+     "default_model": "deepseek-ai/DeepSeek-V3"},          # DEEPINFRA_API_KEY 免费(200 并发)，无需信用卡
+    {"id": "fireworks", "name": "Fireworks AI（极速 Serverless 推理 · $1 永久免费额度）",
+     "base_url": "https://api.fireworks.ai/v1",
+     "models": ["accounts/fireworks/models/llama-3.3-70b-instruct", "accounts/fireworks/models/deepseek-v3", "accounts/fireworks/models/qwen3-32b"],
+     "default_model": "accounts/fireworks/models/llama-3.3-70b-instruct"},  # FIREWORKS_API_KEY $1 永久免费额度，无需支付
+    {"id": "perplexity", "name": "Perplexity（联网检索增强 · 搜索溯源答案 · 免费额度）",
+     "base_url": "https://api.perplexity.ai",
+     "models": ["sonar", "sonar-pro", "sonar-reasoning"],
+     "default_model": "sonar"},                            # PERPLEXITY_API_KEY 免费额度(联网检索溯源，适合法规查证)
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
