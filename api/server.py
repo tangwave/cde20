@@ -224,6 +224,14 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.perplexity.ai",
      "models": ["sonar", "sonar-pro", "sonar-reasoning"],
      "default_model": "sonar"},                            # PERPLEXITY_API_KEY 免费额度(联网检索溯源，适合法规查证)
+    {"id": "sensenova", "name": "商汤 SenseNova（日日新 · 每5小时1500次免费 · OpenAI 兼容）",
+     "base_url": "https://token.sensenova.cn/v1",
+     "models": ["sensenova-6.8-flash-lite", "sensenova-u1-fast", "deepseek-v4-flash", "glm-5.2", "kimi-k3"],
+     "default_model": "sensenova-6.8-flash-lite"},        # token.sensenova.cn 注册送 TokenPlan 免费额度(每5h 1500次)，多模态 Agent 模型
+    {"id": "huaweicloud_maas", "name": "华为云 MaaS（ModelArts Studio · 每模型200万token免费 · OpenAI 兼容）",
+     "base_url": "https://api.modelarts-maas.com/openai/v1",
+     "models": ["glm-5.2", "deepseek-v4-flash", "kimi-k2.6", "openpangu-2.0-flash", "qwen3-32b"],
+     "default_model": "glm-5.2"},                        # 华为云 MaaS 免费服务列表领取额度(每模型200万token)，免费服务地址以控制台「调用说明」为准
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]

@@ -441,5 +441,33 @@
       "sonar-reasoning"
     ],
     "default_model": "sonar"
+  },
+  {
+    "id": "sensenova",
+    "name": "商汤 SenseNova（日日新 · 每5小时1500次免费 · OpenAI 兼容）",
+    "base_url": "https://token.sensenova.cn/v1",
+    "models": [
+      "sensenova-6.8-flash-lite",
+      "sensenova-u1-fast",
+      "deepseek-v4-flash",
+      "glm-5.2",
+      "kimi-k3"
+    ],
+    "default_model": "sensenova-6.8-flash-lite",
+    "custom": false
+  },
+  {
+    "id": "huaweicloud_maas",
+    "name": "华为云 MaaS（ModelArts Studio · 每模型200万token免费 · OpenAI 兼容）",
+    "base_url": "https://api.modelarts-maas.com/openai/v1",
+    "models": [
+      "glm-5.2",
+      "deepseek-v4-flash",
+      "kimi-k2.6",
+      "openpangu-2.0-flash",
+      "qwen3-32b"
+    ],
+    "default_model": "glm-5.2",
+    "custom": false
   }
 ]
