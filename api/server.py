@@ -232,6 +232,10 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.modelarts-maas.com/openai/v1",
      "models": ["glm-5.2", "deepseek-v4-flash", "kimi-k2.6", "openpangu-2.0-flash", "qwen3-32b"],
      "default_model": "glm-5.2"},                        # 华为云 MaaS 免费服务列表领取额度(每模型200万token)，免费服务地址以控制台「调用说明」为准
+    {"id": "atomgit", "name": "AtomGit（GitCode 开源托管 · 免费大模型网关 · OpenAI 兼容）",
+     "base_url": "https://llm-api.atomgit.com/v1",
+     "models": ["deepseek-v4-flash", "Qwen/Qwen3.5-122B-A10B", "Qwen/Qwen3.5-397B-A17B", "zai-org/GLM-5"],
+     "default_model": "deepseek-v4-flash"},   # 免费(部分模型免 Key)，OpenAI 兼容；GLM-5/Qwen3.5-398B 限时免费以官方文档为准
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
