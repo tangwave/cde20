@@ -236,6 +236,10 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://llm-api.atomgit.com/v1",
      "models": ["deepseek-v4-flash", "Qwen/Qwen3.5-122B-A10B", "Qwen/Qwen3.5-397B-A17B", "zai-org/GLM-5"],
      "default_model": "deepseek-v4-flash"},   # 免费(部分模型免 Key)，OpenAI 兼容；GLM-5/Qwen3.5-398B 限时免费以官方文档为准
+    {"id": "stepfun", "name": "阶跃星辰 StepFun（step-3.5-flash 免费 · 国内直连 · OpenAI 兼容）",
+     "base_url": "https://api.stepfun.com/v1",
+     "models": ["step-3.5-flash", "step-3.5-flash-2603", "step-3.7-flash", "step-5-preview", "step-1-mini"],
+     "default_model": "step-3.5-flash"},   # 注册送体验额度(Step Plan 限时免费), step-3.5-flash 低价/免费档, 国内直连
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]

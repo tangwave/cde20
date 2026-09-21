@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-09-19",
-    "totalDocs": 2247,
+    "lastUpdated": "2026-09-21",
+    "totalDocs": 2249,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1239,6 +1239,11 @@ const KB_DATA = {
                     "title": "化学仿制药特殊滴眼剂研究技术指导原则",
                     "path": "04_技术指导原则/CDE_指导原则/化学仿制药特殊滴眼剂研究技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/att/download/cbecd4cc127d05926a7d6dcd91f63dd6"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -1623,6 +1628,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -3764,6 +3774,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -4126,6 +4141,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -5001,7 +5021,7 @@ const KB_DATA = {
           "gmpAppendix": "放射性药品管理办法",
           "icon": "☢️",
           "color": "#1565C0",
-          "description": "放射性药品是指用于临床诊断或治疗的含有放射性核素的制剂或其标记化合物。包括体内诊断用放射性药品、体内治疗用放射性药品、放射性核素发生器及配套药盒、正电子发射断层显像（PET）用放射性药品等。因其同时具有放射性属性和药品属性，质量体系须同时满足药品GMP和辐射安全监管双重要求。",
+          "description": "放射性药品是指用于临床诊断或治疗的含有放射性核素的制剂或其标记化合物。包括体内诊断用放射性药品、体内治疗用放射性药品、放射性核素发生器及配套药盒、正电子发射断层显像（PET）用放射性药品等。因其同时具有放射性属性和药品属性，质量体系须同时满足药品GMP和辐射安全监管双重要求。【最新法规动态】2026-09 国家药监局综合司就《放射性药品管理条例（征求意见稿）》公开征求意见（2026-09-21—2026-10-20），拟将1989年《放射性药品管理办法》上升为国务院行政法规层级，覆盖研制、生产、经营、使用、进出口、检验与监管全链条；相关条目见本品种各研发阶段 regulations 关联。",
           "subCategories": [
             "诊断用放射性药品（SPECT/PET）",
             "治疗用放射性药品（α/β核素治疗）",
@@ -5160,6 +5180,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -5362,6 +5387,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -5570,6 +5600,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -5789,6 +5824,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -6205,6 +6245,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -6628,6 +6673,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -6964,6 +7014,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -7271,6 +7326,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -7552,6 +7612,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "放射性药品管理条例（征求意见稿）",
+                    "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
                   }
                 ]
               },
@@ -8567,6 +8632,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -8836,6 +8906,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -10704,6 +10779,11 @@ const KB_DATA = {
                     "title": "单克隆抗体动物试验减少或替代指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/单克隆抗体动物试验减少或替代指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e81316f2640e32c5411061ea7ffea639"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -11065,6 +11145,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "ICH E14/S7B QT/QTc 延长及致心律失常风险评价 问与答（R1）（2026年修订版）",
+                    "path": "04_技术指导原则/ICH_转化/ICHE14S7B-QA-R1-2026.md",
+                    "url": "https://www.ich.org/news/revised-qas-ich-e14-and-ich-s7b-provide-updated-implementation-support"
                   }
                 ]
               },
@@ -23708,6 +23793,24 @@ const KB_DATA = {
           "口服固体制剂",
           "说明书标签",
           "上市后变更"
+        ]
+      },
+      {
+        "term": "放射性药品管理条例（征求意见稿）",
+        "definition": "国家药监局2026-09-20发布、2026-09-21至10-20公开征求意见的放射性药品管理法规修订草案，将1989年《放射性药品管理办法》上升为国务院行政法规层级，覆盖放射性药品研制、生产、经营、使用、进出口、检验与监管全链条。",
+        "see": [
+          "放射性药品",
+          "放射性药品管理办法",
+          "GMP放射性药品附录"
+        ]
+      },
+      {
+        "term": "ICH E14/S7B QT/QTc 问与答（R1）",
+        "definition": "ICH 2026-09-18发布的合并更新版配套问答，为新药QT/QTc延长及致心律失常风险的临床与非临床评价提供澄清，替代2022年合订本，覆盖ECG方法学、研究设计、浓度-效应建模与体外/体内非临床研究最佳实践。",
+        "see": [
+          "E14",
+          "S7B",
+          "药物浓度-QTc临床研究技术指导原则"
         ]
       }
     ]
