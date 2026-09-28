@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-09-27",
-    "totalDocs": 2254,
+    "lastUpdated": "2026-09-28",
+    "totalDocs": 2257,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1249,6 +1249,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -1660,6 +1665,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -2559,6 +2569,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -3811,6 +3826,16 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "商务部等5部门关于调整《向特定国家(地区)出口易制毒化学品管理目录》的公告（2026年第40号）",
+                    "path": "03_部门规章/商务部等5部门关于调整向特定国家出口易制毒化学品管理目录的公告(2026年第40号).md",
+                    "url": "http://gec.customs.gov.cn/customs/2026-09/22/article_2026092215091517992.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -4200,6 +4225,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -4491,6 +4521,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "商务部等5部门关于调整《向特定国家(地区)出口易制毒化学品管理目录》的公告（2026年第40号）",
+                    "path": "03_部门规章/商务部等5部门关于调整向特定国家出口易制毒化学品管理目录的公告(2026年第40号).md",
+                    "url": "http://gec.customs.gov.cn/customs/2026-09/22/article_2026092215091517992.html"
                   }
                 ]
               },
@@ -4981,6 +5016,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -6304,6 +6344,11 @@ const KB_DATA = {
                     "title": "放射性药品管理条例（征求意见稿）",
                     "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -6749,6 +6794,11 @@ const KB_DATA = {
                     "title": "药物临床试验计算机化系统和电子数据指导原则（2026年第44号）",
                     "path": "04_技术指导原则/CDE_指导原则/CDE药物临床试验计算机化系统和电子数据指导原则2026年第44号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/2c5d9c3f1afef1605b6a6d3a9df7b5ae"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -7688,6 +7738,11 @@ const KB_DATA = {
                     "title": "放射性药品管理条例（征求意见稿）",
                     "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -8713,6 +8768,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -9014,6 +9074,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -9653,6 +9718,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -10909,6 +10979,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -11307,6 +11382,11 @@ const KB_DATA = {
                     "title": "ICH E14/S7B 问答文件中文翻译稿及实施建议（征求意见）",
                     "path": "04_技术指导原则/ICH_转化/CDEE14S7B问答文件中文翻译稿实施建议征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4fe205df15399060554c78999fe182d8"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -12104,6 +12184,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -13180,6 +13265,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -13492,6 +13582,11 @@ const KB_DATA = {
                     "title": "药物临床试验计算机化系统和电子数据指导原则（2026年第44号）",
                     "path": "04_技术指导原则/CDE_指导原则/CDE药物临床试验计算机化系统和电子数据指导原则2026年第44号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/2c5d9c3f1afef1605b6a6d3a9df7b5ae"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -14229,6 +14324,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -15239,6 +15339,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -15518,6 +15623,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -16222,6 +16332,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -17123,6 +17238,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -17409,6 +17529,11 @@ const KB_DATA = {
                     "title": "药物临床试验计算机化系统和电子数据指导原则（2026年第44号）",
                     "path": "04_技术指导原则/CDE_指导原则/CDE药物临床试验计算机化系统和电子数据指导原则2026年第44号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/2c5d9c3f1afef1605b6a6d3a9df7b5ae"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -18059,6 +18184,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -19081,6 +19211,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -19386,6 +19521,11 @@ const KB_DATA = {
                     "title": "药物临床试验计算机化系统和电子数据指导原则（2026年第44号）",
                     "path": "04_技术指导原则/CDE_指导原则/CDE药物临床试验计算机化系统和电子数据指导原则2026年第44号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/2c5d9c3f1afef1605b6a6d3a9df7b5ae"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -20105,6 +20245,11 @@ const KB_DATA = {
                     "title": "国家药监局关于印发优化中药补充申请审评审批程序改革工作方案的通知（国药监药注〔2026〕15号）",
                     "path": "03_部门规章/国家药监局优化中药补充申请审评审批程序改革工作方案2026.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/gzwj/gzwjyp/20260920170144119.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -21089,6 +21234,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -21317,6 +21467,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -21961,6 +22116,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -22876,6 +23036,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
+                    "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
                   }
                 ]
               },
@@ -23121,6 +23286,11 @@ const KB_DATA = {
                     "title": "药物临床试验机构监督检查要点及判定原则（2026年修订）",
                     "path": "04_技术指导原则/CFDI_检查指南/药物临床试验机构监督检查要点及判定原则(2026年修订).md",
                     "url": "https://cfdi.org.cn/cfdi/resource/news/16851.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -23742,6 +23912,11 @@ const KB_DATA = {
                     "title": "国家药监局关于进一步加强药品信息化追溯管理工作的公告（2026年第85号）",
                     "path": "03_部门规章/国家药监局关于进一步加强药品信息化追溯管理工作的公告(2026年第85号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/ggtg/"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
+                    "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
                   }
                 ]
               },
@@ -24064,6 +24239,37 @@ const KB_DATA = {
           "中药补充申请",
           "已上市中药药学变更研究技术指导原则",
           "上市后变更"
+        ]
+      },
+      {
+        "term": "向特定国家出口易制毒化学品管理目录调整",
+        "definition": "商务部、公安部、应急管理部、海关总署、国家药监局2026年第40号公告，调整《向特定国家(地区)出口易制毒化学品管理目录》，新增1-苯乙基-4-氧-3-哌啶甲酸甲酯、1-苯乙基-4-氧-3-哌啶甲酸乙酯2个品种至附件1第一部分；自发布之日起，向美/墨/加出口附件1第一部分、向缅/老/阿出口附件1第二部分所列化学品须按《向特定国家(地区)出口易制毒化学品暂行管理规定》申请许可。原料药与精细化工企业须核对出口目的地与品种清单落实许可合规。",
+        "see": [
+          "易制毒化学品管理条例",
+          "药品类易制毒化学品管理办法",
+          "原料药",
+          "出口许可"
+        ]
+      },
+      {
+        "term": "进口药品通关电子化",
+        "definition": "国家药监局、海关总署2026年第91号公告，自发布之日起在北京口岸开展进口药品（含药材）通关电子化试点，通关电子文书与纸质文书同等法律效力，实现进口药品通关单全程网办（中国国际贸易单一窗口）。影响进口原料药、参比制剂、对照品及进口药的研发与商业化通关效率。",
+        "see": [
+          "进口药品",
+          "药材进口",
+          "进口药品通关单",
+          "中国国际贸易单一窗口"
+        ]
+      },
+      {
+        "term": "FDA非临床研究术语规则(NAMs)",
+        "definition": "FDA 2026-09-22发布 Nonclinical Testing Terminology 直接最终规则（91 FR 59988，Docket FDA-2026-N-5347），将药品与生物制品法规中\"animal test/study\"替换为\"nonclinical test/study\"，定义非临床研究含 in vitro / in silico / in chemico 及非人 in vivo，明确认可 NAMs（新测试方法，如细胞模型、器官芯片、计算机模型）作为非临床证据来源，不改变证据标准；与 FDORA（2022）一致，影响 GLP/非临床安全性证据生成策略。",
+        "see": [
+          "GLP",
+          "非临床研究",
+          "NAMs",
+          "ICH S系列",
+          "FDORA"
         ]
       }
     ]
