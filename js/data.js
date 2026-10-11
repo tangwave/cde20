@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-09-28",
-    "totalDocs": 2257,
+    "lastUpdated": "2026-10-11",
+    "totalDocs": 2268,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1254,6 +1254,26 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
                   }
                 ]
               },
@@ -1670,6 +1690,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -1999,6 +2024,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
                   }
                 ]
               },
@@ -3836,6 +3866,31 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "局部起效化学仿制药物理化学及结构（Q3）特性研究技术指导原则（2026年第45号）",
+                    "path": "04_技术指导原则/CDE_指导原则/局部起效化学仿制药物理化学及结构Q3特性研究技术指导原则2026年第45号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/d9687ebf127ac4eafd5216af706eb6f2"
+                  },
+                  {
+                    "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
                   }
                 ]
               },
@@ -4230,6 +4285,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -4526,6 +4586,11 @@ const KB_DATA = {
                     "title": "商务部等5部门关于调整《向特定国家(地区)出口易制毒化学品管理目录》的公告（2026年第40号）",
                     "path": "03_部门规章/商务部等5部门关于调整向特定国家出口易制毒化学品管理目录的公告(2026年第40号).md",
                     "url": "http://gec.customs.gov.cn/customs/2026-09/22/article_2026092215091517992.html"
+                  },
+                  {
+                    "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
                   }
                 ]
               },
@@ -6349,6 +6414,21 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
                   }
                 ]
               },
@@ -6799,6 +6879,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -8773,6 +8858,31 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "局部起效化学仿制药物理化学及结构（Q3）特性研究技术指导原则（2026年第45号）",
+                    "path": "04_技术指导原则/CDE_指导原则/局部起效化学仿制药物理化学及结构Q3特性研究技术指导原则2026年第45号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/d9687ebf127ac4eafd5216af706eb6f2"
+                  },
+                  {
+                    "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
                   }
                 ]
               },
@@ -9079,6 +9189,16 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "移植物抗宿主病治疗药物临床试验技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/移植物抗宿主病治疗药物临床试验技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/cafef32a8ca8977f2bb8a1e2aa91a817"
                   }
                 ]
               },
@@ -9320,6 +9440,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
                   }
                 ]
               },
@@ -10984,6 +11109,26 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "生物类似药非临床研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/生物类似药非临床研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/234697f022d245cb5d8952499fade88e"
                   }
                 ]
               },
@@ -11387,6 +11532,16 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "移植物抗宿主病治疗药物临床试验技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/移植物抗宿主病治疗药物临床试验技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/cafef32a8ca8977f2bb8a1e2aa91a817"
                   }
                 ]
               },
@@ -13270,6 +13425,21 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
                   }
                 ]
               },
@@ -13587,6 +13757,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -15344,6 +15519,21 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
                   }
                 ]
               },
@@ -15628,6 +15818,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -17243,6 +17438,26 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "重组腺相关病毒产品质量研究和质量标准问答文件（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/重组腺相关病毒产品质量研究和质量标准问答文件征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5c80632934edd0afba1f56e5b993e1f8"
                   }
                 ]
               },
@@ -17534,6 +17749,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -17779,6 +17999,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "重组腺相关病毒产品质量研究和质量标准问答文件（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/重组腺相关病毒产品质量研究和质量标准问答文件征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5c80632934edd0afba1f56e5b993e1f8"
                   }
                 ]
               },
@@ -19216,6 +19441,21 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
                   }
                 ]
               },
@@ -19526,6 +19766,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -20250,6 +20495,16 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定有关事项的通告（2026年第34号）",
+                    "path": "03_部门规章/国家药监局关于中药饮片跨省销售使用管理规定通告2026年第34号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008172748111.html"
+                  },
+                  {
+                    "title": "国家药监局关于加强中药品种保护工作的公告（2026年第97号）",
+                    "path": "03_部门规章/国家药监局关于加强中药品种保护工作的公告2026年第97号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008173342170.html"
                   }
                 ]
               },
@@ -21239,6 +21494,21 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
                   }
                 ]
               },
@@ -21472,6 +21742,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -22121,6 +22396,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定有关事项的通告（2026年第34号）",
+                    "path": "03_部门规章/国家药监局关于中药饮片跨省销售使用管理规定通告2026年第34号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008172748111.html"
                   }
                 ]
               },
@@ -23041,6 +23321,21 @@ const KB_DATA = {
                     "title": "FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md",
                     "url": "https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology"
+                  },
+                  {
+                    "title": "药物代谢产物非临床安全性研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物代谢产物非临床安全性研究技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c0bcf103b256f6fa7b7e29fd96f4604"
+                  },
+                  {
+                    "title": "药物非临床药代动力学研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则2026征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/34457067c30436be3bb52a8d006b70ab"
+                  },
+                  {
+                    "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
+                    "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
                   }
                 ]
               },
@@ -23291,6 +23586,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
                   }
                 ]
               },
@@ -24270,6 +24570,119 @@ const KB_DATA = {
           "NAMs",
           "ICH S系列",
           "FDORA"
+        ]
+      },
+      {
+        "term": "NAMs 先锋计划（PIONEER）",
+        "definition": "CDE 2026 年第 46 号通告（2026-09-28 落款 / 09-29 发布，正式实施），推进类器官/器官芯片等新方法（New Approach Methodologies）的研究、验证和在药物研发中的应用，以减少/优化/替代（3R）传统动物试验；设情形1（药企将 NAM 数据作为注册支持性数据）与情形2（NAM 开发机构方法学联合验证），试点招募期 5 年，CDE\"早期介入、及时沟通、全程跟踪\"。",
+        "see": [
+          "非临床研究",
+          "GLP",
+          "3R 原则",
+          "替代动物试验",
+          "FDA 非临床研究术语规则"
+        ]
+      },
+      {
+        "term": "重组腺相关病毒（rAAV）产品质量研究与质量标准问答",
+        "definition": "CDE 2026-10-10 征求意见稿，以问答形式对 rAAV 载体类体内基因治疗产品的药学研究与质量标准制定提出具体指导，衔接 2025 年第 39 号技术要求，涵盖工艺表征、杂质控制（残留 DNA、空壳率、rcAAV）、效力测定与质量标准制定。",
+        "see": [
+          "细胞与基因治疗产品",
+          "基因治疗",
+          "质量标准",
+          "工艺验证"
+        ]
+      },
+      {
+        "term": "生物类似药非临床研究",
+        "definition": "CDE 2026-09-28 征求意见稿，规范生物类似药的非临床研究与评价，以\"比对试验\"路径论证候选药与参照药的相似性，聚焦药理学/药代/毒理/免疫原性比对，避免不必要的动物试验。",
+        "see": [
+          "生物类似药",
+          "相似性评价",
+          "非临床研究",
+          "免疫原性"
+        ]
+      },
+      {
+        "term": "移植物抗宿主病（GVHD）治疗药物临床",
+        "definition": "CDE 2026-10-08 征求意见稿，针对异基因造血干细胞移植后 GVHD（急性/慢性）治疗创新药的临床试验设计提供建议，关注疾病分型分级、罕见/难治人群设计、标准化评估量表（如 NIH cGVHD、Lee 症状量表）与安全性监测。",
+        "see": [
+          "临床研究",
+          "生物制品",
+          "化药",
+          "罕见病",
+          "免疫调节"
+        ]
+      },
+      {
+        "term": "局部起效化学仿制药 Q3 特性（2026 年第 45 号）",
+        "definition": "CDE 2026 年第 45 号通告（2026-09-30 施行），明确局部起效化学仿制药体外关键质量属性的物理化学及结构（Q3）特性技术要求，从\"成分相同\"走向\"结构相同\"，支撑 IVRT/IVPT 研究外推。",
+        "see": [
+          "化学仿制药",
+          "药学研究",
+          "Q1/Q2/Q3",
+          "IVRT/IVPT",
+          "体外释放"
+        ]
+      },
+      {
+        "term": "氘代化学创新药药学研究",
+        "definition": "CDE 2026-09-28 征求意见稿，针对氘代（²H）化学创新药的药学研究与质量控制特殊考虑（氘代率控制与检测、氘/氢交换、有关物质与稳定性），落实国办发〔2024〕53 号支持创新药研发。",
+        "see": [
+          "化学创新药",
+          "药学研究",
+          "质量控制",
+          "同位素效应"
+        ]
+      },
+      {
+        "term": "肝功能受损患者药代动力学（FDA 草案）",
+        "definition": "FDA 2026-09-02 草案（91 FR 56449，取代 2003 版），明确何时开展专项肝损伤 PK 研究（肝代谢/排泄>30%、窄治疗窗等）、Child-Pugh 分级评估、研究设计与 popPK 替代，并首次将治疗性生物制品纳入考量。",
+        "see": [
+          "临床药理学",
+          "药代动力学",
+          "临床研究",
+          "说明书"
+        ]
+      },
+      {
+        "term": "药物代谢产物非临床安全性",
+        "definition": "CDE 2026-09-28 征求意见稿，对 2012 版《药物代谢产物安全性试验技术指导原则》的修订，规范和指导药物代谢产物非临床安全性研究。",
+        "see": [
+          "非临床研究",
+          "安全性评价",
+          "代谢产物",
+          "GLP"
+        ]
+      },
+      {
+        "term": "药物非临床药代动力学（2026 修订征求意见稿）",
+        "definition": "CDE 2026-10-08 征求意见稿，对 2014 版《药物非临床药代动力学研究技术指导原则》的修订，契合创新药研发需求。",
+        "see": [
+          "非临床研究",
+          "药代动力学",
+          "ADME",
+          "GLP"
+        ]
+      },
+      {
+        "term": "中药饮片跨省销售使用管理（2026 年第 34 号）",
+        "definition": "国家药监局 2026 年第 34 号通告，规范按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理，影响中药饮片与中药制剂企业的跨区域流通。",
+        "see": [
+          "中药饮片",
+          "炮制规范",
+          "上市后",
+          "跨区域流通"
+        ]
+      },
+      {
+        "term": "中药品种保护（2026 年第 97 号）",
+        "definition": "国家药监局 2026 年第 97 号公告，加强中药品种保护工作，完善中药品种保护制度，关联《中药品种保护条例》与中药制剂上市后保护。",
+        "see": [
+          "中药制剂",
+          "中药品种保护条例",
+          "上市后",
+          "中药品种保护"
         ]
       }
     ]

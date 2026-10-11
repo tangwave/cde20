@@ -240,6 +240,18 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.stepfun.com/v1",
      "models": ["step-3.5-flash", "step-3.5-flash-2603", "step-3.7-flash", "step-5-preview", "step-1-mini"],
      "default_model": "step-3.5-flash"},   # 注册送体验额度(Step Plan 限时免费), step-3.5-flash 低价/免费档, 国内直连
+    {"id": "nebius", "name": "Nebius AI Studio（Llama-3.3-70B / Qwen3-235B 免费额度 · 欧盟合规 · OpenAI 兼容）",
+     "base_url": "https://api.studio.nebius.com/v1",
+     "models": ["meta-llama/Llama-3.3-70B-Instruct", "Qwen/Qwen3-235B-A22B", "deepseek-ai/DeepSeek-V3.1"],
+     "default_model": "meta-llama/Llama-3.3-70B-Instruct"},   # api.studio.nebius.com 注册送免费额度(欧盟数据合规,EU-hosted)
+    {"id": "hyperbolic", "name": "Hyperbolic（开源模型免费额度 · OpenAI 兼容）",
+     "base_url": "https://api.hyperbolic.xyz/v1",
+     "models": ["meta-llama/Llama-3.3-70B-Instruct", "Qwen/Qwen3-235B-A22B", "deepseek-ai/DeepSeek-V3.1"],
+     "default_model": "meta-llama/Llama-3.3-70B-Instruct"},   # api.hyperbolic.xyz 免费额度(开源模型托管)
+    {"id": "novita", "name": "Novita AI（Llama/Mistral 免费试用额度 · OpenAI 兼容 /v3/openai）",
+     "base_url": "https://api.novita.ai/v3/openai",
+     "models": ["meta-llama/llama-3.3-70b-instruct", "mistralai/mistral-large", "deepseek/deepseek-v3.1"],
+     "default_model": "meta-llama/llama-3.3-70b-instruct"},   # api.novita.ai 免费试用额度(无需信用卡)
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
