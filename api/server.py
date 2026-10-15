@@ -252,6 +252,14 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.novita.ai/v3/openai",
      "models": ["meta-llama/llama-3.3-70b-instruct", "mistralai/mistral-large", "deepseek/deepseek-v3.1"],
      "default_model": "meta-llama/llama-3.3-70b-instruct"},   # api.novita.ai 免费试用额度(无需信用卡)
+    {"id": "bazaarlink", "name": "BazaarLink（auto:free 自动路由零成本 · 无需信用卡 · OpenAI 兼容）",
+     "base_url": "https://bazaarlink.ai/api/v1",
+     "models": ["auto:free"],
+     "default_model": "auto:free"},   # bazaarlink.ai auto:free 自动路由零成本(无需信用卡, OpenAI 兼容)
+    {"id": "plugsky", "name": "Plugsky（100K tokens/日 · 无过期 · 无需信用卡 · OpenAI 兼容）",
+     "base_url": "https://api.plugsky.com/v1",
+     "models": ["plugsky-lite", "plugsky-micro", "plugsky-vision"],
+     "default_model": "plugsky-lite"},   # api.plugsky.com 100K tokens/日(无过期, 无需信用卡, OpenAI 兼容)
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]

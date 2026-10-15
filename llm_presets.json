@@ -528,5 +528,25 @@
       "deepseek/deepseek-v3.1"
     ],
     "default_model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "id": "bazaarlink",
+    "name": "BazaarLink（auto:free 自动路由零成本 · 无需信用卡 · OpenAI 兼容）",
+    "base_url": "https://bazaarlink.ai/api/v1",
+    "models": [
+      "auto:free"
+    ],
+    "default_model": "auto:free"
+  },
+  {
+    "id": "plugsky",
+    "name": "Plugsky（100K tokens/日 · 无过期 · 无需信用卡 · OpenAI 兼容）",
+    "base_url": "https://api.plugsky.com/v1",
+    "models": [
+      "plugsky-lite",
+      "plugsky-micro",
+      "plugsky-vision"
+    ],
+    "default_model": "plugsky-lite"
   }
 ]
