@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-10-15",
-    "totalDocs": 2271,
+    "lastUpdated": "2026-10-18",
+    "totalDocs": 2272,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -19471,6 +19471,11 @@ const KB_DATA = {
                     "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
                     "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于公开征求《慢性心力衰竭相关中药新药临床研发技术指导原则（征求意见稿）》意见的通知（2026-10-16）",
+                    "path": "04_技术指导原则/CDE_指导原则/慢性心力衰竭相关中药新药临床研发技术指导原则(征求意见稿).md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/c31bbb6b12b9364ec4039e4a1e25efa0"
                   }
                 ]
               },
@@ -19786,6 +19791,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于公开征求《慢性心力衰竭相关中药新药临床研发技术指导原则（征求意见稿）》意见的通知（2026-10-16）",
+                    "path": "04_技术指导原则/CDE_指导原则/慢性心力衰竭相关中药新药临床研发技术指导原则(征求意见稿).md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/c31bbb6b12b9364ec4039e4a1e25efa0"
                   }
                 ]
               },
@@ -24735,6 +24745,18 @@ const KB_DATA = {
           "上市后",
           "说明书标签",
           "处方药与非处方药分类管理"
+        ]
+      },
+      {
+        "term": "慢性心力衰竭相关中药新药临床研发技术指导原则（征求意见稿，2026-10-16）",
+        "definition": "CDE 2026-10-16 发布征求意见（截止约 2026-11-16）的技术指导原则，指导按\"中医药理论、人用经验、临床试验\"三结合注册审评证据体系研发治疗或预防慢性心力衰竭的中药新药复方制剂；明确研发总体思路、常见研发方向（未病先防、改善症状/体征、改善心功能、提高生存质量、减少心衰恶化和/或死亡）及临床研究受试者选择、给药方案、有效性评价等要点，与 GCP（2026 年第 50 号公告）及 ICH E6(R3) 配套。",
+        "see": [
+          "中药制剂",
+          "临床研究",
+          "人用经验",
+          "三结合注册审评证据体系",
+          "药物临床试验质量管理规范",
+          "慢性心力衰竭"
         ]
       }
     ]

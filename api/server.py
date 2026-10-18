@@ -260,6 +260,14 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.plugsky.com/v1",
      "models": ["plugsky-lite", "plugsky-micro", "plugsky-vision"],
      "default_model": "plugsky-lite"},   # api.plugsky.com 100K tokens/日(无过期, 无需信用卡, OpenAI 兼容)
+    {"id": "nous_portal", "name": "Nous Portal（Nous Research 官方推理 API · OpenAI 兼容 · Hermes 4 系列免费档）",
+     "base_url": "https://inference-api.nousresearch.com/v1",
+     "models": ["Hermes-4.3-36B", "Hermes-4-70B", "Hermes-4-405B"],
+     "default_model": "Hermes-4-70B"},
+    {"id": "unorouter", "name": "UnoRouter（免信用卡 :free 路由聚合 · OpenAI 兼容）",
+     "base_url": "https://api.unorouter.com/v1",
+     "models": ["deepseek-v4.1-flash:free", "qwen3.8-27b:free", "agnes-3.0-flash:free", "llama-3.2-3b:free", "gpt-4.1-nano:free"],
+     "default_model": "deepseek-v4.1-flash:free"},
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
