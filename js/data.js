@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-10-18",
-    "totalDocs": 2272,
+    "lastUpdated": "2026-10-22",
+    "totalDocs": 2278,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -9209,6 +9209,16 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《阻塞性睡眠呼吸暂停治疗药物临床试验技术指导原则》的通告（2026年第47号）",
                     "path": "04_技术指导原则/CDE_指导原则/阻塞性睡眠呼吸暂停治疗药物临床试验技术指导原则2026年第47号.md",
                     "url": "https://www.cde.org.cn/main/news/listpage/3cc45b396497b598341ce3af000490e5"
+                  },
+                  {
+                    "title": "斑秃治疗药物临床试验技术指导原则（2026年第49号）",
+                    "path": "04_技术指导原则/CDE_指导原则/斑秃治疗药物临床试验技术指导原则2026年第49号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/28aaf6bbcbd62d745dec44b517b994ec"
+                  },
+                  {
+                    "title": "青少年体重管理适应症临床试验设计指导原则（2026年第50号）",
+                    "path": "04_技术指导原则/CDE_指导原则/青少年体重管理适应症临床试验设计指导原则2026年第50号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/25b67cd7ce808a1fdedc9a51360f0d24"
                   }
                 ]
               },
@@ -11557,6 +11567,16 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《阻塞性睡眠呼吸暂停治疗药物临床试验技术指导原则》的通告（2026年第47号）",
                     "path": "04_技术指导原则/CDE_指导原则/阻塞性睡眠呼吸暂停治疗药物临床试验技术指导原则2026年第47号.md",
                     "url": "https://www.cde.org.cn/main/news/listpage/3cc45b396497b598341ce3af000490e5"
+                  },
+                  {
+                    "title": "斑秃治疗药物临床试验技术指导原则（2026年第49号）",
+                    "path": "04_技术指导原则/CDE_指导原则/斑秃治疗药物临床试验技术指导原则2026年第49号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/28aaf6bbcbd62d745dec44b517b994ec"
+                  },
+                  {
+                    "title": "青少年体重管理适应症临床试验设计指导原则（2026年第50号）",
+                    "path": "04_技术指导原则/CDE_指导原则/青少年体重管理适应症临床试验设计指导原则2026年第50号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/25b67cd7ce808a1fdedc9a51360f0d24"
                   }
                 ]
               },
@@ -11880,6 +11900,11 @@ const KB_DATA = {
                     "title": "ICH Q5A-E: Biologics Quality Guidelines",
                     "source": "ICH",
                     "url": "https://www.ich.org/"
+                  },
+                  {
+                    "title": "FDA 生物类似药上市后生产变更问答（Final 2026-10-09）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA生物类似药上市后生产变更问答指南2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/postapproval-manufacturing-changes-biosimilar-and-interchangeable-biosimilar-products-questions-and"
                   }
                 ]
               },
@@ -12407,6 +12432,11 @@ const KB_DATA = {
                     "title": "ICH Q5E: Comparability of Biotechnological Products",
                     "source": "ICH",
                     "url": "https://www.ich.org/"
+                  },
+                  {
+                    "title": "FDA 生物类似药上市后生产变更问答（Final 2026-10-09）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA生物类似药上市后生产变更问答指南2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/postapproval-manufacturing-changes-biosimilar-and-interchangeable-biosimilar-products-questions-and"
                   }
                 ]
               },
@@ -19476,6 +19506,16 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于公开征求《慢性心力衰竭相关中药新药临床研发技术指导原则（征求意见稿）》意见的通知（2026-10-16）",
                     "path": "04_技术指导原则/CDE_指导原则/慢性心力衰竭相关中药新药临床研发技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/c31bbb6b12b9364ec4039e4a1e25efa0"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于增设云南省清水河、猴桥口岸为药材进口边境口岸的公告（2026年第94号）",
+                    "path": "03_部门规章/国家药监局海关总署关于增设云南省清水河猴桥口岸为药材进口边境口岸的公告2026年第94号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypqtggtg/20261022111755120.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告（2026年第93号）",
+                    "path": "03_部门规章/国家药监局海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告2026年第93号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypqtggtg/20261022111416194.html"
                   }
                 ]
               },
@@ -20535,6 +20575,11 @@ const KB_DATA = {
                     "title": "国家药监局关于莲心胶囊等9个品种转换为非处方药的公告（2026年第98号）",
                     "path": "03_部门规章/国家药监局关于莲心胶囊等9个品种转换为非处方药的公告2026年第98号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261008174534106.html"
+                  },
+                  {
+                    "title": "国家药监局关于修订降脂灵制剂和乳块消口服制剂说明书的公告（2026年第102号）",
+                    "path": "03_部门规章/国家药监局关于修订降脂灵制剂和乳块消口服制剂说明书的公告2026年第102号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261022180950121.html"
                   }
                 ]
               },
@@ -21539,6 +21584,16 @@ const KB_DATA = {
                     "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
                     "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于增设云南省清水河、猴桥口岸为药材进口边境口岸的公告（2026年第94号）",
+                    "path": "03_部门规章/国家药监局海关总署关于增设云南省清水河猴桥口岸为药材进口边境口岸的公告2026年第94号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261022111755120.html"
+                  },
+                  {
+                    "title": "国家药监局 海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告（2026年第93号）",
+                    "path": "03_部门规章/国家药监局海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告2026年第93号.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypqtggtg/20261022111416194.html"
                   }
                 ]
               },
@@ -24757,6 +24812,43 @@ const KB_DATA = {
           "三结合注册审评证据体系",
           "药物临床试验质量管理规范",
           "慢性心力衰竭"
+        ]
+      },
+      {
+        "term": "斑秃治疗药物临床试验技术指导原则（2026年第49号）",
+        "definition": "CDE 2026-10-20 发布施行的临床技术指导原则，规范斑秃治疗药物的临床研发与确证性试验设计，适用于化学药品及治疗用生物制品；重点人群为重度斑秃（SALT评分≥50），主要终点推荐达到 SALT 评分<20 分的参与者百分比，并关注免疫原性与长期安全性。",
+        "see": [
+          "临床研究",
+          "口服固体制剂",
+          "生物制品",
+          "药物临床试验质量管理规范"
+        ]
+      },
+      {
+        "term": "青少年体重管理适应症临床试验设计指导原则（2026年第50号）",
+        "definition": "CDE 2026-10-20 发布施行的临床技术指导原则，规范青少年（≥12至<18岁）体重管理药物临床试验设计，主要适用于计划由成人扩展至青少年的 GLP-1 RA 类药物；III期采用随机双盲安慰剂对照、总治疗期≥52周，主要终点为 BMI 相对基线变化百分比。",
+        "see": [
+          "临床研究",
+          "生物制品",
+          "药物临床试验质量管理规范"
+        ]
+      },
+      {
+        "term": "降脂灵/乳块消说明书修订（2026年第102号）",
+        "definition": "NMPA 2026-10-22 公告，统一修订降脂灵制剂与乳块消口服制剂说明书的【警示语】【不良反应】【禁忌】【注意事项】，要求上市许可持有人于 2027-01-18 前报省级药监局备案。",
+        "see": [
+          "上市后研究",
+          "说明书标签",
+          "中药制剂"
+        ]
+      },
+      {
+        "term": "药材进口边境口岸（清水河/猴桥/钦州港 2026年第93/94号）",
+        "definition": "NMPA 与海关总署 2026-10-22 公告，经国务院批准增设云南清水河、猴桥口岸及广西钦州港口岸为药材进口边境口岸，所进口药材须符合《进口药材管理办法》。",
+        "see": [
+          "中药饮片",
+          "中药制剂",
+          "药学研究"
         ]
       }
     ]

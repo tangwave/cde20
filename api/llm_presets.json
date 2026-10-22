@@ -574,5 +574,18 @@
     ],
     "default_model": "deepseek-v4.1-flash:free",
     "custom": false
+  },
+  {
+    "id": "hetzner_experiments",
+    "name": "Hetzner Experiments 推理（欧洲主机商 · 实验期免费 · OpenAI 兼容 · 无需信用卡）",
+    "base_url": "https://inference.hetzner.com/api/v1",
+    "models": [
+      "Qwen/Qwen3.6-35B-A3B-FP8",
+      "DeepSeek-V4-Flash-0731",
+      "GLM-5.2-NVFP4",
+      "Kimi-K2.7-Code"
+    ],
+    "default_model": "DeepSeek-V4-Flash-0731",
+    "custom": false
   }
 ]

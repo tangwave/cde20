@@ -268,6 +268,10 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.unorouter.com/v1",
      "models": ["deepseek-v4.1-flash:free", "qwen3.8-27b:free", "agnes-3.0-flash:free", "llama-3.2-3b:free", "gpt-4.1-nano:free"],
      "default_model": "deepseek-v4.1-flash:free"},
+    {"id": "hetzner_experiments", "name": "Hetzner Experiments 推理（欧洲主机商 · 实验期免费 · OpenAI 兼容 · 无需信用卡）",
+     "base_url": "https://inference.hetzner.com/api/v1",
+     "models": ["Qwen/Qwen3.6-35B-A3B-FP8", "DeepSeek-V4-Flash-0731", "GLM-5.2-NVFP4", "Kimi-K2.7-Code"],
+     "default_model": "DeepSeek-V4-Flash-0731", "custom": False},   # inference.hetzner.com 实验期免费 OpenAI 兼容(无需信用卡, 限速约 3M 输入/60K 输出 每60s), 无 SLA
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
