@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-10-22",
-    "totalDocs": 2278,
+    "lastUpdated": "2026-10-25",
+    "totalDocs": 2282,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1695,6 +1695,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则（2026年第48号）",
+                    "path": "04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17"
                   }
                 ]
               },
@@ -9219,6 +9224,11 @@ const KB_DATA = {
                     "title": "青少年体重管理适应症临床试验设计指导原则（2026年第50号）",
                     "path": "04_技术指导原则/CDE_指导原则/青少年体重管理适应症临床试验设计指导原则2026年第50号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/25b67cd7ce808a1fdedc9a51360f0d24"
+                  },
+                  {
+                    "title": "抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则（2026年第48号）",
+                    "path": "04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17"
                   }
                 ]
               },
@@ -9465,6 +9475,16 @@ const KB_DATA = {
                     "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
+                  },
+                  {
+                    "title": "药品市场独占期工作程序（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
+                  },
+                  {
+                    "title": "M13A低风险制剂清单（第二批）（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/M13A低风险制剂清单第二批2026.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/ab4430fa432def835650fd80eb6af807"
                   }
                 ]
               },
@@ -11577,6 +11597,11 @@ const KB_DATA = {
                     "title": "青少年体重管理适应症临床试验设计指导原则（2026年第50号）",
                     "path": "04_技术指导原则/CDE_指导原则/青少年体重管理适应症临床试验设计指导原则2026年第50号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/25b67cd7ce808a1fdedc9a51360f0d24"
+                  },
+                  {
+                    "title": "抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则（2026年第48号）",
+                    "path": "04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17"
                   }
                 ]
               },
@@ -11868,6 +11893,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "药品市场独占期工作程序（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
                   }
                 ]
               },
@@ -15579,6 +15609,11 @@ const KB_DATA = {
                     "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
                     "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "疫苗非临床研究技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/疫苗非临床研究技术指导原则征求意见稿2026.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/197073fbba8cbf3b314a80928f2e1b4b"
                   }
                 ]
               },
@@ -18049,6 +18084,11 @@ const KB_DATA = {
                     "title": "重组腺相关病毒产品质量研究和质量标准问答文件（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/重组腺相关病毒产品质量研究和质量标准问答文件征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5c80632934edd0afba1f56e5b993e1f8"
+                  },
+                  {
+                    "title": "药品市场独占期工作程序（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
                   }
                 ]
               },
@@ -20086,6 +20126,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "药品市场独占期工作程序（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
                   }
                 ]
               },
@@ -24849,6 +24894,45 @@ const KB_DATA = {
           "中药饮片",
           "中药制剂",
           "药学研究"
+        ]
+      },
+      {
+        "term": "抗肿瘤药物前线适应症临床试验",
+        "definition": "基于后线研究数据，在保障患者安全与试验科学严谨前提下推动抗肿瘤药物由后线向前线适应症推进的临床试验设计技术规范（CDE 2026年第48号）。",
+        "see": [
+          "生物制品",
+          "口服固体制剂",
+          "无菌药品",
+          "临床研究"
+        ]
+      },
+      {
+        "term": "疫苗非临床研究技术指导原则",
+        "definition": "规范和指导疫苗非临床研究与评价的技术指导原则（CDE 2026-10-23 征求意见），区别于《预防用mRNA疫苗非临床研究技术指导原则》。",
+        "see": [
+          "疫苗",
+          "生物制品",
+          "临床前研究"
+        ]
+      },
+      {
+        "term": "药品市场独占期",
+        "definition": "对符合条件的罕见病治疗用药品和儿童用药品实施的排他性保护期；由CDE《药品市场独占期工作程序（征求意见稿）》配套《药品市场独占期实施办法（征求意见稿）》具体实施。",
+        "see": [
+          "生物制品",
+          "口服固体制剂",
+          "中药制剂",
+          "细胞与基因治疗产品",
+          "上市申报"
+        ]
+      },
+      {
+        "term": "M13A低风险制剂清单",
+        "definition": "落实ICH M13A（口服固体速释制剂生物等效性）的制剂风险评估清单，识别BE风险较低的口服固体制剂以简化研发（第二批，2026-10-23征求意见）。",
+        "see": [
+          "口服固体制剂",
+          "生物等效性",
+          "上市申报"
         ]
       }
     ]

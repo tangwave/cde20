@@ -272,6 +272,14 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://inference.hetzner.com/api/v1",
      "models": ["Qwen/Qwen3.6-35B-A3B-FP8", "DeepSeek-V4-Flash-0731", "GLM-5.2-NVFP4", "Kimi-K2.7-Code"],
      "default_model": "DeepSeek-V4-Flash-0731", "custom": False},   # inference.hetzner.com 实验期免费 OpenAI 兼容(无需信用卡, 限速约 3M 输入/60K 输出 每60s), 无 SLA
+    {"id": "together_ai", "name": "Together AI（开源权重模型目录 · 注册送试用额度 · OpenAI 兼容）",
+     "base_url": "https://api.together.xyz/v1",
+     "models": ["meta-llama/Llama-3.3-70B-Instruct-Turbo", "Qwen/Qwen2.5-72B-Instruct-Turbo", "deepseek-ai/DeepSeek-V3", "MiniMaxAI/MiniMax-M3"],
+     "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo", "custom": False},   # api.together.xyz 注册送试用额度(约$1), 200+开源权重模型, OpenAI 兼容
+    {"id": "cohere", "name": "Cohere（Command R 系列 · 试用密钥 1000 次/月 · OpenAI 兼容 /v2）",
+     "base_url": "https://api.cohere.ai/compatibility/v1",
+     "models": ["command-r-plus", "command-r", "c4ai-aya-expanse-32b"],
+     "default_model": "command-r-plus", "custom": False},   # api.cohere.ai/compatibility/v1 试用密钥 1000 次/月(非生产), OpenAI 兼容
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
