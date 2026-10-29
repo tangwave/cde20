@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-10-25",
-    "totalDocs": 2282,
+    "lastUpdated": "2026-10-29",
+    "totalDocs": 2284,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -6439,6 +6439,11 @@ const KB_DATA = {
                     "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
                     "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于公开征求《〈放射性体内诊断药物非临床研究技术指导原则〉问答文件（征求意见稿）》《〈放射性治疗药物非临床研究技术指导原则〉问答文件（征求意见稿）》意见的通知（2026-10-26）",
+                    "path": "04_技术指导原则/CDE_指导原则/放射性药物非临床研究技术指导原则问答文件征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a7120fa784bd1ebad49c97ab4f0697e9"
                   }
                 ]
               },
@@ -6894,6 +6899,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于公开征求《〈放射性体内诊断药物非临床研究技术指导原则〉问答文件（征求意见稿）》《〈放射性治疗药物非临床研究技术指导原则〉问答文件（征求意见稿）》意见的通知（2026-10-26）",
+                    "path": "04_技术指导原则/CDE_指导原则/放射性药物非临床研究技术指导原则问答文件征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a7120fa784bd1ebad49c97ab4f0697e9"
                   }
                 ]
               },
@@ -7235,6 +7245,11 @@ const KB_DATA = {
                     "title": "放射性药品管理条例（征求意见稿）",
                     "path": "02_行政法规/放射性药品管理条例征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260921165938116.html"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于公开征求《〈放射性体内诊断药物非临床研究技术指导原则〉问答文件（征求意见稿）》《〈放射性治疗药物非临床研究技术指导原则〉问答文件（征求意见稿）》意见的通知（2026-10-26）",
+                    "path": "04_技术指导原则/CDE_指导原则/放射性药物非临床研究技术指导原则问答文件征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a7120fa784bd1ebad49c97ab4f0697e9"
                   }
                 ]
               },
@@ -17538,6 +17553,11 @@ const KB_DATA = {
                     "title": "重组腺相关病毒产品质量研究和质量标准问答文件（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/重组腺相关病毒产品质量研究和质量标准问答文件征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5c80632934edd0afba1f56e5b993e1f8"
+                  },
+                  {
+                    "title": "FDA 行业草案指南：Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management（2026-10-27，docket FDA-2026-D-11783）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md",
+                    "url": "https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html"
                   }
                 ]
               },
@@ -18089,6 +18109,11 @@ const KB_DATA = {
                     "title": "药品市场独占期工作程序（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
+                  },
+                  {
+                    "title": "FDA 行业草案指南：Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management（2026-10-27，docket FDA-2026-D-11783）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md",
+                    "url": "https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html"
                   }
                 ]
               },
@@ -18499,6 +18524,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "FDA 行业草案指南：Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management（2026-10-27，docket FDA-2026-D-11783）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md",
+                    "url": "https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html"
                   }
                 ]
               },
@@ -24933,6 +24963,30 @@ const KB_DATA = {
           "口服固体制剂",
           "生物等效性",
           "上市申报"
+        ]
+      },
+      {
+        "term": "放射性药物非临床研究技术指导原则问答文件（征求意见稿，2026-10-26）",
+        "definition": "CDE 2026-10-26 发布征求意见（时限1个月）的两份修订性问答，分别对应 2021 年《放射性体内诊断药物非临床研究技术指导原则》与 2024 年《放射性治疗药物非临床研究技术指导原则》。诊断部分 13 项、治疗部分 9 项技术问题，明确热药/冷药毒理试验选择、豁免条件、微剂量界限（总剂量 100μg，大分子 30 nmol）、临床开发阶段要求及放射性迟发毒性观察（≥1 年），旨在减少重复非临床研究、提高核药开发与注册申报效率。",
+        "see": [
+          "放射性药品",
+          "临床前研究",
+          "非临床安全性评价",
+          "ICH M3(R2)",
+          "微剂量",
+          "放射生物学"
+        ]
+      },
+      {
+        "term": "个体化基因组编辑产品（Individualized GE Products）与 IFS 框架（FDA 草案，2026-10-27）",
+        "definition": "FDA/CBER 2026-10-27 发布行业草案指南（docket FDA-2026-D-11783），针对罕见遗传病的个体化基因组编辑产品，提出以\"个体化特征空间（Individualized Feature Space, IFS）\"为核心的监管框架：预先定义 GE 产品在各患者间可变异的边界，变体落入边界且体外 assay 证明充分安全与活性即可纳入单个 BLA、无需额外临床试验；并涵盖生产、非预期遗传改变风险的安全检测、产品命名与标签、上市后通过简化审评新增变体。CMS 同步将 CGT Access Model 由镰状细胞病扩展至其他病种。",
+        "see": [
+          "细胞与基因治疗产品",
+          "上市申报",
+          "上市后研究",
+          "罕见病",
+          "基因治疗",
+          "BLA"
         ]
       }
     ]

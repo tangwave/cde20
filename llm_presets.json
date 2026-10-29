@@ -587,5 +587,41 @@
     ],
     "default_model": "DeepSeek-V4-Flash-0731",
     "custom": false
+  },
+  {
+    "id": "chutes_ai",
+    "name": "Chutes AI（llm.chutes.ai · 17 开源模型 DeepSeek/Qwen/GLM-5/MiniMax/Gemma · 免信用卡 · OpenAI 兼容 · TEE）",
+    "base_url": "https://llm.chutes.ai/v1",
+    "models": [
+      "deepseek-ai/DeepSeek-V4-Flash-0731-TEE",
+      "zai-org/GLM-5-TEE",
+      "Qwen/Qwen3.8-27B-TEE",
+      "MiniMaxAI/MiniMax-M2.5-TEE",
+      "google/gemma-4-31B-turbo-TEE"
+    ],
+    "default_model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE"
+  },
+  {
+    "id": "glhf_chat",
+    "name": "Glhf.chat（glhf.chat · 无限免费 Llama-3.1-405B / Mixtral-8x7B · 免信用卡 · OpenAI 兼容）",
+    "base_url": "https://glhf.chat/api/openai/v1",
+    "models": [
+      "hf:meta-llama/Meta-Llama-3.1-405B-Instruct",
+      "hf:meta-llama/Llama-3.3-70B-Instruct",
+      "hf:mistralai/Mistral-Large"
+    ],
+    "default_model": "hf:meta-llama/Meta-Llama-3.1-405B-Instruct"
+  },
+  {
+    "id": "ovhcloud_ai",
+    "name": "OVHcloud AI Endpoints（欧盟 GDPR · 匿名免注册 · Qwen3/Mistral/Llama/DeepSeek · OpenAI 兼容）",
+    "base_url": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+    "models": [
+      "qwen3.8-27b",
+      "qwen3.5-397b-a17b",
+      "mistral-small-3-2-24b-instruct",
+      "meta-llama-3_3-70b-instruct"
+    ],
+    "default_model": "qwen3.5-397b-a17b"
   }
 ]

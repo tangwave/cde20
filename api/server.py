@@ -280,6 +280,18 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.cohere.ai/compatibility/v1",
      "models": ["command-r-plus", "command-r", "c4ai-aya-expanse-32b"],
      "default_model": "command-r-plus", "custom": False},   # api.cohere.ai/compatibility/v1 试用密钥 1000 次/月(非生产), OpenAI 兼容
+    {"id": "chutes_ai", "name": "Chutes AI（llm.chutes.ai · 17 开源模型 DeepSeek/Qwen/GLM-5/MiniMax/Gemma · 免信用卡 · OpenAI 兼容 · TEE）",
+     "base_url": "https://llm.chutes.ai/v1",
+     "models": ["deepseek-ai/DeepSeek-V4-Flash-0731-TEE", "zai-org/GLM-5-TEE", "Qwen/Qwen3.8-27B-TEE", "MiniMaxAI/MiniMax-M2.5-TEE", "google/gemma-4-31B-turbo-TEE"],
+     "default_model": "deepseek-ai/DeepSeek-V4-Flash-0731-TEE"},   # llm.chutes.ai/v1 免信用卡 OpenAI 兼容(17 模型, TEE 可选), 选服务商+Key 即用
+    {"id": "glhf_chat", "name": "Glhf.chat（glhf.chat · 无限免费 Llama-3.1-405B / Mixtral-8x7B · 免信用卡 · OpenAI 兼容）",
+     "base_url": "https://glhf.chat/api/openai/v1",
+     "models": ["hf:meta-llama/Meta-Llama-3.1-405B-Instruct", "hf:meta-llama/Llama-3.3-70B-Instruct", "hf:mistralai/Mistral-Large"],
+     "default_model": "hf:meta-llama/Meta-Llama-3.1-405B-Instruct"},   # glhf.chat/api/openai/v1 无限免费(限速) OpenAI 兼容, Llama-3.1-405B / Mixtral-8x7B
+    {"id": "ovhcloud_ai", "name": "OVHcloud AI Endpoints（欧盟 GDPR · 匿名免注册 · Qwen3/Mistral/Llama/DeepSeek · OpenAI 兼容）",
+     "base_url": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+     "models": ["qwen3.8-27b", "qwen3.5-397b-a17b", "mistral-small-3-2-24b-instruct", "meta-llama-3_3-70b-instruct"],
+     "default_model": "qwen3.5-397b-a17b"},   # oai.endpoints.kepler.ai.cloud.ovh.net/v1 欧盟 GDPR 匿名免注册 OpenAI 兼容(7 免费模型)
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]

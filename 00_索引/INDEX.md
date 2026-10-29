@@ -1,6 +1,6 @@
 # 药品法规知识库 · 总索引
 
-> 自动生成于 2026-10-25 ｜ 共 2282 篇文档 ｜ 由 `scripts/update_kb.py` 维护
+> 自动生成于 2026-10-29 ｜ 共 2284 篇文档 ｜ 由 `scripts/update_kb.py` 维护
 
 > 分类：法律 · 行政法规 · 部门规章 · 技术指导原则 · 行业共识
 
@@ -9,7 +9,7 @@
 - 法律：31 篇
 - 行政法规：29 篇
 - 部门规章：301 篇
-- 技术指导原则：1913 篇
+- 技术指导原则：1915 篇
 - 行业共识：8 篇
 
 ## 法律（31 篇）
@@ -388,7 +388,7 @@
 | [国家药监局关于修订感冒灵口服制剂说明书的公告（2026年第66号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260720095207120.html) | 国家药品监督管理局 | 自发布之日起施行；上市许可持有人须于 2026-10-15 前报省级药监局备案；备案后 9 个月内更换已出厂药品说明书及标签（或以适当形式告知患者） | 现行有效 | [本地](03_部门规章/国家药监局关于修订感冒灵口服制剂说明书的公告2026年第66号.md) |
 | [关于加强中药品种保护工作的公告（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260709173122148.html) | 国家药监局综合司 | （征求意见中） | 征求意见中（截止 2026-08-06） | [本地](03_部门规章/加强中药品种保护公告征求意见稿.md) |
 
-## 技术指导原则（1913 篇）
+## 技术指导原则（1915 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -2278,6 +2278,7 @@
 | [药物非临床药代动力学研究技术指导原则](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20140513120001448.html) | 国家食品药品监督管理总局（现由国家药监局药审中心归口管理） | 发布之日起施行 | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/药物非临床药代动力学研究技术指导原则.md) |
 | [关于公开征求ICH《关于与ICH E2D（R1）指导原则协同的信息文件》中文翻译稿意见的通知](https://www.cdr-adr.org.cn/tzgg_home/202608/t20260821_51699.html) | 国家药品监督管理局药品评价中心（国家药品不良反应监测中心） | 征求意见中 | 征求意见 | [本地](04_技术指导原则/ICH_转化/ICH-E2D(R1)协同信息文件中文翻译稿（征求意见稿）.md) |
 | [关于公开征求《中药饮片/配方颗粒不良反应个例报告填报指南（征求意见稿）》意见的通知](https://www.cdr-adr.org.cn/tzgg_home/202608/t20260828_51717.html) | 国家药品不良反应监测中心（国家药品监督管理局药品评价中心） | 征求意见中 | 征求意见 | [本地](04_技术指导原则/NMPA_指导原则/中药饮片配方颗粒不良反应个例报告填报指南（征求意见稿）.md) |
+| ["关于公开征求《〈放射性体内诊断药物非临床研究技术指导原则〉问答文件（征求意见稿）》《〈放射性治疗药物非临床研究技术指导原则〉问答文件（征求意见稿）》意见的通知"]("https://www.cde.org.cn/main/news/viewInfoCommon/a7120fa784bd1ebad49c97ab4f0697e9") | 国家药品监督管理局药品审评中心（CDE） | 征求意见中（时限自发布之日起1个月） | 征求意见 | [本地](04_技术指导原则/CDE_指导原则/放射性药物非临床研究技术指导原则问答文件征求意见稿.md) |
 | ["ISPE GAMP RDI 数据完整性良好实践指南"]("https://ispe.org/news/ispe-releases-ispe-gamp-rdi-good-practice-guide-data-integrity") | ISPE（国际制药工程协会） | 持续有效 | 现行有效 | [本地](04_技术指导原则/ISPE_指导原则/ISPE-GAMP-RDI数据完整性.md) |
 | ["ISPE 良好工程规范（GEP）"]("https://ispe.org/publications/guidance-documents") | ISPE（国际制药工程协会） | 持续有效 | 现行有效 | [本地](04_技术指导原则/ISPE_指导原则/ISPE-良好工程规范GEP.md) |
 | ["WHO 原料药与制剂稳定性试验指南"]("https://www.who.int/publications/m/item/trs1010-annex10") | WHO（世界卫生组织） | 持续有效 | 现行有效 | [本地](04_技术指导原则/WHO_指导原则/WHO-稳定性试验指南.md) |
@@ -2296,6 +2297,7 @@
 | [ICH M4：通用技术文档（CTD）](https://www.ich.org/page/integrated-addendum) | ICH / 国家药监局 | 持续转化 | 现行有效 | [本地](04_技术指导原则/ICH_转化/ICH-M4-CTD通用技术文档.md) |
 | [ICH Q 系列：质量指导原则（Q1-Q14）](https://www.ich.org/page/quality-guidelines) | ICH / 国家药监局 | 持续转化 | 现行有效 | [本地](04_技术指导原则/ICH_转化/ICH-Q系列质量指导原则.md) |
 | [ICH S 系列：安全药理学与毒理学指导原则](https://www.ich.org/page/safety-guidelines) | ICH / 国家药监局 | 持续转化 | 现行有效 | [本地](04_技术指导原则/ICH_转化/ICH-S系列安全指导原则.md) |
+| ["Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management (Draft Guidance)"]("https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html") | 美国食品药品监督管理局（FDA）/ 生物制品评价与研究中心（CBER） | 草案征求意见中（docket FDA-2026-D-11783，联邦公报发布后30天内提交意见） | 草案 | [本地](04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md) |
 | [《慢性乙型肝炎病毒感染治疗药物临床试验技术指导原则》问答文件（征求意见稿）](https://www.cde.org.cn/main/news/viewInfoCommon/8fdc4b03cf2f6aa4aa9ecd0f9b523fdf) | 国家药品监督管理局药品审评中心（CDE） | （征求意见中） | 征求意见中（发布之日起1个月） | [本地](04_技术指导原则/CDE_指导原则/慢性乙型肝炎治疗药物临床试验技术指导原则问答征求意见稿.md) |
 | [中药饮片追溯码编码技术指南（征求意见稿）及中药饮片追溯基本数据集（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260703105149159.html) | 国家药品监督管理局信息中心 | （征求意见中） | 征求意见中（截止 2026-08-03） | [本地](04_技术指导原则/NMPA_指导原则/中药饮片追溯码编码技术指南征求意见稿.md) |
 | [关于优化细胞与基因治疗药品审评审批有关事项的公告（征求意见稿）](https://www.nmpa.gov.cn/directory/web/nmpa/xxgk/zhqyj/zhqyjyp/20260703163821159.html) | 国家药监局综合司 | （征求意见中） | 征求意见中（截止 2026-08-03） | [本地](04_技术指导原则/NMPA_指导原则/优化细胞与基因治疗药品审评审批公告征求意见稿.md) |
