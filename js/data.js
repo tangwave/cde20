@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-10-29",
-    "totalDocs": 2284,
+    "lastUpdated": "2026-11-01",
+    "totalDocs": 2287,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -9534,6 +9534,11 @@ const KB_DATA = {
                   "title": "国家药监局关于愈美制剂非处方药转换为处方药的公告（2026年第83号）",
                   "path": "03_部门规章/国家药监局关于愈美制剂非处方药转换为处方药的公告(2026年第83号).md",
                   "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260901100027146.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             },
@@ -9936,6 +9941,11 @@ const KB_DATA = {
                   "title": "国家药监局关于愈美制剂非处方药转换为处方药的公告（2026年第83号）",
                   "path": "03_部门规章/国家药监局关于愈美制剂非处方药转换为处方药的公告(2026年第83号).md",
                   "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260901100027146.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             }
@@ -11294,6 +11304,13 @@ const KB_DATA = {
                 "细胞库鉴定不充分",
                 "外源因子筛查不全面",
                 "稳定性数据不足"
+              ],
+              "regulations": [
+                {
+                  "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
+                  "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
+                  "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                }
               ]
             },
             "clinical_trial": {
@@ -11974,6 +11991,18 @@ const KB_DATA = {
                 "质量属性表征不充分",
                 "参比品管理不规范",
                 "病毒清除验证数据不完整"
+              ],
+              "regulations": [
+                {
+                  "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
+                  "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
+                  "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                }
               ]
             },
             "approval_launch": {
@@ -12516,6 +12545,16 @@ const KB_DATA = {
                   "title": "关于印发国家基本药物目录（2026年版）的通知",
                   "path": "03_部门规章/关于印发国家基本药物目录(2026年版)的通知(国卫药政发〔2026〕17号).md",
                   "url": "https://www.nhc.gov.cn/yaozs/c100098/202607/0f4f2bdcfead449f8412453373522470.shtml"
+                },
+                {
+                  "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
+                  "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
+                  "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             }
@@ -14160,6 +14199,13 @@ const KB_DATA = {
               "pitfalls": [
                 "病毒安全性数据不完整",
                 "血浆追溯体系不完善"
+              ],
+              "regulations": [
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                }
               ]
             },
             "approval_launch": {
@@ -14665,6 +14711,11 @@ const KB_DATA = {
                   "title": "关于印发国家基本药物目录（2026年版）的通知",
                   "path": "03_部门规章/关于印发国家基本药物目录(2026年版)的通知(国卫药政发〔2026〕17号).md",
                   "url": "https://www.nhc.gov.cn/yaozs/c100098/202607/0f4f2bdcfead449f8412453373522470.shtml"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             }
@@ -16211,6 +16262,13 @@ const KB_DATA = {
                 "菌毒种安全性评估不完整",
                 "效价方法验证不充分",
                 "稳定性数据不足以支持效期"
+              ],
+              "regulations": [
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                }
               ]
             },
             "approval_launch": {
@@ -16673,6 +16731,11 @@ const KB_DATA = {
                   "title": "疫苗生产企业生产质量信息化系统检查指南（征求意见稿）",
                   "path": "04_技术指导原则/CFDI_检查指南/疫苗生产企业生产质量信息化系统检查指南(征求意见稿).md",
                   "url": "https://cfdi.org.cn/cfdi/resource/news/16858.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             }
@@ -17584,7 +17647,14 @@ const KB_DATA = {
               },
               "guidance": [],
               "cases": [],
-              "pitfalls": []
+              "pitfalls": [],
+              "regulations": [
+                {
+                  "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
+                  "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
+                  "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                }
+              ]
             },
             "clinical_trial": {
               "summary": "临床批次按GMP生产，监测载体滴度、细胞活力和功能，管理冷链/液氮系统。",
@@ -18136,7 +18206,14 @@ const KB_DATA = {
               },
               "guidance": [],
               "cases": [],
-              "pitfalls": []
+              "pitfalls": [],
+              "regulations": [
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                }
+              ]
             },
             "approval_launch": {
               "summary": "获得批准后建立商业化生产能力，管理细胞/病毒库，建立患者长期随访体系。",
@@ -18557,6 +18634,16 @@ const KB_DATA = {
                   "title": "关于印发国家基本药物目录（2026年版）的通知",
                   "path": "03_部门规章/关于印发国家基本药物目录(2026年版)的通知(国卫药政发〔2026〕17号).md",
                   "url": "https://www.nhc.gov.cn/yaozs/c100098/202607/0f4f2bdcfead449f8412453373522470.shtml"
+                },
+                {
+                  "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
+                  "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
+                  "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             }
@@ -20200,6 +20287,13 @@ const KB_DATA = {
               "pitfalls": [
                 "工艺验证数据不完整",
                 "前处理记录不完善"
+              ],
+              "regulations": [
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                }
               ]
             },
             "approval_launch": {
@@ -20721,6 +20815,16 @@ const KB_DATA = {
                   "title": "关于公开征求《已上市中药变更规格研究技术指导原则（征求意见稿）》意见的通知",
                   "path": "04_技术指导原则/CDE_指导原则/已上市中药变更规格研究技术指导原则(征求意见稿).md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/c5da4ee5650bdab08619259372885f93"
+                },
+                {
+                  "title": "国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）",
+                  "path": "03_部门规章/国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261029173737109.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
                 }
               ]
             }
@@ -22617,6 +22721,11 @@ const KB_DATA = {
                   "title": "《药品生产质量管理规范（2010年修订）中药饮片附录（征求意见稿）》",
                   "path": "04_技术指导原则/NMPA_指导原则/药品生产质量管理规范(2010年修订)中药饮片附录(征求意见稿).md",
                   "url": "https://cfdi.org.cn/cfdi/resource/newsmobile/16856.html"
+                },
+                {
+                  "title": "国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）",
+                  "path": "03_部门规章/国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261029173737109.html"
                 }
               ]
             }
@@ -24987,6 +25096,27 @@ const KB_DATA = {
           "罕见病",
           "基因治疗",
           "BLA"
+        ]
+      },
+      {
+        "term": "处方药转非处方药 (Rx→OTC) 转换",
+        "definition": "经 NMPA 论证审核，将处方药转换为非处方药并发布 OTC 说明书范本；持有人须在规定期限内完成说明书备案。2026年第103号公告将暖宫七味散等9个中药品种转为OTC。",
+        "see": [
+          "中药制剂",
+          "中药饮片",
+          "上市后研究",
+          "说明书标签"
+        ]
+      },
+      {
+        "term": "抗体偶联药物 (ADC) 生产质量管理",
+        "definition": "抗体偶联药物由单抗、连接子与小分子毒素偶联而成，生产工艺复杂。CFDI《抗体偶联药物生产质量管理指南（征求意见稿）》(2026-10-19) 规范其生产质量管理与现场检查要点。",
+        "see": [
+          "生物制品",
+          "细胞与基因治疗产品",
+          "药学研究",
+          "上市申报",
+          "生产质量(GMP)"
         ]
       }
     ]

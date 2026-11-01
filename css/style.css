@@ -3685,6 +3685,28 @@ th.mx-rowhead {
 }
 .cls-prod-jump:hover { background: #22D3EE; color: #fff; }
 
+/* 注册分类镜头：子类卡片底部"术语网络 / 研发要求体系"跳转（与生产工艺跳转风格一致） */
+.cls-gloss-jump, .cls-req-jump {
+  display: inline-block; margin: 10px 8px 0 0; font-size: 12px; font-weight: 700;
+  text-decoration: none; border-radius: 8px; padding: 6px 12px; cursor: pointer;
+}
+.cls-gloss-jump { color: #7C3AED; background: #F5F3FF; border: 1px solid #C4B5FD; }
+.cls-gloss-jump:hover { background: #8B5CF6; color: #fff; }
+.cls-req-jump { color: #B45309; background: #FFFBEB; border: 1px solid #FCD34D; }
+.cls-req-jump:hover { background: #F59E0B; color: #fff; }
+
+/* 生产工艺详情页底部"相关界面"跳转条 */
+.cls-pd-jumps {
+  margin-top: 18px; padding: 12px 14px; background: var(--bg-secondary,#f5f7fa);
+  border: 1px solid #E2E8F0; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+}
+.cls-pd-jumps-label { font-size: 12.5px; color: var(--text-tertiary,#7a8794); font-weight: 600; }
+.cls-pd-jump {
+  font-size: 12.5px; font-weight: 700; text-decoration: none; border-radius: 8px;
+  padding: 6px 12px; cursor: pointer; color: #0c447c; background: #EFF6FF; border: 1px solid #93C5FD;
+}
+.cls-pd-jump:hover { background: #2563EB; color: #fff; }
+
 /* 产品分类镜头 */
 .cls-prod-lens { margin-top: 4px; }
 .cls-prod-class {

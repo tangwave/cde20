@@ -2140,6 +2140,23 @@ const App = {
       html += '</div>';
       html += '<p class="class-cat-desc">' + this.pen(cat.desc) + '</p>';
 
+      /* 质量控制重点：聚合本大类下各品种 stages.quality_focus（跨阶段核心 CQA / 控制策略） */
+      const _catMap = { chemo: 'chemical', bio: 'biological', tcm: 'tcm' };
+      const _kbCat = KB_DATA.categories.find(c => c.id === (_catMap[cat.id] || cat.id));
+      const _qcSet = new Set();
+      if (_kbCat) (_kbCat.varieties || []).forEach(v => {
+        Object.values(v.stages || {}).forEach(st => (st.quality_focus || []).forEach(p => _qcSet.add(p)));
+      });
+      const _qcPts = Array.from(_qcSet).slice(0, 10);
+      if (_qcPts.length) {
+        html += '<div class="class-cat-qc" style="margin:10px 0 14px;padding:10px 14px;background:var(--bg-secondary,#f5f7fa);border-left:4px solid #0c447c;border-radius:6px;">';
+        html += '<div style="font-weight:600;color:var(--text-primary,#1a2733);font-size:13.5px;margin-bottom:6px;">🎯 本大类质量控制重点（跨品种核心 CQA / 控制策略）</div>';
+        html += '<ul class="class-cat-qc-list" style="margin:0;padding-left:18px;color:var(--text-secondary,#3b4a5a);font-size:13px;line-height:1.7;">'
+          + _qcPts.map(p => '<li>' + this.pen(p) + '</li>').join('') + '</ul>';
+        html += '<div style="margin-top:6px;font-size:12px;color:var(--text-tertiary,#7a8794);">下钻各子类与「🏭 按产品分类查看生产工艺」可看具体工序的 CPP/CQA 与中控要求；术语详见 🔗 术语网络。</div>';
+        html += '</div>';
+      }
+
       const groups = cat.groups || [{ name: '', items: cat.items || [] }];
       groups.forEach(g => {
         if (g.name) html += '<div class="class-group-title">' + this.pen(g.name) + '</div>';
@@ -2192,6 +2209,8 @@ const App = {
           }
           html += '<div class="class-sub-foot">';
           html += '<button class="cls-prod-jump" data-cls-prod-jump="' + cat.id + '">🏭 按产品分类查看生产工艺 →</button>';
+          html += '<a class="cls-gloss-jump" href="gmp-glossary-network.html" target="_self" title="GMP 核心术语知识网络：112 个术语可交互图谱，贯通质量体系/厂房设备/QC/验证/偏差CAPA">🔗 术语网络</a>';
+          html += '<button class="cls-req-jump" data-cls-req-jump="' + cat.id + '" title="下钻研发要求体系：各阶段工艺·质量·GMP 门槛">📐 研发要求体系</button>';
           html += '</div>';
           html += '</div></div>';
         });
@@ -2426,6 +2445,14 @@ const App = {
       html += '<button class="cls-pd-req-open" data-open-req="' + reqRef.mainClass + '::' + (reqRef.subCode || '') + '">↗ 查看完整研发要求体系（' + this.pen(scopeLabel) + '）</button>';
       html += '</div>';
     }
+
+    /* 跨界面跳转：术语网络 / 注册分类 / 分类矩阵（复用已绑定的 data-cls-lens-jump） */
+    html += '<div class="cls-pd-jumps">';
+    html += '<span class="cls-pd-jumps-label">🧭 相关界面：</span>';
+    html += '<a class="cls-pd-jump" href="gmp-glossary-network.html" target="_self" title="GMP 核心术语知识网络：112 个术语可交互图谱">🔗 术语网络</a>';
+    html += '<button class="cls-pd-jump" data-cls-lens-jump="reg" title="返回按注册分类视图（特殊要求 / 考量 / 申报资料 / 法规）">📋 注册分类</button>';
+    html += '<button class="cls-pd-jump" data-cls-lens-jump="map" title="返回药品分类矩阵总览（四体系互通）">🗺️ 分类矩阵</button>';
+    html += '</div>';
 
     html += '</div>';
     return html;
