@@ -623,5 +623,49 @@
       "meta-llama-3_3-70b-instruct"
     ],
     "default_model": "qwen3.5-397b-a17b"
+  },
+  {
+    "id": "llm7",
+    "name": "LLM7.io（免费 Token · OpenAI 兼容 · GPT-4o-mini/DeepSeek-R1/GLM-5.2 等）",
+    "base_url": "https://api.llm7.io/v1",
+    "models": [
+      "gpt-4o-mini",
+      "deepseek-r1",
+      "glm-5.2",
+      "minimax-m3",
+      "gemma4:31b",
+      "gpt-oss:20b",
+      "nemotron-3-nano:30b",
+      "qwen2.5-coder-32b",
+      "mistral-small-3.1-24b"
+    ],
+    "default_model": "gpt-4o-mini",
+    "custom": false
+  },
+  {
+    "id": "pollinations",
+    "name": "Pollinations.ai（免注册·免 Key·OpenAI 兼容 · 匿名 GPT-OSS-20B 等，稳定性有波动需自备 Key）",
+    "base_url": "https://text.pollinations.ai/openai",
+    "models": [
+      "gpt-oss-20b",
+      "openai/gpt-oss-20b",
+      "mistralai/mistral-large-3",
+      "deepseek/deepseek-v4-flash",
+      "z-ai/glm-5.3-flash"
+    ],
+    "default_model": "gpt-oss-20b",
+    "custom": false
+  },
+  {
+    "id": "orcarouter",
+    "name": "OrcaRouter（免费路由 · GitHub 登录免 Key）",
+    "base_url": "https://api.orcarouter.ai/v1",
+    "models": [
+      "orcarouter/free",
+      "deepseek/deepseek-v4-flash-free",
+      "deepseek/deepseek-v4-pro-free"
+    ],
+    "default_model": "orcarouter/free",
+    "custom": false
   }
 ]

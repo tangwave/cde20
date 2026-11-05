@@ -655,5 +655,17 @@
     ],
     "default_model": "gpt-oss-20b",
     "custom": false
+  },
+  {
+    "id": "orcarouter",
+    "name": "OrcaRouter（免费路由 · GitHub 登录免 Key）",
+    "base_url": "https://api.orcarouter.ai/v1",
+    "models": [
+      "orcarouter/free",
+      "deepseek/deepseek-v4-flash-free",
+      "deepseek/deepseek-v4-pro-free"
+    ],
+    "default_model": "orcarouter/free",
+    "custom": false
   }
 ]

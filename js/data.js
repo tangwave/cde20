@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-01",
-    "totalDocs": 2287,
+    "lastUpdated": "2026-11-05",
+    "totalDocs": 2291,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1274,6 +1274,11 @@ const KB_DATA = {
                     "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
+                  },
+                  {
+                    "title": "组合产品给药器械关键药物递送性能特征（修订草案）",
+                    "path": "04_技术指导原则/国外指导原则参考/组合产品给药器械关键药物递送性能特征修订草案.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/essential-drug-delivery-outputs-devices-intended-deliver-drugs-and-biological-products"
                   }
                 ]
               },
@@ -8941,6 +8946,11 @@ const KB_DATA = {
                   "path": "03_部门规章/国家药监局综合司关于进一步优化化学药品创新药工艺验证申报资料要求有关事项的公告(征求意见稿).md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260910185143126.html",
                   "summary": "工艺验证（PV）申报要求优化：商业化工艺样品可作注册检验、前置检验、滚动提交验证报告，关联药学研究与CMC。"
+                },
+                {
+                  "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
+                  "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
+                  "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
                 }
               ]
             },
@@ -11310,6 +11320,21 @@ const KB_DATA = {
                   "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
                   "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
                   "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                },
+                {
+                  "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
+                },
+                {
+                  "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
+                  "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
+                  "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
+                },
+                {
+                  "title": "组合产品给药器械关键药物递送性能特征（修订草案）",
+                  "path": "04_技术指导原则/国外指导原则参考/组合产品给药器械关键药物递送性能特征修订草案.md",
+                  "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/essential-drug-delivery-outputs-devices-intended-deliver-drugs-and-biological-products"
                 }
               ]
             },
@@ -11696,6 +11721,11 @@ const KB_DATA = {
                   "title": "关于公开征求《〈多联疫苗临床试验技术指导原则〉问答文件（征求意见稿）》意见的通知",
                   "path": "04_技术指导原则/CDE_指导原则/多联疫苗临床试验技术指导原则问答文件(征求意见稿).md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/bb2cfb685e7dde58e2dbc39b09f1dd3d"
+                },
+                {
+                  "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
                 }
               ]
             },
@@ -12002,6 +12032,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "组合产品给药器械关键药物递送性能特征（修订草案）",
+                  "path": "04_技术指导原则/国外指导原则参考/组合产品给药器械关键药物递送性能特征修订草案.md",
+                  "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/essential-drug-delivery-outputs-devices-intended-deliver-drugs-and-biological-products"
                 }
               ]
             },
@@ -12555,6 +12590,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
+                  "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
+                  "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
                 }
               ]
             }
@@ -17653,6 +17693,16 @@ const KB_DATA = {
                   "title": "抗体偶联药物生产质量管理指南（征求意见稿）",
                   "path": "04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md",
                   "url": "https://www.cfdi.org.cn/cfdi/resource/news/16913.html"
+                },
+                {
+                  "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
+                },
+                {
+                  "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
+                  "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
+                  "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
                 }
               ]
             },
@@ -17952,6 +18002,11 @@ const KB_DATA = {
                   "title": "关于公开征求ICH《M11：电子结构化协调的临床方案》指导原则及相关文件实施建议和中文翻译稿意见的通知",
                   "path": "04_技术指导原则/ICH_转化/关于公开征求ICHM11电子结构化协调的临床方案指导原则及相关文件实施建议和中文翻译稿意见的通知.md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/74307d469aa5b0b6a7b67caa4881a74a"
+                },
+                {
+                  "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
                 }
               ]
             },
@@ -18212,6 +18267,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
                 }
               ]
             },
@@ -18644,6 +18704,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
+                  "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
+                  "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
                 }
               ]
             }
@@ -19673,6 +19738,16 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告（2026年第93号）",
                     "path": "03_部门规章/国家药监局海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告2026年第93号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypqtggtg/20261022111416194.html"
+                  },
+                  {
+                    "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
+                  },
+                  {
+                    "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
+                    "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
                   }
                 ]
               },
@@ -20825,6 +20900,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
                 }
               ]
             }
@@ -21773,6 +21853,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告（2026年第93号）",
                     "path": "03_部门规章/国家药监局海关总署关于增设广西壮族自治区钦州港口岸为药材进口边境口岸的公告2026年第93号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypqtggtg/20261022111416194.html"
+                  },
+                  {
+                    "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
                   }
                 ]
               },
@@ -22726,6 +22811,11 @@ const KB_DATA = {
                   "title": "国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）",
                   "path": "03_部门规章/国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261029173737109.html"
+                },
+                {
+                  "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
+                  "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
                 }
               ]
             }
@@ -24626,6 +24716,47 @@ const KB_DATA = {
     "description": "关键术语与跨界面关联，便于在药品分类、生产工艺、质量控制重点之间快速定位。",
     "terms": [
       {
+        "term": "组合产品给药器械 EDDCs",
+        "definition": "FDA 2026-10 修订草案定义基本药物递送性能特征（EDDCs），覆盖预充注射器、自动注射笔、输注泵、吸入剂等，衔接 ICH M13A/M13B 与无菌药品 GMP。",
+        "see": [
+          "无菌药品",
+          "生物制品",
+          "药学研究",
+          "新药上市申请"
+        ]
+      },
+      {
+        "term": "罕见病目录制订工作程序（2026年版）",
+        "definition": "国卫办医政发〔2026〕16号，修订 2018 年版，扩大病种纳入情形与申请主体、强化中西医协同；界定孤儿药/罕见病创新药研发激励的入口。",
+        "see": [
+          "细胞与基因治疗产品",
+          "生物制品",
+          "中药制剂",
+          "口服固体制剂",
+          "非临床与临床申报"
+        ]
+      },
+      {
+        "term": "新生抗原药品 (Neoantigens)",
+        "definition": "个体化肿瘤免疫治疗核心靶标，覆盖 mRNA 疫苗、多肽疫苗与 TCR-T 细胞治疗；CDE 2026-10-30 征求意见稿首提 WES 有效测序深度≥500×、算法变更分级管理、属性矩阵替代放行。",
+        "see": [
+          "细胞与基因治疗产品",
+          "生物制品",
+          "非临床与临床申报",
+          "临床研究"
+        ]
+      },
+      {
+        "term": "中药品种保护沟通交流",
+        "definition": "CDE 2026-11-02 征求意见稿，规范中药品种保护申请前与审评中 I/II/III 类沟通交流会议，依据《国家药监局关于加强中药品种保护工作的公告》（2026年第97号）。",
+        "see": [
+          "中药制剂",
+          "中药饮片",
+          "上市后研究",
+          "非临床与临床申报"
+        ]
+      },
+      {
         "term": "无菌保证水平 (SAL)",
         "definition": "灭菌后单件产品微生物存活概率，无菌药品要求 SAL ≤ 10⁻⁶。",
         "see": [
@@ -25123,4 +25254,6 @@ const KB_DATA = {
   }
 };
 
-module.exports = KB_DATA;
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = KB_DATA;
+}

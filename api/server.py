@@ -272,7 +272,7 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://inference.hetzner.com/api/v1",
      "models": ["Qwen/Qwen3.6-35B-A3B-FP8", "DeepSeek-V4-Flash-0731", "GLM-5.2-NVFP4", "Kimi-K2.7-Code"],
      "default_model": "DeepSeek-V4-Flash-0731", "custom": False},   # inference.hetzner.com 实验期免费 OpenAI 兼容(无需信用卡, 限速约 3M 输入/60K 输出 每60s), 无 SLA
-    {"id": "together_ai", "name": "Together AI（开源权重模型目录 · 注册送试用额度 · OpenAI 兼容）",
+    {"id": "together", "name": "Together AI（开源权重模型目录 · 注册送试用额度 · OpenAI 兼容）",
      "base_url": "https://api.together.xyz/v1",
      "models": ["meta-llama/Llama-3.3-70B-Instruct-Turbo", "Qwen/Qwen2.5-72B-Instruct-Turbo", "deepseek-ai/DeepSeek-V3", "MiniMaxAI/MiniMax-M3"],
      "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo", "custom": False},   # api.together.xyz 注册送试用额度(约$1), 200+开源权重模型, OpenAI 兼容
@@ -292,6 +292,18 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
      "models": ["qwen3.8-27b", "qwen3.5-397b-a17b", "mistral-small-3-2-24b-instruct", "meta-llama-3_3-70b-instruct"],
      "default_model": "qwen3.5-397b-a17b"},   # oai.endpoints.kepler.ai.cloud.ovh.net/v1 欧盟 GDPR 匿名免注册 OpenAI 兼容(7 免费模型)
+    {"id": "llm7", "name": "LLM7.io（免费 Token · OpenAI 兼容 · GPT-4o-mini/DeepSeek-R1/GLM-5.2 等）",
+     "base_url": "https://api.llm7.io/v1",
+     "models": ["gpt-4o-mini", "deepseek-r1", "glm-5.2", "minimax-m3", "gemma4:31b", "gpt-oss:20b", "nemotron-3-nano:30b", "qwen2.5-coder-32b", "mistral-small-3.1-24b"],
+     "default_model": "gpt-4o-mini", "custom": False},  # api.llm7.io/v1 免费 Token OpenAI 兼容(GPT-4o-mini/DeepSeek-R1/GLM-5.2 等)
+    {"id": "pollinations", "name": "Pollinations.ai（免注册·免 Key·OpenAI 兼容 · 匿名 GPT-OSS-20B 等，稳定性有波动需自备 Key）",
+     "base_url": "https://text.pollinations.ai/openai",
+     "models": ["gpt-oss-20b", "openai/gpt-oss-20b", "mistralai/mistral-large-3", "deepseek/deepseek-v4-flash", "z-ai/glm-5.3-flash"],
+     "default_model": "gpt-oss-20b", "custom": False},  # text.pollinations.ai/openai 免注册免 Key 匿名 OpenAI 兼容(GPT-OSS-20B 等, 稳定性有波动)
+    {"id": "orcarouter", "name": "OrcaRouter（免费路由 · GitHub 登录免 Key）",
+     "base_url": "https://api.orcarouter.ai/v1",
+     "models": ["orcarouter/free", "deepseek/deepseek-v4-flash-free", "deepseek/deepseek-v4-pro-free"],
+     "default_model": "orcarouter/free", "custom": False},  # api.orcarouter.ai/v1 免费路由 GitHub 登录免 Key OpenAI 兼容(free 路由别名 + deepseek-free 档)
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
 ]
