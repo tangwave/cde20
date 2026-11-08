@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-05",
-    "totalDocs": 2291,
+    "lastUpdated": "2026-11-08",
+    "totalDocs": 2294,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -2713,6 +2713,11 @@ const KB_DATA = {
                   "title": "国家药监局关于修订肌苷注射剂说明书的公告（2026年第87号）",
                   "path": "03_部门规章/国家药监局关于修订肌苷注射剂说明书的公告(2026年第87号).md",
                   "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20260904163246192.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -5183,6 +5188,11 @@ const KB_DATA = {
                   "title": "关于印发国家基本药物目录（2026年版）的通知",
                   "path": "03_部门规章/关于印发国家基本药物目录(2026年版)的通知(国卫药政发〔2026〕17号).md",
                   "url": "https://www.nhc.gov.cn/yaozs/c100098/202607/0f4f2bdcfead449f8412453373522470.shtml"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -7980,6 +7990,11 @@ const KB_DATA = {
                   "title": "关于印发国家基本药物目录（2026年版）的通知",
                   "path": "03_部门规章/关于印发国家基本药物目录(2026年版)的通知(国卫药政发〔2026〕17号).md",
                   "url": "https://www.nhc.gov.cn/yaozs/c100098/202607/0f4f2bdcfead449f8412453373522470.shtml"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -9956,6 +9971,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -12595,6 +12615,11 @@ const KB_DATA = {
                   "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
                   "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
                   "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -14756,6 +14781,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -16776,6 +16806,11 @@ const KB_DATA = {
                   "title": "国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见",
                   "path": "03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md",
                   "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -17703,6 +17738,16 @@ const KB_DATA = {
                   "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
                   "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
                   "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
+                },
+                {
+                  "title": "细胞和基因治疗产品临床试验技术指导原则（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/细胞和基因治疗产品临床试验技术指导原则（征求意见稿）.md",
+                  "url": "https://www.cde.org.cn/main/news/"
+                },
+                {
+                  "title": "FDA细胞与基因治疗产品效价保证最终指南（2026）",
+                  "path": "04_技术指导原则/国外指导原则参考/FDA细胞与基因治疗产品效价保证最终指南2026.md",
+                  "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/guidance-industry-potency-assurance-cellular-and-gene-therapy-products"
                 }
               ]
             },
@@ -18007,6 +18052,11 @@ const KB_DATA = {
                   "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
                   "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
+                },
+                {
+                  "title": "细胞和基因治疗产品临床试验技术指导原则（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/细胞和基因治疗产品临床试验技术指导原则（征求意见稿）.md",
+                  "url": "https://www.cde.org.cn/main/news/"
                 }
               ]
             },
@@ -18272,6 +18322,16 @@ const KB_DATA = {
                   "title": "新生抗原药品关键问题的技术考虑（征求意见稿）",
                   "path": "04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d"
+                },
+                {
+                  "title": "细胞和基因治疗产品临床试验技术指导原则（征求意见稿）",
+                  "path": "04_技术指导原则/CDE_指导原则/细胞和基因治疗产品临床试验技术指导原则（征求意见稿）.md",
+                  "url": "https://www.cde.org.cn/main/news/"
+                },
+                {
+                  "title": "FDA细胞与基因治疗产品效价保证最终指南（2026）",
+                  "path": "04_技术指导原则/国外指导原则参考/FDA细胞与基因治疗产品效价保证最终指南2026.md",
+                  "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/guidance-industry-potency-assurance-cellular-and-gene-therapy-products"
                 }
               ]
             },
@@ -18709,6 +18769,11 @@ const KB_DATA = {
                   "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
                   "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
                   "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -20905,6 +20970,11 @@ const KB_DATA = {
                   "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
                   "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -22816,6 +22886,11 @@ const KB_DATA = {
                   "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
                   "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
                   "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -24627,6 +24702,11 @@ const KB_DATA = {
                   "title": "关于印发国家基本药物目录（2026年版）的通知",
                   "path": "03_部门规章/关于印发国家基本药物目录(2026年版)的通知(国卫药政发〔2026〕17号).md",
                   "url": "https://www.nhc.gov.cn/yaozs/c100098/202607/0f4f2bdcfead449f8412453373522470.shtml"
+                },
+                {
+                  "title": "国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见",
+                  "path": "03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md",
+                  "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html"
                 }
               ]
             }
@@ -25252,7 +25332,7 @@ const KB_DATA = {
       }
     ]
   }
-};
+}
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = KB_DATA;

@@ -1,6 +1,6 @@
 # 药品法规知识库 · 总索引
 
-> 自动生成于 2026-11-05 ｜ 共 2291 篇文档 ｜ 由 `scripts/update_kb.py` 维护
+> 自动生成于 2026-11-08 ｜ 共 2294 篇文档 ｜ 由 `scripts/update_kb.py` 维护
 
 > 分类：法律 · 行政法规 · 部门规章 · 技术指导原则 · 行业共识
 
@@ -8,8 +8,8 @@
 
 - 法律：31 篇
 - 行政法规：29 篇
-- 部门规章：304 篇
-- 技术指导原则：1919 篇
+- 部门规章：305 篇
+- 技术指导原则：1921 篇
 - 行业共识：8 篇
 
 ## 法律（31 篇）
@@ -82,7 +82,7 @@
 | ["国务院修改《中药品种保护条例》等行政法规部分条款"](https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20180930120001458.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](02_行政法规/国务院修改中药品种保护条例等行政法规部分条款.md) |
 | ["国务院关于加强食品等产品安全监督管理的特别规定"](https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20250415150318155.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](02_行政法规/国务院关于加强食品等产品安全监督管理的特别规定.md) |
 
-## 部门规章（304 篇）
+## 部门规章（305 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -383,6 +383,7 @@
 | [国家药监局关于修订碘克沙醇注射液说明书的公告（2026年第96号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261008092142171.html) | 国家药品监督管理局（NMPA） | 发布之日（备案截止 2026-12-28） | 现行有效 | [本地](03_部门规章/国家药监局关于修订碘克沙醇注射液说明书的公告2026年第96号.md) |
 | [国家药监局关于莲心胶囊等9个品种转换为非处方药的公告（2026年第98号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261008174534106.html) | 国家药品监督管理局（NMPA） | 发布之日（备案截止 2027-06-27） | 现行有效 | [本地](03_部门规章/国家药监局关于莲心胶囊等9个品种转换为非处方药的公告2026年第98号.md) |
 | [国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261029173737109.html) | 国家药品监督管理局 | 备案截止 2027-07-26 | 现行有效（已发布） | [本地](03_部门规章/国家药监局关于暖宫七味散等9个品种转换为非处方药的公告（2026年第103号）.md) |
+| [国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见]("https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261102161851132.html") | 国家药监局综合司 | 征求意见中（截止 2026-11-09） | 征求意见中 | [本地](03_部门规章/国家药监局综合司公开征求《国家药品安全事件应急预案（征求意见稿）》意见.md) |
 | [国家药监局综合司公开征求《药品市场独占期实施办法（征求意见稿）》意见](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261019175753196.html) | 国家药品监督管理局综合司 | 征求意见截止 2026-11-18 | 征求意见中 | [本地](03_部门规章/国家药监局综合司公开征求药品市场独占期实施办法意见（2026-10-19）.md) |
 | [国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260820180509158.html) | 国家药监局综合司 | 待定（稿中规定"自2027年_月_日起施行"，尚未确定施行日期） | 征求意见中 | [本地](03_部门规章/国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售使用管理规定征求意见稿.md) |
 | [化学药品注册分类及申报资料要求](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20200630180301525.html) | 国家药监局 | 注册分类2020-07-01；申报资料2020-10-01 | 现行有效 | [本地](03_部门规章/化学药品注册分类及申报资料要求.md) |
@@ -391,7 +392,7 @@
 | [国家药监局关于修订感冒灵口服制剂说明书的公告（2026年第66号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260720095207120.html) | 国家药品监督管理局 | 自发布之日起施行；上市许可持有人须于 2026-10-15 前报省级药监局备案；备案后 9 个月内更换已出厂药品说明书及标签（或以适当形式告知患者） | 现行有效 | [本地](03_部门规章/国家药监局关于修订感冒灵口服制剂说明书的公告2026年第66号.md) |
 | [关于加强中药品种保护工作的公告（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260709173122148.html) | 国家药监局综合司 | （征求意见中） | 征求意见中（截止 2026-08-06） | [本地](03_部门规章/加强中药品种保护公告征求意见稿.md) |
 
-## 技术指导原则（1919 篇）
+## 技术指导原则（1921 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -2285,6 +2286,7 @@
 | [抗体偶联药物生产质量管理指南（征求意见稿）](https://www.cfdi.org.cn/cfdi/resource/news/16913.html) | 国家药品监督管理局食品药品审核查验中心（CFDI） | 征求意见截止 2026-11-20 | 征求意见中 | [本地](04_技术指导原则/CFDI_检查指南/抗体偶联药物生产质量管理指南（征求意见稿）.md) |
 | [新生抗原药品关键问题的技术考虑（征求意见稿）](https://www.cde.org.cn/main/news/viewInfoCommon/876a3d7ae3af17d948c21d4974079d0d) | 国家药品监督管理局药品审评中心（CDE） | 待正式发布后施行 | 征求意见稿（征求意见时限：自发布之日起 1 个月） | [本地](04_技术指导原则/CDE_指导原则/新生抗原药品关键问题的技术考虑征求意见稿.md) |
 | [中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）](https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb) | 国家药品监督管理局药品审评中心（CDE） | 待正式发布后施行（本办法自发布之日起施行） | 征求意见稿（征求意见时限：自发布之日起 10 个工作日） | [本地](04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md) |
+| [细胞和基因治疗产品临床试验技术指导原则（征求意见稿）](https://www.cde.org.cn/main/news/) | 国家药品监督管理局药品审评中心（CDE，经 NMPA 审查同意） | 待正式发布（现行征求意见稿） | 征求意见稿 | [本地](04_技术指导原则/CDE_指导原则/细胞和基因治疗产品临床试验技术指导原则（征求意见稿）.md) |
 | ["ISPE GAMP RDI 数据完整性良好实践指南"]("https://ispe.org/news/ispe-releases-ispe-gamp-rdi-good-practice-guide-data-integrity") | ISPE（国际制药工程协会） | 持续有效 | 现行有效 | [本地](04_技术指导原则/ISPE_指导原则/ISPE-GAMP-RDI数据完整性.md) |
 | ["ISPE 良好工程规范（GEP）"]("https://ispe.org/publications/guidance-documents") | ISPE（国际制药工程协会） | 持续有效 | 现行有效 | [本地](04_技术指导原则/ISPE_指导原则/ISPE-良好工程规范GEP.md) |
 | ["WHO 原料药与制剂稳定性试验指南"]("https://www.who.int/publications/m/item/trs1010-annex10") | WHO（世界卫生组织） | 持续有效 | 现行有效 | [本地](04_技术指导原则/WHO_指导原则/WHO-稳定性试验指南.md) |
@@ -2303,6 +2305,7 @@
 | [ICH M4：通用技术文档（CTD）](https://www.ich.org/page/integrated-addendum) | ICH / 国家药监局 | 持续转化 | 现行有效 | [本地](04_技术指导原则/ICH_转化/ICH-M4-CTD通用技术文档.md) |
 | [ICH Q 系列：质量指导原则（Q1-Q14）](https://www.ich.org/page/quality-guidelines) | ICH / 国家药监局 | 持续转化 | 现行有效 | [本地](04_技术指导原则/ICH_转化/ICH-Q系列质量指导原则.md) |
 | [ICH S 系列：安全药理学与毒理学指导原则](https://www.ich.org/page/safety-guidelines) | ICH / 国家药监局 | 持续转化 | 现行有效 | [本地](04_技术指导原则/ICH_转化/ICH-S系列安全指导原则.md) |
+| ["Guidance for Industry: Potency Assurance for Cellular and Gene Therapy Products"]("https://www.fda.gov/regulatory-information/search-fda-guidance-documents/guidance-industry-potency-assurance-cellular-and-gene-therapy-products") | 美国食品药品监督管理局（FDA）/ 生物制品评价与研究中心（CBER）/ 治疗产品办公室（OTP） | 现行有效（最终定稿，取代 2011 年 1 月《Potency Tests for Cellular and Gene Therapy Products》指南） | 最终定稿（Final） | [本地](04_技术指导原则/国外指导原则参考/FDA细胞与基因治疗产品效价保证最终指南2026.md) |
 | ["Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management (Draft Guidance)"]("https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html") | 美国食品药品监督管理局（FDA）/ 生物制品评价与研究中心（CBER） | 草案征求意见中（docket FDA-2026-D-11783，联邦公报发布后30天内提交意见） | 草案 | [本地](04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md) |
 | [组合产品给药器械关键药物递送性能特征（修订草案）](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/essential-drug-delivery-outputs-devices-intended-deliver-drugs-and-biological-products) | 美国食品药品监督管理局（FDA）组合产品办公室（OCP） | 草案（征求意见截止 2027-01-28，Docket FDA-2024-D-2560） | 修订草案（Draft，非约束性建议） | [本地](04_技术指导原则/国外指导原则参考/组合产品给药器械关键药物递送性能特征修订草案.md) |
 | [《慢性乙型肝炎病毒感染治疗药物临床试验技术指导原则》问答文件（征求意见稿）](https://www.cde.org.cn/main/news/viewInfoCommon/8fdc4b03cf2f6aa4aa9ecd0f9b523fdf) | 国家药品监督管理局药品审评中心（CDE） | （征求意见中） | 征求意见中（发布之日起1个月） | [本地](04_技术指导原则/CDE_指导原则/慢性乙型肝炎治疗药物临床试验技术指导原则问答征求意见稿.md) |

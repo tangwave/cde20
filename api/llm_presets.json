@@ -667,5 +667,46 @@
     ],
     "default_model": "orcarouter/free",
     "custom": false
+  },
+  {
+    "id": "inferbase",
+    "name": "Inferbase（永久 $0 免费 · 免信用卡 · OpenAI 兼容 · auto 自动路由）",
+    "base_url": "https://api.inferbase.ai/v1",
+    "models": [
+      "auto"
+    ],
+    "default_model": "auto",
+    "custom": false
+  },
+  {
+    "id": "aihubmix",
+    "name": "AIHubMix（71 个零价免费模型 · 免信用卡 · OpenAI/Anthropic 兼容）",
+    "base_url": "https://aihubmix.com/v1",
+    "models": [
+      "coding-glm-5.3-free",
+      "coding-kimi-k3-free",
+      "gpt-4.1-free",
+      "gemini-3-flash-preview-free",
+      "coding-minimax-m2.5-free",
+      "glm-4.7-flash-free"
+    ],
+    "default_model": "coding-glm-5.3-free",
+    "custom": false
+  },
+  {
+    "id": "requesty",
+    "name": "Requesty（聚合网关 · 免费模型档 200 次/日 · 免信用卡 · EU 驻留）",
+    "base_url": "https://router.requesty.ai/v1",
+    "models": [
+      "nvidia/nemotron-3-ultra-550b-a55b",
+      "nvidia/nemotron-3-super-120b-a12b",
+      "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "google/gemma-4-31b-it",
+      "muse-glimmer-30b",
+      "ling-3.0-tiny",
+      "nemotron-3-nano-omni-30b-a3b-reasoning"
+    ],
+    "default_model": "nvidia/nemotron-3-super-120b-a12b",
+    "custom": false
   }
 ]
