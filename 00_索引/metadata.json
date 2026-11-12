@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-08T20:21:42",
-  "total": 2294,
+  "generated_at": "2026-11-12T21:21:10",
+  "total": 2300,
   "documents": [
     {
       "file": "01_法律\\专利法.md",
@@ -1784,6 +1784,19 @@
       "summary": "\"发布时间:20120306\""
     },
     {
+      "file": "03_部门规章\\关于进一步做好创新药安全合理配备使用工作的通知.md",
+      "title": "\"关于进一步做好创新药安全合理配备使用工作的通知\"",
+      "type": "部门规章",
+      "issuer": "国家卫生健康委、国家医保局、国家中医药局、国家疾控局",
+      "publish_date": "2026-11-10",
+      "effective_date": "2026-11-10",
+      "source_url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml",
+      "status": "现行有效",
+      "category": "03_部门规章",
+      "category_label": "部门规章",
+      "summary": "\"四部门联合印发，促进创新药（医保谈判目录和商业健康保险创新药目录内 1 类新药）安全合理配备使用：优化进院制度、加强培训与专家共识、落实药学服务价格、不限制品规数量且不纳入绩效增幅监测。\""
+    },
+    {
       "file": "03_部门规章\\关于进一步完善药品关联审评审批和监管工作有关事宜的公告.md",
       "title": "关于进一步完善药品关联审评审批和监管工作有关事宜的公告",
       "type": "部门规章",
@@ -2211,6 +2224,19 @@
       "category": "03_部门规章",
       "category_label": "部门规章",
       "summary": ">-\n  国家药监局基于药品不良反应评估结果，决定对感冒灵口服制剂（颗粒、胶囊、片、茶）说明书中的【警示语】【不良反应】【禁忌】和【注意事项】等进行统一修订，\n  明确\"服药期间不得驾驶机、车、船及从事高空/机械/精密仪器作业\"\"不得饮酒\"等安全性警示，纳入\"服药后禁驾\"清单；属上市后变更与说明书标签管理类官方监管要求。"
+    },
+    {
+      "file": "03_部门规章\\国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）.md",
+      "title": "\"国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）\"",
+      "type": "部门规章",
+      "issuer": "国家药品监督管理局",
+      "publish_date": "2026-11-12",
+      "effective_date": "2026-11-12",
+      "source_url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261112141319195.html",
+      "status": "现行有效",
+      "category": "03_部门规章",
+      "category_label": "部门规章",
+      "summary": "\"根据药品不良反应评估结果，修订氨溴特罗口服溶液和氨溴特罗片说明书，上市许可持有人须于 2027-02-11 前报省级药监局备案，备案后 9 个月内更换已出厂说明书/标签或告知患者。\""
     },
     {
       "file": "03_部门规章\\国家药监局关于修订碘克沙醇注射液说明书的公告2026年第96号.md",
@@ -12145,6 +12171,19 @@
       "summary": "\"适用范围**：化学药-**专业分类**：临床药理-**版本状态**：颁布---附件13艾曲泊帕乙醇胺片生物等效性研究技术指导原则2024年4月目录一、概述...................................................................................\""
     },
     {
+      "file": "04_技术指导原则\\CDE_指导原则\\艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
+      "title": "\"艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）\"",
+      "type": "技术指导原则",
+      "issuer": "国家药品监督管理局药品审评中心",
+      "publish_date": "2026-11-10",
+      "effective_date": "",
+      "source_url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121",
+      "status": "征求意见",
+      "category": "04_技术指导原则",
+      "category_label": "技术指导原则",
+      "summary": "\"为推进 ICH M13A《口服固体速释制剂的生物等效性》落地实施，CDE 修订艾曲泊帕乙醇胺片等 12 个个别药物生物等效性研究技术指导原则，征求意见 1 个月。\""
+    },
+    {
       "file": "04_技术指导原则\\CDE_指导原则\\艾滋病免疫功能重建不全治疗药物临床试验技术指导原则.md",
       "title": "\"艾滋病免疫功能重建不全治疗药物临床试验技术指导原则\"",
       "type": "技术指导原则",
@@ -12403,6 +12442,19 @@
       "category": "04_技术指导原则",
       "category_label": "技术指导原则",
       "summary": "规范确证性临床试验中多重性问题的控制策略，介绍常用多重性调整方法与分析原则，控制总I类错误率（FWER）。"
+    },
+    {
+      "file": "04_技术指导原则\\CDE_指导原则\\药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+      "title": "\"药物临床试验安全信息报告与风险沟通交流技术指导原则\"",
+      "type": "技术指导原则",
+      "issuer": "国家药品监督管理局药品审评中心",
+      "publish_date": "2026-11-09",
+      "effective_date": "2026-11-09",
+      "source_url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8",
+      "status": "现行有效",
+      "category": "04_技术指导原则",
+      "category_label": "技术指导原则",
+      "summary": "\"规范临床试验期间申办者、主要研究者、伦理审查委员会的安全性信息（SAE/SUSAR/DSUR等）报告流转与风险沟通交流，强化'风险相称'理念，自发布之日起施行。\""
     },
     {
       "file": "04_技术指导原则\\CDE_指导原则\\药物临床试验富集策略与设计指导原则试行.md",
@@ -25067,6 +25119,19 @@
       "summary": "\"专业分类**：标题E9.临床试验的统计学指导原则-**翻译日期**：1998年02月-**发布通告**：1998年2月ICH发布---E9人用药品注册技术要求国际协调会ICH三方协调指导原则ICH指导委员会1998年2月5日ICH进程第四阶段推荐采纳该指导原则由相应的ICH专家小组制定，按照ICH进程，已递交管理部门讨\""
     },
     {
+      "file": "04_技术指导原则\\国外指导原则参考\\Early-Phase IND Protocol Recommendations for Solid Tumors（实体瘤早期IND方案草案）.md",
+      "title": "\"Early-Phase IND Protocol Recommendations for Solid Tumors（实体瘤早期 IND 方案推荐意见，草案）\"",
+      "type": "国外指导原则",
+      "issuer": "\"U.S. FDA 肿瘤卓越中心(OCE) / CDER / CBER\"",
+      "publish_date": "2026-11-10",
+      "effective_date": "",
+      "source_url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+      "status": "草案征求意见",
+      "category": "04_技术指导原则",
+      "category_label": "技术指导原则",
+      "summary": "\"FDA 草案，针对实体瘤早期（首次人体 FIH）IND 试验方案设计提出建议，涵盖起始剂量、模型引导的剂量递增、安全性监测、停药规则、扩张队列与生物标志物；意见截止 2027-01-11。\""
+    },
+    {
       "file": "04_技术指导原则\\国外指导原则参考\\FDA与生物仿制药申办方或申请人之间的正式会议.md",
       "title": "\"FDA与生物仿制药申办方或申请人之间的正式会议\"",
       "type": "国外指导原则",
@@ -25208,6 +25273,19 @@
       "category": "04_技术指导原则",
       "category_label": "技术指导原则",
       "summary": "\"专业分类**：美国食品药品监督管理局(FDA)-**翻译日期**：2011年08月-**发布通告**：2011年8月美国FDA发布---指导原则PET药物申请-NDA和ANDA的内容和格式F18脱氧葡萄糖注射液N13氨注射液F18氟化钠注射液美国卫生与人力资源服务部食品药品监督管理局药品评价与研究中心（CDER）\""
+    },
+    {
+      "file": "04_技术指导原则\\国外指导原则参考\\Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus（降低输血传播HBV风险）.md",
+      "title": "\"Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus（降低输血传播 HBV 风险，最终指南）\"",
+      "type": "国外指导原则",
+      "issuer": "\"U.S. FDA 生物制品评价与研究中心(CBER)\"",
+      "publish_date": "2026-11-03",
+      "effective_date": "2026-11-03",
+      "source_url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus",
+      "status": "现行有效（最终指南）",
+      "category": "04_技术指导原则",
+      "category_label": "技术指导原则",
+      "summary": "\"FDA 最终指南，针对全血及血液成分（含原料血浆）采集中 HBV 检测提出建议：当采用 HBV DNA NAT 与 anti-HBc 筛查时，非原料血浆可不再检测 HBsAg；原料血浆仍须 HBsAg+NAT；整合并替代 1987-2012 年间多项 HBV 相关备忘录/指南。\""
     },
     {
       "file": "04_技术指导原则\\国外指导原则参考\\S1A.药物致癌试验必要性的指导原则.md",

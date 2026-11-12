@@ -1,6 +1,6 @@
 # 药品法规知识库 · 总索引
 
-> 自动生成于 2026-11-08 ｜ 共 2294 篇文档 ｜ 由 `scripts/update_kb.py` 维护
+> 自动生成于 2026-11-12 ｜ 共 2300 篇文档 ｜ 由 `scripts/update_kb.py` 维护
 
 > 分类：法律 · 行政法规 · 部门规章 · 技术指导原则 · 行业共识
 
@@ -8,8 +8,8 @@
 
 - 法律：31 篇
 - 行政法规：29 篇
-- 部门规章：305 篇
-- 技术指导原则：1921 篇
+- 部门规章：307 篇
+- 技术指导原则：1925 篇
 - 行业共识：8 篇
 
 ## 法律（31 篇）
@@ -82,7 +82,7 @@
 | ["国务院修改《中药品种保护条例》等行政法规部分条款"](https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20180930120001458.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](02_行政法规/国务院修改中药品种保护条例等行政法规部分条款.md) |
 | ["国务院关于加强食品等产品安全监督管理的特别规定"](https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20250415150318155.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](02_行政法规/国务院关于加强食品等产品安全监督管理的特别规定.md) |
 
-## 部门规章（305 篇）
+## 部门规章（307 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -358,6 +358,8 @@
 | [国家药监局 公安部 国家卫生健康委关于调整药用类精神药品目录的公告（2026年第58号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260707142323155.html) | 国家药监局、公安部、国家卫生健康委 | 2026-10-01 | 现行有效（自2026-10-01施行） | [本地](03_部门规章/调整药用类精神药品目录公告2026年第58号.md) |
 | [国家药监局关于加强中药品种保护工作的公告（2026年第97号）](https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008173342170.html) | 国家药品监督管理局（NMPA） | 2026-10-08 | 现行有效 | [本地](03_部门规章/国家药监局关于加强中药品种保护工作的公告2026年第97号.md) |
 | [国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定有关事项的通告（2026年第34号）](https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008172748111.html) | 国家药品监督管理局（NMPA） | 2026-10-08 | 现行有效 | [本地](03_部门规章/国家药监局关于中药饮片跨省销售使用管理规定通告2026年第34号.md) |
+| ["关于进一步做好创新药安全合理配备使用工作的通知"](https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml) | 国家卫生健康委、国家医保局、国家中医药局、国家疾控局 | 2026-11-10 | 现行有效 | [本地](03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md) |
+| ["国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）"](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261112141319195.html) | 国家药品监督管理局 | 2026-11-12 | 现行有效 | [本地](03_部门规章/国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）.md) |
 | [关于印发罕见病目录制订工作程序（2026年版）的通知](https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml) | 国家卫生健康委办公厅、国家中医药局综合司 | 印发之日起施行（2018 年版同时废止） | 现行有效（国卫办医政发〔2026〕16 号） | [本地](03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md) |
 | ["《医疗机构制剂配制质量管理规范》(局令第27号)"](https://www.cfdi.org.cn/cfdi/resource/news/2537.html) | 国家药监局食品药品审核查验中心 | 发布之日 | 现行有效 | [本地](03_部门规章/医疗机构制剂配制质量管理规范(局令第27号).md) |
 | ["互联网药品信息服务管理办法"](https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_3b0de00d220846a8b6adf0ca2b053005.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](03_部门规章/互联网药品信息服务管理办法.md) |
@@ -392,7 +394,7 @@
 | [国家药监局关于修订感冒灵口服制剂说明书的公告（2026年第66号）](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260720095207120.html) | 国家药品监督管理局 | 自发布之日起施行；上市许可持有人须于 2026-10-15 前报省级药监局备案；备案后 9 个月内更换已出厂药品说明书及标签（或以适当形式告知患者） | 现行有效 | [本地](03_部门规章/国家药监局关于修订感冒灵口服制剂说明书的公告2026年第66号.md) |
 | [关于加强中药品种保护工作的公告（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260709173122148.html) | 国家药监局综合司 | （征求意见中） | 征求意见中（截止 2026-08-06） | [本地](03_部门规章/加强中药品种保护公告征求意见稿.md) |
 
-## 技术指导原则（1921 篇）
+## 技术指导原则（1925 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -573,6 +575,7 @@
 | ["E7.问答部分文件历史"](https://www.cde.org.cn/zdyz/guideGwView/a224061efa71c618106ff3f533ebee21) | 2010年7月ICH发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/E7.问答部分文件历史.md) |
 | ["E8.临床研究的一般考虑"](https://www.cde.org.cn/zdyz/guideGwView/97f05b0d3132d7a1f6a5d0795c0bfeab) | 1997年7月ICH发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/E8.临床研究的一般考虑.md) |
 | ["E9.临床试验的统计学指导原则"](https://www.cde.org.cn/zdyz/guideGwView/b8e112904f86f3836b5668fb85fcc5a0) | 1998年2月ICH发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/E9.临床试验的统计学指导原则.md) |
+| ["Early-Phase IND Protocol Recommendations for Solid Tumors（实体瘤早期 IND 方案推荐意见，草案）"](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry) | "U.S. FDA 肿瘤卓越中心(OCE) / CDER / CBER" | — | 草案征求意见 | [本地](04_技术指导原则/国外指导原则参考/Early-Phase IND Protocol Recommendations for Solid Tumors（实体瘤早期IND方案草案）.md) |
 | ["FDA/DIA GCP inspection and data Reliability workshop was held successfully"](https://www.cfdi.org.cn/cfdi/resource/news/8310.html) | 国家药监局食品药品审核查验中心 | — | 现行有效 | [本地](04_技术指导原则/CFDI_检查指南/FDADIAGCPinspectionanddataReliabilityworkshopwasheldsuccessfully.md) |
 | ["FDA与生物仿制药申办方或申请人之间的正式会议"](https://www.cde.org.cn/zdyz/guideGwView/55f204dd1026229840eceeea26e60235) | 2013年3月美国FDA发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/FDA与生物仿制药申办方或申请人之间的正式会议.md) |
 | ["GnRH激动剂用于晚期前列腺癌临床试验设计指导原则"](https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=63e51ee958c7cbb00660870f102e285c) | 国家药监局药品审评中心 | — | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/GnRH激动剂用于晚期前列腺癌临床试验设计指导原则.md) |
@@ -1808,6 +1811,7 @@
 | ["致癌性试验方案提交(第三批)"](https://www.cde.org.cn/zdyz/guideGwView/72f09f4b2f524970ae9024843401470a) | 2002年5月美国FDA发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/致癌性试验方案提交(第三批).md) |
 | ["舒尼替尼硬胶囊12.5、25、37.5、50 mg的产品特定生物等效性指南"](https://www.cde.org.cn/zdyz/guideGwView/0d9f09e66441941c97ec341a803f8725) | 2015年05月EMA发布 | — | 征求意见 | [本地](04_技术指导原则/国外指导原则参考/舒尼替尼硬胶囊12.52537.550mg的产品特定生物等效性指南.md) |
 | ["艾曲泊帕乙醇胺片生物等效性研究技术指导原则"](https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=4fd4153ca5b987aa7af3a19972b8aae6) | 国家药监局药品审评中心 | — | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片生物等效性研究技术指导原则.md) |
+| ["艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）"](https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121) | 国家药品监督管理局药品审评中心 | — | 征求意见 | [本地](04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md) |
 | ["艾滋病免疫功能重建不全治疗药物临床试验技术指导原则"](https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=34ac1d9a6be4d234342d03de42299169) | 国家药监局药品审评中心 | — | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/艾滋病免疫功能重建不全治疗药物临床试验技术指导原则.md) |
 | ["艾滋病疫苗临床研究技术指导原则"](https://www.cde.org.cn/zdyz/domesticinfopage?zdyzIdCODE=279aa3a700b0ceade9ea6bbf60b02462) | 国家药监局药品审评中心 | — | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/艾滋病疫苗临床研究技术指导原则.md) |
 | ["芬戈莫德胶囊0.5 mg的产品特定生物等效性指南"](https://www.cde.org.cn/zdyz/guideGwView/4903598080a964f8ff333d599c0d78dc) | 2016年04月EMA发布 | — | 征求意见 | [本地](04_技术指导原则/国外指导原则参考/芬戈莫德胶囊0.5mg的产品特定生物等效性指南.md) |
@@ -2233,6 +2237,8 @@
 | [国家药监局药审中心关于发布《斑秃治疗药物临床试验技术指导原则》的通告（2026年第49号）](https://www.cde.org.cn/main/news/viewInfoCommon/28aaf6bbcbd62d745dec44b517b994ec) | 国家药品监督管理局药品审评中心（CDE） | 2026-10-20（发布之日起施行） | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/斑秃治疗药物临床试验技术指导原则2026年第49号.md) |
 | [国家药监局药审中心关于发布《青少年体重管理适应症临床试验设计指导原则》的通告（2026年第50号）](https://www.cde.org.cn/main/news/viewInfoCommon/25b67cd7ce808a1fdedc9a51360f0d24) | 国家药品监督管理局药品审评中心（CDE） | 2026-10-20（发布之日起施行） | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/青少年体重管理适应症临床试验设计指导原则2026年第50号.md) |
 | [国家药监局药审中心关于发布《抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则》的通告（2026年第48号）](https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17) | 国家药品监督管理局药品审评中心（CDE），经国家药品监督管理局审查同意 | 2026-10-23（发布之日起施行） | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md) |
+| ["Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus（降低输血传播 HBV 风险，最终指南）"](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus) | "U.S. FDA 生物制品评价与研究中心(CBER)" | 2026-11-03 | 现行有效（最终指南） | [本地](04_技术指导原则/国外指导原则参考/Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus（降低输血传播HBV风险）.md) |
+| ["药物临床试验安全信息报告与风险沟通交流技术指导原则"](https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8) | 国家药品监督管理局药品审评中心 | 2026-11-09 | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md) |
 | ["FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）"]("https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology") | U.S. Food and Drug Administration (FDA, HHS) | 2027-02-04 | 直接最终规则（征求意见中，评论截止2026-12-07） | [本地](04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md) |
 | ["ICH Q4B：ICH 地区使用的药典正文评价与推荐 (Evaluation and Recommendation of Pharmacopoeial Texts)"](https://database.ich.org/sites/default/files/Q4B%20Guideline.pdf) | ICH | 以2025年版《中华人民共和国药典》实施公告为准 | 现行有效（与中国药典协调） | [本地](04_技术指导原则/ICH_转化/ICH-Q4B药典文本评价与推荐.md) |
 | ["ICH Q6B：质量标准：生物技术产品及生物制品的检测方法及可接受标准 (Specifications: Biotechnological/Biological Products)"](https://database.ich.org/sites/default/files/Q6B%20Guideline.pdf) | ICH | 以2025年版《中华人民共和国药典》实施公告为准 | 现行有效（与中国药典协调） | [本地](04_技术指导原则/ICH_转化/ICH-Q6B质量标准生物技术产品.md) |

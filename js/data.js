@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-08",
-    "totalDocs": 2294,
+    "lastUpdated": "2026-11-12",
+    "totalDocs": 2300,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1361,6 +1361,11 @@ const KB_DATA = {
                     "title": "ICH M4Q(R1): The CTD - Quality",
                     "source": "ICH",
                     "url": "https://www.ich.org/"
+                  },
+                  {
+                    "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -1705,6 +1710,11 @@ const KB_DATA = {
                     "title": "抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则（2026年第48号）",
                     "path": "04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -1738,6 +1748,11 @@ const KB_DATA = {
                     "title": "ICH E6(R2): Guideline for Good Clinical Practice",
                     "source": "ICH",
                     "url": "https://www.ich.org/"
+                  },
+                  {
+                    "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -2619,6 +2634,11 @@ const KB_DATA = {
                     "title": "国家药监局关于修订碘克沙醇注射液说明书的公告（2026年第96号）",
                     "path": "03_部门规章/国家药监局关于修订碘克沙醇注射液说明书的公告2026年第96号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261008092142171.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -4310,6 +4330,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -5106,6 +5131,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -6919,6 +6949,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于公开征求《〈放射性体内诊断药物非临床研究技术指导原则〉问答文件（征求意见稿）》《〈放射性治疗药物非临床研究技术指导原则〉问答文件（征求意见稿）》意见的通知（2026-10-26）",
                     "path": "04_技术指导原则/CDE_指导原则/放射性药物非临床研究技术指导原则问答文件征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a7120fa784bd1ebad49c97ab4f0697e9"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -7868,6 +7903,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -8928,6 +8968,11 @@ const KB_DATA = {
                     "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
+                  },
+                  {
+                    "title": "艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121"
                   }
                 ]
               },
@@ -8950,7 +8995,13 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+                    "source": "FDA"
+                  }
+                ]
               },
               "guidance": [],
               "cases": [],
@@ -9269,6 +9320,16 @@ const KB_DATA = {
                     "title": "抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则（2026年第48号）",
                     "path": "04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121"
                   }
                 ]
               },
@@ -9287,7 +9348,13 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+                    "source": "FDA"
+                  }
+                ]
               },
               "guidance": [],
               "cases": [],
@@ -9525,6 +9592,11 @@ const KB_DATA = {
                     "title": "M13A低风险制剂清单（第二批）（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/M13A低风险制剂清单第二批2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/ab4430fa432def835650fd80eb6af807"
+                  },
+                  {
+                    "title": "艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121"
                   }
                 ]
               },
@@ -9933,6 +10005,16 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）",
+                    "path": "03_部门规章/国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261112141319195.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -11292,6 +11374,11 @@ const KB_DATA = {
                     "title": "ICH M4M: Organization of the M4 CTD for Biologics",
                     "source": "ICH",
                     "url": "https://www.ich.org/"
+                  },
+                  {
+                    "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -11679,6 +11766,11 @@ const KB_DATA = {
                     "title": "抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则（2026年第48号）",
                     "path": "04_技术指导原则/CDE_指导原则/抗肿瘤药物基于后线研究数据开展前线适应症临床试验技术指导原则2026年第48号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e50c89621a69b8bffeaf90977d836f17"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -11707,6 +11799,11 @@ const KB_DATA = {
                     "title": "EU GMP Annex 2: Biological Products",
                     "source": "EMA",
                     "url": "https://www.ema.europa.eu/"
+                  },
+                  {
+                    "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -12513,6 +12610,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -13675,6 +13777,11 @@ const KB_DATA = {
                     "title": "21 CFR 312: IND Application",
                     "source": "FDA",
                     "url": "https://www.ecfr.gov/"
+                  },
+                  {
+                    "title": "FDA Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus; Guidance for Industry (Final, 2026-11, docket FDA-2024-D-5942)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -13956,6 +14063,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -14243,6 +14355,11 @@ const KB_DATA = {
                     "title": "EMA: Plasma Master File (PMF)",
                     "source": "EMA",
                     "url": "https://www.ema.europa.eu/"
+                  },
+                  {
+                    "title": "FDA Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus; Guidance for Industry (Final, 2026-11, docket FDA-2024-D-5942)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -14705,6 +14822,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -14744,6 +14866,11 @@ const KB_DATA = {
                     "title": "FDA: Biological Product Deviation Reports",
                     "source": "FDA",
                     "url": "https://www.fda.gov/"
+                  },
+                  {
+                    "title": "FDA Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus; Guidance for Industry (Final, 2026-11, docket FDA-2024-D-5942)",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus",
+                    "source": "FDA"
                   }
                 ]
               },
@@ -16039,6 +16166,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -16755,6 +16887,11 @@ const KB_DATA = {
                     "title": "国家药监局 海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告（2026年第91号）",
                     "path": "03_部门规章/国家药监局海关总署关于在北京口岸开展进口药品通关电子化试点工作有关事项的公告(2026年第91号).md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20260921091608111.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -18019,6 +18156,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -18726,6 +18868,11 @@ const KB_DATA = {
                     "title": "FDA 行业草案指南：Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management（2026-10-27，docket FDA-2026-D-11783）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md",
                     "url": "https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -20133,6 +20280,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于公开征求《慢性心力衰竭相关中药新药临床研发技术指导原则（征求意见稿）》意见的通知（2026-10-16）",
                     "path": "04_技术指导原则/CDE_指导原则/慢性心力衰竭相关中药新药临床研发技术指导原则(征求意见稿).md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/c31bbb6b12b9364ec4039e4a1e25efa0"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -20889,6 +21041,11 @@ const KB_DATA = {
                     "title": "国家药监局关于修订降脂灵制剂和乳块消口服制剂说明书的公告（2026年第102号）",
                     "path": "03_部门规章/国家药监局关于修订降脂灵制剂和乳块消口服制剂说明书的公告2026年第102号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261022180950121.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -22166,6 +22323,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
                   }
                 ]
               },
@@ -22820,6 +22982,11 @@ const KB_DATA = {
                     "title": "国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定有关事项的通告（2026年第34号）",
                     "path": "03_部门规章/国家药监局关于中药饮片跨省销售使用管理规定通告2026年第34号.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008172748111.html"
+                  },
+                  {
+                    "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
+                    "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
+                    "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
                   }
                 ]
               },
@@ -25329,11 +25496,79 @@ const KB_DATA = {
           "上市申报",
           "生产质量(GMP)"
         ]
+      },
+      {
+        "term": "药物临床试验安全信息报告与风险沟通交流技术指导原则（CDE 2026年第52号）",
+        "definition": "CDE 2026-11-09 发布（落款 11-04，自发布之日起施行），规范临床试验期间申办者、主要研究者、伦理审查委员会的安全性信息报告流转与风险沟通交流，强化\"风险相称\"理念。明确 SAE（建议获知24h内报告）、SUSAR（立即/快速/月度三档分流，立即≤24h、快速参照ICH E2A致死危及≤7天其余≤15天、CIOMS I格式）、其他潜在严重安全性风险信息（确定后15天内，不得延迟评估规避）、DSUR（ICH E2F，DIBD后2个月内）的时限、路径与格式，并区分监管线（递药审中心，ICH E2A/E2B）与机构线（递研究者/伦理）。",
+        "see": [
+          "临床研究",
+          "药物临床试验质量管理规范",
+          "药物警戒",
+          "SAE",
+          "SUSAR",
+          "DSUR",
+          "ICH E2A",
+          "ICH E2B"
+        ]
+      },
+      {
+        "term": "ICH M13A 落地与12个生物等效性研究技术指导原则修订（CDE 2026-11-10）",
+        "definition": "为推进 ICH《M13A：口服固体速释制剂的生物等效性》落地实施，CDE 2026-11-10 对艾曲泊帕乙醇胺片、辛伐他汀片、奥氮平口崩片、他达拉非片、富马酸喹硫平片、富马酸丙酚替诺福韦片、氯雷他定片、盐酸贝那普利片、硫酸氢氯吡格雷片、依折麦布片、来氟米特片、熊去氧胆酸胶囊等12个个别药物 BE 研究技术指导原则开展修订并征求意见（1个月），统一研究方法与评价标准，与 M13A 低风险制剂清单配套。",
+        "see": [
+          "口服固体制剂",
+          "临床研究",
+          "上市申报",
+          "生物等效性",
+          "ICH M13A",
+          "药代动力学"
+        ]
+      },
+      {
+        "term": "氨溴特罗制剂说明书修订（NMPA 2026年第107号）",
+        "definition": "国家药监局 2026-11-12 公告（落款 11-11），根据不良反应评估结果修订氨溴特罗口服溶液和氨溴特罗片说明书。MAH 须于 2027-02-11 前报省级药监局备案；备案后9个月内更换已出厂说明书/标签或告知患者；涉及标签一并修订。属上市后说明书与标签管理常规动作。",
+        "see": [
+          "口服固体制剂",
+          "上市后研究",
+          "说明书与标签",
+          "药品说明书和标签管理规定"
+        ]
+      },
+      {
+        "term": "创新药安全合理配备使用（国卫办医政发〔2026〕18号）",
+        "definition": "国家卫健委、医保局、中医药局、疾控局 2026-11-10 联合印发，促进创新药（医保谈判目录和商业健康保险创新药目录内1类新药）安全合理配备使用。要求二级以上医疗机构优化进院制度、纳入用药目录；加强培训与临床使用专家共识；落实药学服务价格；明确不对医疗机构总药品品种品规数量限制、有关创新药不纳入门诊/住院次均药品费用增幅等绩效监测指标。",
+        "see": [
+          "上市后研究",
+          "创新药",
+          "临床综合评价",
+          "处方审核点评"
+        ]
+      },
+      {
+        "term": "FDA 实体瘤早期 IND 方案推荐意见（草案，2026-11）",
+        "definition": "FDA 肿瘤卓越中心（OCE）2026-11-10 发布行业草案（docket FDA-2026-D-13432，意见截止2027-01-11），针对实体瘤首次人体（FIH）IND 试验方案设计提建议，涵盖起始剂量、模型引导的剂量递增（BOIN/mTPI等）、安全性监测与停药规则、扩张队列、生物标志物整合，与 Project Optimus/Project FrontRunner 衔接，是中国创新药出海（FDA IND）方案设计对标依据。仅针对实体瘤，不涉及血液恶性肿瘤。",
+        "see": [
+          "生物制品",
+          "口服固体制剂",
+          "无菌药品",
+          "临床研究",
+          "临床前研究",
+          "药物临床试验安全信息报告与风险沟通交流技术指导原则"
+        ]
+      },
+      {
+        "term": "FDA 降低输血传播 HBV 风险最终指南（2026-11）",
+        "definition": "FDA/CBER 2026-11-03 发布最终指南（docket FDA-2024-D-5942），整合并替代1987—2012年间多项 HBV 相关备忘录/指南。关键建议：当采用 HBV DNA NAT 与 anti-HBc 筛查（非原料血浆）时，检测 HBsAg 已无必要；原料血浆仍须 HBsAg+NAT 且不推荐常规 anti-HBc。反映美国 HBV 发病率下降、筛查经验丰富，输血传播 HBV 风险估计低于1/200万。",
+        "see": [
+          "血液制品",
+          "临床前研究",
+          "上市申报",
+          "上市后研究",
+          "GMP",
+          "药品生产质量管理规范"
+        ]
       }
     ]
   }
-}
+};
 
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = KB_DATA;
-}
+module.exports = KB_DATA;
