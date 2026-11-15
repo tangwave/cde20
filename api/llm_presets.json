@@ -510,7 +510,7 @@
   {
     "id": "hyperbolic",
     "name": "Hyperbolic（开源模型免费额度 · OpenAI 兼容）",
-    "base_url": "https://api.hyperbolic.xyz/v1",
+    "base_url": "https://api.hyperbolic.ai/inference/v1",
     "models": [
       "meta-llama/Llama-3.3-70B-Instruct",
       "Qwen/Qwen3-235B-A22B",
@@ -707,6 +707,31 @@
       "nemotron-3-nano-omni-30b-a3b-reasoning"
     ],
     "default_model": "nvidia/nemotron-3-super-120b-a12b",
+    "custom": false
+  },
+  {
+    "id": "freeinference",
+    "name": "FreeInference（哈佛 MadSys Lab · GLM-5.3 Flash/DeepSeek V4 Flash 1M · 免信用卡）",
+    "base_url": "https://freeinference.org/v1",
+    "models": [
+      "glm-5.3-flash",
+      "deepseek-v4-flash",
+      "minimax-m3",
+      "qwen3.6-35b"
+    ],
+    "default_model": "glm-5.3-flash",
+    "custom": false
+  },
+  {
+    "id": "anyapi",
+    "name": "AnyAPI（聚合网关 · 免费档每日10万 token · 免信用卡）",
+    "base_url": "https://api.anyapi.ai/v1",
+    "models": [
+      "qwen3.8-27b",
+      "ling-3.0-flash",
+      "gemma-3n"
+    ],
+    "default_model": "qwen3.8-27b",
     "custom": false
   }
 ]

@@ -159,6 +159,11 @@ const TERMS = [
   {id:"radio",t:"放射性药品",e:"Radiopharmaceuticals",c:"type",d:"含放射性核素、用于诊断或治疗的药品，须符合GMP附录《放射性药品》特殊要求：辐射防护、短效期、专用生产与灭菌、活度与核素纯度控制，并满足放射性物质运输安全规定。",r:["gmp","nmpa","shengchan","zhiliang"]},
   {id:"ypian",t:"中药饮片",e:"Herbal Pieces",c:"type",d:"药材经净制、切制、炮炙等炮制加工后、可直接用于中医临床或制剂生产的药品。GMP附录《中药饮片》要求炮制依法度、毒性饮片专用设施、仓储防虫霉与批记录可追溯。",r:["tcm","gmp","nmpa","shengchan"]},
   {id:"oxygen",t:"医用氧",e:"Medical Oxygen",c:"type",d:"用于临床医疗的氧（包括液态氧），须符合GMP附录《医用氧》要求：空气压缩分离制得、无油洁净、纯度≥99.5%，并对水分、CO₂、CO 与微生物进行控制。",r:["gmp","shengchan","zhiliang","yaobc"]},
+  // ===== 2026-11 新增法规术语 =====
+  {id:"zyctbh",t:"中医药传统知识保护",e:"TCK Protection",c:"spec",d:"《中医药传统知识保护条例》（国务院令第850号，2026-10-23公布、2027-01-01施行）确立的保护制度：建立保护数据库与保护名录，覆盖中药材种养采集鉴别、中药饮片炮制与中药制剂配制传统技术工艺，明确持有人知情同意与利益分享权。关联中药饮片、中药制剂与经典名方开发。",r:["tcm","ypian","nmpa","mau"]},
+  {id:"fdshengchan",t:"药品委托分段生产",e:"Segmented Manufacturing",c:"spec",d:"新修订《药品管理法实施条例》（2026-05-15施行）确立的常态化制度，指持有人将同一药品不同生产环节委托不同企业分段完成；NMPA 2026-11 就委托分段生产公告征求意见，强调质量协议、受托方责任与注册变更沟通。",r:["weituo","mau","zhiliangxy","gmp","nmpa"]},
+  {id:"mrnavax",t:"mRNA疫苗平台技术",e:"mRNA Platform",c:"spec",d:"以mRNA为抗原、脂质纳米粒(LNP)为递送系统的疫苗平台，药学研究与评价聚焦序列设计、LNP工艺、质量属性与稳定性。CDE 2026-11 就新冠预防用mRNA疫苗平台技术药学研究与评价技术指导原则征求意见。",r:["shengwu","virus","cde","imp"]},
+  {id:"zhongyaoctd",t:"中药注册通用技术文档",e:"TCM CTD",c:"spec",d:"CDE 2026-11 征求意见的申报格式框架，将人用经验、饮片炮制、经典名方等中药特有技术信息按CTD模块标准化呈现，适用于中药IND/NDA及已上市变更，实现全生命周期申报资料管理。",r:["tcm","cde","biangeng","ypian"]},
   {id:"pwater",t:"制药用水",e:"Pharma Water",c:"sys",d:"药品生产与设备清洗用水，按用途分饮用水、纯化水、注射用水（WFI）与纯蒸汽。须控制微生物/内毒素、TOC/电导率，WFI 通常 80℃以上循环或 4℃以下储存，是无菌与生物制品厂房设施的核心系统。",r:["gmp","ccs","shebei","wuxian","shengwu","yaobc"]}
 ];
 

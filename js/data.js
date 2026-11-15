@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-12",
-    "totalDocs": 2300,
+    "lastUpdated": "2026-11-15",
+    "totalDocs": 2306,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1715,6 +1715,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -2054,6 +2059,11 @@ const KB_DATA = {
                     "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -2639,6 +2649,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -4636,6 +4651,11 @@ const KB_DATA = {
                     "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -5136,6 +5156,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -7908,6 +7933,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -9330,6 +9360,11 @@ const KB_DATA = {
                     "title": "艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -9597,6 +9632,11 @@ const KB_DATA = {
                     "title": "艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121"
+                  },
+                  {
+                    "title": "仿制药质量和疗效一致性评价受理审查指南（2026年第53号通告）",
+                    "path": "04_技术指导原则/CDE_指导原则/仿制药质量和疗效一致性评价受理审查指南2026年第53号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/80d57b00585468133d86fc86bb6ce523"
                   }
                 ]
               },
@@ -10015,6 +10055,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "仿制药质量和疗效一致性评价受理审查指南（2026年第53号通告）",
+                    "path": "04_技术指导原则/CDE_指导原则/仿制药质量和疗效一致性评价受理审查指南2026年第53号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/80d57b00585468133d86fc86bb6ce523"
                   }
                 ]
               },
@@ -11771,6 +11816,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -12077,6 +12127,11 @@ const KB_DATA = {
                     "title": "药品市场独占期工作程序（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -12615,6 +12670,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -14068,6 +14128,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -14827,6 +14892,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -15877,6 +15947,11 @@ const KB_DATA = {
                     "title": "疫苗非临床研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/疫苗非临床研究技术指导原则征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/197073fbba8cbf3b314a80928f2e1b4b"
+                  },
+                  {
+                    "title": "新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e89d95a040ae1bbd90e64c78d991986"
                   }
                 ]
               },
@@ -16171,6 +16246,16 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e89d95a040ae1bbd90e64c78d991986"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -16429,6 +16514,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e89d95a040ae1bbd90e64c78d991986"
                   }
                 ]
               },
@@ -16892,6 +16982,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -18161,6 +18256,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -18431,6 +18531,11 @@ const KB_DATA = {
                     "title": "FDA 行业草案指南：Individualized Human Genome Editing Products: Considerations for BLA Submission and Postapproval Management（2026-10-27，docket FDA-2026-D-11783）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA个体化人类基因组编辑产品BLA申报与上市后管理草案.md",
                     "url": "https://www.hhs.gov/press-room/fda-cms-advance-gene-therapies-rare-diseases-patient-access.html"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -18873,6 +18978,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
+                    "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
                   }
                 ]
               },
@@ -19080,6 +19190,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -19249,6 +19364,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -19960,6 +20080,16 @@ const KB_DATA = {
                     "title": "关于印发罕见病目录制订工作程序（2026年版）的通知",
                     "path": "03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
+                  },
+                  {
+                    "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
                   }
                 ]
               },
@@ -20285,6 +20415,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
                   }
                 ]
               },
@@ -20540,6 +20675,16 @@ const KB_DATA = {
                     "title": "药品市场独占期工作程序（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药品市场独占期工作程序征求意见稿2026.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/51b398b238d1d30903504260ab1fb658"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
+                  },
+                  {
+                    "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
                   }
                 ]
               },
@@ -20762,6 +20907,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -21046,6 +21196,16 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
+                  },
+                  {
+                    "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
                   }
                 ]
               },
@@ -21278,6 +21438,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -21442,6 +21607,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -21772,6 +21942,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -22085,6 +22260,11 @@ const KB_DATA = {
                     "title": "中药品种保护申请与技术审评沟通交流管理办法（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/中药品种保护申请与技术审评沟通交流管理办法征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/e0102da2438ff7498571853bdbba19cb"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -22546,6 +22726,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -22740,6 +22925,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -22987,6 +23177,11 @@ const KB_DATA = {
                     "title": "关于进一步做好创新药安全合理配备使用工作的通知（国卫办医政发〔2026〕18号）",
                     "path": "03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md",
                     "url": "https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml"
+                  },
+                  {
+                    "title": "中医药传统知识保护条例（国务院令第850号）",
+                    "path": "02_行政法规/中医药传统知识保护条例.md",
+                    "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
                   }
                 ]
               },
@@ -24192,6 +24387,11 @@ const KB_DATA = {
                     "title": "肝功能受损患者的药代动力学：研究设计、数据分析及对剂量的影响（草案）",
                     "path": "04_技术指导原则/国外指导原则参考/FDA肝功能受损患者药代动力学研究设计数据分析及给药影响指导原则草案2026.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/pharmacokinetics-patients-impaired-hepatic-function-study-design-data-analysis-and-impact-dosing"
+                  },
+                  {
+                    "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
+                    "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
                   }
                 ]
               },
@@ -25565,6 +25765,67 @@ const KB_DATA = {
           "上市后研究",
           "GMP",
           "药品生产质量管理规范"
+        ]
+      },
+      {
+        "term": "中医药传统知识保护条例（国务院令850号）",
+        "definition": "2026-10-23签署、2027-01-01施行的行政法规，建立中医药传统知识保护数据库与保护名录制度，明确持有人知情同意与利益分享权，规范中药材种养采集鉴别、中药饮片炮制、中药制剂配制等传统技术工艺的保护与利用。",
+        "see": [
+          "中药制剂",
+          "中药饮片",
+          "上市后研究",
+          "经典名方"
+        ]
+      },
+      {
+        "term": "药品委托分段生产",
+        "definition": "新修订《药品管理法实施条例》(2026-05-15施行)确立的常态化制度，指药品上市许可持有人将同一药品生产过程的不同环节委托不同生产企业分段完成；CDE/NMPA 2026-11 就委托分段生产公告征求意见，涉及质量协议、责任划分与注册变更。",
+        "see": [
+          "无菌药品",
+          "原料药",
+          "生物制品",
+          "上市申报",
+          "上市后研究"
+        ]
+      },
+      {
+        "term": "临床试验申办者变更",
+        "definition": "依据《药品管理法实施条例》第九条，药物临床试验变更申办者须向国务院药品监督管理部门提出申请（20个工作日内审查决定），变更后申办者承担试验责任义务并提交补充申请，原则上不与技术类变更合并申报。",
+        "see": [
+          "临床研究",
+          "全部品种",
+          "补充申请",
+          "GCP"
+        ]
+      },
+      {
+        "term": "中药注册通用技术文档（中药CTD）",
+        "definition": "CDE 2026-11 征求意见的申报格式框架，覆盖行政信息、概要、药学、药理毒理、临床研究5部分，将人用经验、饮片炮制、经典名方等中药特有技术信息标准化呈现，适用于中药IND/NDA及已上市变更，实现全生命周期申报资料管理。",
+        "see": [
+          "中药制剂",
+          "药学研究",
+          "非临床与临床申报",
+          "人用经验"
+        ]
+      },
+      {
+        "term": "mRNA疫苗平台技术",
+        "definition": "以mRNA为核心抗原的疫苗平台，药学研究与评价聚焦mRNA序列设计、脂质纳米粒(LNP)递送、原液与制剂工艺、质量属性与稳定性；CDE 2026-11 就新冠预防用mRNA疫苗平台技术药学研究与评价指导原则征求意见。",
+        "see": [
+          "疫苗",
+          "生物制品",
+          "药学研究",
+          "质量研究"
+        ]
+      },
+      {
+        "term": "仿制药一致性评价受理审查",
+        "definition": "对仿制药质量和疗效一致性评价申报资料进行形式审查的受理环节；CDE 2026年第53号通告(2026-11-13施行)修订受理审查指南，明确适用范围、受理部门与资料整理要求，自发布之日起施行。",
+        "see": [
+          "口服固体制剂",
+          "上市申报",
+          "药学质量一致性",
+          "仿制药"
         ]
       }
     ]

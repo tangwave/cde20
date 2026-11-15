@@ -245,7 +245,7 @@ LLM_PRESETS_DEFAULT = [
      "models": ["meta-llama/Llama-3.3-70B-Instruct", "Qwen/Qwen3-235B-A22B", "deepseek-ai/DeepSeek-V3.1"],
      "default_model": "meta-llama/Llama-3.3-70B-Instruct"},   # api.studio.nebius.com 注册送免费额度(欧盟数据合规,EU-hosted)
     {"id": "hyperbolic", "name": "Hyperbolic（开源模型免费额度 · OpenAI 兼容）",
-     "base_url": "https://api.hyperbolic.xyz/v1",
+     "base_url": "https://api.hyperbolic.ai/inference/v1",
      "models": ["meta-llama/Llama-3.3-70B-Instruct", "Qwen/Qwen3-235B-A22B", "deepseek-ai/DeepSeek-V3.1"],
      "default_model": "meta-llama/Llama-3.3-70B-Instruct"},   # api.hyperbolic.xyz 免费额度(开源模型托管)
     {"id": "novita", "name": "Novita AI（Llama/Mistral 免费试用额度 · OpenAI 兼容 /v3/openai）",
@@ -306,6 +306,14 @@ LLM_PRESETS_DEFAULT = [
      "default_model": "orcarouter/free", "custom": False},  # api.orcarouter.ai/v1 免费路由 GitHub 登录免 Key OpenAI 兼容(free 路由别名 + deepseek-free 档)
     {"id": "custom", "name": "自定义（兼容 OpenAI）",
      "base_url": "", "models": [], "default_model": "", "custom": True},
+    {"id": "freeinference", "name": "FreeInference（哈佛 MadSys Lab · GLM-5.3 Flash/DeepSeek V4 Flash 1M · 免信用卡）",
+     "base_url": "https://freeinference.org/v1",
+     "models": ["glm-5.3-flash", "deepseek-v4-flash", "minimax-m3", "qwen3.6-35b"],
+     "default_model": "glm-5.3-flash"},
+    {"id": "anyapi", "name": "AnyAPI（聚合网关 · 免费档每日10万 token · 免信用卡）",
+     "base_url": "https://api.anyapi.ai/v1",
+     "models": ["qwen3.8-27b", "ling-3.0-flash", "gemma-3n"],
+     "default_model": "qwen3.8-27b"},
 ]
 
 LLM_PRESETS_FILE = os.path.join(APP_DIR, "llm_presets.json")
