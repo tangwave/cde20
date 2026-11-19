@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-15",
-    "totalDocs": 2306,
+    "lastUpdated": "2026-11-19",
+    "totalDocs": 2308,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1279,6 +1279,11 @@ const KB_DATA = {
                     "title": "组合产品给药器械关键药物递送性能特征（修订草案）",
                     "path": "04_技术指导原则/国外指导原则参考/组合产品给药器械关键药物递送性能特征修订草案.md",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/essential-drug-delivery-outputs-devices-intended-deliver-drugs-and-biological-products"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -1720,6 +1725,16 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -2064,6 +2079,11 @@ const KB_DATA = {
                     "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
                     "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -3946,6 +3966,11 @@ const KB_DATA = {
                     "title": "氘代化学创新药药学研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/氘代化学创新药药学研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4c29aa75125ef5fc0b2d504545dd8728"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -4350,6 +4375,16 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -4656,6 +4691,11 @@ const KB_DATA = {
                     "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
                     "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -6979,6 +7019,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -9003,6 +9048,11 @@ const KB_DATA = {
                     "title": "艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/艾曲泊帕乙醇胺片等12个生物等效性研究技术指导原则（修订征求意见稿）.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/12aaf2a063a11f3817bf1dbd07231121"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -9365,6 +9415,16 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -9637,6 +9697,11 @@ const KB_DATA = {
                     "title": "仿制药质量和疗效一致性评价受理审查指南（2026年第53号通告）",
                     "path": "04_技术指导原则/CDE_指导原则/仿制药质量和疗效一致性评价受理审查指南2026年第53号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/80d57b00585468133d86fc86bb6ce523"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -10060,6 +10125,11 @@ const KB_DATA = {
                     "title": "仿制药质量和疗效一致性评价受理审查指南（2026年第53号通告）",
                     "path": "04_技术指导原则/CDE_指导原则/仿制药质量和疗效一致性评价受理审查指南2026年第53号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/80d57b00585468133d86fc86bb6ce523"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -11351,6 +11421,11 @@ const KB_DATA = {
                     "title": "生物类似药非临床研究技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/生物类似药非临床研究技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/234697f022d245cb5d8952499fade88e"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -11821,6 +11896,16 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -12132,6 +12217,11 @@ const KB_DATA = {
                     "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
                     "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -13796,6 +13886,11 @@ const KB_DATA = {
                     "title": "推进新方法（NAMs）研究和应用试点计划（\"先锋计划\"）（2026年第46号）",
                     "path": "04_技术指导原则/CDE_指导原则/推进新方法NAMs先锋计划2026年第46号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/8b24b04aacebe3269470c30ac806a634"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -14133,6 +14228,16 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -14392,6 +14497,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -16256,6 +16366,11 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -18261,6 +18376,11 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -20420,6 +20540,11 @@ const KB_DATA = {
                     "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -21206,6 +21331,11 @@ const KB_DATA = {
                     "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
+                    "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
                   }
                 ]
               },
@@ -22508,6 +22638,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《药物临床试验安全信息报告与风险沟通交流技术指导原则》的通告（2026年第52号）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8"
+                  },
+                  {
+                    "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
+                    "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
                   }
                 ]
               },
@@ -25826,6 +25961,33 @@ const KB_DATA = {
           "上市申报",
           "药学质量一致性",
           "仿制药"
+        ]
+      },
+      {
+        "term": "化学药生物等效性试验备案范围和程序（CDE 2026年第51号）",
+        "definition": "CDE 2026-11-06 发布（落款 10-27），经国家药监局审查同意，自 2027-02-01 起施行。适用于境内注册为目的的化学药人体 BE 试验备案：三类情形应当备案（仿制已上市原研的化学仿制药、需 BE 支持变更的已上市仿制药/新药、需通过 BE 开展一致性评价的药品）；两类情形不属备案范围需提出临床试验申请（以临床终点为 BE 评价指标、存在潜在安全性风险）；麻精毒放/易制毒/细胞毒类可提出临床试验申请或在自我评估确保受试者安全前提下备案。程序要点：BE 试验启动前至少15个工作日在 CDE 备案平台备案，提交 BE 批样品关键信息/参比制剂/试验方案/伦理批件等；备案号三年内无受试者签署知情同意书自动失效；变更如可能导致体内过程改变需重新备案或提出临床试验申请；注册申报时 CTD 2.7.1 提交历次备案号，关键 BE 全套资料、其他（含失败/预 BE）可仅交研究报告摘要（ICH M13A）。",
+        "see": [
+          "口服固体制剂",
+          "临床研究",
+          "上市申报",
+          "上市后研究",
+          "生物等效性",
+          "ICH M13A",
+          "药物临床试验质量管理规范",
+          "药品注册管理办法"
+        ]
+      },
+      {
+        "term": "儿童药物临床试验中应用患者报告结局（PRO）技术指导原则（CDE 2026年第54号）",
+        "definition": "CDE 2026-11-16 发布（落款 11-11），经国家药监局审查同意，自发布之日起施行。为推动我国儿童用药研发、提高临床研究质量和效率制定，规范儿童人群患者报告结局（PRO）测量工具的选择、验证、应用与数据分析，关注儿童认知发育、表达能力、年龄分层与代理报告（caregiver/proxy report）等特殊性。与库内《患者报告结局在药物临床研发中应用的指导原则（试行）》《ICH E11：儿童药物临床试验》构成儿童用药临床研发配套技术体系。附件以 CDE 官网 PDF 形式发布。",
+        "see": [
+          "临床研究",
+          "儿童药物临床试验",
+          "患者报告结局",
+          "ICH E11",
+          "药物临床试验质量管理规范",
+          "生物制品",
+          "口服固体制剂"
         ]
       }
     ]

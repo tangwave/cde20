@@ -314,6 +314,18 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://api.anyapi.ai/v1",
      "models": ["qwen3.8-27b", "ling-3.0-flash", "gemma-3n"],
      "default_model": "qwen3.8-27b"},
+    {"id": "zro", "name": "Zro（MoonMath 编码推理 · 每日免费额度 · 零留存 · 免信用卡）",
+     "base_url": "https://zro.moonmath.ai/v1",
+     "models": ["glm-5.3-flash", "deepseek-v4.1-flash"],
+     "default_model": "glm-5.3-flash"},
+    {"id": "regolo", "name": "Regolo.ai（意大利欧盟托管 · 30天免费1M token/日 · 零留存 · 免信用卡）",
+     "base_url": "https://api.regolo.ai/v1",
+     "models": ["gpt-oss-120b", "qwen3.8-27b", "gemma4-31b", "glm5.2", "mistral-small-4-119b"],
+     "default_model": "qwen3.8-27b"},
+    {"id": "kilo", "name": "Kilo Code AI Gateway（380+模型 · 免费模型匿名可用 · 200次/小时 · OpenAI兼容）",
+     "base_url": "https://ai-gateway.kilo.ai/api/v1",
+     "models": ["kilo-auto/free", "nvidia/nemotron-3-ultra-550b-a55b:free", "cohere/north-mini-code:free"],
+     "default_model": "kilo-auto/free"},
 ]
 
 LLM_PRESETS_FILE = os.path.join(APP_DIR, "llm_presets.json")

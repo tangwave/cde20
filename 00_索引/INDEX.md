@@ -1,6 +1,6 @@
 # 药品法规知识库 · 总索引
 
-> 自动生成于 2026-11-15 ｜ 共 2306 篇文档 ｜ 由 `scripts/update_kb.py` 维护
+> 自动生成于 2026-11-19 ｜ 共 2308 篇文档 ｜ 由 `scripts/update_kb.py` 维护
 
 > 分类：法律 · 行政法规 · 部门规章 · 技术指导原则 · 行业共识
 
@@ -9,7 +9,7 @@
 - 法律：31 篇
 - 行政法规：30 篇
 - 部门规章：308 篇
-- 技术指导原则：1929 篇
+- 技术指导原则：1931 篇
 - 行业共识：8 篇
 
 ## 法律（31 篇）
@@ -396,7 +396,7 @@
 | [关于加强中药品种保护工作的公告（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260709173122148.html) | 国家药监局综合司 | （征求意见中） | 征求意见中（截止 2026-08-06） | [本地](03_部门规章/加强中药品种保护公告征求意见稿.md) |
 | ["国家药监局综合司公开征求《关于药品委托分段生产有关事项的公告（征求意见稿）》意见"](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html) | 国家药监局综合司 | （征求意见中，尚未施行） | 征求意见中（截止 2026-11-30） | [本地](03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md) |
 
-## 技术指导原则（1929 篇）
+## 技术指导原则（1931 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -2242,6 +2242,8 @@
 | ["Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus（降低输血传播 HBV 风险，最终指南）"](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus) | "U.S. FDA 生物制品评价与研究中心(CBER)" | 2026-11-03 | 现行有效（最终指南） | [本地](04_技术指导原则/国外指导原则参考/Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus（降低输血传播HBV风险）.md) |
 | ["药物临床试验安全信息报告与风险沟通交流技术指导原则"](https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8) | 国家药品监督管理局药品审评中心 | 2026-11-09 | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md) |
 | ["仿制药质量和疗效一致性评价受理审查指南（2026年第53号通告）"](https://www.cde.org.cn/main/news/viewInfoCommon/80d57b00585468133d86fc86bb6ce523) | 国家药品监督管理局药品审评中心 | 2026-11-13 | 现行有效（自发布之日起施行） | [本地](04_技术指导原则/CDE_指导原则/仿制药质量和疗效一致性评价受理审查指南2026年第53号.md) |
+| ["国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）"](https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b) | 国家药品监督管理局药品审评中心 | 2026-11-16 | 现行有效（自发布之日起施行） | [本地](04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md) |
+| ["国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）"](https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852) | 国家药品监督管理局药品审评中心 | 2027-02-01 | 现行有效（2027-02-01起施行） | [本地](04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md) |
 | ["FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）"]("https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology") | U.S. Food and Drug Administration (FDA, HHS) | 2027-02-04 | 直接最终规则（征求意见中，评论截止2026-12-07） | [本地](04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md) |
 | ["ICH Q4B：ICH 地区使用的药典正文评价与推荐 (Evaluation and Recommendation of Pharmacopoeial Texts)"](https://database.ich.org/sites/default/files/Q4B%20Guideline.pdf) | ICH | 以2025年版《中华人民共和国药典》实施公告为准 | 现行有效（与中国药典协调） | [本地](04_技术指导原则/ICH_转化/ICH-Q4B药典文本评价与推荐.md) |
 | ["ICH Q6B：质量标准：生物技术产品及生物制品的检测方法及可接受标准 (Specifications: Biotechnological/Biological Products)"](https://database.ich.org/sites/default/files/Q6B%20Guideline.pdf) | ICH | 以2025年版《中华人民共和国药典》实施公告为准 | 现行有效（与中国药典协调） | [本地](04_技术指导原则/ICH_转化/ICH-Q6B质量标准生物技术产品.md) |
