@@ -2,7 +2,7 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-19",
+    "lastUpdated": "2026-11-22",
     "totalDocs": 2308,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
@@ -25988,6 +25988,20 @@ const KB_DATA = {
           "药物临床试验质量管理规范",
           "生物制品",
           "口服固体制剂"
+        ]
+      },
+      {
+        "term": "ICH S13 寡核苷酸类治疗药物非临床安全性研究（在研/Step 1）",
+        "definition": "ICH 安全性指导原则 S13「Nonclinical Safety Studies for Oligonucleotide-based Therapeutics」目前处于 Step 1/EWG 工作组阶段（ICH 官网 Safety Guidelines 页状态核实于 2026-11-22），重点关注寡核苷酸（ASO/siRNA 等）类治疗药物的非临床安全性评价策略，与致癌性评价（S1B(R1) 证据权重法）、遗传毒性（S2(R1)）及平台数据/类别经验分级方法衔接。为在研草案，尚未成为 Step 4/Step 5 正式指导原则，仅作研发前瞻参考；入选非临床安全性评价机构（GLP）与生物制品/细胞与基因治疗研发视野。",
+        "see": [
+          "生物制品",
+          "细胞与基因治疗产品",
+          "非临床与临床申报",
+          "临床前研究",
+          "GLP",
+          "ICH",
+          "致癌性评价",
+          "遗传毒性"
         ]
       }
     ]

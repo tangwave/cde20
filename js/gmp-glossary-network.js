@@ -14,6 +14,7 @@ const CATS = {
 };
 
 const TERMS = [
+  {id:"s13",t:"ICH S13 寡核苷酸非临床安全性",e:"S13",c:"sys",d:"ICH 安全性指导原则 S13（Nonclinical Safety Studies for Oligonucleotide-based Therapeutics），针对 ASO/siRNA 等寡核苷酸治疗药物的非临床安全性评价策略，衔接致癌性（S1B(R1) 证据权重法）、遗传毒性（S2(R1)）与平台/类别数据分级思路。截至 2026-11 处于 Step 1/EWG 在研阶段（ICH 官网核实），尚未成为正式 Step 4/5 指导原则，供 GLP 非临床与生物制品研发前瞻参考。",r:["ich","glp","shengwu","m7"]},
   // ===== 体系与机构 =====
   {id:"gmp",t:"药品生产质量管理规范",e:"GMP",c:"sys",d:"Good Manufacturing Practice，药品生产和质量管理的基本准则。旨在最大限度降低生产过程中的污染、交叉污染以及混淆、差错等风险，确保持续稳定地生产出符合预定用途和注册要求的药品。2010年修订版为现行核心版本，配套无菌药品、原料药、生物制品、血液制品、中药、临床试验用药品等十余个附录。",r:["pqs","glp","gcp","mau","nmpa","cfdi","imp","wuxian","yuanliao","kfzt","shengwu","xuezhipin","ccs"]},
   {id:"glp",t:"药物非临床研究质量管理规范",e:"GLP",c:"sys",d:"Good Laboratory Practice，为保证药物非临床安全性评价研究质量，对研究机构组织管理、人员、设施、仪器、标准操作规程（SOP）和资料档案进行的规范化要求。覆盖安全性评价机构认证、供试品检测、年度报告等。",r:["gmp","nmpa","cfdi"]},
