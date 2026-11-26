@@ -2,8 +2,8 @@ const KB_DATA = {
   "meta": {
     "title": "海云AI · 药品研发生产 QA 专家",
     "version": "3.3",
-    "lastUpdated": "2026-11-22",
-    "totalDocs": 2308,
+    "lastUpdated": "2026-11-26",
+    "totalDocs": 2315,
     "description": "深耕药品研发生产数十年的 QA 专家，熟悉全生命周期法规与各项注册申报要求"
   },
   "stages": [
@@ -1371,6 +1371,16 @@ const KB_DATA = {
                     "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
                     "source": "FDA"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
+                  },
+                  {
+                    "title": "FDA Product-Specific Guidances（新增/修订草案 29 项，91 FR 75332）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA-产品特异性指南草案与修订草案2026-11-20.md",
+                    "url": "https://www.federalregister.gov/documents/2026/11/20/2026-23692/product-specific-guidances-draft-and-revised-draft-guidances-for-industry-availability"
                   }
                 ]
               },
@@ -1521,6 +1531,18 @@ const KB_DATA = {
                     "评估专属性、准确度、精密度、线性范围、LOD/LOQ与耐用性",
                     "建立系统适用性要求并纳入检验规程",
                     "方法转移时做实验室间比对，形成方法学验证/转移报告"
+                  ]
+                },
+                {
+                  "text": "临床试验期间 SUSAR 快速报告的数据链管理",
+                  "guidance": "依据 CDE 2026年第55号指导原则，申办者应建立 AE/SAE/AESI 收集—DAT 记录—ICSR 分析—快速报告的完整链路，衔接 ICH E2A/E2B(R3) 与 RSI 版本管理。",
+                  "detail": "安全性信息须与源记录一致并及时传递；严重性、预期性、相关性评估应有标准化流程与医学审评记录。SUSAR 快速报告起止时间、报告时限与目标格式须写入药物警戒 SOP，盲法试验中的个例揭盲应由指定人员操作并保持其他人员盲态。",
+                  "plan": [
+                    "在试验方案中规定安全性信息定义、收集范围、时限与传递路径",
+                    "使用经验证的数据采集工具（DAT）并保证与源数据一致",
+                    "维护现行版 RSI，按严重性/预期性/相关性三要素评估 ICSR",
+                    "按 E2B(R3) 格式通过 Gateway 或申请人之窗提交快速报告",
+                    "定期审阅药物警戒 SOP 与安全性数据审阅流程的符合性"
                   ]
                 }
               ],
@@ -1735,6 +1757,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -2084,6 +2111,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
                     "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -4043,6 +4075,16 @@ const KB_DATA = {
                     "title": "ICH M4Q(R1): The CTD - Quality",
                     "source": "ICH",
                     "url": "https://www.ich.org/"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
+                  },
+                  {
+                    "title": "FDA Product-Specific Guidances（新增/修订草案 29 项，91 FR 75332）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA-产品特异性指南草案与修订草案2026-11-20.md",
+                    "url": "https://www.federalregister.gov/documents/2026/11/20/2026-23692/product-specific-guidances-draft-and-revised-draft-guidances-for-industry-availability"
                   }
                 ]
               },
@@ -4385,6 +4427,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -4696,6 +4743,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
                     "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -4728,6 +4780,11 @@ const KB_DATA = {
                     "title": "EDQM: Certification of Suitability (CEP)",
                     "source": "EDQM",
                     "url": "https://www.edqm.eu/"
+                  },
+                  {
+                    "title": "FDA OTC Monograph Order Requests: Format and Content（Final, 2026-11）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA-OTC专著申请命令格式与内容最终指南2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/over-counter-monograph-order-requests-format-and-content"
                   }
                 ]
               },
@@ -6658,6 +6715,11 @@ const KB_DATA = {
                     "title": "ICRP Publication 128: Radiation Dose to Patients",
                     "source": "ICRP",
                     "url": "https://www.icrp.org/"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -7024,6 +7086,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -7370,6 +7437,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于公开征求《〈放射性体内诊断药物非临床研究技术指导原则〉问答文件（征求意见稿）》《〈放射性治疗药物非临床研究技术指导原则〉问答文件（征求意见稿）》意见的通知（2026-10-26）",
                     "path": "04_技术指导原则/CDE_指导原则/放射性药物非临床研究技术指导原则问答文件征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/a7120fa784bd1ebad49c97ab4f0697e9"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -8869,6 +8941,17 @@ const KB_DATA = {
                     "依长期数据确定有效期与储存条件",
                     "上市后持续开展年度稳定性并纳入PQR"
                   ]
+                },
+                {
+                  "text": "仿制药 BE 研究的国际品种专项要求对照",
+                  "guidance": "FDA 2026-11-20 发布 29 项产品特异性指南新增/修订草案（91 FR 75332），为 ANDA 的 BE 研究设计提供品种专项建议；与国内 ICH M13A、BE 备案制度对照使用。",
+                  "detail": "各品种 PSG 对参比制剂、研究类型、体内外方法及豁免条件有具体规定；复杂制剂可能引入 Q1/Q2 一致性、粒径分布与体外释放（IVRT）等表征路径。草案不具约束力，但可作方法学设计参考。",
+                  "plan": [
+                    "检索目标品种是否有对应 FDA PSG（草案或终稿）",
+                    "与 CDE BE 备案范围/程序及 M13A 要求进行差异分析",
+                    "对复杂制剂评估体外 BE 路径的适用性",
+                    "在方案与申报资料中说明采用方法的科学依据"
+                  ]
                 }
               ],
               "quality_mgmt": [
@@ -9080,6 +9163,16 @@ const KB_DATA = {
                     "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
                     "source": "FDA"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
+                  },
+                  {
+                    "title": "FDA Product-Specific Guidances（新增/修订草案 29 项，91 FR 75332）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA-产品特异性指南草案与修订草案2026-11-20.md",
+                    "url": "https://www.federalregister.gov/documents/2026/11/20/2026-23692/product-specific-guidances-draft-and-revised-draft-guidances-for-industry-availability"
                   }
                 ]
               },
@@ -9425,6 +9518,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -9574,6 +9672,17 @@ const KB_DATA = {
                     "依长期数据确定有效期与储存条件",
                     "上市后持续开展年度稳定性并纳入PQR"
                   ]
+                },
+                {
+                  "text": "儿童用药清单品种的优先审评申报策略",
+                  "guidance": "第六批鼓励研发申报儿童药品清单（国卫办药政函〔2026〕358号）共 18 品种、27 规格、8 剂型；列入清单品种可争取优先审评审批与跨部门协同支持。",
+                  "detail": "研发立项阶段应评估品种是否在清单内，并针对儿童适宜剂型/规格、低龄段用药数据与补充儿童用药信息需求制定注册策略；与 CDE 沟通交流时应引用清单文号及政策依据。",
+                  "plan": [
+                    "比对在研品种与第六批清单的品种/规格/剂型",
+                    "制定儿童人群研究计划（含适宜剂型、规格与行为学数据）",
+                    "在 Pre-IND/沟通交流中提出优先审评审批诉求",
+                    "同步评估基本药物目录与医保目录衔接路径"
+                  ]
                 }
               ],
               "quality_mgmt": [
@@ -9702,6 +9811,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
                     "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -9720,7 +9834,13 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "FDA OTC Monograph Order Requests: Format and Content（Final, 2026-11）",
+                    "path": "04_技术指导原则/国外指导原则参考/FDA-OTC专著申请命令格式与内容最终指南2026.md",
+                    "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/over-counter-monograph-order-requests-format-and-content"
+                  }
+                ]
               },
               "guidance": [],
               "cases": [],
@@ -11179,6 +11299,17 @@ const KB_DATA = {
                     "评估病毒、支原体、外源因子等生物安全性",
                     "形成结构表征报告并确定CQA控制策略"
                   ]
+                },
+                {
+                  "text": "寡核苷酸类治疗药物非临床安全性前瞻评估",
+                  "guidance": "ICH S13 Step 2b 草案（2026-11-18）为寡核苷酸类治疗药物非临床安全性评价提供国际技术参考；尚未生效，仅用于前瞻性方案设计与差距分析。",
+                  "detail": "ASO/siRNA/适配体等具有组织分布、免疫刺激与脱靶等特有风险，需结合平台数据、化学修饰与靶组织暴露进行证据权重式设计；在中国正式转化前，申报仍以现行 NMPA/CDE 要求为准。",
+                  "plan": [
+                    "识别平台/类别数据可支撑的简化评价项目",
+                    "设计组织交叉反应、遗传毒性与重复给药毒性研究",
+                    "评估免疫原性与靶组织暴露，形成证据权重说明",
+                    "跟踪 ICH Step 4 进展与 CDE 转化公告"
+                  ]
                 }
               ],
               "quality_mgmt": [
@@ -11499,6 +11630,11 @@ const KB_DATA = {
                     "title": "FDA Early-Phase IND Protocol Recommendations for Solid Tumors; Draft Guidance for Industry (2026-11, docket FDA-2026-D-13432)",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/early-phase-ind-protocol-recommendations-solid-tumors-draft-guidance-industry",
                     "source": "FDA"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -11906,6 +12042,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -12222,6 +12363,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
                     "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -13937,6 +14083,11 @@ const KB_DATA = {
                     "title": "FDA Recommendations for Reducing the Risk of Transfusion-Transmitted Hepatitis B Virus; Guidance for Industry (Final, 2026-11, docket FDA-2024-D-5942)",
                     "url": "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/recommendations-reducing-risk-transfusion-transmitted-hepatitis-b-virus",
                     "source": "FDA"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -14238,6 +14389,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -14502,6 +14658,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
                     "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -16092,6 +16253,11 @@ const KB_DATA = {
                   {
                     "title": "FDA Guidance: Content and Format of Chemistry, Manufacturing and Controls Information for a Vaccine",
                     "url": "https://www.fda.gov/"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -16371,6 +16537,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -16634,6 +16805,11 @@ const KB_DATA = {
                     "title": "新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/新型冠状病毒预防用mRNA疫苗平台技术药学研究与评价技术指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/0e89d95a040ae1bbd90e64c78d991986"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -18065,7 +18241,13 @@ const KB_DATA = {
                     "guidance": ""
                   }
                 ],
-                "regulations": []
+                "regulations": [
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
+                  }
+                ]
               },
               "guidance": [],
               "cases": [],
@@ -18381,6 +18563,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -18656,6 +18843,11 @@ const KB_DATA = {
                     "title": "关于药品委托分段生产有关事项的公告（征求意见稿）",
                     "path": "03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md",
                     "url": "https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -20008,6 +20200,18 @@ const KB_DATA = {
                     "依长期数据确定有效期与储存条件",
                     "上市后持续开展年度稳定性并纳入PQR"
                   ]
+                },
+                {
+                  "text": "培植牛黄替代品的质量研究与注册路径",
+                  "guidance": "依据 CDE《培植牛黄研究技术指导原则》（2026年第56号，自发布施行），在替代珍稀濒危天然牛黄的研究与注册中，先行明确基原/培育条件、质量属性与原药材的等同性证据链。",
+                  "detail": "培植牛黄属珍稀濒危中药材替代品，需从培育过程控制、化学成分与药效学对标、杂质与安全性控制、批间一致性及稳定性等维度建立与天然牛黄的可比性证据；研究方案与注册申报资料应引用 2026年第56号通告，避免按普通药材简单处理。",
+                  "plan": [
+                    "建立培植工艺与关键控制点（培养基、培养条件、采收与干燥）",
+                    "开展与天然牛黄的性状、鉴别、含量/指标成分及杂质谱对比",
+                    "完成药效/安全性桥接研究并评价批间一致性",
+                    "按现行中药注册申报格式整理药学与非临床资料，纳入 CTD 模块 3/4",
+                    "注册核查前对照 2026年第56号指导原则执行差距分析"
+                  ]
                 }
               ],
               "quality_mgmt": [
@@ -20210,6 +20414,11 @@ const KB_DATA = {
                     "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
+                  },
+                  {
+                    "title": "培植牛黄研究技术指导原则（2026年第56号）",
+                    "path": "04_技术指导原则/CDE_指导原则/培植牛黄研究技术指导原则2026年第56号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/69c8f33ed4f5976c55f519a67340fce4"
                   }
                 ]
               },
@@ -20246,6 +20455,11 @@ const KB_DATA = {
                     "title": "FDA Guidance: Botanical Drug Products",
                     "source": "FDA",
                     "url": "https://www.fda.gov/"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -20545,6 +20759,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -20810,6 +21029,16 @@ const KB_DATA = {
                     "title": "中药注册通用技术文档申报格式指导原则（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/中药注册通用技术文档申报格式指导原则征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/6ea4de7f2ab9611f26203d3d8ad1304a"
+                  },
+                  {
+                    "title": "国家药监局关于保和颗粒等8个品种转换为非处方药的公告（2026年第111号）",
+                    "path": "03_部门规章/国家药监局关于保和颗粒等8个品种转换为非处方药的公告（2026年第111号）.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261124180021130.html"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -21157,6 +21386,18 @@ const KB_DATA = {
                     "依长期数据确定有效期与储存条件",
                     "上市后持续开展年度稳定性并纳入PQR"
                   ]
+                },
+                {
+                  "text": "Rx→OTC 转换品种的说明书与标签同步",
+                  "guidance": "依据 NMPA 2026年第111号公告，8 个中成药品种由处方药转换为非处方药，MAH 须于 2027-08-18 前完成说明书修订备案，标签相关内容一并修订。",
+                  "detail": "非处方药说明书范本规定内容之外的其他内容按原批准证明文件执行；自补充申请备案之日起生产的药品不得继续使用原说明书。应同步更新印刷包装指令、上市后变更台账与患者用药指导材料。",
+                  "plan": [
+                    "核对本企业品种是否在 8 个转换名单内",
+                    "按附件 2 范本修订说明书与标签，形成修订对照表",
+                    "在 2027-08-18 前向省级药监局完成备案并通知医疗机构/经营企业",
+                    "备案后切换包装指令，防止新旧说明书并行使用",
+                    "将变更纳入年度药品质量回顾与上市后变更管理台账"
+                  ]
                 }
               ],
               "quality_mgmt": [
@@ -21336,6 +21577,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）",
                     "path": "04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852"
+                  },
+                  {
+                    "title": "国家药监局关于保和颗粒等8个品种转换为非处方药的公告（2026年第111号）",
+                    "path": "03_部门规章/国家药监局关于保和颗粒等8个品种转换为非处方药的公告（2026年第111号）.md",
+                    "url": "https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261124180021130.html"
                   }
                 ]
               },
@@ -22395,6 +22641,11 @@ const KB_DATA = {
                     "title": "中医药传统知识保护条例（国务院令第850号）",
                     "path": "02_行政法规/中医药传统知识保护条例.md",
                     "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
+                  },
+                  {
+                    "title": "培植牛黄研究技术指导原则（2026年第56号）",
+                    "path": "04_技术指导原则/CDE_指导原则/培植牛黄研究技术指导原则2026年第56号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/69c8f33ed4f5976c55f519a67340fce4"
                   }
                 ]
               },
@@ -22414,6 +22665,11 @@ const KB_DATA = {
                     "title": "WHO Guidelines on Quality Control for Herbal Medicines",
                     "source": "WHO",
                     "url": "https://www.who.int/"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -22643,6 +22899,11 @@ const KB_DATA = {
                     "title": "国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）",
                     "path": "04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -22866,6 +23127,11 @@ const KB_DATA = {
                     "title": "中医药传统知识保护条例（国务院令第850号）",
                     "path": "02_行政法规/中医药传统知识保护条例.md",
                     "url": "https://www.gov.cn/zhengce/content/202611/content_7085591.htm"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -24291,6 +24557,11 @@ const KB_DATA = {
                     "title": "21 CFR 211: cGMP",
                     "source": "FDA",
                     "url": "https://www.ecfr.gov/"
+                  },
+                  {
+                    "title": "ICH S13 寡核苷酸类治疗药物非临床安全性评价（Step 2b 草案，尚未生效）",
+                    "path": "04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md",
+                    "url": "https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf"
                   }
                 ]
               },
@@ -24527,6 +24798,11 @@ const KB_DATA = {
                     "title": "药物临床试验申办者变更有关问题问与答（征求意见稿）",
                     "path": "04_技术指导原则/CDE_指导原则/药物临床试验申办者变更有关问题问与答征求意见稿.md",
                     "url": "https://www.cde.org.cn/main/news/viewInfoCommon/7c0d5f0e5f23eb1aa8e407d9f0dd0737"
+                  },
+                  {
+                    "title": "申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则（2026年第55号）",
+                    "path": "04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md",
+                    "url": "https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17"
                   }
                 ]
               },
@@ -24733,6 +25009,11 @@ const KB_DATA = {
                     "title": "药品生产质量管理规范(2010年修订)临床试验用药品附录",
                     "path": "03_部门规章/国家药监局关于发布药品生产质量管理规范(2010年修订)临床试验用药品附录的公告(2022年第43号).md",
                     "url": "https://www.cfdi.org.cn/cfdi/resource/news/14654.html"
+                  },
+                  {
+                    "title": "关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）",
+                    "path": "03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md",
+                    "url": "https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml"
                   }
                 ]
               },
@@ -25991,8 +26272,8 @@ const KB_DATA = {
         ]
       },
       {
-        "term": "ICH S13 寡核苷酸类治疗药物非临床安全性研究（在研/Step 1）",
-        "definition": "ICH 安全性指导原则 S13「Nonclinical Safety Studies for Oligonucleotide-based Therapeutics」目前处于 Step 1/EWG 工作组阶段（ICH 官网 Safety Guidelines 页状态核实于 2026-11-22），重点关注寡核苷酸（ASO/siRNA 等）类治疗药物的非临床安全性评价策略，与致癌性评价（S1B(R1) 证据权重法）、遗传毒性（S2(R1)）及平台数据/类别经验分级方法衔接。为在研草案，尚未成为 Step 4/Step 5 正式指导原则，仅作研发前瞻参考；入选非临床安全性评价机构（GLP）与生物制品/细胞与基因治疗研发视野。",
+        "term": "ICH S13 寡核苷酸类治疗药物非临床安全性研究（Step 2b 草案）",
+        "definition": "ICH S13「Nonclinical Safety Evaluation of Oligonucleotide-based Therapeutics」于 2026-11-18 经 ICH 大会 Step 2b 认可并公开征求意见（PDF 2026-11-24 发布），当前为 Step 3，尚未 Step 4 生效、中国尚未转化。涉及 ASO/siRNA/适配体等非临床安全性评价策略、组织交叉反应、遗传毒性、重复给药毒性等；仅作前瞻参考，申报以现行 NMPA/CDE 要求为准。",
         "see": [
           "生物制品",
           "细胞与基因治疗产品",
@@ -26002,6 +26283,68 @@ const KB_DATA = {
           "ICH",
           "致癌性评价",
           "遗传毒性"
+        ]
+      },
+      {
+        "term": "培植牛黄研究技术指导原则（2026年第56号）",
+        "definition": "CDE 2026-11-24 发布施行的中药注册技术指导原则（落款 11-19），支持珍稀濒危中药材替代品研究与开发，指导培植牛黄的研究与注册。关注基原与培育过程控制、与天然牛黄的质量/药效等同性、批间一致性与稳定性证据链。",
+        "see": [
+          "中药制剂",
+          "中药饮片",
+          "非临床与临床申报",
+          "药学研究",
+          "CDE"
+        ]
+      },
+      {
+        "term": "申办者临床试验期间安全性快速报告（SUSAR/ICSR）",
+        "definition": "CDE 2026年第55号指导原则（2026-11-24 发布施行）规范的安全性快速报告全流程：AE/SAE/AESI 收集、DAT 记录与传递、ICSR 严重性/预期性/相关性评价、SUSAR 快速报告及 E2B(R3) 电子传输，衔接 ICH E2A/E2B(R3)/M1 与 GCP/GVP。",
+        "see": [
+          "GCP",
+          "ICH",
+          "临床研究",
+          "药物警戒",
+          "数据可靠性"
+        ]
+      },
+      {
+        "term": "保和颗粒等8品种 Rx→OTC（2026年第111号）",
+        "definition": "NMPA 2026-11-24 公告，8 个中成药由处方药转换为非处方药；MAH 须在 2027-08-18 前修订说明书并向省级药监局备案，标签同步修订，备案之日起生产的药品不得再用原说明书。",
+        "see": [
+          "中药制剂",
+          "上市后研究",
+          "说明书标签",
+          "上市后变更"
+        ]
+      },
+      {
+        "term": "第六批鼓励研发申报儿童药品清单（国卫办药政函〔2026〕358号）",
+        "definition": "国家卫健委办公厅等三部门 2026-11-23 发布的儿童用药研发鼓励清单，共 18 品种、27 规格、8 剂型，覆盖抗肿瘤、心血管、呼吸及血液系统用药；纳入品种可获科研扶持与优先审评审批支持，并按程序衔接基本药物与医保目录。",
+        "see": [
+          "临床研究",
+          "上市申报",
+          "儿童用药",
+          "优先审评审批"
+        ]
+      },
+      {
+        "term": "FDA OTC 专著命令请求（OMOR）格式与内容",
+        "definition": "FDA 2026-11-25 最终指南（Docket FDA-2023-D-1188），规定依据 FD&C Act 第 505G 条提交 OMOR 时按 eCTD 五模块组织的资料格式与内容，用于 CDER 完整性审查与行政命令审评；取代 2023 年草案。",
+        "see": [
+          "ICH",
+          "上市申报",
+          "CTD",
+          "非处方药"
+        ]
+      },
+      {
+        "term": "FDA 产品特异性指南（PSG）",
+        "definition": "FDA 针对具体活性成分发布的支持 ANDA 的生物等效性研究设计建议。2026-11-20 一次公布新增 15 项、修订 14 项草案（91 FR 75332），意见截止 2027-01-19，须逐品种核对参比制剂、研究类型与替代路径。",
+        "see": [
+          "仿制药",
+          "生物等效性",
+          "ICH",
+          "药学研究"
         ]
       }
     ]

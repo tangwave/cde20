@@ -770,5 +770,40 @@
     ],
     "default_model": "kilo-auto/free",
     "custom": false
+  },
+  {
+    "id": "scaleway",
+    "name": "Scaleway Generative APIs（法国欧盟托管 · 一次性 100 万免费 token · OpenAI 兼容）",
+    "base_url": "https://api.scaleway.ai/v1",
+    "models": [
+      "qwen3.8-27b",
+      "deepseek-v4.1-flash-1017",
+      "glm-5.3",
+      "gpt-oss-120b",
+      "mistral-small-3.2-24b-instruct-2506"
+    ],
+    "default_model": "qwen3.8-27b",
+    "custom": false
+  },
+  {
+    "id": "lmstudio",
+    "name": "LM Studio（本地运行 · http://localhost:1234/v1 · 无需 Key/无需联网）",
+    "base_url": "http://localhost:1234/v1",
+    "models": [
+      "local-model"
+    ],
+    "default_model": "local-model",
+    "custom": false
+  },
+  {
+    "id": "upstage",
+    "name": "Upstage Solar（文档理解/OCR 强项 · 注册 $10 试用额度 · 512K 上下文）",
+    "base_url": "https://api.upstage.ai/v1/solar",
+    "models": [
+      "solar-pro4",
+      "solar-mini4"
+    ],
+    "default_model": "solar-pro4",
+    "custom": false
   }
 ]

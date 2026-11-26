@@ -14,7 +14,13 @@ const CATS = {
 };
 
 const TERMS = [
-  {id:"s13",t:"ICH S13 寡核苷酸非临床安全性",e:"S13",c:"sys",d:"ICH 安全性指导原则 S13（Nonclinical Safety Studies for Oligonucleotide-based Therapeutics），针对 ASO/siRNA 等寡核苷酸治疗药物的非临床安全性评价策略，衔接致癌性（S1B(R1) 证据权重法）、遗传毒性（S2(R1)）与平台/类别数据分级思路。截至 2026-11 处于 Step 1/EWG 在研阶段（ICH 官网核实），尚未成为正式 Step 4/5 指导原则，供 GLP 非临床与生物制品研发前瞻参考。",r:["ich","glp","shengwu","m7"]},
+  {id:"niuhuang",t:"培植牛黄研究",e:"CDE 56",c:"mat",d:"CDE 2026年第56号技术指导原则，支持珍稀濒危中药材替代品研究与注册，关注培植牛黄与天然牛黄的质量/药效等同性与批间一致性。",r:["tcm","zhongyaoctd","cde"]},
+  {id:"susar55",t:"SUSAR 快速报告",e:"ICSR",c:"sys",d:"CDE 2026年第55号指导原则规范申办者临床试验期间安全性信息收集、分析、评价与 SUSAR 快速报告，衔接 ICH E2A/E2B(R3) 与 RSI 版本管理。",r:["gcp","nmpa","ich","alcoa"]},
+  {id:"otc111",t:"Rx→OTC 转换",e:"OTC",c:"sys",d:"NMPA 2026年第111号公告：保和颗粒等 8 个中成药由处方药转非处方药，MAH 应于 2027-08-18 前修订说明书并备案，标签同步。",r:["nmpa","tcm","biangeng"]},
+  {id:"childlist6",t:"第六批儿童药品清单",e:"儿童用药",c:"sys",d:"国卫办药政函〔2026〕358号（2026-11-23）发布，18 品种/27 规格/8 剂型，鼓励儿童适用品种研发申报并衔接优先审评审批。",r:["nmpa","cde","childpro","gcp"]},
+  {id:"omor",t:"FDA OMOR 申报格式",e:"eCTD",c:"sys",d:"FDA 2026-11-25 最终指南，规定非处方药专著命令请求按 CTD 五模块提交的内容与格式，用于完整性审查和行政命令审评。",r:["ich","glp","gcp"]},
+  {id:"psg",t:"FDA 产品特异性指南",e:"PSG/BE",c:"mat",d:"FDA 针对具体活性成分的 ANDA 生物等效性研究设计建议；2026-11-20 新增 15 项、修订 14 项草案，意见截止 2027-01-19。",r:["befiling","ich","glp"]},
+  {id:"s13",t:"ICH S13 寡核苷酸非临床安全性",e:"S13",c:"sys",d:"ICH 安全性指导原则 S13（Nonclinical Safety Studies for Oligonucleotide-based Therapeutics），针对 ASO/siRNA 等寡核苷酸治疗药物的非临床安全性评价策略，衔接致癌性（S1B(R1) 证据权重法）、遗传毒性（S2(R1)）与平台/类别数据分级思路。2026-11-18 已经 ICH 大会 Step 2b 认可并公开征求意见（Step 3，PDF 11-24 发布），尚未 Step 4 生效且中国尚未转化，仅作 GLP 非临床与生物制品研发前瞻参考。",r:["ich","glp","shengwu","m7"]},
   // ===== 体系与机构 =====
   {id:"gmp",t:"药品生产质量管理规范",e:"GMP",c:"sys",d:"Good Manufacturing Practice，药品生产和质量管理的基本准则。旨在最大限度降低生产过程中的污染、交叉污染以及混淆、差错等风险，确保持续稳定地生产出符合预定用途和注册要求的药品。2010年修订版为现行核心版本，配套无菌药品、原料药、生物制品、血液制品、中药、临床试验用药品等十余个附录。",r:["pqs","glp","gcp","mau","nmpa","cfdi","imp","wuxian","yuanliao","kfzt","shengwu","xuezhipin","ccs"]},
   {id:"glp",t:"药物非临床研究质量管理规范",e:"GLP",c:"sys",d:"Good Laboratory Practice，为保证药物非临床安全性评价研究质量，对研究机构组织管理、人员、设施、仪器、标准操作规程（SOP）和资料档案进行的规范化要求。覆盖安全性评价机构认证、供试品检测、年度报告等。",r:["gmp","nmpa","cfdi"]},

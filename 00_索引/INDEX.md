@@ -1,6 +1,6 @@
 # 药品法规知识库 · 总索引
 
-> 自动生成于 2026-11-22 ｜ 共 2308 篇文档 ｜ 由 `scripts/update_kb.py` 维护
+> 自动生成于 2026-11-26 ｜ 共 2315 篇文档 ｜ 由 `scripts/update_kb.py` 维护
 
 > 分类：法律 · 行政法规 · 部门规章 · 技术指导原则 · 行业共识
 
@@ -8,8 +8,8 @@
 
 - 法律：31 篇
 - 行政法规：30 篇
-- 部门规章：308 篇
-- 技术指导原则：1931 篇
+- 部门规章：310 篇
+- 技术指导原则：1936 篇
 - 行业共识：8 篇
 
 ## 法律（31 篇）
@@ -83,7 +83,7 @@
 | ["国务院修改《中药品种保护条例》等行政法规部分条款"](https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20180930120001458.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](02_行政法规/国务院修改中药品种保护条例等行政法规部分条款.md) |
 | ["国务院关于加强食品等产品安全监督管理的特别规定"](https://www.nmpa.gov.cn/xxgk/fgwj/flxzhfg/20250415150318155.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](02_行政法规/国务院关于加强食品等产品安全监督管理的特别规定.md) |
 
-## 部门规章（308 篇）
+## 部门规章（310 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -361,6 +361,8 @@
 | [国家药监局关于按照省级中药饮片炮制规范炮制的中药饮片跨省级行政区域销售、使用管理规定有关事项的通告（2026年第34号）](https://www.nmpa.gov.cn/xxgk/fgwj/xzhgfxwj/20261008172748111.html) | 国家药品监督管理局（NMPA） | 2026-10-08 | 现行有效 | [本地](03_部门规章/国家药监局关于中药饮片跨省销售使用管理规定通告2026年第34号.md) |
 | ["关于进一步做好创新药安全合理配备使用工作的通知"](https://www.nhc.gov.cn/yzygj/c100068/202611/84e08a225aa9483bb4e8ef411973ba2f.shtml) | 国家卫生健康委、国家医保局、国家中医药局、国家疾控局 | 2026-11-10 | 现行有效 | [本地](03_部门规章/关于进一步做好创新药安全合理配备使用工作的通知.md) |
 | ["国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）"](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypshmshxdgg/20261112141319195.html) | 国家药品监督管理局 | 2026-11-12 | 现行有效 | [本地](03_部门规章/国家药监局关于修订氨溴特罗制剂说明书的公告（2026年第107号）.md) |
+| ["关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）"](https://www.nhc.gov.cn/yaozs/c100098/202611/6c99b41c836b4707903fca5b3a9c6911.shtml) | 国家卫生健康委办公厅、工业和信息化部办公厅、国家药监局综合司 | 2026-11-23 | 现行有效 | [本地](03_部门规章/关于印发第六批鼓励研发申报儿童药品清单的通知（国卫办药政函〔2026〕358号）.md) |
+| ["国家药监局关于保和颗粒等8个品种转换为非处方药的公告（2026年第111号）"](https://www.nmpa.gov.cn/xxgk/ggtg/ypggtg/ypqtggtg/20261124180021130.html) | 国家药品监督管理局 | 2026-11-24 | 现行有效 | [本地](03_部门规章/国家药监局关于保和颗粒等8个品种转换为非处方药的公告（2026年第111号）.md) |
 | [关于印发罕见病目录制订工作程序（2026年版）的通知](https://www.nhc.gov.cn/yzygj/c100068/202611/125babd50e8242b4bd415b7fe122e2c9.shtml) | 国家卫生健康委办公厅、国家中医药局综合司 | 印发之日起施行（2018 年版同时废止） | 现行有效（国卫办医政发〔2026〕16 号） | [本地](03_部门规章/关于印发罕见病目录制订工作程序（2026年版）的通知.md) |
 | ["《医疗机构制剂配制质量管理规范》(局令第27号)"](https://www.cfdi.org.cn/cfdi/resource/news/2537.html) | 国家药监局食品药品审核查验中心 | 发布之日 | 现行有效 | [本地](03_部门规章/医疗机构制剂配制质量管理规范(局令第27号).md) |
 | ["互联网药品信息服务管理办法"](https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_3b0de00d220846a8b6adf0ca2b053005.html) | 国家市场监督管理总局 | 发布之日 | 现行有效 | [本地](03_部门规章/互联网药品信息服务管理办法.md) |
@@ -396,7 +398,7 @@
 | [关于加强中药品种保护工作的公告（征求意见稿）](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260709173122148.html) | 国家药监局综合司 | （征求意见中） | 征求意见中（截止 2026-08-06） | [本地](03_部门规章/加强中药品种保护公告征求意见稿.md) |
 | ["国家药监局综合司公开征求《关于药品委托分段生产有关事项的公告（征求意见稿）》意见"](https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20261113111413106.html) | 国家药监局综合司 | （征求意见中，尚未施行） | 征求意见中（截止 2026-11-30） | [本地](03_部门规章/关于药品委托分段生产有关事项的公告征求意见稿.md) |
 
-## 技术指导原则（1931 篇）
+## 技术指导原则（1936 篇）
 
 | 标题 | 发布机构 | 生效日期 | 状态 | 来源 |
 |------|----------|----------|------|------|
@@ -545,6 +547,7 @@
 | ["USP<788> 注射用粒及不溶性微粒检查法（Particulate Matter in Injections）"]("https://www.drugfuture.com/Pharmacopoeia/usp35/ (USP35 镜像原文）") | "USP–NF" | "USP35（2012）" | 现行有效（USP35 版，供研究参考） | [本地](04_技术指导原则/药典指导原则/USP_788.md) |
 | ["国家药监局综合司关于印发药品上市许可持有人委托生产现场检查指南的通知"]("https://www.nmpa.gov.cn/../xxgk/fgwj/gzwj/gzwjyp/20231024161543188.html") | "国家药监局" | "发布之日" | "现行有效" | [本地](04_技术指导原则/CFDI_检查指南/国家药监局综合司关于印发药品上市许可持有人委托生产现场检查指南的通知.md) |
 | ["药品追溯系统基本技术要求（修订征求意见稿）"]("https://www.nmpa.gov.cn/xxgk/zhqyj/zhqyjyp/20260803112350117.html") | "国家药品监督管理局信息中心" | "（征求意见中）" | "征求意见中（截止 2026-09-03）" | [本地](04_技术指导原则/NMPA_指导原则/药品追溯系统基本技术要求修订征求意见稿.md) |
+| ["ICH S13 Nonclinical Safety Evaluation of Oligonucleotide-based Therapeutics（Draft Guideline，Step 2b）"](https://database.ich.org/sites/default/files/ICH%20S13%20Draft%20Guideline_2026_1124.pdf) | 国际人用药品注册技术协调会（ICH） | '' | 征求意见中（ICH Step 2b/Step 3，尚未生效；中国转化实施待NMPA/CDE发布） | [本地](04_技术指导原则/ICH_转化/ICH-S13-寡核苷酸类治疗药物非临床安全性评价草案.md) |
 | ["12岁以下儿童艾滋病信息披露指南"](https://www.cde.org.cn/zdyz/guideGwView/016a7b8dcc1f21ed68ced023a850d2b2) | 2011年WHO发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/12岁以下儿童艾滋病信息披露指南.md) |
 | ["1~5月龄婴儿补充维生素A"](https://www.cde.org.cn/zdyz/guideGwView/d0276c0b8985030a46287dfd9cb2f12c) | 2011年WHO发布 | — | 现行有效 | [本地](04_技术指导原则/国外指导原则参考/1~5月龄婴儿补充维生素A.md) |
 | ["2006年6月16日,中心邀请加拿大GMP专家Tho Huynh博士交流GMP工作经验"](https://www.cfdi.org.cn/cfdi/resource/news/3926.html) | 国家药监局食品药品审核查验中心 | — | 现行有效 | [本地](04_技术指导原则/CFDI_检查指南/2006年6月16日,中心邀请加拿大GMP专家ThoHuynh博士交流GMP工作经验.md) |
@@ -2243,6 +2246,10 @@
 | ["药物临床试验安全信息报告与风险沟通交流技术指导原则"](https://www.cde.org.cn/main/news/viewInfoCommon/5cf5f7e3b600373ff6f7d85d164e70e8) | 国家药品监督管理局药品审评中心 | 2026-11-09 | 现行有效 | [本地](04_技术指导原则/CDE_指导原则/药物临床试验安全信息报告与风险沟通交流技术指导原则.md) |
 | ["仿制药质量和疗效一致性评价受理审查指南（2026年第53号通告）"](https://www.cde.org.cn/main/news/viewInfoCommon/80d57b00585468133d86fc86bb6ce523) | 国家药品监督管理局药品审评中心 | 2026-11-13 | 现行有效（自发布之日起施行） | [本地](04_技术指导原则/CDE_指导原则/仿制药质量和疗效一致性评价受理审查指南2026年第53号.md) |
 | ["国家药监局药审中心关于发布《儿童药物临床试验中应用患者报告结局（PRO）技术指导原则》的通告（2026年第54号）"](https://www.cde.org.cn/main/news/viewInfoCommon/971310680757f6949a90addb65fab92b) | 国家药品监督管理局药品审评中心 | 2026-11-16 | 现行有效（自发布之日起施行） | [本地](04_技术指导原则/CDE_指导原则/儿童药物临床试验中应用患者报告结局PRO技术指导原则2026年第54号.md) |
+| ["FDA Product-Specific Guidances; Draft and Revised Draft Guidances for Industry; Availability（91 FR 75332）"](https://www.federalregister.gov/documents/2026/11/20/2026-23692/product-specific-guidances-draft-and-revised-draft-guidances-for-industry-availability) | 美国食品药品监督管理局（FDA） | 2026-11-20 | 草案征求意见中（意见截止 2027-01-19；不具约束力） | [本地](04_技术指导原则/国外指导原则参考/FDA-产品特异性指南草案与修订草案2026-11-20.md) |
+| ["国家药监局药审中心关于发布《培植牛黄研究技术指导原则》的通告（2026年第56号）"](https://www.cde.org.cn/main/news/viewInfoCommon/69c8f33ed4f5976c55f519a67340fce4) | 国家药品监督管理局药品审评中心 | 2026-11-24 | 现行有效（自发布之日起施行） | [本地](04_技术指导原则/CDE_指导原则/培植牛黄研究技术指导原则2026年第56号.md) |
+| ["国家药监局药审中心关于发布《申办者临床试验期间安全性快速报告的信息收集、分析与报告技术指导原则》的通告（2026年第55号）"](https://www.cde.org.cn/main/news/viewInfoCommon/4a6bfefc8335549472fb2f7a5b710a17) | 国家药品监督管理局药品审评中心 | 2026-11-24 | 现行有效（自发布之日起施行） | [本地](04_技术指导原则/CDE_指导原则/申办者临床试验期间安全性快速报告技术指导原则2026年第55号.md) |
+| ["FDA Over-the-Counter Monograph Order Requests: Format and Content（Final Guidance，November 2026）"](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/over-counter-monograph-order-requests-format-and-content) | 美国食品药品监督管理局（FDA）/ 药品评价与研究中心（CDER） | 2026-11-25 | 最终指南（Final，现行有效；非约束力，允许替代路径） | [本地](04_技术指导原则/国外指导原则参考/FDA-OTC专著申请命令格式与内容最终指南2026.md) |
 | ["国家药监局药审中心关于发布《化学药生物等效性试验备案范围和程序》及共性问题解答的通告（2026年第51号）"](https://www.cde.org.cn/main/news/viewInfoCommon/1f54924a85bedc8459599f83e1923852) | 国家药品监督管理局药品审评中心 | 2027-02-01 | 现行有效（2027-02-01起施行） | [本地](04_技术指导原则/CDE_指导原则/化学药生物等效性试验备案范围和程序2026年第51号.md) |
 | ["FDA Nonclinical Testing Terminology Direct Final Rule（非临床研究术语直接最终规则）"]("https://www.federalregister.gov/documents/2026/09/22/2026-19350/nonclinical-testing-terminology") | U.S. Food and Drug Administration (FDA, HHS) | 2027-02-04 | 直接最终规则（征求意见中，评论截止2026-12-07） | [本地](04_技术指导原则/国外指导原则参考/FDA非临床研究术语直接最终规则NonclinicalTestingTerminology2026.md) |
 | ["ICH Q4B：ICH 地区使用的药典正文评价与推荐 (Evaluation and Recommendation of Pharmacopoeial Texts)"](https://database.ich.org/sites/default/files/Q4B%20Guideline.pdf) | ICH | 以2025年版《中华人民共和国药典》实施公告为准 | 现行有效（与中国药典协调） | [本地](04_技术指导原则/ICH_转化/ICH-Q4B药典文本评价与推荐.md) |

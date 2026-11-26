@@ -326,6 +326,18 @@ LLM_PRESETS_DEFAULT = [
      "base_url": "https://ai-gateway.kilo.ai/api/v1",
      "models": ["kilo-auto/free", "nvidia/nemotron-3-ultra-550b-a55b:free", "cohere/north-mini-code:free"],
      "default_model": "kilo-auto/free"},
+    {"id": "scaleway", "name": "Scaleway Generative APIs（法国欧盟托管 · 一次性 100 万免费 token · OpenAI 兼容）",
+     "base_url": "https://api.scaleway.ai/v1",
+     "models": ["qwen3.8-27b", "deepseek-v4.1-flash-1017", "glm-5.3", "gpt-oss-120b", "mistral-small-3.2-24b-instruct-2506"],
+     "default_model": "qwen3.8-27b"},
+    {"id": "lmstudio", "name": "LM Studio（本地运行 · http://localhost:1234/v1 · 无需 Key/无需联网）",
+     "base_url": "http://localhost:1234/v1",
+     "models": ["local-model"],
+     "default_model": "local-model"},
+    {"id": "upstage", "name": "Upstage Solar（文档理解/OCR 强项 · 注册 $10 试用额度 · 512K 上下文）",
+     "base_url": "https://api.upstage.ai/v1/solar",
+     "models": ["solar-pro4", "solar-mini4"],
+     "default_model": "solar-pro4"},
 ]
 
 LLM_PRESETS_FILE = os.path.join(APP_DIR, "llm_presets.json")
